@@ -1,2 +1,2 @@
 # convenient_store_webapp
-java servlet web application
+This is project that using java servlet web application
