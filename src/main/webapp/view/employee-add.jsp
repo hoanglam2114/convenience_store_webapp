@@ -453,21 +453,26 @@
             <!-- Card -->
             <div class="card">
               <div class="card-body">
-                <form action="#" method="POST">
+                <form action="addEmployee" method="POST">
                   <div class="row g-3">
                     <div class="col-md-6">
-                      <label class="form-label" for="name">Full Name</label>
+                      <label class="form-label" for="name">Name</label>
                       <input type="text" id="name" name="name" class="form-control" placeholder="Nguyen Van A" required />
                     </div>
 
                     <div class="col-md-6">
-                      <label class="form-label" for="email">Email</label>
-                      <input type="email" id="email" name="email" class="form-control" placeholder="a@example.com" required />
+                      <label class="form-label" for="email">Phone</label>
+                      <input type="text" id="phone" name="phone" class="form-control" placeholder="0123456789" required />
                     </div>
 
                     <div class="col-md-6">
-                      <label class="form-label" for="position">Position</label>
-                      <input type="text" id="position" name="position" class="form-control" placeholder="Manager" required />
+                      <label class="form-label" for="position">Address</label>
+                      <input type="text" id="address" name="address" class="form-control" placeholder="Ha Noi" required />
+                    </div>
+                      
+                    <div class="col-md-6">
+                      <label class="form-label" for="position">Account ID</label>
+                      <input type="number" id="accountId" name="accountId" class="form-control" placeholder="1" required />
                     </div>
 
                     <div class="col-md-6">
@@ -478,15 +483,10 @@
                       </select>
                     </div>
 
-                    <div class="col-md-6">
-                      <label class="form-label" for="phone">Phone</label>
-                      <input type="text" id="phone" name="phone" class="form-control" placeholder="0987654321" />
-                    </div>
-
                     <div class="col-12 text-end">
                       <button type="reset" class="btn btn-outline-secondary">Reset</button>
                       <button type="submit" class="btn btn-primary">
-                        <i class="bx bx-save me-1"></i> Save Staff
+                        <i class="bx bx-save me-1"></i> Add
                       </button>
                     </div>
                   </div>
