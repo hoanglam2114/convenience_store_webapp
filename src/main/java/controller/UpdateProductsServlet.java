@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
+import java.time.LocalDate;
 import java.util.List;
 import model.ProductCategories;
 import model.Products;
@@ -152,7 +153,7 @@ public class UpdateProductsServlet extends HttpServlet {
             String id_raw = request.getParameter("nameID");
             String name = request.getParameter("namePro");
             String cate_raw = request.getParameter("catePro");
-            String supp_raw = request.getParameter("suppPro");
+            String supp_raw = request.getParameter("supPro");
             String unit_raw = request.getParameter("unitPro");
             String price_raw = request.getParameter("pricePro");
             String barcode = request.getParameter("barcode");
@@ -175,8 +176,17 @@ public class UpdateProductsServlet extends HttpServlet {
             WeightUnit wu = wud.getUnitById(unit);
             
             float price = Float.parseFloat(price_raw);
+            LocalDate manufactureDate = LocalDate.parse(manufactureDateStr);
+            LocalDate expirationDate = LocalDate.parse( ExpirationDateStr);
+            
+            int batch = Integer.parseInt(batch_raw);
+            
+            Products pNew = new Products(id, name, price, img, barcode, 
+             pc, s, wu, manufactureDate, expirationDate , batch);
             
             
+            pd.updateProduct(pNew);
+            response.sendRedirect("ListProduct");
             
             
             

@@ -34,14 +34,17 @@
         </div>
         <div class="card-body">
             <c:set var="p"   value="${product}" />
-            <form action="updateProduct" method="post" enctype="multipart/form-data">
+            <form action="UpdateProduct" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <input type="hidden" name="nameID" value="${p.getId()}" />
                     <div class="col-md-6 mb-3">
                         <label class="form-label" for="productType">Loại sản phẩm</label>
                         <select id="productType" name="catePro" class="form-select">
                             <c:forEach items="${cate}" var="cate">
-                                <option value="${cate.getId()}">${cate.getName()}</option>
+                                <option value="${cate.getId()}"
+                                        <c:if test="${cate.getId() == p.productCategories.getId()}">selected</c:if>>
+                                    ${cate.getName()}
+                                </option>
                             </c:forEach>
 
                         </select>
@@ -65,7 +68,9 @@
                         <label class="form-label" for="unit">Đơn vị</label>
                         <select  name="unitPro" class="form-select" >
                             <c:forEach items="${wu}" var="wu">
-                                <option value="${wu.getId()}">${wu.getName()}</option>
+                                <option value="${wu.getId()}"
+                                      <c:if test="${wu.getId() == p.weightUnit.getId()}">selected</c:if>   
+                                        >${wu.getName()}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -77,7 +82,9 @@
                         <label class="form-label" for="supplier">Nhà cung cấp</label>
                         <select name="supPro" class="form-select">
                             <c:forEach items="${supp}" var="supp">
-                                <option value="${supp.getId()}">${supp.getName()}</option>
+                                <option value="${supp.getId()}"
+                                        <c:if test="${supp.getId() == p.suppliers.getId()}">selected</c:if>   
+                                        >${supp.getName()}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -95,8 +102,8 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label" for="image">Hình ảnh</label>
                         <input class="form-control" type="file"  name="imgPro" accept="img/* />
-                    </div>
-                    <div class="col-md-6 mb-3">
+                               </div>
+                               <div class="col-md-6 mb-3">
                         <label class="form-label" for="lot">Lô</label>
                         <input type="cate" class="form-control"  name="batch" value="${p.getBatch()}" readonly />
                     </div>

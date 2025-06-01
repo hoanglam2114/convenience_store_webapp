@@ -256,6 +256,42 @@ public class ProductsDAO extends DBContext {
         }
     }
     
+    public void updateProduct(Products p) {
+        String sql = "UPDATE [dbo].[Products]\n"
+                + "   SET [category_id] = ? \n"
+                + "      ,[barcode] = ?\n"
+                + "      ,[product_name] = ?\n"
+                + "      ,[product_price] = ?\n"
+                + "      ,[weight_unit_id] = ?\n"
+                + "      ,[supplier_id] = ?\n"
+                + "      ,[product_image] = ?\n"
+                + "      ,[manufacture_date] = ?\n"
+                + "      ,[expiration_date] = ?\n"
+                + "      ,[batch] = ?\n"
+                + " WHERE product_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, p.getProductCategories().getId());
+            st.setString(2, p.getBarcode());
+            st.setString(3, p.getName());
+            st.setFloat(4, p.getPrice());
+            st.setInt(5, p.getWeightUnit().getId());
+            st.setInt(6, p.getSuppliers().getId());
+            st.setString(7, p.getImage());
+            st.setDate(8, java.sql.Date.valueOf(p.getManufactureDate()));
+            st.setDate(9, java.sql.Date.valueOf(p.getExpirationDate()));
+            st.setInt(10, p.getBatch());
+            st.setInt(11, p.getId());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    
+    
+    
+    
     public int getLatestBatchByName(String name) {
         String query = "SELECT MAX(batch) FROM Products WHERE product_name = ?";
         try {

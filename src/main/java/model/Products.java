@@ -23,6 +23,7 @@ public class Products {
     private LocalDate expirationDate;
     private int batch;
     private float weight;
+    
 
     public Products() {
     }
