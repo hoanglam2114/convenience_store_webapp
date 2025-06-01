@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-         version="6.0">
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <servlet>
+        <servlet-name>ListProductsServlet</servlet-name>
+        <servlet-class>controller.ListProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FindProductsServlet</servlet-name>
+        <servlet-class>controller.FindProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddProductsServlet</servlet-name>
+        <servlet-class>controller.AddProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProductsServlet</servlet-name>
+        <servlet-class>controller.UpdateProductsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ListProductsServlet</servlet-name>
+        <url-pattern>/ListProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FindProductsServlet</servlet-name>
+        <url-pattern>/FindProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProductsServlet</servlet-name>
+        <url-pattern>/AddProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProductsServlet</servlet-name>
+        <url-pattern>/UpdateProduct</url-pattern>
+    </servlet-mapping>
 </web-app>
