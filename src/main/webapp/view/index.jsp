@@ -181,7 +181,7 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="employee-management.jsp" class="menu-link" target="_blank">
+                  <a href="listEmployee" class="menu-link" target="_blank">
                     <div data-i18n="Basic">Employee Management</div>
                   </a>
                 </li>              

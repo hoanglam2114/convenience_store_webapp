@@ -41,7 +41,7 @@ public class ListEmployee extends HttpServlet {
         List<Employees> employeeList = dao.getAllEmployee();
         
         request.setAttribute("employeeList", employeeList);
-        request.getRequestDispatcher("view/staff-management.jsp").forward(request, response);
+        request.getRequestDispatcher("view/employee-management.jsp").forward(request, response);
     } 
 
     @Override

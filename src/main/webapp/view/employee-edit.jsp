@@ -10,13 +10,13 @@
   <title>Edit Staff</title>
 
   <!-- Sneat CSS -->
-  <link rel="stylesheet" href="../assets/vendor/css/core.css" />
-  <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" />
-  <link rel="stylesheet" href="../assets/css/demo.css" />
-  <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+  <link rel="stylesheet" href="assets/vendor/css/core.css" />
+  <link rel="stylesheet" href="assets/vendor/css/theme-default.css" />
+  <link rel="stylesheet" href="assets/css/demo.css" />
+  <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
   
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
 </head>
 
 <body>
@@ -441,9 +441,9 @@
             <!-- Page header -->
             <div class="d-flex justify-content-between align-items-center mb-4">
               <h4 class="fw-bold mb-0">
-                <span class="text-muted fw-light">Management / Staff Management /</span> Edit Staff
+                <span class="text-muted fw-light">Management / Employee Management /</span> Edit Employee
               </h4>
-              <a href="staff-management.jsp" class="btn btn-outline-secondary">
+              <a href="listEmployee" class="btn btn-outline-secondary">
                 <i class="bx bx-arrow-back"></i> Back
               </a>
             </div>
@@ -451,41 +451,40 @@
             <!-- Edit Staff Form -->
             <div class="card">
               <div class="card-body">
-                <form method="POST" action="#">
+                <form method="POST" action="editStaff">
                   <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="ID" class="form-label">ID</label>
+                      <input type="text" id="id" name="id" class="form-control" value="<%= request.getParameter("id") %>" readonly>
+                    </div>  
 
                     <div class="col-md-6">
-                      <label for="fullName" class="form-label">Full Name</label>
-                      <input type="text" id="fullName" name="fullName" class="form-control" value="Nguyen Van A" required>
+                      <label for="Name" class="form-label">Name</label>
+                      <input type="text" id="name" name="name" class="form-control" value="${employee.name}" required>
                     </div>
 
                     <div class="col-md-6">
-                      <label for="email" class="form-label">Email</label>
-                      <input type="email" id="email" name="email" class="form-control" value="a@example.com" required>
+                      <label for="Phone" class="form-label">Phone</label>
+                      <input type="text" id="phone" name="phone" class="form-control" value="${employee.phone}" required>
                     </div>
 
                     <div class="col-md-6">
-                      <label for="position" class="form-label">Position</label>
-                      <input type="text" id="position" name="position" class="form-control" value="Manager" required>
+                      <label for="Address" class="form-label">Address</label>
+                      <input type="text" id="address" name="address" class="form-control" value="${employee.address}" required>
                     </div>
 
-                    <div class="col-md-6">
+<!--                    <div class="col-md-6">
                       <label for="status" class="form-label">Status</label>
                       <select id="status" name="status" class="form-select">
                         <option value="active" selected>Active</option>
                         <option value="inactive">Inactive</option>
                       </select>
-                    </div>
-
-                    <div class="col-md-6">
-                      <label for="phone" class="form-label">Phone</label>
-                      <input type="text" id="phone" name="phone" class="form-control" value="0123456789">
-                    </div>
+                    </div>-->
 
                     <div class="col-12 text-end">
                       <button type="reset" class="btn btn-outline-secondary">Reset</button>
                       <button type="submit" class="btn btn-success">
-                        <i class="bx bx-save me-1"></i> Update Staff
+                        <i class="bx bx-save me-1"></i> Update
                       </button>
                     </div>
 
@@ -507,9 +506,9 @@
   </div>
 
   <!-- Core JS -->
-  <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-  <script src="../assets/vendor/js/bootstrap.js"></script>
-  <script src="../assets/vendor/js/menu.js"></script>
-  <script src="../assets/js/main.js"></script>
+  <script src="assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="assets/vendor/js/bootstrap.js"></script>
+  <script src="assets/vendor/js/menu.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>

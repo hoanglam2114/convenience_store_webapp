@@ -10,14 +10,14 @@
   <title>Add Staff</title>
 
   <!-- Sneat CSS -->
-  <link rel="stylesheet" href="../assets/vendor/css/core.css" />
-  <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" />
-  <link rel="stylesheet" href="../assets/css/demo.css" />
-  <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-  <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+  <link rel="stylesheet" href="assets/vendor/css/core.css" />
+  <link rel="stylesheet" href="assets/vendor/css/theme-default.css" />
+  <link rel="stylesheet" href="assets/css/demo.css" />
+  <link rel="stylesheet" href="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
   
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
 </head>
 
 <body>
@@ -148,7 +148,7 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="staff-management.jsp" class="menu-link" target="_blank">
+                  <a href="listEmployee" class="menu-link" target="_blank">
                     <div data-i18n="Basic">Staff Management</div>
                   </a>
                 </li>              
@@ -443,9 +443,9 @@
             <!-- Page title -->
             <div class="d-flex justify-content-between align-items-center mb-4">
               <h4 class="fw-bold mb-0">
-                <span class="text-muted fw-light">Management / Staff Management /</span> Add New Staff 
+                <span class="text-muted fw-light">Management / Employee Management /</span> Add New Employee 
               </h4>
-              <a href="staff-management.jsp" class="btn btn-outline-secondary">
+              <a href="listEmployee" class="btn btn-outline-secondary">
                 <i class="bx bx-arrow-back"></i> Back
               </a>
             </div>
@@ -461,27 +461,27 @@
                     </div>
 
                     <div class="col-md-6">
-                      <label class="form-label" for="email">Phone</label>
+                      <label class="form-label" for="phone">Phone</label>
                       <input type="text" id="phone" name="phone" class="form-control" placeholder="0123456789" required />
                     </div>
 
                     <div class="col-md-6">
-                      <label class="form-label" for="position">Address</label>
+                      <label class="form-label" for="address">Address</label>
                       <input type="text" id="address" name="address" class="form-control" placeholder="Ha Noi" required />
                     </div>
                       
                     <div class="col-md-6">
-                      <label class="form-label" for="position">Account ID</label>
+                      <label class="form-label" for="accountId">Account ID</label>
                       <input type="number" id="accountId" name="accountId" class="form-control" placeholder="1" required />
                     </div>
 
-                    <div class="col-md-6">
+<!--                    <div class="col-md-6">
                       <label class="form-label" for="status">Status</label>
                       <select id="status" name="status" class="form-select" required>
                         <option value="active" selected>Active</option>
                         <option value="inactive">Inactive</option>
                       </select>
-                    </div>
+                    </div>-->
 
                     <div class="col-12 text-end">
                       <button type="reset" class="btn btn-outline-secondary">Reset</button>
@@ -509,12 +509,12 @@
   </div>
 
   <!-- Core JS -->
-  <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-  <script src="../assets/vendor/libs/popper/popper.js"></script>
-  <script src="../assets/vendor/js/bootstrap.js"></script>
-  <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-  <script src="../assets/vendor/js/menu.js"></script>
-  <script src="../assets/js/main.js"></script>
+  <script src="assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="assets/vendor/libs/popper/popper.js"></script>
+  <script src="assets/vendor/js/bootstrap.js"></script>
+  <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="assets/vendor/js/menu.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 
 </html>

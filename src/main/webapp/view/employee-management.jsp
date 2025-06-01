@@ -153,8 +153,8 @@
                             </a>
                             <ul class="menu-sub">
                                 <li class="menu-item">
-                                    <a href="staff-management.jsp" class="menu-link" target="_blank">
-                                        <div data-i18n="Basic">Staff Management</div>
+                                    <a href="ListEmployee" class="menu-link" target="_blank">
+                                        <div data-i18n="Basic">Employee Management</div>
                                     </a>
                                 </li>              
                             </ul>
@@ -450,31 +450,37 @@
                         <!-- Main content -->
                         <div class="container-xxl flex-grow-1 container-p-y">
                             <h4 class="fw-bold py-3 mb-4">
-                                <span class="text-muted fw-light">Management /</span> Staff Management
+                                <span class="text-muted fw-light">Management /</span> Employee Management
                             </h4>
 
                             <!-- Add Staff Button -->
                             <div class="mb-3">
-                                <a href="employee-add.jsp" class="btn btn-primary">
-                                    <i class="bx bx-plus"></i> Add Staff
+                                <a href="addEmployee" class="btn btn-primary">
+                                    <i class="bx bx-plus"></i> Add
                                 </a>
                             </div>
 
                             <!--Add Staff Search-->                            
                             <div class="mb-3" style="max-width: 300px;">
-                                <div class="input-group input-group-merge">
-                                    <input
-                                        type="text"
-                                        id="staffSearch"
-                                        class="form-control"
-                                        placeholder="Search..."
-                                        aria-label="Search"
-                                        aria-describedby="basic-addon-search"
-                                        />
-                                    <button class="btn btn-outline-secondary" type="button" id="btnSearch">
-                                        <i class="bx bx-search"></i>
-                                    </button>
-                                </div>
+                                <form action="searchEmployee" method="POST">
+                                    <div class="input-group input-group-merge">
+                                        <input
+                                            type="text"
+                                            id="employeeSearch"
+                                            name="employeeSearch"
+                                            class="form-control"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                            aria-describedby="basic-addon-search"
+                                            />
+                                        <button class="btn btn-outline-secondary" type="submit" id="btnSearch">
+                                            <i class="bx bx-search"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary" type="button" id="btnReset" onclick="window.location.href='listEmployee'">
+                                            <i class="bx bx-reset"></i>
+                                        </button>
+                                    </div>
+                                </form>                               
                             </div>
 
                             <!-- Staff Table -->
@@ -493,22 +499,28 @@
                                         <tbody class="table-border-bottom-0"> 
                                             <% 
                                             List<Employees> employeeList = (List<Employees>) request.getAttribute("employeeList");
+                                            if (employeeList != null && !employeeList.isEmpty()) {
                                             for (Employees emp : employeeList) { 
                                             %>
                                             <tr>
-                                                <td><%= emp.getName() %></td>
-                                                <td><%= emp.getPhone() %></td>
-                                                <td><%= emp.getAddress() %></td>
+                                                <td><%= emp.getName()%></td>
+                                                <td><%= emp.getPhone()%></td>
+                                                <td><%= emp.getAddress()%></td>
                                                 <td><span class="badge bg-success">Active</span></td>
                                                 <td> 
-                                                    <a href="staff-edit.jsp?id=1" class="btn btn-sm btn-icon btn-outline-primary">
+                                                    <a href="editStaff?id=<%= emp.getId()%>" class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="tooltip" title="Edit">
                                                         <i class="bx bx-edit"></i>
                                                     </a> 
-                                                    <button class="btn btn-sm btn-icon btn-outline-danger">
+                                                    <button type="button" class="btn btn-sm btn-icon btn-outline-danger" onclick="confirmDelete(<%= emp.getId()%>)">
                                                         <i class="bx bx-trash"></i>
                                                     </button> 
                                                 </td>
                                             </tr>
+                                            <% 
+                                                } 
+                                            }else{
+                                            %>
+                                            <tr><td colspan="5">Nothing to show</td></tr>
                                             <% 
                                                 } 
                                             %>
@@ -540,14 +552,14 @@
         <!-- /Layout wrapper -->
 
         <!-- Core JS -->
-        <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="../assets/vendor/libs/popper/popper.js"></script>
-        <script src="../assets/vendor/js/bootstrap.js"></script>
-        <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+        <script src="assets/vendor/libs/jquery/jquery.js"></script>
+        <script src="assets/vendor/libs/popper/popper.js"></script>
+        <script src="assets/vendor/js/bootstrap.js"></script>
+        <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-        <script src="../assets/vendor/js/menu.js"></script>
-        <script src="../assets/js/main.js"></script>
-
+        <script src="assets/vendor/js/menu.js"></script>
+        <script src="assets/js/main.js"></script>
+        <script src="assets/js/employee.js"></script>
     </body>
 
 </html>

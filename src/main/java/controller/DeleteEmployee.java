@@ -6,7 +6,6 @@
 package controller;
 
 import dal.EmployeeDAO;
-import model.Employees;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author lmq02
  */
-public class AddEmployee extends HttpServlet {
+public class DeleteEmployee extends HttpServlet {
    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -28,10 +27,10 @@ public class AddEmployee extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddEmployee</title>");  
+            out.println("<title>Servlet DeleteEmployee</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddEmployee at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DeleteEmployee at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -40,22 +39,26 @@ public class AddEmployee extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getRequestDispatcher("view/employee-add.jsp").forward(request, response);
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+
+            // Khởi tạo DAO (tùy bạn truyền Connection như thế nào)
+            EmployeeDAO dao = new EmployeeDAO();  // hoặc new EmployeeDAO(conn) nếu dùng connection ngoài
+
+            dao.deleteEmployeeById(id);
+
+            // Chuyển hướng lại danh sách nhân viên
+            response.sendRedirect("view/employee-management.jsp");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     } 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
-        String name = request.getParameter("name");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        int accountId = Integer.parseInt(request.getParameter("accountId"));
-               
-        EmployeeDAO dao = new EmployeeDAO();
-        dao.addEmployee(new Employees(name, phone, address, accountId));
-        
-        response.sendRedirect("listEmployee");
+        processRequest(request, response);
     }
 
     @Override
