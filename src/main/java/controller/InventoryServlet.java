@@ -12,10 +12,11 @@ import java.io.IOException;
  * @author hoang on 5/26/2025-9:16 AM
  * IntelliJ IDEA
  */
-@WebServlet(name = "InventoryController", urlPatterns = {"/inventory"})
-public class InventoryController extends HttpServlet {
+@WebServlet(name = "InventoryServlet", urlPatterns = {"/inventory"})
+public class InventoryServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("./view/inventory.jsp").forward(req, resp);
+        req.getRequestDispatcher("/view/inventory-dashboard.jsp").forward(req, resp);
     }
 }

@@ -15,10 +15,6 @@ import java.util.logging.Logger;
  */
 public class InventoryDAO extends DBContext {
 
-    public InventoryDAO() {
-        this.connection = getConnection();
-    }
-
     private Inventory buildInventory(ResultSet rs) {
         try{
                 return Inventory.builder()

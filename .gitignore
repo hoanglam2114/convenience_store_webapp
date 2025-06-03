@@ -35,3 +35,4 @@ build/
 ### VS Code ###
 .vscode/
 .smarttomcat/
+src/main/java/dao/DBContext.java
