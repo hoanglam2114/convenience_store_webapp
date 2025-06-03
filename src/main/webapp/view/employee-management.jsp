@@ -10,14 +10,18 @@
         <title>Staff Management</title>
 
         <!-- Sneat CSS -->
-        <link rel="stylesheet" href="../assets/vendor/css/core.css" />
-        <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" />
-        <link rel="stylesheet" href="../assets/css/demo.css" />
-        <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+        <link rel="stylesheet" href="assets/vendor/css/core.css" />
+        <link rel="stylesheet" href="assets/vendor/css/theme-default.css" /> 
+        <link rel="stylesheet" href="assets/css/demo.css" />
+        <link rel="stylesheet" href="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
         <!-- Boxicons -->
-        <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
-        <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+        <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
+
+        <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+        <%@ page import="java.util.*, model.Employees" %>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     </head>
 
     <body>
@@ -149,8 +153,8 @@
                             </a>
                             <ul class="menu-sub">
                                 <li class="menu-item">
-                                    <a href="staff-management.jsp" class="menu-link" target="_blank">
-                                        <div data-i18n="Basic">Staff Management</div>
+                                    <a href="ListEmployee" class="menu-link" target="_blank">
+                                        <div data-i18n="Basic">Employee Management</div>
                                     </a>
                                 </li>              
                             </ul>
@@ -446,107 +450,80 @@
                         <!-- Main content -->
                         <div class="container-xxl flex-grow-1 container-p-y">
                             <h4 class="fw-bold py-3 mb-4">
-                                <span class="text-muted fw-light">Management /</span> Staff Management
+                                <span class="text-muted fw-light">Management /</span> Employee Management
                             </h4>
 
                             <!-- Add Staff Button -->
                             <div class="mb-3">
-                                <a href="staff-add.jsp" class="btn btn-primary">
-                                    <i class="bx bx-plus"></i> Add Staff
+                                <a href="addEmployee" class="btn btn-primary">
+                                    <i class="bx bx-plus"></i> Add
                                 </a>
+                            </div>
+
+                            <!--Add Staff Search-->                            
+                            <div class="mb-3" style="max-width: 300px;">
+                                <form action="searchEmployee" method="POST">
+                                    <div class="input-group input-group-merge">
+                                        <input
+                                            type="text"
+                                            id="employeeSearch"
+                                            name="employeeSearch"
+                                            class="form-control"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                            aria-describedby="basic-addon-search"
+                                            />
+                                        <button class="btn btn-outline-secondary" type="submit" id="btnSearch">
+                                            <i class="bx bx-search"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary" type="button" id="btnReset" onclick="window.location.href='listEmployee'">
+                                            <i class="bx bx-reset"></i>
+                                        </button>
+                                    </div>
+                                </form>                               
                             </div>
 
                             <!-- Staff Table -->
                             <div class="card">
                                 <div class="table-responsive text-nowrap">
-                                    <table class="table">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>ID</th>
+                                    <table class="table"> 
+                                        <thead class="table-light"> 
+                                            <tr> 
                                                 <th>Name</th>
-                                                <th>Email</th>
-                                                <th>Position</th>
+                                                <th>Phone</th>
+                                                <th>Address</th>
                                                 <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="table-border-bottom-0">
+                                                <th>Action</th>
+                                            </tr> 
+                                        </thead> 
+                                        <tbody class="table-border-bottom-0"> 
+                                            <% 
+                                            List<Employees> employeeList = (List<Employees>) request.getAttribute("employeeList");
+                                            if (employeeList != null && !employeeList.isEmpty()) {
+                                            for (Employees emp : employeeList) { 
+                                            %>
                                             <tr>
-                                                <td>1</td>
-                                                <td>Le Minh Quang</td>
-                                                <td>quangdeptrai@gmail.com</td>
-                                                <td>Manager</td>
+                                                <td><%= emp.getName()%></td>
+                                                <td><%= emp.getPhone()%></td>
+                                                <td><%= emp.getAddress()%></td>
                                                 <td><span class="badge bg-success">Active</span></td>
-                                                <td>
-                                                    <a href="staff-edit.jsp?id=1" class="btn btn-sm btn-icon btn-outline-primary">
+                                                <td> 
+                                                    <a href="editStaff?id=<%= emp.getId()%>" class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="tooltip" title="Edit">
                                                         <i class="bx bx-edit"></i>
-                                                    </a>
-                                                    <button class="btn btn-sm btn-icon btn-outline-danger">
+                                                    </a> 
+                                                    <button type="button" class="btn btn-sm btn-icon btn-outline-danger" onclick="confirmDelete(<%= emp.getId()%>)">
                                                         <i class="bx bx-trash"></i>
-                                                    </button>
+                                                    </button> 
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Le Minh Quan</td>
-                                                <td>quandeptrai@gmail.com</td>
-                                                <td>Staff</td>
-                                                <td><span class="badge bg-success">Active</span></td>
-                                                <td>
-                                                    <a href="staff-edit.jsp?id=1" class="btn btn-sm btn-icon btn-outline-primary">
-                                                        <i class="bx bx-edit"></i>
-                                                    </a>
-                                                    <button class="btn btn-sm btn-icon btn-outline-danger">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Le Minh Quan</td>
-                                                <td>quandeptrai@gmail.com</td>
-                                                <td>Staff</td>
-                                                <td><span class="badge bg-success">Active</span></td>
-                                                <td>
-                                                    <a href="staff-edit.jsp?id=1" class="btn btn-sm btn-icon btn-outline-primary">
-                                                        <i class="bx bx-edit"></i>
-                                                    </a>
-                                                    <button class="btn btn-sm btn-icon btn-outline-danger">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Le Minh Quan</td>
-                                                <td>quandeptrai@gmail.com</td>
-                                                <td>Staff</td>
-                                                <td><span class="badge bg-success">Active</span></td>
-                                                <td>
-                                                    <a href="staff-edit.jsp?id=1" class="btn btn-sm btn-icon btn-outline-primary">
-                                                        <i class="bx bx-edit"></i>
-                                                    </a>
-                                                    <button class="btn btn-sm btn-icon btn-outline-danger">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>Le Minh Quan</td>
-                                                <td>quandeptrai@gmail.com</td>
-                                                <td>Staff</td>
-                                                <td><span class="badge bg-success">Active</span></td>
-                                                <td>
-                                                    <a href="staff-edit.jsp?id=1" class="btn btn-sm btn-icon btn-outline-primary">
-                                                        <i class="bx bx-edit"></i>
-                                                    </a>
-                                                    <button class="btn btn-sm btn-icon btn-outline-danger">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <!-- More staff rows -->
+                                            <% 
+                                                } 
+                                            }else{
+                                            %>
+                                            <tr><td colspan="5">Nothing to show</td></tr>
+                                            <% 
+                                                } 
+                                            %>
                                         </tbody>
                                     </table>
                                 </div>
@@ -557,7 +534,7 @@
                         <!-- Footer -->
                         <footer class="content-footer footer bg-footer-theme">
                             <div class="container-xxl d-flex justify-content-between py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">© 2025, Sneat Admin Template</div>
+                                <div class="mb-2 mb-md-0">Â© 2025, Sneat Admin Template</div>
                                 <div>Developed by You</div>
                             </div>
                         </footer>
@@ -575,13 +552,14 @@
         <!-- /Layout wrapper -->
 
         <!-- Core JS -->
-        <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="../assets/vendor/libs/popper/popper.js"></script>
-        <script src="../assets/vendor/js/bootstrap.js"></script>
-        <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+        <script src="assets/vendor/libs/jquery/jquery.js"></script>
+        <script src="assets/vendor/libs/popper/popper.js"></script>
+        <script src="assets/vendor/js/bootstrap.js"></script>
+        <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-        <script src="../assets/vendor/js/menu.js"></script>
-        <script src="../assets/js/main.js"></script>
+        <script src="assets/vendor/js/menu.js"></script>
+        <script src="assets/js/main.js"></script>
+        <script src="assets/js/employee.js"></script>
     </body>
 
 </html>

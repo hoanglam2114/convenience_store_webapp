@@ -778,6 +778,21 @@ const Helpers = {
         })
       }
     }
+    
+    //
+    document.getElementById("staffSearch").addEventListener("keyup", function () {
+  const keyword = this.value.toLowerCase();
+  const rows = document.querySelectorAll("#staffTable tbody tr");
+
+  rows.forEach(function (row) {
+    const name = row.cells[0].textContent.toLowerCase();
+    if (name.includes(keyword)) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+});
   },
 
   // Ajax Call Promise
