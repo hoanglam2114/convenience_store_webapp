@@ -4,8 +4,8 @@
  */
 package controller;
 
+import dao.CustomerDAO;
 import dao.EmployeeDAO;
-import model.Employees;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,12 +14,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import model.Customers;
 
 /**
  *
- * @author lmq02
+ * @author Admin
  */
-public class AddEmployee extends HttpServlet {
+public class AddCustomerServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -29,10 +30,10 @@ public class AddEmployee extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddEmployee</title>");
+            out.println("<title>Servlet AddCustomerServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddEmployee at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddCustomerServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -41,56 +42,71 @@ public class AddEmployee extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("view/employee-add.jsp").forward(request, response);
+        request.getRequestDispatcher("view/customer-add.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
+        String pointRaw = request.getParameter("point");
+        String typeIdRaw = request.getParameter("typeId");
 
         List<String> errors = new ArrayList<>();
 
+        int typeId = -1;
+        int point = -1;
+
+        // Validate empty fields
         if (name == null || name.trim().isEmpty()) {
             errors.add("Name is required.");
         }
         if (phone == null || phone.trim().isEmpty()) {
             errors.add("Phone is required.");
-        } else if (!phone.matches("^\\d{10}$")) {
-            errors.add("Phone number must contain 10 to digits.");
         }
-        if (address == null || address.trim().isEmpty()) {
-            errors.add("Address is required.");
+        if (pointRaw == null || pointRaw.trim().isEmpty()) {
+            errors.add("Point is required.");
         }
-        int accountId = -1;
-        try {
-            accountId = Integer.parseInt(request.getParameter("accountId"));
-        } catch (NumberFormatException e) {
-            errors.add("Invalid account ID.");
+        if (typeIdRaw == null || typeIdRaw.trim().isEmpty()) {
+            errors.add("Type ID is required.");
         }
 
-        // Nếu có lỗi quay lại trang form và hiển thị danh sách lỗi
+        // Validate phone format
+        if (phone != null && !phone.trim().isEmpty() && !phone.matches("^\\d{10}$")) {
+            errors.add("Phone number must contain exactly 10 digits.");
+        }
+
+        // Validate point is an integer
+        try {
+            point = Integer.parseInt(pointRaw);
+            if (point < 0) {
+                errors.add("Point must be a non-negative number.");
+            }
+        } catch (NumberFormatException e) {
+            errors.add("Point must be a valid integer.");
+        }
+
+        // Validate typeId is an integer
+        try {
+            typeId = Integer.parseInt(typeIdRaw);
+            if (typeId < 0) {
+                errors.add("Type ID must be a non-negative number.");
+            }
+        } catch (NumberFormatException e) {
+            errors.add("Type ID must be a valid integer.");
+        }
+
+        // Nếu có lỗi, quay lại form và hiển thị
         if (!errors.isEmpty()) {
             request.setAttribute("errors", errors);
             request.setAttribute("name", name);
-            request.setAttribute("phone", phone);
-            request.setAttribute("address", address);
-            request.setAttribute("accountId", request.getParameter("accountId"));
-            request.getRequestDispatcher("view/employee-add.jsp").forward(request, response);
-            return;
         }
-
-        // Nếu không có lỗi ➤ thêm nhân viên
-        EmployeeDAO dao = new EmployeeDAO();
-        dao.addEmployee(new Employees(name, phone, address, accountId));
-        response.sendRedirect("listEmployee");
     }
-
     @Override
-    public String getServletInfo() {
+        public String getServletInfo
+        
+            () {
         return "Short description";
-    }
+        }// </editor-fold>
 }

@@ -7,7 +7,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Staff Management</title>
+        <title>Customer Management</title>
 
         <!-- Sneat CSS -->
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
@@ -20,7 +20,7 @@
         <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
 
         <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-        <%@ page import="java.util.*, model.Employees" %>
+        <%@ page import="java.util.*, model.Customers" %>
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     </head>
 
@@ -46,24 +46,24 @@
                         <!-- Main content -->
                         <div class="container-xxl flex-grow-1 container-p-y">
                             <h4 class="fw-bold py-3 mb-4">
-                                <span class="text-muted fw-light">Management /</span> Employee Management
+                                <span class="text-muted fw-light">Management /</span> Customer Management
                             </h4>
 
-                            <!-- Add Staff Button -->
+                            <!-- Add Customer Button -->
                             <div class="mb-3">
-                                <a href="addEmployee" class="btn btn-primary">
+                                <a href="addCustomer" class="btn btn-primary">
                                     <i class="bx bx-plus"></i> Add
                                 </a>
                             </div>
 
                             <!--Add Staff Search-->                            
                             <div class="mb-3" style="max-width: 300px;">
-                                <form action="searchEmployee" method="POST">
+                                <form action="searchCustomer" method="POST">
                                     <div class="input-group input-group-merge">
                                         <input
                                             type="text"
-                                            id="employeeSearch"
-                                            name="employeeSearch"
+                                            id="customerSearch"
+                                            name="customerSearch"
                                             class="form-control"
                                             placeholder="Search..."
                                             aria-label="Search"
@@ -72,7 +72,7 @@
                                         <button class="btn btn-outline-secondary" type="submit" id="btnSearch">
                                             <i class="bx bx-search"></i>
                                         </button>
-                                        <button class="btn btn-outline-secondary" type="button" id="btnReset" onclick="window.location.href='listEmployee'">
+                                        <button class="btn btn-outline-secondary" type="button" id="btnReset" onclick="window.location.href='listCustomer'">
                                             <i class="bx bx-reset"></i>
                                         </button>
                                     </div>
@@ -87,27 +87,27 @@
                                             <tr> 
                                                 <th>Name</th>
                                                 <th>Phone</th>
-                                                <th>Address</th>
+                                                <th>Point</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr> 
                                         </thead> 
                                         <tbody class="table-border-bottom-0"> 
                                             <% 
-                                            List<Employees> employeeList = (List<Employees>) request.getAttribute("employeeList");
-                                            if (employeeList != null && !employeeList.isEmpty()) {
-                                            for (Employees emp : employeeList) { 
+                                            List<Customers> customerList = (List<Customers>) request.getAttribute("customerList");
+                                            if (customerList != null && !customerList.isEmpty()) {
+                                            for (Customers customer : customerList) { 
                                             %>
                                             <tr>
-                                                <td><%= emp.getName()%></td>
-                                                <td><%= emp.getPhone()%></td>
-                                                <td><%= emp.getAddress()%></td>
+                                                <td><%= customer.getName()%></td>
+                                                <td><%= customer.getPhone()%></td>
+                                                <td><%= customer.getPoint()%></td>
                                                 <td><span class="badge bg-success">Active</span></td>
                                                 <td> 
-                                                    <a href="editStaff?id=<%= emp.getId()%>" class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="tooltip" title="Edit">
+                                                    <a href="editCustomer?id=<%= customer.getId()%>" class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="tooltip" title="Edit">
                                                         <i class="bx bx-edit"></i>
                                                     </a> 
-                                                    <button type="button" class="btn btn-sm btn-icon btn-outline-danger" onclick="confirmDelete(<%= emp.getId()%>)">
+                                                    <button type="button" class="btn btn-sm btn-icon btn-outline-danger" onclick="confirmDelete(<%= customer.getId()%>)">
                                                         <i class="bx bx-trash"></i>
                                                     </button> 
                                                 </td>

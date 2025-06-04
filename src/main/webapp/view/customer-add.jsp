@@ -7,7 +7,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Add Staff</title>
+        <title>Add Customer</title>
 
         <!-- Sneat CSS -->
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
@@ -18,7 +18,8 @@
 
         <!-- Favicon -->
         <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
-        
+
+        <!<!-- Import -->
         <%@ page import="java.util.List" %>
     </head>
 
@@ -30,10 +31,8 @@
                 <%@ include file="/common/site-bar.jsp" %>
 
                 <div class="layout-page">
+
                     <!-- Navbar -->
-                    <nav class="layout-navbar">
-                        <!-- Navbar n?u có -->
-                    </nav>
 
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
@@ -42,9 +41,9 @@
                             <!-- Page title -->
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="fw-bold mb-0">
-                                    <span class="text-muted fw-light">Management / Employee Management /</span> Add New Employee 
+                                    <span class="text-muted fw-light">Management / Customer Management /</span> Add New Customer 
                                 </h4>
-                                <a href="listEmployee" class="btn btn-outline-secondary">
+                                <a href="listCustomer" class="btn btn-outline-secondary">
                                     <i class="bx bx-arrow-back"></i> Back
                                 </a>
                             </div>
@@ -52,7 +51,7 @@
                             <!-- Card -->
                             <div class="card">
                                 <div class="card-body">
-                                    <form action="addEmployee" method="POST">
+                                    <form action="addCustomer" method="POST">
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label class="form-label" for="name">Name</label>
@@ -65,22 +64,14 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label class="form-label" for="address">Address</label>
-                                                <input type="text" id="address" name="address" class="form-control" placeholder="Ha Noi" required />
+                                                <label class="form-label" for="address">Point</label>
+                                                <input type="number" id="point" name="point" class="form-control" placeholder="1" required />
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label class="form-label" for="accountId">Account ID</label>
-                                                <input type="number" id="accountId" name="accountId" class="form-control" placeholder="1" required />
+                                                <label class="form-label" for="typeId">Type ID</label>
+                                                <input type="number" id="typeId" name="typeId" class="form-control" placeholder="1" required />
                                             </div>
-
-                                            <!--                    <div class="col-md-6">
-                                                                  <label class="form-label" for="status">Status</label>
-                                                                  <select id="status" name="status" class="form-select" required>
-                                                                    <option value="active" selected>Active</option>
-                                                                    <option value="inactive">Inactive</option>
-                                                                  </select>
-                                                                </div>-->
 
                                             <div class="col-12 text-end">
                                                 <button type="reset" class="btn btn-outline-secondary">Reset</button>
@@ -95,8 +86,8 @@
                                             %>
                                             <div class="alert alert-danger" role="alert">
                                                 <ul class="mb-0">
-                                                    <% for (String err : errors) { %>
-                                                    <li><%= err %></li>
+                                                    <% for (String error : errors) { %>
+                                                    <li><%= error %></li>
                                                         <% } %>
                                                 </ul>
                                             </div>

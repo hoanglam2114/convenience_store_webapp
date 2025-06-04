@@ -5,6 +5,7 @@
 
 package controller;
 
+import dao.CustomerDAO;
 import dao.EmployeeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,10 +14,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Employees;
+import model.Customers;
 
-public class ListEmployee extends HttpServlet {
-   
+/**
+ *
+ * @author Admin
+ */
+public class ListCustomerServlet extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -25,10 +30,10 @@ public class ListEmployee extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListEmployee</title>");  
+            out.println("<title>Servlet ListCustomerServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListEmployee at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ListCustomerServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -37,11 +42,11 @@ public class ListEmployee extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        EmployeeDAO dao = new EmployeeDAO();
-        List<Employees> employeeList = dao.getAllEmployee();
+        CustomerDAO dao = new CustomerDAO();
+        List<Customers> customerList = dao.getAllCustomer();
         
-        request.setAttribute("employeeList", employeeList);
-        request.getRequestDispatcher("view/employee-management.jsp").forward(request, response);
+        request.setAttribute("customerList", customerList);
+        request.getRequestDispatcher("view/customer-list.jsp").forward(request, response);
     } 
 
     @Override
