@@ -6,6 +6,7 @@ package controller;
 
 import dao.CustomerDAO;
 import dao.EmployeeDAO;
+import dao.NotificationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import model.Customers;
+import model.Employees;
+import model.Notification;
 
 /**
  *
@@ -102,11 +105,19 @@ public class AddCustomerServlet extends HttpServlet {
             request.setAttribute("errors", errors);
             request.setAttribute("name", name);
         }
-    }
-    @Override
-        public String getServletInfo
         
-            () {
-        return "Short description";
-        }// </editor-fold>
+        NotificationDAO notiDAO = new NotificationDAO();
+        // Ghi thông báo
+        String message = "Admin đã thêm khách hàng " + name + " vào hệ thống.";
+        notiDAO.insert(new Notification(message, "Admin", "thêm"));
+        
+        CustomerDAO dao = new CustomerDAO();
+        Customers customer = new Customers(name, phone, point, typeId);
+        dao.addCustomer(customer);
+        response.sendRedirect("listCustomer");
+    }
+        @Override
+        public String getServletInfo() {
+            return "Short description";
+        }
 }

@@ -2,6 +2,7 @@
 package controller;
 
 import dao.CustomerDAO;
+import dao.NotificationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Customers;
+import model.Notification;
 
 /**
  *
@@ -60,6 +62,11 @@ public class EditCustomerServlet extends HttpServlet {
         Customers customer = new Customers(id, name, phone, point);
 
         dao.updateCustomerById(customer);
+        
+        NotificationDAO notiDAO = new NotificationDAO();
+        // Ghi thông báo
+        String message = "Admin đã cập nhật thông tin khách hàng " + name + " trong hệ thống.";
+        notiDAO.insert(new Notification(message, "Admin", "cập nhật"));
 
         // Sau khi update, thường nên redirect đến trang danh sách hoặc trang chi tiết
         response.sendRedirect("listCustomer");

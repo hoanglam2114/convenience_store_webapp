@@ -1,10 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
 package controller;
 
 import dao.EmployeeDAO;
+import dao.NotificationDAO;
 import model.Employees;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,8 +10,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Notification;
 
 /**
  *
@@ -82,11 +82,17 @@ public class AddEmployee extends HttpServlet {
             request.getRequestDispatcher("view/employee-add.jsp").forward(request, response);
             return;
         }
-
-        // Nếu không có lỗi ➤ thêm nhân viên
+        
+        NotificationDAO notiDAO = new NotificationDAO();
+        // Ghi thông báo
+        String message = "Admin đã thêm nhân viên " + name + " vào hệ thống.";
+        notiDAO.insert(new Notification(message, "Admin", "add"));
+        
         EmployeeDAO dao = new EmployeeDAO();
-        dao.addEmployee(new Employees(name, phone, address, accountId));
+        Employees emp = new Employees(name, phone, address, accountId);
+        dao.addEmployee(emp);
         response.sendRedirect("listEmployee");
+        
     }
 
     @Override

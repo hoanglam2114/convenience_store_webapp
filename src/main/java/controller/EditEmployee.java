@@ -5,6 +5,7 @@
 package controller;
 
 import dao.EmployeeDAO;
+import dao.NotificationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Employees;
+import model.Notification;
 
 /**
  *
@@ -64,6 +66,11 @@ public class EditEmployee extends HttpServlet {
 
         // Gọi update (không biết thành công hay không)
         dao.updateEmployeeById(emp);
+        
+        NotificationDAO notiDAO = new NotificationDAO();
+        // Ghi thông báo
+        String message = "Admin đã cập nhật thông tin nhân viên " + name + " trong hệ thống.";
+        notiDAO.insert(new Notification(message, "Admin", "cập nhật"));
 
         // Sau khi update, thường nên redirect đến trang danh sách hoặc trang chi tiết
         response.sendRedirect("listEmployee");

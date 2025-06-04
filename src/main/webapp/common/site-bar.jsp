@@ -135,8 +135,15 @@
             </ul>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="listEmployee" class="menu-link" target="_blank">
+                    <a href="listCustomer" class="menu-link" target="_blank">
                         <div data-i18n="Basic">Customer Management</div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="annoucement" class="menu-link" target="_blank">
+                        <div data-i18n="Basic">Annoucement</div>
                     </a>
                 </li>
             </ul>

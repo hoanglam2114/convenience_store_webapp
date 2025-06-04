@@ -34,7 +34,7 @@ public class CustomerDAO extends DBContext{
     
     public Customers getCustomerById(int id) {
         Customers customer = null;
-        String sql = "SELECT customer_id, customer_name, customer_phone, customer_point, customer_type_id FROM Customers WHERE customer_id = ?";
+        String sql = "SELECT customer_id, customer_name, customer_phone, point, customer_type_id FROM Customers WHERE customer_id = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -46,7 +46,7 @@ public class CustomerDAO extends DBContext{
                 customer.setId(rs.getInt("customer_id"));
                 customer.setName(rs.getString("customer_name"));
                 customer.setPhone(rs.getString("customer_phone"));
-                customer.setPoint(rs.getInt("customer_point"));
+                customer.setPoint(rs.getInt("point"));
                 customer.setType_id(rs.getInt("customer_type_id"));
             }
 
@@ -60,7 +60,7 @@ public class CustomerDAO extends DBContext{
 
     public void addCustomer(Customers customer) {
         try {
-            String sql = "Insert into Customers (customer_name, customer_phone, customer_point, customer_type_id)"
+            String sql = "Insert into Customers (customer_name, customer_phone, point, customer_type_id)"
                     + "values (?, ?, ?, ?)";
             PreparedStatement stm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -78,7 +78,7 @@ public class CustomerDAO extends DBContext{
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error when inserting employee", e);
+            throw new RuntimeException("Error when inserting customer", e);
         }
     }
 
@@ -94,7 +94,7 @@ public class CustomerDAO extends DBContext{
                 Customers customer = new Customers(
                         rs.getString("customer_name"),
                         rs.getString("customer_phone"),
-                        rs.getInt("customer_point"),
+                        rs.getInt("point"),
                         rs.getInt("type_id")
                 );
                 customers.add(customer);
@@ -114,7 +114,7 @@ public class CustomerDAO extends DBContext{
     }
 
     public void updateCustomerById(Customers customer) {
-        String sql = "UPDATE Customers SET customer_name = ?, customer_phone = ?, customer_point = ? WHERE customer_id = ?";
+        String sql = "UPDATE Customers SET customer_name = ?, customer_phone = ?, point = ? WHERE customer_id = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
 

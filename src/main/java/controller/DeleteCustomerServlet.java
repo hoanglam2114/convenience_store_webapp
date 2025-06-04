@@ -5,7 +5,7 @@
 
 package controller;
 
-import dao.EmployeeDAO;
+import dao.CustomerDAO;
 import dao.NotificationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,9 +17,9 @@ import model.Notification;
 
 /**
  *
- * @author lmq02
+ * @author Admin
  */
-public class DeleteEmployee extends HttpServlet {
+public class DeleteCustomerServlet extends HttpServlet {
    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -29,10 +29,10 @@ public class DeleteEmployee extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteEmployee</title>");  
+            out.println("<title>Servlet DeleteCustomerServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteEmployee at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DeleteCustomerServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -44,17 +44,17 @@ public class DeleteEmployee extends HttpServlet {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
 
-            EmployeeDAO dao = new EmployeeDAO();
+            CustomerDAO dao = new CustomerDAO();
 
-            dao.deleteEmployeeById(id);
+            dao.deleteCustomerById(id);
             
             NotificationDAO notiDAO = new NotificationDAO();
             // Ghi thông báo
-            String message = "Admin đã xoá nhân viên có ID: " + id + " khỏi hệ thống.";
+            String message = "Admin đã xoá khách hàng có ID: " + id + " khỏi hệ thống.";
             notiDAO.insert(new Notification(message, "Admin", "xoá"));
 
-            // Chuyển hướng lại danh sách nhân viên
-            response.sendRedirect("listEmployee");
+            // Chuyển hướng lại danh sách khách hàng
+            response.sendRedirect("listCustomer");
 
         } catch (Exception e) {
             e.printStackTrace();
