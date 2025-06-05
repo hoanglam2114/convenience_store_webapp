@@ -10,13 +10,20 @@
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
         <link rel="stylesheet" href="assets/vendor/css/theme-default.css" />
         <link rel="stylesheet" href="assets/css/demo.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+       
 
         <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
 
         <!-- Favicon -->
         <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
 
+        <script type="text/javascript">
+            function doDelete(id) {
+                if (confirm("Bạn có muốn xóa sản phẩm có mã là " + id + " không ?")) {
+                    window.location = "DeleteProduct?product_id=" + id;
+                }
+            }
+        </script>
 
     </head>
     <body>
@@ -30,8 +37,7 @@
 
             <p class="mb-4 text-muted">
 
-                This list can include many elements such as barcodes, images, descriptions,
-                prices, and information related to each product.
+                
             </p>
 
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
@@ -111,7 +117,8 @@
 
                                         </a>
 
-                                        <a class="btn btn-danger btn-sm">
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa sản phẩm"
+                                         href="#" onclick="doDelete(${p.getId()})" class="btn btn-danger btn-sm" >
                                             <i class="bx bx-trash"></i>
                                         </a>
 

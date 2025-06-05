@@ -13,7 +13,7 @@
     <div class="card shadow-sm rounded-3">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Edit Product Price</h5>
-        <a href="ProductList.jsp" class="btn btn-info text-white">
+        <a href="ListProduct" class="btn btn-info text-white">
           <i class="bx bx-arrow-back me-1"></i> Back to Product List
         </a>
       </div>
