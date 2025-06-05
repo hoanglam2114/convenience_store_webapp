@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.WeightUnitDAO;
+import dao.ProductCategoriesDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,13 +12,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.WeightUnit;
+import model.ProductCategories;
 
 /**
  *
  * @author admin
  */
-public class UpdateUnitServlet extends HttpServlet {
+public class AddCategoriesServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,51 +37,53 @@ public class UpdateUnitServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateUnitServlet</title>");
+            out.println("<title>Servlet AddCategoriesServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateUnitServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddCategoriesServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
-    
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String id_raw = request.getParameter("weight_unit_id");
-        int id;
-        WeightUnitDAO wud = new WeightUnitDAO();
-        try {
-            id = Integer.parseInt(id_raw);
-            WeightUnit wu = wud.getUnitById(id);
-            session.setAttribute("unit", wu);
-            request.getRequestDispatcher("/view/UpdateUnit.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            System.out.println(e);
-        }
-        
+        request.getRequestDispatcher("/view/category-add.jsp").forward(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id_raw = request.getParameter("unitId");
-        String name = request.getParameter("unitName");
-        int id;
-        WeightUnitDAO wud = new WeightUnitDAO();
-        try{
-           id = Integer.parseInt(id_raw);
-           WeightUnit wu = new WeightUnit(id, name);
-           wud.updateCategory(wu);
-           response.sendRedirect("ListUnit");
-        }catch(NullPointerException e){
+        HttpSession session = request.getSession();
+        ProductCategoriesDAO pcd = new ProductCategoriesDAO();
+        String name = request.getParameter("nameCate");
+
+        try {
+            ProductCategories pc = pcd.getCategoryByName(name);
+            if (pc == null) {
+                ProductCategories cateNew = new ProductCategories(name);
+                pcd.insertCategory(cateNew);
+                response.sendRedirect("ListCate");
+            } else {
+                session.setAttribute("error", "Đơn vị đã tồn tại");
+                request.getRequestDispatcher("/view/category-add.jsp").forward(request, response);
+            }
+        } catch (NumberFormatException e) {
             System.out.println(e);
         }
- 
+
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";

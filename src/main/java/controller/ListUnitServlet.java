@@ -52,8 +52,13 @@ public class ListUnitServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String indexPage = request.getParameter("index");
-
-        if (indexPage == null) {
+        int currentPage = 1;
+        if (indexPage != null) {
+            try {
+                currentPage = Integer.parseInt(indexPage);
+            } catch (NumberFormatException e) {
+            }
+        }else{
             indexPage = "1";
         }
 
@@ -66,6 +71,8 @@ public class ListUnitServlet extends HttpServlet {
         }
 
         List<WeightUnit> listunit = wud.pagingUnit(index);
+        
+        request.setAttribute("currentPage", currentPage);
         session.setAttribute("listunit", listunit);
         request.setAttribute("endPage", endPage);
         request.getRequestDispatcher("/view/UnitList.jsp").forward(request, response);

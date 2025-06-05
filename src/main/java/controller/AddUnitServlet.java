@@ -68,13 +68,13 @@ public class AddUnitServlet extends HttpServlet {
 
             }else{
               session.setAttribute("error", "Đơn vị đã tồn tại");
-              
+              request.getRequestDispatcher("/view/AddUnit.jsp").forward(request, response);
             }
             
         }catch(NumberFormatException e){
             System.out.println(e);
         }
-        request.getRequestDispatcher("/view/AddUnit.jsp").forward(request, response);
+        
     }
 
     @Override
