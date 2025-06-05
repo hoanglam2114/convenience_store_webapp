@@ -8,14 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
 import model.AccountStatus;
 
 /**
  *
- * @author lmq02
+ * @author nguye
  */
 public class AccountStatusDAO extends DBContext {
-
     public List<AccountStatus> getAllAccountStatus() {
         List<AccountStatus> lstAcc = new ArrayList<>();
         try {
@@ -28,8 +28,14 @@ public class AccountStatusDAO extends DBContext {
                                 rs.getString(2)));
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return lstAcc;
+    }
+    
+    public static void main(String[] args) {
+        AccountStatusDAO a = new AccountStatusDAO();
+        for (AccountStatus arg : a.getAllAccountStatus()) {
+            System.out.println(arg);
+        }
     }
 }

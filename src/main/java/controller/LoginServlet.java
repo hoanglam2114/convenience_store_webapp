@@ -5,7 +5,7 @@
 
 package controller;
 
-import dal.AccountDAO;
+import dao.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,10 +13,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.Timestamp;
 import model.Accounts;
 import utils.EmailValidator;
-import utils.PasswordValidator;
 
 /**
  *
