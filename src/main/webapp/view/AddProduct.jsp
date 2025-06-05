@@ -21,7 +21,7 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Add Product</h5>
-        <a href="ListProduct" class="btn btn-info"><i class="bx bx-arrow-back me-1"></i> Back to Product List</a>
+        <a href="ListProduct"  class="btn btn-info"><i class="bx bx-arrow-back me-1"></i> Back to Product List</a>
     </div>
     <div class="card-body">
         <form action="AddProduct" method="post" enctype="multipart/form-data">
