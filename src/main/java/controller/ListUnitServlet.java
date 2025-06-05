@@ -4,26 +4,32 @@
  */
 package controller;
 
-import dao.EmployeeDAO;
-import jakarta.servlet.RequestDispatcher;
+import dao.WeightUnitDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.Employees;
+import model.WeightUnit;
 
 /**
  *
- * @author lmq02
+ * @author admin
  */
-public class SearchEmployee extends HttpServlet {
+public class ListUnitServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -32,10 +38,10 @@ public class SearchEmployee extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SearchEmployee</title>");
+            out.println("<title>Servlet ListUnitServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SearchEmployee at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ListUnitServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -44,28 +50,32 @@ public class SearchEmployee extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("listEmployee");
+        HttpSession session = request.getSession();
+        String indexPage = request.getParameter("index");
+
+        if (indexPage == null) {
+            indexPage = "1";
+        }
+
+        int index = Integer.parseInt(indexPage);
+        WeightUnitDAO wud = new WeightUnitDAO();
+        int count = wud.getTotalUnit();
+        int endPage = count / 5;
+        if (count % 5 != 0) {
+            endPage++;
+        }
+
+        List<WeightUnit> listunit = wud.pagingUnit(index);
+        session.setAttribute("listunit", listunit);
+        request.setAttribute("endPage", endPage);
+        request.getRequestDispatcher("/view/UnitList.jsp").forward(request, response);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String keyword = request.getParameter("employeeSearch");
-        List<Employees> employeeList = null;
-        EmployeeDAO dao = new EmployeeDAO();
-        
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            try {
-                employeeList = dao.searchEmployee(keyword);
-            } catch (SQLException ex) {
-                Logger.getLogger(SearchEmployee.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            employeeList = dao.pagingEmployee(1); // lấy toàn bộ nếu không tìm kiếm
-        }
-
-        request.setAttribute("employeeList", employeeList);
-        request.getRequestDispatcher("view/employee-management.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     @Override

@@ -67,6 +67,34 @@
         <servlet-name>DeleteCustomerServlet</servlet-name>
         <servlet-class>controller.DeleteCustomerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteProductsServlet</servlet-name>
+        <servlet-class>controller.DeleteProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListUnitServlet</servlet-name>
+        <servlet-class>controller.ListUnitServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FindUnitServlet</servlet-name>
+        <servlet-class>controller.FindUnitServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddUnitServlet</servlet-name>
+        <servlet-class>controller.AddUnitServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateUnitServlet</servlet-name>
+        <servlet-class>controller.UpdateUnitServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteUnitServlet</servlet-name>
+        <servlet-class>controller.DeleteUnitServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListCategories</servlet-name>
+        <servlet-class>controller.ListCategories</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListProductsServlet</servlet-name>
         <url-pattern>/ListProduct</url-pattern>
@@ -122,5 +150,33 @@
     <servlet-mapping>
         <servlet-name>DeleteEmployee</servlet-name>
         <url-pattern>/deleteEmployee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteProductsServlet</servlet-name>
+        <url-pattern>/DeleteProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListUnitServlet</servlet-name>
+        <url-pattern>/ListUnit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FindUnitServlet</servlet-name>
+        <url-pattern>/FindUnit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddUnitServlet</servlet-name>
+        <url-pattern>/AddUnit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUnitServlet</servlet-name>
+        <url-pattern>/UpdateUnit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteUnitServlet</servlet-name>
+        <url-pattern>/DeleteUnit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListCategories</servlet-name>
+        <url-pattern>/ListCate</url-pattern>
     </servlet-mapping>
 </web-app>

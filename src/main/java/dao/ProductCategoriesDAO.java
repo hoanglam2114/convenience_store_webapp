@@ -15,8 +15,9 @@ import model.ProductCategories;
  *
  * @author admin
  */
-public class ProductCategoriesDAO extends DBContext{
-     public List<ProductCategories> getAll() {
+public class ProductCategoriesDAO extends DBContext {
+
+    public List<ProductCategories> getAll() {
         List<ProductCategories> list = new ArrayList<>();
         String sql = "select * from Product_Categories";
 
@@ -33,8 +34,8 @@ public class ProductCategoriesDAO extends DBContext{
         }
         return list;
     }
-     
-       public ProductCategories getCategoryById(int category_id) {
+
+    public ProductCategories getCategoryById(int category_id) {
         String sql = "select * from Product_Categories where category_id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -50,16 +51,53 @@ public class ProductCategoriesDAO extends DBContext{
         }
         return null;
     }
-     
-     
-     public static void main(String[] args) {
+    
+    
+    public int getTotalProductCategory() {
+        String sql = " select count(*) from [dbo].[Product_Categories]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    public List<ProductCategories> pagingProductCategories(int index) {
+        List<ProductCategories> list = new ArrayList<>();
+        String sql = " select * from  [dbo].[Product_Categories]\n"
+                + " order by category_id\n"
+                + " offset ? rows fetch next 5 rows only";
+         try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, (index - 1) * 5);
+            ResultSet rs = st.executeQuery();
+             while (rs.next()) {
+                ProductCategories pc = new ProductCategories();
+                pc.setId(rs.getInt("category_id"));
+                pc.setName(rs.getString("category_name"));
+                list.add(pc);
+             }
+            
+        }catch (SQLException e) {
+               System.out.println(e);
+        }
+        return list;
+
+    }
+
+    public static void main(String[] args) {
         ProductCategoriesDAO dao = new ProductCategoriesDAO();
-//        List<ProductCategories>list = dao.getAll();
+//        List<ProductCategories>list = dao.pagingProductCategories(2);
 //        for(ProductCategories o: list){
 //            System.out.println(o);
 //        }
-        ProductCategories p = dao.getCategoryById(1);
-         System.out.println(p);
+//        int count = dao.getTotalUnit();
+//        System.out.println(count);
 
     }
 }

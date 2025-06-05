@@ -105,3 +105,21 @@
   text-align: center;
   margin-top: 1rem;
 }
+
+.btn-icon-search, .btn-icon-refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-icon-search {
+  background-color: #5bc0de; /* xanh dương nhạt */
+  color: #fff;
+}

@@ -5,7 +5,6 @@
 package controller;
 
 import dao.CustomerDAO;
-import dao.EmployeeDAO;
 import dao.NotificationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import model.Customers;
-import model.Employees;
 import model.Notification;
 
 /**
@@ -76,7 +74,7 @@ public class AddCustomerServlet extends HttpServlet {
         }
 
         // Validate phone format
-        if (phone != null && !phone.trim().isEmpty() && !phone.matches("^\\d{10}$")) {
+        if (phone != null && !phone.trim().isEmpty() && !phone.matches("^0\\d{9}$")) {
             errors.add("Phone number must contain exactly 10 digits.");
         }
 

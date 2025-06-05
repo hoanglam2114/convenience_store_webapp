@@ -72,7 +72,7 @@
                                         <button class="btn btn-outline-secondary" type="submit" id="btnSearch">
                                             <i class="bx bx-search"></i>
                                         </button>
-                                        <button class="btn btn-outline-secondary" type="button" id="btnReset" onclick="window.location.href='listEmployee'">
+                                        <button class="btn btn-outline-secondary" type="button" id="btnReset" onclick="window.location.href = 'listEmployee'">
                                             <i class="bx bx-reset"></i>
                                         </button>
                                     </div>
@@ -129,10 +129,22 @@
 
                         <!-- Footer -->
                         <footer class="content-footer footer bg-footer-theme">
-                            <div class="container-xxl d-flex justify-content-between py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">© 2025, Sneat Admin Template</div>
-                                <div>Developed by You</div>
+                            <div class="container-xxl d-flex justify-content-center py-3">
+                                <div class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                    <a class="page-link" href="listEmployee?index=${currentPage - 1}">Previous</a>
+                                </div>
+
+                                <c:forEach begin="1" end="${endPage}" var="i">
+                                    <div class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="listEmployee?index=${i}">${i}</a>
+                                    </div>
+                                </c:forEach>
+
+                                <div class="page-item ${currentPage == endPage ? 'disabled' : ''}">
+                                    <a class="page-link" href="listEmployee?index=${currentPage + 1}">Next</a>
+                                </div>
                             </div>
+
                         </footer>
                         <!-- /Footer -->
 
@@ -142,10 +154,12 @@
                 </div>
                 <!-- /Layout page -->
 
+
             </div>
             <!-- /Layout container -->
-        </div>
+        </div>  
         <!-- /Layout wrapper -->
+
 
         <!-- Core JS -->
         <script src="assets/vendor/libs/jquery/jquery.js"></script>

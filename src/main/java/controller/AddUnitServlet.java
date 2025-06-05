@@ -5,7 +5,7 @@
 
 package controller;
 
-import dao.ProductsDAO;
+import dao.WeightUnitDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,11 +13,21 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Products;
+import model.WeightUnit;
 
-public class ListProductsServlet extends HttpServlet {
+/**
+ *
+ * @author admin
+ */
+public class AddUnitServlet extends HttpServlet {
    
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -26,44 +36,45 @@ public class ListProductsServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListProducts</title>");  
+            out.println("<title>Servlet AddUnitServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListProducts at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet AddUnitServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     } 
 
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String indexPage = request.getParameter("index");
-        
-        if(indexPage == null){
-            indexPage = "1";
-        }
-        int index = Integer.parseInt(indexPage);
-         ProductsDAO dao = new ProductsDAO();
-        int count = dao.getTotalProduct();
-        int endPage = count/5;
-        if(count % 5 != 0){
-           endPage++;
-        }
-        List<Products> list = dao.pagingProducts(index);
-        
-        session.setAttribute("Pro", list);
-        
-//        request.setAttribute("Pro", list);
-        request.setAttribute("endPage", endPage);
-        request.getRequestDispatcher("/view/ProductList.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/AddUnit.jsp").forward(request, response);
     } 
 
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        WeightUnitDAO wud = new WeightUnitDAO();
+        String name = request.getParameter("nameUnit");
+        try{
+            WeightUnit wu = wud.getUnitByName(name);
+            if(wu == null){
+                WeightUnit unitNew = new WeightUnit(name);
+                wud.insertUnit(unitNew);
+                response.sendRedirect("ListUnit");
+
+            }else{
+              session.setAttribute("error", "Đơn vị đã tồn tại");
+              
+            }
+            
+        }catch(NumberFormatException e){
+            System.out.println(e);
+        }
+        request.getRequestDispatcher("/view/AddUnit.jsp").forward(request, response);
     }
 
     @Override

@@ -129,10 +129,22 @@
 
                         <!-- Footer -->
                         <footer class="content-footer footer bg-footer-theme">
-                            <div class="container-xxl d-flex justify-content-between py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">© 2025, Sneat Admin Template</div>
-                                <div>Developed by You</div>
+                            <div class="container-xxl d-flex justify-content-center py-3">
+                                <div class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                    <a class="page-link" href="listCustomer?index=${currentPage - 1}">Previous</a>
+                                </div>
+
+                                <c:forEach begin="1" end="${endPage}" var="i">
+                                    <div class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="listCustomer?index=${i}">${i}</a>
+                                    </div>
+                                </c:forEach>
+
+                                <div class="page-item ${currentPage == endPage ? 'disabled' : ''}">
+                                    <a class="page-link" href="listCustomer?index=${currentPage + 1}">Next</a>
+                                </div>
                             </div>
+
                         </footer>
                         <!-- /Footer -->
 

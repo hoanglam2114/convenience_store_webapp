@@ -127,7 +127,7 @@ public class ProductsDAO extends DBContext {
     
     
     
-     public List<Products> pagingProducts(int index) {
+        public List<Products> pagingProducts(int index) {
         List<Products> list = new ArrayList<>();
         String sql = "select [product_id],\n"
                 + "       [category_id],\n"
@@ -288,6 +288,16 @@ public class ProductsDAO extends DBContext {
         }
     }
 
+      public void deleteProduct(int id) {
+        String sql = "delete from Products where product_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
     
     
     
@@ -318,8 +328,9 @@ public class ProductsDAO extends DBContext {
 //          for (Products o : list){
 //              System.out.println(o);
 //          }
-          Products p = dao.getProductById(1);
-          System.out.println(p);
+          dao.deleteProduct(21);
+         
+          
     }
     
 }
