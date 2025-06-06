@@ -46,13 +46,13 @@
                         <!-- Main content -->
                         <div class="container-xxl flex-grow-1 container-p-y">
                             <h4 class="fw-bold py-3 mb-4">
-                                <span class="text-muted fw-light">Management /</span> Customer Management
+                                <span class="text-muted fw-light">Quản Lý /</span> Quản Lý Khách Hàng
                             </h4>
 
                             <!-- Add Customer Button -->
                             <div class="mb-3">
                                 <a href="addCustomer" class="btn btn-primary">
-                                    <i class="bx bx-plus"></i> Add
+                                    <i class="bx bx-plus"></i> Thêm
                                 </a>
                             </div>
 
@@ -85,11 +85,11 @@
                                     <table class="table"> 
                                         <thead class="table-light"> 
                                             <tr> 
-                                                <th>Name</th>
-                                                <th>Phone</th>
-                                                <th>Point</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
+                                                <th>Tên</th>
+                                                <th>Số Điện Thoại</th>
+                                                <th>Điểm</th>
+                                                <th>Trạng Thái</th>
+                                                <th>Hoạt Động</th>
                                             </tr> 
                                         </thead> 
                                         <tbody class="table-border-bottom-0"> 
@@ -116,7 +116,7 @@
                                                 } 
                                             }else{
                                             %>
-                                            <tr><td colspan="5">Nothing to show</td></tr>
+                                            <tr><td colspan="5">Không có thông tin để hiển thị.</td></tr>
                                             <% 
                                                 } 
                                             %>
@@ -131,7 +131,7 @@
                         <footer class="content-footer footer bg-footer-theme">
                             <div class="container-xxl d-flex justify-content-center py-3">
                                 <div class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                                    <a class="page-link" href="listCustomer?index=${currentPage - 1}">Previous</a>
+                                    <a class="page-link" href="listCustomer?index=${currentPage - 1}"><</a>
                                 </div>
 
                                 <c:forEach begin="1" end="${endPage}" var="i">
@@ -141,7 +141,7 @@
                                 </c:forEach>
 
                                 <div class="page-item ${currentPage == endPage ? 'disabled' : ''}">
-                                    <a class="page-link" href="listCustomer?index=${currentPage + 1}">Next</a>
+                                    <a class="page-link" href="listCustomer?index=${currentPage + 1}">></a>
                                 </div>
                             </div>
 

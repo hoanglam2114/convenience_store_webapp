@@ -5,17 +5,14 @@
 package controller;
 
 import dao.EmployeeDAO;
-import dao.ProductsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Employees;
-import model.Products;
 
 public class ListEmployee extends HttpServlet {
 
@@ -39,11 +36,6 @@ public class ListEmployee extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        EmployeeDAO dao = new EmployeeDAO();
-//        List<Employees> employeeList = dao.getAllEmployee();
-//        
-//        request.setAttribute("employeeList", employeeList);
-//        request.getRequestDispatcher("view/employee-management.jsp").forward(request, response);
 
         String indexPage = request.getParameter("index");
         int currentPage = 1;

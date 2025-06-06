@@ -7,7 +7,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Staff Management</title>
+        <title>Quản Lý Nhân Viên</title>
 
         <!-- Sneat CSS -->
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
@@ -17,7 +17,7 @@
 
         <!-- Boxicons -->
         <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" /> 
 
         <%@ page contentType="text/html;charset=UTF-8" language="java" %>
         <%@ page import="java.util.*, model.Employees" %>
@@ -46,13 +46,13 @@
                         <!-- Main content -->
                         <div class="container-xxl flex-grow-1 container-p-y">
                             <h4 class="fw-bold py-3 mb-4">
-                                <span class="text-muted fw-light">Management /</span> Employee Management
+                                <span class="text-muted fw-light">Quản Lý /</span> Quản Lý Nhân Viên
                             </h4>
 
                             <!-- Add Staff Button -->
                             <div class="mb-3">
                                 <a href="addEmployee" class="btn btn-primary">
-                                    <i class="bx bx-plus"></i> Add
+                                    <i class="bx bx-plus"></i> Thêm
                                 </a>
                             </div>
 
@@ -65,7 +65,7 @@
                                             id="employeeSearch"
                                             name="employeeSearch"
                                             class="form-control"
-                                            placeholder="Search..."
+                                            placeholder="Tìm kiếm..."
                                             aria-label="Search"
                                             aria-describedby="basic-addon-search"
                                             />
@@ -85,11 +85,11 @@
                                     <table class="table"> 
                                         <thead class="table-light"> 
                                             <tr> 
-                                                <th>Name</th>
-                                                <th>Phone</th>
-                                                <th>Address</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
+                                                <th>Tên</th>
+                                                <th>Số Điện Thoại</th>
+                                                <th>Địa Chỉ</th>
+                                                <th>Trạng Thái</th>
+                                                <th>Hoạt Động</th>
                                             </tr> 
                                         </thead> 
                                         <tbody class="table-border-bottom-0"> 
@@ -116,7 +116,7 @@
                                                 } 
                                             }else{
                                             %>
-                                            <tr><td colspan="5">Nothing to show</td></tr>
+                                            <tr><td colspan="5">Không có thông tin để hiển thị.</td></tr>
                                             <% 
                                                 } 
                                             %>
@@ -131,7 +131,7 @@
                         <footer class="content-footer footer bg-footer-theme">
                             <div class="container-xxl d-flex justify-content-center py-3">
                                 <div class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                                    <a class="page-link" href="listEmployee?index=${currentPage - 1}">Previous</a>
+                                    <a class="page-link" href="listEmployee?index=${currentPage - 1}"><</a>
                                 </div>
 
                                 <c:forEach begin="1" end="${endPage}" var="i">
@@ -141,7 +141,7 @@
                                 </c:forEach>
 
                                 <div class="page-item ${currentPage == endPage ? 'disabled' : ''}">
-                                    <a class="page-link" href="listEmployee?index=${currentPage + 1}">Next</a>
+                                    <a class="page-link" href="listEmployee?index=${currentPage + 1}">></a>
                                 </div>
                             </div>
 

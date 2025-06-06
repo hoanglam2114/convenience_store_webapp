@@ -142,8 +142,8 @@
             </ul>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="annoucement" class="menu-link" target="_blank">
-                        <div data-i18n="Basic">Annoucement</div>
+                    <a href="notificationServlet" class="menu-link" target="_blank">
+                        <div data-i18n="Basic">Notification</div>
                     </a>
                 </li>
             </ul>

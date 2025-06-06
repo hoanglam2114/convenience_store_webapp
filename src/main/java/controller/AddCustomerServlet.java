@@ -63,9 +63,6 @@ public class AddCustomerServlet extends HttpServlet {
         if (name == null || name.trim().isEmpty()) {
             errors.add("Name is required.");
         }
-        if (phone == null || phone.trim().isEmpty()) {
-            errors.add("Phone is required.");
-        }
         if (pointRaw == null || pointRaw.trim().isEmpty()) {
             errors.add("Point is required.");
         }
@@ -74,8 +71,10 @@ public class AddCustomerServlet extends HttpServlet {
         }
 
         // Validate phone format
-        if (phone != null && !phone.trim().isEmpty() && !phone.matches("^0\\d{9}$")) {
-            errors.add("Phone number must contain exactly 10 digits.");
+        if (phone == null || phone.trim().isEmpty()) {
+            errors.add("Phone is required.");
+        } else if (!phone.matches("^0\\d{9}$")) {
+            errors.add("Phone number must contain 10 to digits.");
         }
 
         // Validate point is an integer
@@ -97,11 +96,16 @@ public class AddCustomerServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             errors.add("Type ID must be a valid integer.");
         }
-
-        // Nếu có lỗi, quay lại form và hiển thị
+        
+        // Nếu có lỗi quay lại trang form và hiển thị danh sách lỗi
         if (!errors.isEmpty()) {
             request.setAttribute("errors", errors);
             request.setAttribute("name", name);
+            request.setAttribute("phone", phone);
+            request.setAttribute("point", point);
+            request.setAttribute("typeId", request.getParameter("typeId"));
+            request.getRequestDispatcher("view/customer-add.jsp").forward(request, response);
+            return;
         }
         
         NotificationDAO notiDAO = new NotificationDAO();

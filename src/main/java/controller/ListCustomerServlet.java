@@ -43,11 +43,6 @@ public class ListCustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-//        CustomerDAO dao = new CustomerDAO();
-//        List<Customers> customerList = dao.getAllCustomer();
-//        
-//        request.setAttribute("customerList", customerList);
-//        request.getRequestDispatcher("view/customer-list.jsp").forward(request, response);
 
         String indexPage = request.getParameter("index");
         int currentPage = 1;
