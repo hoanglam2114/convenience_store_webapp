@@ -12,6 +12,10 @@
         <servlet-name>UpdateCategoriesServlet</servlet-name>
         <servlet-class>controller.UpdateCategoriesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteCategoriesServlet</servlet-name>
+        <servlet-class>controller.DeleteCategoriesServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListCustomerServlet</servlet-name>
         <url-pattern>/listCustomer</url-pattern>
@@ -43,6 +47,10 @@
     <servlet-mapping>
         <servlet-name>UpdateCategoriesServlet</servlet-name>
         <url-pattern>/UpdateCate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCategoriesServlet</servlet-name>
+        <url-pattern>/DeleteCate</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>

@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import model.ProductCategories;
 
 /**
@@ -74,6 +75,38 @@ public class UpdateCategoriesServlet extends HttpServlet {
         int id ;
         try{    
             id = Integer.parseInt(id_raw);
+              String msg = "";
+
+            // Validate ký tự đặc biệt
+            if (name == null || !name.matches("^[a-zA-Z0-9À-ỹ\\s]+$")) {
+                msg = "Tên đơn vị không được chứa ký tự đặc biệt!";
+            } else {
+                // Kiểm tra trùng tên với đơn vị khác (khác ID)
+                List<ProductCategories> list = pcd.getAll();
+                for (ProductCategories  productCategories: list) {
+                    if (name.equalsIgnoreCase(productCategories.getName())) {
+                        msg = "Tên đơn vị đã tồn tại!";
+                        break;
+                    }
+                }
+            }
+
+            // Nếu có lỗi, trả về giao diện cập nhật
+            if (!msg.isEmpty()) {
+                request.setAttribute("error", msg);
+                request.setAttribute("cateid", id);
+                request.setAttribute("cateName", name);
+                request.getRequestDispatcher("/view/category-update.jsp").forward(request, response);
+                return;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
             ProductCategories pc = new ProductCategories(id, name);
             pcd.updateCategory(pc);
             response.sendRedirect("ListCate");

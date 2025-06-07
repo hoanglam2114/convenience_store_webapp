@@ -18,7 +18,7 @@
 
         <script type="text/javascript">
             function doDelete(id) {
-                if (confirm("Bạn có muốn xóa sản phẩm có mã là " + id + " không ?")) {
+                if (confirm("Bạn có muốn xóa đơn vị sản phẩm có mã là " + id + " không ?")) {
                     window.location = "DeleteUnit?unit_id=" + id;
                 }
             }
@@ -78,6 +78,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <c:if test="${empty listunit}">
+                                            <tr>
+                                                <td colspan="10" style="text-align: center;">Không tìm thấy loại sản phẩm.</td>
+                                            </tr>
+                                        </c:if>
+                                            
                                         <c:forEach items="${listunit}" var="u">
                                             <tr>
                                                 <td>${u.getId()}</td>

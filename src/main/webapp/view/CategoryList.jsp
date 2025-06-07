@@ -21,6 +21,18 @@
 
         <!-- Favicon -->
         <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
+
+
+        <script type="text/javascript">
+            function doDelete(id) {
+                if (confirm("Bạn có muốn xóa loại sản phẩm có mã là " + id + " không ?")) {
+                    window.location = "DeleteCate?cate_id=" + id;
+                }
+            }
+        </script>
+
+
+
     </head>
 
     <body>
@@ -80,6 +92,14 @@
                                             </tr>
                                         </thead>
                                         <tbody class="text-center">
+
+                                            <c:if test="${empty list}">
+                                                <tr>
+                                                    <td colspan="10" style="text-align: center;">Không tìm thấy loại sản phẩm.</td>
+                                                </tr>
+                                            </c:if>
+
+
                                             <c:forEach items="${list}" var="c">
                                                 <tr>
                                                     <td>${c.getId()}</td>
@@ -88,7 +108,8 @@
                                                         <a href="UpdateCate?cateId=${c.getId()}" class="btn btn-icon btn-success me-2">
                                                             <i class="bx bx-edit"></i></a>
 
-                                                        <a href="#" class="btn btn-icon btn-danger">
+                                                        <a href="#" href="#" onclick="doDelete(${c.getId()})" 
+                                                           class="btn btn-icon btn-danger">
                                                             <i class="bx bx-trash"></i></a>
                                                     </td>
                                                 </tr>
@@ -126,7 +147,7 @@
             <!-- /Layout container -->         
         </div>
         <!-- /Layout wrapper -->             
-       
+
 
         <!-- Sneat JS -->
         <script src="assets/vendor/libs/jquery/jquery.js"></script>

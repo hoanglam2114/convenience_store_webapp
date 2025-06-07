@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import model.ProductCategories;
 
 /**
@@ -69,15 +70,36 @@ public class AddCategoriesServlet extends HttpServlet {
         String name = request.getParameter("nameCate");
 
         try {
-            ProductCategories pc = pcd.getCategoryByName(name);
-            if (pc == null) {
+         
+           String msg = "";
+
+            // Validate ký tự đặc biệt
+            if (name == null || !name.matches("^[a-zA-Z0-9À-ỹ\\s]+$")) {
+                msg = "Tên loại sản phẩm không được chứa ký tự đặc biệt!";
+            } else {
+                // Kiểm tra trùng tên với đơn vị khác (khác ID)
+                List<ProductCategories> list = pcd.getAll();
+                for (ProductCategories productCategories : list) {
+                    if (name.equalsIgnoreCase(productCategories.getName())) {
+                        msg = "Tên loại sản phẩm đã tồn tại!";
+                        break;
+                    }
+                }
+            }
+
+            // Nếu có lỗi, trả về giao diện cập nhật
+            if (!msg.isEmpty()) {
+                request.setAttribute("error", msg);
+                request.setAttribute("cateName", name);
+                request.getRequestDispatcher("/view/category-add.jsp").forward(request, response);
+                return;
+            }
+            
+  
+            
                 ProductCategories cateNew = new ProductCategories(name);
                 pcd.insertCategory(cateNew);
                 response.sendRedirect("ListCate");
-            } else {
-                session.setAttribute("error", "Đơn vị đã tồn tại");
-                request.getRequestDispatcher("/view/category-add.jsp").forward(request, response);
-            }
         } catch (NumberFormatException e) {
             System.out.println(e);
         }

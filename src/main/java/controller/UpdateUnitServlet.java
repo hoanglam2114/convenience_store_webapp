@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import model.WeightUnit;
 
 /**
@@ -45,7 +47,7 @@ public class UpdateUnitServlet extends HttpServlet {
             out.println("</html>");
         }
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -61,9 +63,9 @@ public class UpdateUnitServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
-        
+
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -71,17 +73,43 @@ public class UpdateUnitServlet extends HttpServlet {
         String name = request.getParameter("unitName");
         int id;
         WeightUnitDAO wud = new WeightUnitDAO();
-        try{
-           id = Integer.parseInt(id_raw);
-           WeightUnit wu = new WeightUnit(id, name);
-           wud.updateCategory(wu);
-           response.sendRedirect("ListUnit");
-        }catch(NullPointerException e){
+
+        try {
+            id = Integer.parseInt(id_raw);
+            String msg = "";
+
+            // Validate ký tự đặc biệt
+            if (name == null || !name.matches("^[a-zA-Z0-9À-ỹ\\s]+$")) {
+                msg = "Tên đơn vị không được chứa ký tự đặc biệt!";
+            } else {
+                // Kiểm tra trùng tên với đơn vị khác (khác ID)
+                List<WeightUnit> list = wud.getAll();
+                for (WeightUnit weightUnit : list) {
+                    if (name.equalsIgnoreCase(weightUnit.getName())) {
+                        msg = "Tên đơn vị đã tồn tại!";
+                        break;
+                    }
+                }
+            }
+
+            // Nếu có lỗi, trả về giao diện cập nhật
+            if (!msg.isEmpty()) {
+                request.setAttribute("error", msg);
+                request.setAttribute("unitId", id);
+                request.setAttribute("unitName", name);
+                request.getRequestDispatcher("/view/UpdateUnit.jsp").forward(request, response);
+                return;
+            }
+            WeightUnit wu = new WeightUnit(id, name);
+            wud.updateCategory(wu);
+            response.sendRedirect("ListUnit");
+
+        } catch (NullPointerException e) {
             System.out.println(e);
         }
- 
+
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";

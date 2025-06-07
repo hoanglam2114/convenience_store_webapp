@@ -54,7 +54,7 @@ public class WeightUnitDAO extends DBContext {
     }
 
     public List<WeightUnit> findUnitByName(String unit_name) {
-        String sql = "select * from Weight_unit where unit_name like ?";
+        String sql = "select * from Weight_unit where unit_name COLLATE Latin1_General_CI_AI like ?";
         List<WeightUnit> list = new ArrayList<>();
         try {
             PreparedStatement st = connection.prepareStatement(sql);

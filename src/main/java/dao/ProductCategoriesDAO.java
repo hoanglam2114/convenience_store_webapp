@@ -90,7 +90,7 @@ public class ProductCategoriesDAO extends DBContext {
     }
 
     public List<ProductCategories> findCategoryByName(String category_name) {
-        String sql = "select * from Product_Categories where category_name like ?";
+        String sql = "select * from Product_Categories where category_name COLLATE Latin1_General_CI_AI LIKE ?";
         List<ProductCategories> list = new ArrayList<>();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -153,6 +153,16 @@ public class ProductCategoriesDAO extends DBContext {
         }
     }
     
+    public void deleteCategory(int id) {
+        String sql = "delete from Product_Categories where category_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 
     public static void main(String[] args) {
         ProductCategoriesDAO dao = new ProductCategoriesDAO();
