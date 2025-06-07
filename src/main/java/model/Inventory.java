@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @ToString
 public class Inventory {
     private int inventoryID;
-    private int productID;
+    private Products product;
     private int currentStock;
     private String inventoryStatus;
     private LocalDateTime lastRestockDate;
