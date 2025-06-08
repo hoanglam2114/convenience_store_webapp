@@ -21,16 +21,8 @@ import java.util.Map;
  * @author hoang on 5/26/2025-9:16 AM
  * IntelliJ IDEA
  */
-@WebServlet(name = "InventoryServlet", urlPatterns = {
-        "/inventory",
-        "/findProInInven",
-        "/importProduct",
-        "/exportProduct",
-        "/deleteFromInventory",
-        "/inventoryStats",
-        "/inventorySearch"
-})
-public class InventoryServlet extends HttpServlet {
+@WebServlet(name = "ListInventoryServlet", urlPatterns = {"/inventory"})
+public class ListInventoryServlet extends HttpServlet {
 
     private final InventoryDAO inventoryDAO = new InventoryDAO();
     private final ProductsDAO productsDAO = new ProductsDAO();
@@ -45,9 +37,6 @@ public class InventoryServlet extends HttpServlet {
                 break;
             case "/findProInInven":
                 handleSearchProducts(req, resp);
-                break;
-            case "/deleteFromInventory":
-                handleDeleteFromInventory(req, resp);
                 break;
             case "/inventoryStats":
                 handleInventoryStats(req, resp);
@@ -74,39 +63,6 @@ public class InventoryServlet extends HttpServlet {
             req.getRequestDispatcher("/view/inventory-dashboard.jsp").forward(req, resp);
         }
     }
-
-
-    private void handleDeleteFromInventory(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String idParam = req.getParameter("id");
-        InventoryDAO inventoryDAO = new InventoryDAO();
-
-        try {
-            int inventoryId = Integer.parseInt(idParam);
-
-            boolean deleted = inventoryDAO.deleteFromInventory(inventoryId);
-            if (deleted) {
-                req.setAttribute("toastMessage", "Xoá kho hàng thành công.");
-                req.setAttribute("toastType", "success");
-            } else {
-                req.setAttribute("toastMessage", "Không thể xoá kho hàng. Có thể đang được sử dụng.");
-                req.setAttribute("toastType", "error");
-            }
-
-        } catch (NumberFormatException e) {
-            req.setAttribute("toastMessage", "ID kho không hợp lệ.");
-            req.setAttribute("toastType", "error");
-        } catch (Exception e) {
-            req.setAttribute("toastMessage", "Lỗi hệ thống khi xoá kho hàng.");
-            req.setAttribute("toastType", "error");
-        }
-
-        // Load lại danh sách inventory nếu cần
-        List<Inventory> inventoryList = inventoryDAO.getInventoryPaginated(1, 10, null, null, null);
-        req.setAttribute("inventoryList", inventoryList);
-
-        req.getRequestDispatcher("/view/inventory-dashboard.jsp").forward(req, resp);
-    }
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -64,6 +64,7 @@
             padding: 1.5rem;
             margin-bottom: 2rem;
         }
+
         .stat-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -72,19 +73,23 @@
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
+
         .stat-number {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
         }
+
         .stat-label {
             font-size: 0.875rem;
             opacity: 0.9;
         }
+
         .alert-badge {
             position: relative;
             display: inline-block;
         }
+
         .alert-badge.critical::after {
             content: '';
             position: absolute;
@@ -96,6 +101,7 @@
             border-radius: 50%;
             animation: pulse 1.5s infinite;
         }
+
         .alert-badge.warning::after {
             content: '';
             position: absolute;
@@ -107,11 +113,22 @@
             border-radius: 50%;
             animation: pulse 1.5s infinite;
         }
+
         @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
+
         .inventory-filters {
             background: #f8f9fa;
             border-radius: 8px;
@@ -119,54 +136,66 @@
             margin-bottom: 1.5rem;
             border: 1px solid #e9ecef;
         }
+
         .stock-level-low {
             color: #dc3545;
             font-weight: 600;
         }
+
         .stock-level-medium {
             color: #fd7e14;
             font-weight: 600;
         }
+
         .stock-level-high {
             color: #198754;
             font-weight: 600;
         }
+
         .product-image {
             border-radius: 8px;
             border: 2px solid #e9ecef;
             transition: transform 0.2s;
         }
+
         .product-image:hover {
             transform: scale(1.05);
             border-color: #0d6efd;
         }
+
         .table-hover tbody tr:hover {
             background-color: rgba(0, 123, 255, 0.05);
         }
+
         .action-buttons {
             gap: 0.5rem;
         }
+
         .btn-action {
             padding: 0.25rem 0.5rem;
             border-radius: 4px;
             text-decoration: none;
             transition: all 0.2s;
         }
+
         .btn-action:hover {
             transform: translateY(-1px);
         }
+
         .inventory-header {
             background: white;
             border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .quick-actions {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
         }
+
         .export-section {
             background: #f8f9fa;
             border-radius: 8px;
@@ -197,90 +226,6 @@
             <!-- Content wrapper -->
             <div class="content-wrapper">
                 <!-- Content -->
-
-                <!-- Import Product Modal -->
-                <div class="modal fade" id="import-product" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Nhập sản phẩm vào kho</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Mã sản phẩm</label>
-                                            <input type="text" class="form-control" placeholder="Nhập mã sản phẩm">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Số lượng nhập</label>
-                                            <input type="number" class="form-control" placeholder="0">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Lô hàng</label>
-                                            <input type="text" class="form-control" placeholder="Nhập số lô">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Ngày hết hạn</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-12 mb-3">
-                                            <label class="form-label">Ghi chú</label>
-                                            <textarea class="form-control" rows="3" placeholder="Ghi chú thêm..."></textarea>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-primary">Nhập kho</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Export Product Modal -->
-                <div class="modal fade" id="export-product" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Xuất sản phẩm khỏi kho</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="mb-3">
-                                        <label class="form-label">Mã sản phẩm</label>
-                                        <input type="text" class="form-control" readonly>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Số lượng xuất</label>
-                                        <input type="number" class="form-control" placeholder="0">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Lý do xuất</label>
-                                        <select class="form-control">
-                                            <option>Bán hàng</option>
-                                            <option>Trả hàng</option>
-                                            <option>Hư hỏng</option>
-                                            <option>Hết hạn</option>
-                                            <option>Khác</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Ghi chú</label>
-                                        <textarea class="form-control" rows="2"></textarea>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-warning">Xuất kho</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="content-page">
                     <div class="container-fluid">
@@ -316,17 +261,11 @@
                                     <p class="text-muted mb-0">Theo dõi và quản lý tồn kho một cách hiệu quả</p>
                                 </div>
                                 <div class="quick-actions d-flex">
-                                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#import-product">
-                                        <i class="bx bx-import me-1"></i>Nhập kho
-                                    </button>
-                                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#export-product">
-                                        <i class="bx bx-export me-1"></i>Xuất kho
-                                    </button>
-                                    <a href="listLogInventory" class="btn btn-info">
-                                        <i class="bx bx-history me-1"></i>Lịch sử
+                                    <a href="add-inventory-product" class="btn btn-success">
+                                        <i class="bx bx-import me-1"></i>Thêm sản phẩm
                                     </a>
-                                    <a href="addNewProduct" class="btn btn-primary">
-                                        <i class="bx bx-plus me-1"></i>Thêm sản phẩm
+                                    <a href="log-inventory" class="btn btn-info">
+                                        <i class="bx bx-history me-1"></i>Lịch sử
                                     </a>
                                 </div>
                             </div>
@@ -357,7 +296,7 @@
 
                         <!-- Filters and Search -->
                         <div class="inventory-filters">
-                            <form action="findProInInven" method="get" data-toggle="validator">
+                            <form action="find-inventory-product" method="get" data-toggle="validator">
                                 <div class="row align-items-end">
                                     <div class="col-md-4 mb-3">
                                         <label class="form-label">Tìm kiếm sản phẩm</label>
@@ -399,6 +338,7 @@
                                     </div>
                                 </div>
                             </form>
+                            <a href="inventory" class="btn btn-primary"><i class="bi bi-arrow-clockwise"></i></a>
                         </div>
 
                         <!-- Inventory Table -->
@@ -410,7 +350,6 @@
                                             <table class="table table-hover mb-0">
                                                 <thead class="table-light">
                                                 <tr>
-                                                    <th><input type="checkbox" class="form-check-input"></th>
                                                     <th>Lô hàng</th>
                                                     <th>Sản phẩm</th>
                                                     <th>Tên sản phẩm</th>
@@ -428,7 +367,8 @@
                                                             <div class="text-muted">
                                                                 <i class="bx bx-package" style="font-size: 3rem;"></i>
                                                                 <p class="mt-2">Không tìm thấy sản phẩm nào</p>
-                                                                <a href="addNewProduct" class="btn btn-primary btn-sm">
+                                                                <a href="add-inventory-product"
+                                                                   class="btn btn-primary btn-sm">
                                                                     <i class="bx bx-plus me-1"></i>Thêm sản phẩm mới
                                                                 </a>
                                                             </div>
@@ -437,19 +377,18 @@
                                                 </c:if>
                                                 <c:forEach items="${inven}" var="i">
                                                     <tr>
-                                                        <td><input type="checkbox" class="form-check-input"></td>
                                                         <td>
                                                             <span class="badge bg-light text-dark">${i.product.batch}</span>
                                                         </td>
                                                         <td>
-                                                            <img src="assets/images/product/${i.product.image}"
+                                                            <img src="assets/img/product/${i.product.image}"
                                                                  class="product-image" width="60" height="60"
                                                                  alt="${i.product.name}"/>
                                                         </td>
+
                                                         <td>
                                                             <div>
                                                                 <strong>${i.product.name}</strong>
-                                                                <br><small class="text-muted">PID: ${i.product.id}</small>
                                                             </div>
                                                         </td>
                                                         <td>
@@ -500,20 +439,10 @@
                                                         </td>
                                                         <td>
                                                             <div class="action-buttons">
-                                                                <a href="importProduct?inventory_id=${i.inventoryID}"
+                                                                <a href="import-product?inventory_id=${i.inventoryID}"
                                                                    class="btn btn-success btn-sm btn-action"
                                                                    title="Nhập kho">
                                                                     <i class="bx bx-import"></i>
-                                                                </a>
-                                                                <a href="exportProduct?inventory_id=${i.inventoryID}"
-                                                                   class="btn btn-warning btn-sm btn-action"
-                                                                   title="Xuất kho">
-                                                                    <i class="bx bx-export"></i>
-                                                                </a>
-                                                                <a href="editProduct?inventory_id=${i.inventoryID}"
-                                                                   class="btn btn-primary btn-sm btn-action"
-                                                                   title="Chỉnh sửa">
-                                                                    <i class="bx bx-edit"></i>
                                                                 </a>
                                                                 <a href="#" onclick="confirmDelete(${i.inventoryID})"
                                                                    class="btn btn-danger btn-sm btn-action"
@@ -546,19 +475,22 @@
                                             <ul class="pagination justify-content-center">
                                                 <!-- Nút Trước -->
                                                 <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                                                    <a class="page-link" href="?page=${currentPage - 1}<%= queryParams %>">Trước</a>
+                                                    <a class="page-link"
+                                                       href="?page=${currentPage - 1}<%= queryParams %>">Trước</a>
                                                 </li>
 
                                                 <!-- Số trang -->
                                                 <c:forEach begin="1" end="${totalPages}" var="i">
                                                     <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                        <a class="page-link" href="?page=${i}<%= queryParams %>">${i}</a>
+                                                        <a class="page-link"
+                                                           href="?page=${i}<%= queryParams %>">${i}</a>
                                                     </li>
                                                 </c:forEach>
 
                                                 <!-- Nút Sau -->
                                                 <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                                                    <a class="page-link" href="?page=${currentPage + 1}<%= queryParams %>">Sau</a>
+                                                    <a class="page-link"
+                                                       href="?page=${currentPage + 1}<%= queryParams %>">Sau</a>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -586,7 +518,8 @@
                 <div class="toast-body">
                         ${sessionScope.toastMessage}
                 </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
             </div>
         </div>
     </div>
@@ -620,12 +553,12 @@
 <script>
     function confirmDelete(inventoryId) {
         if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi kho?')) {
-            window.location.href = 'deleteFromInventory?inventory_id=' + inventoryId;
+            window.location.href = 'delete-from-inventory?inventory_id=' + inventoryId;
         }
     }
 
     // Initialize tooltips
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
@@ -633,7 +566,7 @@
     });
 
     // Select all checkbox functionality
-    document.querySelector('thead input[type="checkbox"]').addEventListener('change', function() {
+    document.querySelector('thead input[type="checkbox"]').addEventListener('change', function () {
         const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
         checkboxes.forEach(checkbox => {
             checkbox.checked = this.checked;

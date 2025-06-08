@@ -1,12 +1,10 @@
 package dao;
 
 import model.Inventory;
+import model.InventoryDetails;
 import model.Products;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -239,9 +237,6 @@ public class InventoryDAO extends DBContext {
                 }
             }
 
-            // Log the import activity
-            logInventoryActivity(productId, "IMPORT", quantity, notes);
-
             connection.commit();
             return true;
 
@@ -304,9 +299,6 @@ public class InventoryDAO extends DBContext {
                 updateStmt.executeUpdate();
             }
 
-            // Log the export activity
-            logInventoryActivity(productId, "EXPORT", quantity, reason + ": " + notes);
-
             connection.commit();
             return true;
 
@@ -328,17 +320,66 @@ public class InventoryDAO extends DBContext {
     }
 
     /**
+     * Insert new inventory record
+     * @param i Inventory object to insert
+     */
+    public void addInventoryProduct(Inventory i) {
+        String sql = "INSERT INTO Inventory VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, i.getProduct().getId());
+            st.setInt(2, i.getCurrentStock());
+            st.setString(3, i.getInventoryStatus());
+            st.setTimestamp(4, Timestamp.valueOf(i.getLastRestockDate()));
+            st.setString(5, i.getAlert());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    /**
      * Delete product from inventory
      */
-    public boolean deleteFromInventory(int inventoryId) {
-        String query = "DELETE FROM dbo.Inventory WHERE inventory_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, inventoryId);
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException ex) {
-            Logger.getLogger(InventoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+    public boolean deleteInventoryById(int inventoryId) {
+        PreparedStatement ps1 = null, ps2 = null, ps3 = null;
+        try {
+            connection.setAutoCommit(false); // Bắt đầu transaction
+
+            // 1. Xóa InventoryDetails
+            ps1 = connection.prepareStatement("DELETE FROM InventoryDetails WHERE inventory_id = ?");
+            ps1.setInt(1, inventoryId);
+            ps1.executeUpdate();
+
+            // 2. Xóa StoreStock
+            ps2 = connection.prepareStatement("DELETE FROM StoreStock WHERE inventory_id = ?");
+            ps2.setInt(1, inventoryId);
+            ps2.executeUpdate();
+
+            // 3. Xóa chính Inventory
+            ps3 = connection.prepareStatement("DELETE FROM Inventory WHERE inventory_id = ?");
+            ps3.setInt(1, inventoryId);
+            ps3.executeUpdate();
+
+            connection.commit();
+            return true;
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (ps1 != null) ps1.close();
+                if (ps2 != null) ps2.close();
+                if (ps3 != null) ps3.close();
+                connection.setAutoCommit(true); // Trả lại trạng thái ban đầu
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -360,13 +401,59 @@ public class InventoryDAO extends DBContext {
     }
 
     /**
+     * Update inventory details
+     * @param i Inventory object containing updated details
+     */
+    public void updateInventoryDetail(Inventory i) {
+        String sql = "UPDATE [dbo].[Inventory]\n"
+                + "   SET [product_id] = ?\n"
+                + "      ,[current_stock] = ?\n"
+                + "      ,[inventory_status] = ?\n"
+                + "      ,[last_restock_date] = ?\n"
+                + "      ,[alert] = ? \n"
+                + " WHERE inventory_id = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, i.getProduct().getId());
+            st.setInt(2, i.getCurrentStock());
+            st.setString(3, i.getInventoryStatus());
+            st.setTimestamp(4, Timestamp.valueOf(i.getLastRestockDate()));
+            st.setString(5, i.getAlert());
+            st.setInt(6, i.getInventoryID());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * Insert inventory details
+     * @param d InventoryDetails object containing details to insert
+     */
+    public void insertInventoryDetails(InventoryDetails d) {
+        String sql = "INSERT INTO InventoryDetails  VALUES (?, ?, ?, ?) ";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, d.getInventory().getInventoryID());
+            st.setInt(2, d.getQuantity());
+            st.setDate(3, Date.valueOf(d.getDate()));
+            st.setString(4, d.getStatus());
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    /**
      * Update inventory status and alerts
      */
     public void updateInventoryAlerts() {
         String query = "UPDATE dbo.Inventory SET " +
                 "inventory_status = CASE " +
-                "    WHEN current_stock = 0 THEN 'Hết hàng' " +
-                "    WHEN current_stock < 10 THEN 'Sắp hết' " +
+                "    WHEN current_stock = 0 THEN N'Hết hàng' " +
+                "    WHEN current_stock < 10 THEN N'Sắp hết' " +
                 "    ELSE 'Còn hàng' " +
                 "END, " +
                 "alert = CASE " +
@@ -384,21 +471,59 @@ public class InventoryDAO extends DBContext {
     }
 
     /**
-     * Log inventory activities for audit trail
+     * Get the last inventory record
+     * @return Inventory object representing the last inventory record
      */
-    private void logInventoryActivity(int productId, String activityType, int quantity, String notes) {
-        String query = "INSERT INTO dbo.InventoryLog (product_id, activity_type, quantity, notes, activity_date) " +
-                "VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, productId);
-            statement.setString(2, activityType);
-            statement.setInt(3, quantity);
-            statement.setString(4, notes);
-            statement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
-            statement.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(InventoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+    public Inventory getInventoryLast() {
+        String sql = "SELECT TOP 1 * FROM Inventory ORDER BY inventory_id DESC";
+        ProductsDAO pd = new ProductsDAO();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Inventory inventory = new Inventory();
+                inventory.setInventoryID(rs.getInt("inventory_id"));
+                inventory.setProduct(pd.getProductById(rs.getInt("product_id"))); // Giả sử bạn có hàm này để lấy Product
+                inventory.setCurrentStock(rs.getInt("current_stock"));
+                inventory.setInventoryStatus(rs.getString("inventory_status"));
+                inventory.setLastRestockDate(rs.getTimestamp("last_restock_date").toLocalDateTime());
+                inventory.setAlert(rs.getString("alert"));
+                return inventory;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
         }
+        return null;
+    }
+
+    public List<InventoryDetails> getAllLogInventory() {
+        List<InventoryDetails> list = new ArrayList<>();
+        InventoryDAO invenD = new InventoryDAO();
+
+        String sql = "SELECT [inventory_detail_id]\n"
+                + "      ,[inventory_id]\n"
+                + "      ,[quantity]\n"
+                + "      ,[date]\n"
+                + "      ,[status]\n"
+                + "  FROM [dbo].[InventoryDetails]"
+                + "  where 1=1\n";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                InventoryDetails in = new InventoryDetails();
+                in.setId(rs.getInt("inventory_detail_id"));
+                Inventory inven = invenD.getInventoryById(rs.getInt("inventory_id"));
+                in.setInventory(inven);
+                in.setQuantity(rs.getInt("quantity"));
+                in.setDate(rs.getDate("date").toLocalDate());
+                in.setStatus(rs.getString("status"));
+                list.add(in);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
     }
 
     /**
