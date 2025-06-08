@@ -288,6 +288,42 @@ public class ProductsDAO extends DBContext {
         }
     }
 
+    /**
+     * This method retrieves the latest product from the Products table.
+     * It uses a SQL query to select the top 1 product ordered by product_id in descending order.
+     *
+     * @return the latest Products object or null if no product is found
+     */
+    public Products getLatestProduct() {
+        String sql = "SELECT TOP 1 * FROM Products\n"
+                + "ORDER BY product_id DESC;";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Products p = new Products();
+                p.setId(rs.getInt("product_id"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setName(rs.getString("product_name"));
+                p.setPrice(rs.getFloat("product_price"));
+                p.setImage(rs.getString("product_image"));
+                ProductCategories pc = getCategoryById(rs.getInt("category_id"));
+                p.setProductCategories(pc);
+                WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
+                p.setWeightUnit(wu);
+                Suppliers sup = getSupById(rs.getInt("supplier_id"));
+                p.setSuppliers(sup);
+                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
+                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
+                p.setBatch(rs.getInt("batch"));
+                return p;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null; // Trả về null nếu không tìm thấy sản phẩm
+    }
       public void deleteProduct(int id) {
         String sql = "delete from Products where product_id = ?";
         try {
@@ -298,8 +334,8 @@ public class ProductsDAO extends DBContext {
             System.out.println(e);
         }
     }
-    
-    
+
+
     
     
     public int getLatestBatchByName(String name) {
@@ -316,7 +352,51 @@ public class ProductsDAO extends DBContext {
         }
         return 1;
     }
-    
+
+    /**
+     * This method retrieves a list of products that are not present in the inventory.
+     * It uses a SQL query to select products from the Products table where there
+     * is no corresponding entry in the Inventory table.
+     *
+     * @return a list of Products that are not in the inventory
+     */
+    public List<Products> getProductNotInInventory() {
+        List<Products> list = new ArrayList<>();
+        String sql = "SELECT p.*\n"
+                + "FROM Products p\n"
+                + "WHERE NOT EXISTS (\n"
+                + "    SELECT 1\n"
+                + "    FROM Inventory i\n"
+                + "    WHERE p.product_id = i.product_id\n"
+                + ");";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Products p = new Products();
+                p.setId(rs.getInt("product_id"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setName(rs.getString("product_name"));
+                p.setPrice(rs.getFloat("product_price"));
+                p.setImage(rs.getString("product_image"));
+                ProductCategories pc = getCategoryById(rs.getInt("category_id"));
+                p.setProductCategories(pc);
+                WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
+                p.setWeightUnit(wu);
+                Suppliers sup = getSupById(rs.getInt("supplier_id"));
+                p.setSuppliers(sup);
+                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
+                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
+                p.setBatch(rs.getInt("batch"));
+                list.add(p);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
     
 //        int count = dao.getTotalProduct();
@@ -328,9 +408,8 @@ public class ProductsDAO extends DBContext {
 //          for (Products o : list){
 //              System.out.println(o);
 //          }
-          dao.deleteProduct(21);
-         
-          
+          Products p = dao.getProductById(1);
+          System.out.println(p);
     }
     
 }
