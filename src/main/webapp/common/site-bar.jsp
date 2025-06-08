@@ -132,6 +132,15 @@
                 <li class="menu-item">
                     <a href="list-supplier" class="menu-link">
                         <div data-i18n="Supplier Management">Supplier Management</div>
+                    <a href="listCustomer" class="menu-link" target="_blank">
+                        <div data-i18n="Basic">Shift Staff Management</div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="annoucement" class="menu-link" target="_blank">
+                        <div data-i18n="Basic">Annoucement</div>
                     </a>
                 </li>
             </ul>
@@ -169,21 +178,21 @@
                 <div data-i18n="Authentications">Authentications</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+<!--                <li class="menu-item">
                     <a href="auth-login-basic.html" class="menu-link" target="_blank">
                         <div data-i18n="Basic">Login</div>
                     </a>
-                </li>
+                </li>-->
                 <li class="menu-item">
-                    <a href="auth-register-basic.html" class="menu-link" target="_blank">
-                        <div data-i18n="Basic">Register</div>
+                    <a href="register" class="menu-link" target="_blank">
+                        <div data-i18n="Basic">Register New Staff</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
+<!--                <li class="menu-item">
+                    <a href="ForgotPassword" class="menu-link" target="_blank">
                         <div data-i18n="Basic">Forgot Password</div>
                     </a>
-                </li>
+                </li>-->
             </ul>
         </li>
 

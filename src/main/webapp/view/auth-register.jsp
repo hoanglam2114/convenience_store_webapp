@@ -135,7 +135,7 @@
                                 </a>
                             </div>
                             <!-- /Logo -->
-                            <h4 class="mb-2">Register account ?</h4>
+                            <h4 class="mb-2">Register new account ?</h4>
                             <p class="mb-4">Enter your email and we'll send you instructions to register new account</p>
 
                             <form  class="mb-3" action="register" method="POST">

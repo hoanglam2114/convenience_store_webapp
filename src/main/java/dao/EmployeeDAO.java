@@ -127,6 +127,22 @@ public class EmployeeDAO extends DBContext {
         }
     }
 
+    public Integer getEmployeeIdByAccountId(int accountId) {
+        String sql = "select employee_id from employees where account_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, accountId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("employee_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public List<Employees> pagingEmployee(int index) {
         List<Employees> list = new ArrayList<>();
         String sql = "SELECT [employee_id],\n"
@@ -178,4 +194,9 @@ public class EmployeeDAO extends DBContext {
             System.out.println(employees);
         }
     }
+//    public static void main(String[] args) {
+//        EmployeeDAO dao = new EmployeeDAO();
+//        Integer id = dao.getEmployeeIdByAccountId(2);
+//            System.out.println(id);
+//    }
 }

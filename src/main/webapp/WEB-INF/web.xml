@@ -20,6 +20,18 @@
         <servlet-name>SearchCustomerServlet</servlet-name>
         <servlet-class>controller.SearchCustomerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>controller.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomeAdmin</servlet-name>
+        <servlet-class>controller.HomeAdmin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListShiftStaffServlet</servlet-name>
+        <servlet-class>controller.ListShiftStaffServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListCustomerServlet</servlet-name>
         <url-pattern>/listCustomer</url-pattern>
@@ -59,6 +71,18 @@
     <servlet-mapping>
         <servlet-name>DeleteCategoriesServlet</servlet-name>
         <url-pattern>/DeleteCate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeAdmin</servlet-name>
+        <url-pattern>/HomeAdmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListShiftStaffServlet</servlet-name>
+        <url-pattern>/ListShiftStaffServlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>
@@ -182,6 +206,54 @@
     <servlet-mapping>
         <servlet-name>DeleteEmployee</servlet-name>
         <url-pattern>/deleteEmployee</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>controller.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>changePasswordServlet</servlet-name>
+        <servlet-class>controller.ChangePasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerifyMailServlet</servlet-name>
+        <servlet-class>controller.VerifyMailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <servlet-class>controller.ResetPasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ForgotPasswordServlet</servlet-name>
+        <servlet-class>controller.ForgotPasswordServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changePasswordServlet</servlet-name>
+        <url-pattern>/changePassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyMailServlet</servlet-name>
+        <url-pattern>/verifycode</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <url-pattern>/ResetPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ForgotPasswordServlet</servlet-name>
+        <url-pattern>/ForgotPassword</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteProductsServlet</servlet-name>
