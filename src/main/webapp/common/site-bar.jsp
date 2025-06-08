@@ -125,11 +125,13 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="list-store-stock" class="menu-link">
-                        <div data-i18n="Store Management">Store Management</div>
+                    <a href="listEmployee" class="menu-link">
+                        <div data-i18n="Basic">Employee Management</div>
                     </a>
                 </li>
                 <li class="menu-item">
+                    <a href="listCustomer" class="menu-link">
+                        <div data-i18n="Basic">Customer Management</div>
                     <a href="list-supplier" class="menu-link">
                         <div data-i18n="Supplier Management">Supplier Management</div>
                     <a href="listCustomer" class="menu-link" target="_blank">
@@ -140,7 +142,7 @@
             
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="ListCate" class="menu-link" target="_blank">
+                    <a href="ListCate" class="menu-link" >
                         <div data-i18n="Basic">Product Category Management</div>
                     </a>
                 </li>
@@ -148,14 +150,14 @@
             
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="ListUnit" class="menu-link" target="_blank">
+                    <a href="ListUnit" class="menu-link" >
                         <div data-i18n="Basic">Product Unit Management</div>
                     </a>
                 </li>
             </ul>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="annoucement" class="menu-link" target="_blank">
+                    <a href="annoucement" class="menu-link" >
                         <div data-i18n="Basic">Annoucement</div>
                     </a>
                 </li>
