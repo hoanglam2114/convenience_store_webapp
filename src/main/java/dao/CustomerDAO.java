@@ -95,7 +95,7 @@ public class CustomerDAO extends DBContext{
                         rs.getString("customer_name"),
                         rs.getString("customer_phone"),
                         rs.getInt("point"),
-                        rs.getInt("type_id")
+                        rs.getInt("customer_type_id")
                 );
                 customers.add(customer);
             }
