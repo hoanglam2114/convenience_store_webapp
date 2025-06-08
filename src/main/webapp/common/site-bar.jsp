@@ -133,14 +133,14 @@
                     <a href="list-supplier" class="menu-link">
                         <div data-i18n="Supplier Management">Supplier Management</div>
                     </a>
-                    <a href="listCustomer" class="menu-link" target="_blank">
+                    <a href="listCustomer" class="menu-link">
                         <div data-i18n="Basic">Shift Staff Management</div>
                     </a>
                 </li>
             </ul>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="notificationServlet" class="menu-link" target="_blank">
+                    <a href="notificationServlet" class="menu-link">
                         <div data-i18n="Basic">Notification</div>
                     </a>
                 </li>
