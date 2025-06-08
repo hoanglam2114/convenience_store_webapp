@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controller;
 
-import dao.WeightUnitDAO;
+import dao.ProductCategoriesDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,64 +14,77 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.WeightUnit;
+import model.ProductCategories;
 
 /**
  *
  * @author admin
  */
-public class AddUnitServlet extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+public class UpdateCategoriesServlet extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddUnitServlet</title>");
+            out.println("<title>Servlet UpdateCategoriesServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddUnitServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateCategoriesServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
+   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getRequestDispatcher("/view/AddUnit.jsp").forward(request, response);
-    }
+    throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String id_raw = request.getParameter("cateId");
+        int id;
+        ProductCategoriesDAO pcd = new ProductCategoriesDAO();
+        try{
+           id = Integer.parseInt(id_raw);
+           ProductCategories pc = pcd.getCategoryById(id);
+           session.setAttribute("cate", pc );
+           request.getRequestDispatcher("/view/category-update.jsp").forward(request, response);
+        }catch(NumberFormatException e){
+            System.out.println(e);
+        }
+    } 
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        WeightUnitDAO wud = new WeightUnitDAO();
-        String name = request.getParameter("nameUnit");
-        try {
-     
-            String msg = "";
+    throws ServletException, IOException {
+        
+        String id_raw = request.getParameter("cateid");
+        String name = request.getParameter("catename");
+        ProductCategoriesDAO pcd = new ProductCategoriesDAO();
+        int id ;
+        try{    
+            id = Integer.parseInt(id_raw);
+              String msg = "";
 
             // Validate ký tự đặc biệt
             if (name == null || !name.matches("^[a-zA-Z0-9À-ỹ\\s]+$")) {
                 msg = "Tên đơn vị không được chứa ký tự đặc biệt!";
             } else {
                 // Kiểm tra trùng tên với đơn vị khác (khác ID)
-                List<WeightUnit> list = wud.getAll();
-                for (WeightUnit weightUnit : list) {
-                    if (name.equalsIgnoreCase(weightUnit.getName())) {
+                List<ProductCategories> list = pcd.getAll();
+                for (ProductCategories  productCategories: list) {
+                    if (name.equalsIgnoreCase(productCategories.getName())) {
                         msg = "Tên đơn vị đã tồn tại!";
                         break;
                     }
@@ -80,19 +94,27 @@ public class AddUnitServlet extends HttpServlet {
             // Nếu có lỗi, trả về giao diện cập nhật
             if (!msg.isEmpty()) {
                 request.setAttribute("error", msg);
-                request.setAttribute("unitName", name);
-                request.getRequestDispatcher("/view/AddUnit.jsp").forward(request, response);
+                request.setAttribute("cateid", id);
+                request.setAttribute("cateName", name);
+                request.getRequestDispatcher("/view/category-update.jsp").forward(request, response);
                 return;
             }
-            WeightUnit unitNew = new WeightUnit(name);
-            wud.insertUnit(unitNew);
-            response.sendRedirect("ListUnit");
-
-        } catch (NumberFormatException e) {
+            
+            
+            
+            
+            
+            
+            
+            
+            ProductCategories pc = new ProductCategories(id, name);
+            pcd.updateCategory(pc);
+            response.sendRedirect("ListCate");
+        }catch(NumberFormatException e){
             System.out.println(e);
         }
-
     }
+
 
     @Override
     public String getServletInfo() {

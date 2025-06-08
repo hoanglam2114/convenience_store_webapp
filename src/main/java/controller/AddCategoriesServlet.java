@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.WeightUnitDAO;
+import dao.ProductCategoriesDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,13 +13,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.WeightUnit;
+import model.ProductCategories;
 
 /**
  *
  * @author admin
  */
-public class AddUnitServlet extends HttpServlet {
+public class AddCategoriesServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,40 +38,50 @@ public class AddUnitServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddUnitServlet</title>");
+            out.println("<title>Servlet AddCategoriesServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddUnitServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddCategoriesServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/view/AddUnit.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/category-add.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        WeightUnitDAO wud = new WeightUnitDAO();
-        String name = request.getParameter("nameUnit");
+        ProductCategoriesDAO pcd = new ProductCategoriesDAO();
+        String name = request.getParameter("nameCate");
+
         try {
-     
-            String msg = "";
+         
+           String msg = "";
 
             // Validate ký tự đặc biệt
             if (name == null || !name.matches("^[a-zA-Z0-9À-ỹ\\s]+$")) {
-                msg = "Tên đơn vị không được chứa ký tự đặc biệt!";
+                msg = "Tên loại sản phẩm không được chứa ký tự đặc biệt!";
             } else {
                 // Kiểm tra trùng tên với đơn vị khác (khác ID)
-                List<WeightUnit> list = wud.getAll();
-                for (WeightUnit weightUnit : list) {
-                    if (name.equalsIgnoreCase(weightUnit.getName())) {
-                        msg = "Tên đơn vị đã tồn tại!";
+                List<ProductCategories> list = pcd.getAll();
+                for (ProductCategories productCategories : list) {
+                    if (name.equalsIgnoreCase(productCategories.getName())) {
+                        msg = "Tên loại sản phẩm đã tồn tại!";
                         break;
                     }
                 }
@@ -80,14 +90,16 @@ public class AddUnitServlet extends HttpServlet {
             // Nếu có lỗi, trả về giao diện cập nhật
             if (!msg.isEmpty()) {
                 request.setAttribute("error", msg);
-                request.setAttribute("unitName", name);
-                request.getRequestDispatcher("/view/AddUnit.jsp").forward(request, response);
+                request.setAttribute("cateName", name);
+                request.getRequestDispatcher("/view/category-add.jsp").forward(request, response);
                 return;
             }
-            WeightUnit unitNew = new WeightUnit(name);
-            wud.insertUnit(unitNew);
-            response.sendRedirect("ListUnit");
-
+            
+  
+            
+                ProductCategories cateNew = new ProductCategories(name);
+                pcd.insertCategory(cateNew);
+                response.sendRedirect("ListCate");
         } catch (NumberFormatException e) {
             System.out.println(e);
         }

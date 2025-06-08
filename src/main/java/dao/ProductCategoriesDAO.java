@@ -51,8 +51,7 @@ public class ProductCategoriesDAO extends DBContext {
         }
         return null;
     }
-    
-    
+
     public int getTotalProductCategory() {
         String sql = " select count(*) from [dbo].[Product_Categories]";
         try {
@@ -72,22 +71,97 @@ public class ProductCategoriesDAO extends DBContext {
         String sql = " select * from  [dbo].[Product_Categories]\n"
                 + " order by category_id\n"
                 + " offset ? rows fetch next 5 rows only";
-         try {
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, (index - 1) * 5);
             ResultSet rs = st.executeQuery();
-             while (rs.next()) {
+            while (rs.next()) {
                 ProductCategories pc = new ProductCategories();
                 pc.setId(rs.getInt("category_id"));
                 pc.setName(rs.getString("category_name"));
                 list.add(pc);
-             }
-            
-        }catch (SQLException e) {
-               System.out.println(e);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
         }
         return list;
 
+    }
+
+    public List<ProductCategories> findCategoryByName(String category_name) {
+        String sql = "select * from Product_Categories where category_name COLLATE Latin1_General_CI_AI LIKE ?";
+        List<ProductCategories> list = new ArrayList<>();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + category_name + "%");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                ProductCategories pc = new ProductCategories(rs.getInt("category_id"),
+                        rs.getString("category_name"));
+                list.add(pc);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+    
+    
+    public void insertCategory(ProductCategories c) {
+        String sql = "insert into Product_Categories values(?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, c.getName());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    
+    
+     public ProductCategories getCategoryByName(String category_name) {
+        String sql = "select * from Product_Categories where category_name like ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, category_name);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                ProductCategories pc = new ProductCategories(rs.getInt("category_id"),
+                        rs.getString("category_name"));
+                return pc;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    
+    public void updateCategory(ProductCategories c) {
+        String sql = "UPDATE [dbo].[Product_Categories]\n"
+                + "   SET [category_name] = ?\n"
+                + " WHERE category_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, c.getName());
+            st.setInt(2, c.getId());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void deleteCategory(int id) {
+        String sql = "delete from Product_Categories where category_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 
     public static void main(String[] args) {
@@ -98,6 +172,9 @@ public class ProductCategoriesDAO extends DBContext {
 //        }
 //        int count = dao.getTotalUnit();
 //        System.out.println(count);
-
+        List<ProductCategories> list = dao.findCategoryByName("Thực phẩm");
+ for(ProductCategories o: list){
+            System.out.println(o);
+        }
     }
 }

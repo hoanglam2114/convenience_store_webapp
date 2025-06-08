@@ -20,31 +20,70 @@
         <link rel="stylesheet" href="assets/vendor/css/pages/page-auth.css" />
         <!-- Font and icon -->
         <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
+
+        
+
+
+
+
     </head>
 
     <body>
-        <div class="card p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0 font-size: 3rem;">Thêm đơn vị mới</h5>
-                <a href="ListUnit" class="btn btn-info text-white">
-                    <i class="bx bx-left-arrow"></i> Trở về danh sách đơn vị
-                </a>
+        <!-- Layout wrapper -->
+        <div class="layout-wrapper layout-content-navbar">
+            <div class="layout-container">
+
+                <!-- Sidebar -->
+                <%@ include file="/common/site-bar.jsp" %>
+                <!-- Layout page -->
+                <div class="layout-page" >
+                    <!-- Navbar -->
+                    <%@ include file="/common/nav-bar.jsp" %>
+                    <!-- / Navbar -->
+
+                    <div class="container-xxl flex-grow-1 container-p-y">
+
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0 font-size: 3rem;">Thêm đơn vị mới</h5>
+                            <a href="ListUnit" class="btn btn-info text-white">
+                                <i class="bx bx-left-arrow"></i> Trở về danh sách đơn vị
+                            </a>
+                        </div>
+
+
+
+                        <div class="card" style="padding: 20px">
+                            <form action="AddUnit" method="post"   >
+                                <div class="mb-3">
+                                    <label for="unitName" class="form-label">Tên đơn vị</label>
+                                    <input type="text" name="nameUnit" 
+                                           class="form-control ${not empty error ? 'is-invalid' : ''}" 
+                                           placeholder="Nhập tên đơn vị mới" 
+                                           value="${param.nameUnit != null ? param.nameUnit : ''}"
+                                           required/>               
+                                    <c:if test="${not empty error}">
+                                        <div class="invalid-feedback">
+                                            ${error}
+                                        </div>
+                                    </c:if>
+
+
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-outline-primary" >Thêm đơn vị mới</button>
+                                    <button type="reset" class="btn btn-outline-secondary" >Làm mới</button>
+                                </div>
+                            </form>
+                           
+                        </div>
+                    </div>
+                </div>
+                <!-- /Layout page -->
+
             </div>
-
-
-
-
-            <form action="AddUnit" method="post">
-                <div class="mb-3">
-                    <label for="unitName" class="form-label">Tên đơn vị</label>
-                    <input type="text" name="nameUnit" class="form-control" placeholder="Nhập tên đơn vị mới" />
-                </div>
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-outline-primary" >Thêm đơn vị mới</button>
-                    <button  type="reset" class="btn btn-outline-secondary" >Làm mới</button>
-                </div>
-            </form>
-            <h4 style="color: red">${error}</h4>
+            <!-- /Layout container -->
         </div>
+        <!-- /Layout wrapper -->      
     </body>
 </html>
