@@ -148,6 +148,13 @@
                     </a>
                 </li>
             </ul>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="ListUnit" class="menu-link" >
+                        <div data-i18n="Basic">Product Unit Management</div>
+                    </a>
+                </li>
+            </ul>
 
             <ul class="menu-sub">
                 <li class="menu-item">
