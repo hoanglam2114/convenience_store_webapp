@@ -1,11 +1,5 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: hoang
-  Date: 6/3/2025
-  Time: 3:53 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
 <nav
         class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
         id="layout-navbar"

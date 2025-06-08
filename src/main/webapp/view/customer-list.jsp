@@ -36,12 +36,11 @@
                 <div class="layout-page">
 
                     <!-- Navbar -->
-                    <nav class="layout-navbar container-xxl navbar navbar-expand-xl">
-                        <!-- Navbar -->
-                    </nav>
+                    <%@ include file="/common/nav-bar.jsp" %>
 
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
+                        <div class="container-xxl flex-grow-1 container-p-y">
 
                         <!-- Main content -->
                         <div class="container-xxl flex-grow-1 container-p-y">
@@ -159,15 +158,13 @@
         </div>
         <!-- /Layout wrapper -->
 
-        <!-- Core JS -->
+        <!-- Sneat JS -->
         <script src="assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="assets/vendor/libs/popper/popper.js"></script>
         <script src="assets/vendor/js/bootstrap.js"></script>
-        <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
         <script src="assets/vendor/js/menu.js"></script>
-        <script src="assets/js/main.js"></script>
-        <script src="assets/js/customer.js"></script>
+        <script src="assets/vendor/js/helpers.js"></script>
+        <script src="assets/js/config.js"></script>
+        <script src="assets/js/main.js"></script> <!-- Quan trọng -->
     </body>
 
 </html>

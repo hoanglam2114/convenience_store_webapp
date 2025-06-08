@@ -36,15 +36,13 @@
                 <div class="layout-page">
 
                     <!-- Navbar -->
-                    <nav class="layout-navbar container-xxl navbar navbar-expand-xl">
-                        <!-- Navbar -->
-                    </nav>
+                    <%@ include file="/common/nav-bar.jsp" %>
 
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
-
-                        <!-- Main content -->
                         <div class="container-xxl flex-grow-1 container-p-y">
+
+                            <!-- Main content -->
                             <h4 class="fw-bold py-3 mb-4">
                                 <span class="text-muted fw-light">Quản Lý /</span> Quản Lý Nhân Viên
                             </h4>
@@ -159,17 +157,14 @@
             <!-- /Layout container -->
         </div>  
         <!-- /Layout wrapper -->
-
-
-        <!-- Core JS -->
+        
+        <!-- Sneat JS -->
         <script src="assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="assets/vendor/libs/popper/popper.js"></script>
         <script src="assets/vendor/js/bootstrap.js"></script>
-        <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
         <script src="assets/vendor/js/menu.js"></script>
-        <script src="assets/js/main.js"></script>
-        <script src="assets/js/employee.js"></script>
+        <script src="assets/vendor/js/helpers.js"></script>
+        <script src="assets/js/config.js"></script>
+        <script src="assets/js/main.js"></script> <!-- Quan trọng -->
     </body>
 
 </html>

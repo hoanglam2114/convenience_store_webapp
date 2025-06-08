@@ -84,7 +84,7 @@ public class CustomerDAO extends DBContext{
 
     public List<Customers> searchCustomer(String keyword) throws SQLException {
         List<Customers> customers = new ArrayList<>();
-        String sql = "SELECT * FROM Customers WHERE customer_name COLLATE Latin1_General_CI_AI LIKE ?";
+        String sql = "SELECT * FROM customers WHERE customer_name COLLATE Latin1_General_CI_AI LIKE ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, "%" + keyword.toLowerCase() + "%");
@@ -95,7 +95,7 @@ public class CustomerDAO extends DBContext{
                         rs.getString("customer_name"),
                         rs.getString("customer_phone"),
                         rs.getInt("point"),
-                        rs.getInt("type_id")
+                        rs.getInt("customer_type_id")
                 );
                 customers.add(customer);
             }
