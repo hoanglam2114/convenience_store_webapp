@@ -126,14 +126,26 @@ public class EmployeeDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    
+    public Integer getEmployeeIdByAccountId(int accountId) {
+        String sql = "select employee_id from employees where account_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, accountId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("employee_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 
 //    public static void main(String[] args) {
 //        EmployeeDAO dao = new EmployeeDAO();
-//
-//            // Tạo đối tượng Employees
-//            Employees emp = new Employees("Nguyen Van B", "0123456789", "Ha Noi", 1);
-//
-//            // Gọi addEmployee với status
-//            dao.addEmployee(emp);
+//        Integer id = dao.getEmployeeIdByAccountId(2);
+//            System.out.println(id);
 //    }
 }
