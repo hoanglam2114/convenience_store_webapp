@@ -33,9 +33,11 @@
                 <!-- Sidebar -->
                 <%@ include file="/common/site-bar.jsp" %>
 
+                <!-- Layout page -->
                 <div class="layout-page">
 
                     <!-- Navbar -->
+                    <%@ include file="/common/nav-bar.jsp" %>
 
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
@@ -103,7 +105,6 @@
                                     </form>
                                 </div>
                             </div>
-
                         </div>
 
                         <!-- Footer -->
@@ -114,17 +115,16 @@
                         </footer>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <!-- Core JS -->
+        <!-- Sneat JS -->
         <script src="assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="assets/vendor/libs/popper/popper.js"></script>
         <script src="assets/vendor/js/bootstrap.js"></script>
-        <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
         <script src="assets/vendor/js/menu.js"></script>
-        <script src="assets/js/main.js"></script>
+        <script src="assets/vendor/js/helpers.js"></script>
+        <script src="assets/js/config.js"></script>
+        <script src="assets/js/main.js"></script> <!-- Quan trọng -->
     </body>
 
 </html>
