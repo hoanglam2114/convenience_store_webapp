@@ -94,8 +94,14 @@
 
 
         <!-- Sneat JS -->
+           <!-- Sneat JS -->
         <script src="assets/vendor/libs/jquery/jquery.js"></script>
         <script src="assets/vendor/js/bootstrap.js"></script>
         <script src="assets/vendor/js/menu.js"></script>
+        <script src="assets/vendor/js/helpers.js"></script>
+        <script src="assets/js/config.js"></script>
+        <script src="assets/js/main.js"></script> <!-- Quan trọng -->
+
+        
     </body>
 </html>
