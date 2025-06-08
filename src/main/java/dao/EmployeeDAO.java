@@ -81,7 +81,7 @@ public class EmployeeDAO extends DBContext {
 
     public List<Employees> searchEmployee(String keyword) throws SQLException {
         List<Employees> employees = new ArrayList<>();
-        String sql = "SELECT * FROM employees WHERE LOWER(employee_name) LIKE ?";
+        String sql = "SELECT * FROM employees WHERE employee_name COLLATE Latin1_General_CI_AI LIKE ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, "%" + keyword.toLowerCase() + "%");
@@ -119,7 +119,7 @@ public class EmployeeDAO extends DBContext {
             ps.setString(2, emp.getPhone());
             ps.setString(3, emp.getAddress());
             ps.setInt(4, emp.getId());
-            
+
             int rowsUpdated = ps.executeUpdate();
             System.out.println("Rows updated: " + rowsUpdated);
         } catch (SQLException e) {
@@ -127,13 +127,55 @@ public class EmployeeDAO extends DBContext {
         }
     }
 
-//    public static void main(String[] args) {
-//        EmployeeDAO dao = new EmployeeDAO();
-//
-//            // Tạo đối tượng Employees
-//            Employees emp = new Employees("Nguyen Van B", "0123456789", "Ha Noi", 1);
-//
-//            // Gọi addEmployee với status
-//            dao.addEmployee(emp);
-//    }
+    public List<Employees> pagingEmployee(int index) {
+        List<Employees> list = new ArrayList<>();
+        String sql = "SELECT [employee_id],\n"
+                + "       [employee_name],\n"
+                + "       [employee_phone],\n"
+                + "       [employee_address],\n"
+                + "       [account_id] \n"
+                + "from Employees\n"
+                + "order by employee_id\n"
+                + "offset ?  rows fetch next 5 rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, (index - 1) * 5);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Employees e = new Employees();
+                e.setId(rs.getInt("employee_id"));
+                e.setName(rs.getString("employee_name"));
+                e.setPhone(rs.getString("employee_phone"));
+                e.setAddress(rs.getString("employee_address"));
+                e.setAccountId(rs.getInt("account_id"));
+                list.add(e);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+
+    public int getTotalEmployee() {
+        String sql = "SELECT COUNT(*) from [dbo].[Employees]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        EmployeeDAO dao = new EmployeeDAO();
+
+        List<Employees> list = dao.pagingEmployee(1);
+        for (Employees employees : list) {
+            System.out.println(employees);
+        }
+    }
 }

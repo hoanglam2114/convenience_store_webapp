@@ -61,7 +61,7 @@ public class SearchEmployee extends HttpServlet {
                 Logger.getLogger(SearchEmployee.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            employeeList = dao.getAllEmployee(); // lấy toàn bộ nếu không tìm kiếm
+            employeeList = dao.pagingEmployee(1); // lấy toàn bộ nếu không tìm kiếm
         }
 
         request.setAttribute("employeeList", employeeList);

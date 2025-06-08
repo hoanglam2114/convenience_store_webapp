@@ -6,22 +6,17 @@
 package controller;
 
 import dao.CustomerDAO;
-import dao.EmployeeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.List;
 import model.Customers;
-import model.Employees;
 
-/**
- *
- * @author Admin
- */
-public class ListCustomerServlet extends HttpServlet {
+public class SearchCustomerServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -31,10 +26,10 @@ public class ListCustomerServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListCustomerServlet</title>");  
+            out.println("<title>Servlet SearchCustomerServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListCustomerServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet SearchCustomerServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -43,38 +38,28 @@ public class ListCustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-
-        String indexPage = request.getParameter("index");
-        int currentPage = 1;
-
-        if (indexPage != null) {
-            try {
-                currentPage = Integer.parseInt(indexPage);
-            } catch (NumberFormatException e) {
-            }
-        }else{
-            indexPage = "1";
-        }
-
-        int index = Integer.parseInt(indexPage);
-        CustomerDAO dao = new CustomerDAO();
-        int count = dao.getTotalCustomer();
-        int endPage = count / 5;
-        if (count % 5 != 0) {
-            endPage++;
-        }
-        List<Customers> customerList = dao.pagingCustomer(index);
-
-        request.setAttribute("customerList", customerList);
-        request.setAttribute("currentPage", currentPage);
-        request.setAttribute("endPage", endPage);
-        request.getRequestDispatcher("view/customer-list.jsp").forward(request, response);
+        request.getRequestDispatcher("listCustomer");
     } 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String keyword = request.getParameter("customerSearch");
+        List<Customers> customerList = null;
+        CustomerDAO dao = new CustomerDAO();
+        
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            try {
+                customerList = dao.searchCustomer(keyword);
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        } else {
+            customerList = dao.getAllCustomer();
+        }
+
+        request.setAttribute("customerList", customerList);
+        request.getRequestDispatcher("view/customer-list.jsp").forward(request, response);
     }
 
     @Override

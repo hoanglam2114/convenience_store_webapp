@@ -16,6 +16,10 @@
         <servlet-name>DeleteCategoriesServlet</servlet-name>
         <servlet-class>controller.DeleteCategoriesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchCustomerServlet</servlet-name>
+        <servlet-class>controller.SearchCustomerServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListCustomerServlet</servlet-name>
         <url-pattern>/listCustomer</url-pattern>
@@ -35,6 +39,10 @@
     <servlet-mapping>
         <servlet-name>DeleteCustomerServlet</servlet-name>
         <url-pattern>/deleteCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchCustomerServlet</servlet-name>
+        <url-pattern>/searchCustomer</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FindCategoriesServlet</servlet-name>

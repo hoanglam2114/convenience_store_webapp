@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
         <link rel="stylesheet" href="assets/vendor/css/theme-default.css" />
         <link rel="stylesheet" href="assets/css/demo.css" />
-
+       
 
         <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
 
@@ -50,7 +50,7 @@
                         <div class="container-xxl flex-grow-1 container-p-y">
 
 
-                         
+
 
                                 <h4 class="fw-bold py-3 mb-4">Danh sách sản phẩm</h4>
 
@@ -120,14 +120,14 @@
                                                     <td>${p.getBatch()}</td>
                                                     <td>
                                                         <div class="d-flex align-items-center list-action">
-                                                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="Lịch sử giá" 
+                                                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="Lịch sử giá"
                                                                href="PriceEdit.jsp?id=1" class="btn btn-info btn-sm">
                                                                 <i class="bx bx-show"></i>
                                                             </a>
 
-                                                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa thông tin" 
+                                                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa thông tin"
                                                                href="UpdateProduct?product_id=${p.getId()} " class="btn btn-warning btn-sm">
-                                                                <i class="bx bx-edit"></i> 
+                                                                <i class="bx bx-edit"></i>
 
                                                             </a>
 
@@ -165,7 +165,7 @@
                             </div>
                         </div>
 
-                    </div>                        
+                    </div>
                 </div>
             </div>
 

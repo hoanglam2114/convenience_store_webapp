@@ -127,7 +127,7 @@ public class ProductsDAO extends DBContext {
     
     
     
-     public List<Products> pagingProducts(int index) {
+        public List<Products> pagingProducts(int index) {
         List<Products> list = new ArrayList<>();
         String sql = "select [product_id],\n"
                 + "       [category_id],\n"

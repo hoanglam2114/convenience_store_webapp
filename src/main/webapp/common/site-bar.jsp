@@ -92,6 +92,7 @@
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Management">Management</div>
             </a>
+
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="listEmployee" class="menu-link">
