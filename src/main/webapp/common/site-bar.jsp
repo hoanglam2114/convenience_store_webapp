@@ -134,12 +134,13 @@
                         <div data-i18n="Basic">Customer Management</div>
                     <a href="list-supplier" class="menu-link">
                         <div data-i18n="Supplier Management">Supplier Management</div>
-                    <a href="listCustomer" class="menu-link" target="_blank">
+                    </a>
+                    <a href="listCustomer" class="menu-link">
                         <div data-i18n="Basic">Shift Staff Management</div>
                     </a>
                 </li>
             </ul>
-            
+
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="ListCate" class="menu-link" >
@@ -147,18 +148,11 @@
                     </a>
                 </li>
             </ul>
-            
+
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="ListUnit" class="menu-link" >
-                        <div data-i18n="Basic">Product Unit Management</div>
-                    </a>
-                </li>
-            </ul>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="annoucement" class="menu-link" >
-                        <div data-i18n="Basic">Annoucement</div>
+                    <a href="notificationServlet" class="menu-link">
+                        <div data-i18n="Basic">Notification</div>
                     </a>
                 </li>
             </ul>
