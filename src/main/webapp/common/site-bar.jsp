@@ -137,6 +137,22 @@
                     </a>
                 </li>
             </ul>
+            
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="ListCate" class="menu-link" target="_blank">
+                        <div data-i18n="Basic">Product Category Management</div>
+                    </a>
+                </li>
+            </ul>
+            
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="ListUnit" class="menu-link" target="_blank">
+                        <div data-i18n="Basic">Product Unit Management</div>
+                    </a>
+                </li>
+            </ul>
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="annoucement" class="menu-link" target="_blank">
