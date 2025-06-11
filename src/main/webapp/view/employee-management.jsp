@@ -164,7 +164,8 @@
         <script src="assets/vendor/js/menu.js"></script>
         <script src="assets/vendor/js/helpers.js"></script>
         <script src="assets/js/config.js"></script>
-        <script src="assets/js/main.js"></script> <!-- Quan trọng -->
+        <script src="assets/js/main.js"></script>
+        <script src="assets/js/employee.js"></script>
     </body>
 
 </html>

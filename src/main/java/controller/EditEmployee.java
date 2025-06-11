@@ -12,6 +12,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import model.Employees;
 import model.Notification;
 
@@ -56,15 +58,41 @@ public class EditEmployee extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Set UTF-8
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
+        
+        List<String> errors = new ArrayList<>();
+
+        if (!name.matches("^[a-zA-ZÀ-Ỹà-ỹ]+(\\s[a-zA-ZÀ-Ỹà-ỹ]+)*$")) {
+            errors.add("Name is invalid.");
+        }
+        if (!phone.matches("^0\\d{9}$")) {
+            errors.add("Phone number must contain 10 to digits.");
+        }
+        if (!address.matches("^[a-zA-ZÀ-Ỹà-ỹ]+(\\s[a-zA-ZÀ-Ỹà-ỹ]+)*$")) {
+            errors.add("Address is invalid.");
+        }
+
+        // Nếu có lỗi quay lại trang form và hiển thị danh sách lỗi
+        if (!errors.isEmpty()) {
+            request.setAttribute("errors", errors);
+            request.setAttribute("name", name);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.getRequestDispatcher("view/employee-edit.jsp").forward(request, response);
+            return;
+        }
 
         EmployeeDAO dao = new EmployeeDAO();
         Employees emp = new Employees(id, name, phone, address);
 
-        // Gọi update (không biết thành công hay không)
+        // Gọi update
         dao.updateEmployeeById(emp);
         
         NotificationDAO notiDAO = new NotificationDAO();
