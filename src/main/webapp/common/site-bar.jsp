@@ -144,16 +144,6 @@
                         <div data-i18n="Inventory Management">Inventory</div>
                     </a>
                 </li>
-<!--                <li class="menu-item">
-                    <a href="pages-account-settings-notifications.html" class="menu-link">
-                        <div data-i18n="Notifications">Notifications</div>
-                    </a>
-                </li>-->
-                <li class="menu-item">
-                    <a href="pages-account-settings-connections.html" class="menu-link">
-                        <div data-i18n="Connections">Connections</div>
-                    </a>
-                </li>
                 <li class="menu-item">
                     <a href="list-supplier" class="menu-link">
                         <div data-i18n="Supplier Management">Suppliers</div>
@@ -165,18 +155,12 @@
 
         <!-- Notification -->
         <li class="menu-item">
-            <a
-                    href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-                    target="_blank"
-                    class="menu-link"
-            >
-                <i class="menu-icon tf-icons bx bx-support"></i>
-                <div data-i18n="Support">Support</div>
+            <a href="notificationServlet" class="menu-link">
+                <div data-i18n="Basic">Notification</div>
             </a>
         </li>
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">convema</span>
         </li>
     </ul>
-
 </aside>
