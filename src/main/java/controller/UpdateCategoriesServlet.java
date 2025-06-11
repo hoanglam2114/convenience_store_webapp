@@ -79,13 +79,17 @@ public class UpdateCategoriesServlet extends HttpServlet {
 
             // Validate ký tự đặc biệt
             if (name == null || !name.matches("^[a-zA-Z0-9À-ỹ\\s]+$")) {
-                msg = "Tên đơn vị không được chứa ký tự đặc biệt!";
+                msg = "Tên loại sản phẩm không được chứa ký tự đặc biệt!";
+            }else if(name.startsWith(" ")){
+                msg = "Tên loại sản phẩm không được bắt đầu bằng khoảng cách!";
+            }else if(name.length()>40){
+                msg = "Tên loại sản phẩm không được quá 40 kí tự!";
             } else {
                 // Kiểm tra trùng tên với đơn vị khác (khác ID)
                 List<ProductCategories> list = pcd.getAll();
                 for (ProductCategories  productCategories: list) {
                     if (name.equalsIgnoreCase(productCategories.getName())) {
-                        msg = "Tên đơn vị đã tồn tại!";
+                        msg = "Tên loại sản phẩm đã tồn tại!";
                         break;
                     }
                 }
