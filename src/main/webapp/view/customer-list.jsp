@@ -64,7 +64,7 @@
                                             id="customerSearch"
                                             name="customerSearch"
                                             class="form-control"
-                                            placeholder="Search..."
+                                            placeholder="Tìm Kiếm..."
                                             aria-label="Search"
                                             aria-describedby="basic-addon-search"
                                             />
@@ -164,7 +164,8 @@
         <script src="assets/vendor/js/menu.js"></script>
         <script src="assets/vendor/js/helpers.js"></script>
         <script src="assets/js/config.js"></script>
-        <script src="assets/js/main.js"></script> <!-- Quan trọng -->
+        <script src="assets/js/main.js"></script>
+        <script src="assets/js/customer.js"></script>
     </body>
 
 </html>

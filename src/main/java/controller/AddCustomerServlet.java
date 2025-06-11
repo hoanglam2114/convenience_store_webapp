@@ -60,41 +60,39 @@ public class AddCustomerServlet extends HttpServlet {
         int point = -1;
 
         // Validate empty fields
-        if (name == null || name.trim().isEmpty()) {
-            errors.add("Name is required.");
+        if (!name.matches("^[a-zA-ZÀ-Ỹà-ỹ]+(\\s[a-zA-ZÀ-Ỹà-ỹ]+)*$")) {
+            errors.add("Tên không hợp lệ.");
         }
-        if (pointRaw == null || pointRaw.trim().isEmpty()) {
-            errors.add("Point is required.");
+        if (!pointRaw.matches("^[0-9]+$")) {
+            errors.add("Điểm không hợp lệ.");
         }
-        if (typeIdRaw == null || typeIdRaw.trim().isEmpty()) {
-            errors.add("Type ID is required.");
+        if (!typeIdRaw.matches("^[0-9]+$")) {
+            errors.add("ID không hợp lệ.");
         }
 
         // Validate phone format
-        if (phone == null || phone.trim().isEmpty()) {
-            errors.add("Phone is required.");
-        } else if (!phone.matches("^0\\d{9}$")) {
-            errors.add("Phone number must contain 10 to digits.");
+        if (!phone.matches("^0\\d{9}$")) {
+            errors.add("Số điện thoại cần bao gồm 10 chữ số.");
         }
 
         // Validate point is an integer
         try {
             point = Integer.parseInt(pointRaw);
             if (point < 0) {
-                errors.add("Point must be a non-negative number.");
+                errors.add("Điểm phải lớn hơn 0.");
             }
         } catch (NumberFormatException e) {
-            errors.add("Point must be a valid integer.");
+            errors.add("Điểm không hợp lệ.");
         }
 
         // Validate typeId is an integer
         try {
             typeId = Integer.parseInt(typeIdRaw);
-            if (typeId < 0) {
-                errors.add("Type ID must be a non-negative number.");
+            if (typeId <= 0) {
+                errors.add("Type ID phải lớn hơn 0.");
             }
         } catch (NumberFormatException e) {
-            errors.add("Type ID must be a valid integer.");
+            errors.add("Type ID không hợp lệ.");
         }
         
         // Nếu có lỗi quay lại trang form và hiển thị danh sách lỗi
