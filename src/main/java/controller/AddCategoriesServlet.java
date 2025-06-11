@@ -76,6 +76,10 @@ public class AddCategoriesServlet extends HttpServlet {
             // Validate ký tự đặc biệt
             if (name == null || !name.matches("^[a-zA-Z0-9À-ỹ\\s]+$")) {
                 msg = "Tên loại sản phẩm không được chứa ký tự đặc biệt!";
+            }else if(name.startsWith(" ")){
+                msg = "Tên loại sản phẩm không được bắt đầu bằng khoảng cách!";
+            }else if(name.length()>40){
+                msg = "Tên loại sản phẩm không được quá 40 kí tự!";
             } else {
                 // Kiểm tra trùng tên với đơn vị khác (khác ID)
                 List<ProductCategories> list = pcd.getAll();
