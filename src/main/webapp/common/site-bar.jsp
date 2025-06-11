@@ -7,7 +7,7 @@
 --%>
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="index.jsp" class="app-brand-link">
+        <a href="HomeAdmin" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <svg
                         width="25"
@@ -76,7 +76,7 @@
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
         <li class="menu-item active">
-            <a href="index.jsp" class="menu-link">
+            <a href="HomeAdmin" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
@@ -90,18 +90,22 @@
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Management">Management</div>
+                <div data-i18n="Management">People Management</div>
             </a>
-
             <ul class="menu-sub">
                 <li class="menu-item">
+                    <a href="register" class="menu-link">
+                        <div data-i18n="Basic">Staff Register</div>
+                    </a>
+                </li>
+                <li class="menu-item">
                     <a href="listEmployee" class="menu-link">
-                        <div data-i18n="Employee Management">Employee Management</div>
+                        <div data-i18n="Employee Management">Employees</div>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="listCustomer" class="menu-link">
-                        <div data-i18n="Customer Management">Customer Management</div>
+                        <div data-i18n="Customer Management">Customer</div>
                     </a>
                 </li>
             </ul>
@@ -111,131 +115,52 @@
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-package"></i>
-                <div data-i18n="Product">Product</div>
+                <div data-i18n="Product">Ware House</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="ListProduct" class="menu-link">
-                        <div data-i18n="Product Management">Product Management</div>
+                        <div data-i18n="Product Management">Product</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ListCate" class="menu-link">
+                        <div data-i18n="Basic">Product Category</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ListUnit" class="menu-link">
+                        <div data-i18n="Basic">Product Unit</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="list-store-stock" class="menu-link">
+                        <div data-i18n="Inventory Management">Store Stock</div>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="inventory" class="menu-link">
-                        <div data-i18n="Inventory Management">Inventory Management</div>
+                        <div data-i18n="Inventory Management">Inventory</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="listEmployee" class="menu-link">
-                        <div data-i18n="Basic">Employee Management</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="listCustomer" class="menu-link">
-                        <div data-i18n="Basic">Customer Management</div>
                     <a href="list-supplier" class="menu-link">
-                        <div data-i18n="Supplier Management">Supplier Management</div>
-                    </a>
-                    <a href="listCustomer" class="menu-link">
-                        <div data-i18n="Basic">Shift Staff Management</div>
+                        <div data-i18n="Supplier Management">Suppliers</div>
                     </a>
                 </li>
-            </ul>
 
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="ListCate" class="menu-link" >
-                        <div data-i18n="Basic">Product Category Management</div>
-                    </a>
-                </li>
-            </ul>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="ListUnit" class="menu-link" >
-                        <div data-i18n="Basic">Product Unit Management</div>
-                    </a>
-                </li>
-            </ul>
-
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="notificationServlet" class="menu-link">
-                        <div data-i18n="Basic">Notification</div>
-                    </a>
-                </li>
             </ul>
         </li>
 
-        <!-- Account Settings -->
+        <!-- Notification -->
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">Account Settings</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="pages-account-settings-account.html" class="menu-link">
-                        <div data-i18n="Account">Account</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="pages-account-settings-notifications.html" class="menu-link">
-                        <div data-i18n="Notifications">Notifications</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="pages-account-settings-connections.html" class="menu-link">
-                        <div data-i18n="Connections">Connections</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- Authentication -->
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-                <div data-i18n="Authentications">Authentications</div>
-            </a>
-            <ul class="menu-sub">
-<!--                <li class="menu-item">
-                    <a href="auth-login-basic.html" class="menu-link" target="_blank">
-                        <div data-i18n="Basic">Login</div>
-                    </a>
-                </li>-->
-                <li class="menu-item">
-                    <a href="register" class="menu-link" target="_blank">
-                        <div data-i18n="Basic">Register New Staff</div>
-                    </a>
-                </li>
-<!--                <li class="menu-item">
-                    <a href="ForgotPassword" class="menu-link" target="_blank">
-                        <div data-i18n="Basic">Forgot Password</div>
-                    </a>
-                </li>-->
-            </ul>
-        </li>
-
-        <!-- Support -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Support</span></li>
-        <li class="menu-item">
-            <a
-                    href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-                    target="_blank"
-                    class="menu-link"
-            >
-                <i class="menu-icon tf-icons bx bx-support"></i>
-                <div data-i18n="Support">Support</div>
+            <a href="notificationServlet" class="menu-link">
+                <div data-i18n="Basic">Notification</div>
             </a>
         </li>
-        <li class="menu-item">
-            <a
-                    href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-                    target="_blank"
-                    class="menu-link"
-            >
-                <i class="menu-icon tf-icons bx bx-file"></i>
-                <div data-i18n="Documentation">Documentation</div>
-            </a>
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">convema</span>
         </li>
     </ul>
+
 </aside>
