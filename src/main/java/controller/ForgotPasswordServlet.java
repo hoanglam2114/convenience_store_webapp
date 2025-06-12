@@ -110,11 +110,11 @@ public class ForgotPasswordServlet extends HttpServlet {
 
             } catch (Exception e) {
                 request.setAttribute("error", "Lỗi hệ thống: Không thể gửi email xác nhận.");
-                request.getRequestDispatcher("view/auth-sign-up.jsp").forward(request, response);
+                request.getRequestDispatcher("view/auth-sign-in.jsp").forward(request, response);
             }
         }else {
             request.setAttribute("error", "Email đã tồn tại!");
-            request.getRequestDispatcher("view/auth-sign-up.jsp").forward(request, response);
+            request.getRequestDispatcher("view/auth-sign-in.jsp").forward(request, response);
         }
     }
 
