@@ -19,7 +19,49 @@ import model.WeightUnit;
  * @author admin
  */
 public class ProductsDAO extends DBContext {
-      public WeightUnit getWUById(int weight_unit_id) {
+
+    public List<Products> getAllProduct() {
+        List<Products> listProducts = new ArrayList<>();
+        String sql = "Select [product_id],\n"
+                + "       [category_id],\n"
+                + "       [barcode],\n"
+                + "       [product_name],\n"
+                + "       [product_price],\n"
+                + "       [weight_unit_id],\n"
+                + "       [supplier_id],\n"
+                + "       [product_image],\n"
+                + "       [manufacture_date],\n"
+                + "       [expiration_date],\n"
+                + "       [batch]\n"
+                + " from Products\n";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Products p = new Products();
+                p.setId(rs.getInt("product_id"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setName(rs.getString("product_name"));
+                p.setPrice(rs.getFloat("product_price"));
+                p.setImage(rs.getString("product_image"));
+                ProductCategories pc = getCategoryById(rs.getInt("category_id"));
+                p.setProductCategories(pc);
+                WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
+                p.setWeightUnit(wu);
+                Suppliers sup = getSupById(rs.getInt("supplier_id"));
+                p.setSuppliers(sup);
+                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
+                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
+                p.setBatch(rs.getInt("batch"));
+                listProducts.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listProducts;
+    }
+
+    public WeightUnit getWUById(int weight_unit_id) {
         String sql = "select * from Weight_unit where weight_unit_id = ?";
 
         try {
@@ -79,22 +121,21 @@ public class ProductsDAO extends DBContext {
         }
         return null;
     }
-    
-    public int getTotalProduct(){
+
+    public int getTotalProduct() {
         String sql = "select COUNT(*) from [dbo].[Products]";
-        try{
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 return rs.getInt(1);
-            }      
-        }catch (Exception e) {      
+            }
+        } catch (Exception e) {
         }
-             return 0; 
+        return 0;
     }
-    
-    
-      public Products getProductById(int product_id) {
+
+    public Products getProductById(int product_id) {
         String sql = "select * from Products where product_id = ?";
 
         try {
@@ -124,10 +165,8 @@ public class ProductsDAO extends DBContext {
         }
         return null;
     }
-    
-    
-    
-        public List<Products> pagingProducts(int index) {
+
+    public List<Products> pagingProducts(int index) {
         List<Products> list = new ArrayList<>();
         String sql = "select [product_id],\n"
                 + "       [category_id],\n"
@@ -143,12 +182,13 @@ public class ProductsDAO extends DBContext {
                 + "from Products\n"
                 + "order by product_id\n"
                 + "offset ?  rows fetch next 5 rows only";
+
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, (index - 1) * 5);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                 Products p = new Products();
+                Products p = new Products();
                 p.setId(rs.getInt("product_id"));
                 p.setBarcode(rs.getString("barcode"));
                 p.setName(rs.getString("product_name"));
@@ -165,21 +205,19 @@ public class ProductsDAO extends DBContext {
                 p.setBatch(rs.getInt("batch"));
                 list.add(p);
             }
-
         } catch (SQLException e) {
-               System.out.println(e);
+            System.out.println(e);
         }
 
         return list;
     }
-    
-    
+
     public List<Products> searchProductByName(String product_name) {
         String sql = "select * from Products where product_name like ?";
         List<Products> list = new ArrayList<>();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, "%"+product_name+"%");
+            st.setString(1, "%" + product_name + "%");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Products p = new Products();
@@ -204,8 +242,8 @@ public class ProductsDAO extends DBContext {
         }
         return list;
     }
-    
-     public Products getProductByName(String product_name) {
+
+    public Products getProductByName(String product_name) {
         String sql = "select * from Products where product_name like ?";
 
         try {
@@ -235,7 +273,7 @@ public class ProductsDAO extends DBContext {
         }
         return null;
     }
-    
+
     public void insertPro(Products p) {
         String sql = "INSERT INTO Products VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -255,7 +293,7 @@ public class ProductsDAO extends DBContext {
             System.out.println(e);
         }
     }
-    
+
     public void updateProduct(Products p) {
         String sql = "UPDATE [dbo].[Products]\n"
                 + "   SET [category_id] = ? \n"
@@ -289,8 +327,9 @@ public class ProductsDAO extends DBContext {
     }
 
     /**
-     * This method retrieves the latest product from the Products table.
-     * It uses a SQL query to select the top 1 product ordered by product_id in descending order.
+     * This method retrieves the latest product from the Products table. It uses
+     * a SQL query to select the top 1 product ordered by product_id in
+     * descending order.
      *
      * @return the latest Products object or null if no product is found
      */
@@ -324,7 +363,8 @@ public class ProductsDAO extends DBContext {
         }
         return null; // Trả về null nếu không tìm thấy sản phẩm
     }
-      public void deleteProduct(int id) {
+
+    public void deleteProduct(int id) {
         String sql = "delete from Products where product_id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -335,9 +375,6 @@ public class ProductsDAO extends DBContext {
         }
     }
 
-
-    
-    
     public int getLatestBatchByName(String name) {
         String query = "SELECT MAX(batch) FROM Products WHERE product_name = ?";
         try {
@@ -354,9 +391,9 @@ public class ProductsDAO extends DBContext {
     }
 
     /**
-     * This method retrieves a list of products that are not present in the inventory.
-     * It uses a SQL query to select products from the Products table where there
-     * is no corresponding entry in the Inventory table.
+     * This method retrieves a list of products that are not present in the
+     * inventory. It uses a SQL query to select products from the Products table
+     * where there is no corresponding entry in the Inventory table.
      *
      * @return a list of Products that are not in the inventory
      */
@@ -397,19 +434,47 @@ public class ProductsDAO extends DBContext {
         return list;
     }
 
+    public List<Products> getProductsByCategory(int categoryId) throws SQLException {
+        List<Products> list = new ArrayList<>();
+        
+        String sql = "SELECT * FROM Products WHERE category_id = ?";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, categoryId);
+        ResultSet rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            Products p = new Products();
+            p.setId(rs.getInt("product_id"));
+            p.setBarcode(rs.getString("barcode"));
+            p.setName(rs.getString("product_name"));
+            p.setPrice(rs.getFloat("product_price"));
+            p.setImage(rs.getString("product_image"));
+            ProductCategories pc = getCategoryById(rs.getInt("category_id"));
+            p.setProductCategories(pc);
+            WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
+            p.setWeightUnit(wu);
+            Suppliers sup = getSupById(rs.getInt("supplier_id"));
+            p.setSuppliers(sup);
+            p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
+            p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
+            p.setBatch(rs.getInt("batch"));
+            list.add(p);
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
-    
+
 //        int count = dao.getTotalProduct();
 //        System.out.println(count);
+        ProductsDAO dao = new ProductsDAO();
 
-          ProductsDAO dao = new ProductsDAO();
-        
 //          List<Products>list = dao.searchProductByName("c2");
 //          for (Products o : list){
 //              System.out.println(o);
 //          }
-          Products p = dao.getProductById(1);
-          System.out.println(p);
+        List<Products> p = dao.getAllProduct();
+        System.out.println(p.toString());
     }
-    
+
 }
