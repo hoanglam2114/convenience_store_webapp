@@ -7,8 +7,10 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import model.HistoryPrice;
 import model.ProductCategories;
 import model.Products;
 import model.Suppliers;
@@ -315,6 +317,57 @@ public class ProductsDAO extends DBContext {
             e.printStackTrace();
         }
         return 1;
+    }
+     public void insertHisPrice(HistoryPrice h) {
+        String sql = "INSERT INTO HistoryPrice VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, h.getProduct().getId());
+            st.setFloat(2, h.getPrice());
+            st.setFloat(3, h.getPriceBefore());
+            st.setTimestamp(4, Timestamp.valueOf(h.getUpdatedAt()));
+            st.setString(5, h.getStatus());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+     
+      public void updateProductPrice(int productId, float newPrice) {
+        String sql = "UPDATE Products SET product_price = ? WHERE product_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setFloat(1, newPrice); // Set giá mới
+            st.setInt(2, productId); // Set product_id
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+      
+        public List<HistoryPrice> getHistoryById(int product_id) {
+        List<HistoryPrice> list = new ArrayList<>();
+
+        String sql = "select * from HistoryPrice where product_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, product_id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                HistoryPrice h = new HistoryPrice();
+                h.setHistoryId(rs.getInt("history_id"));
+                Products p = getProductById(rs.getInt("product_id"));
+                h.setProduct(p);
+                h.setPrice(rs.getFloat("price"));
+                h.setPriceBefore(rs.getFloat("price_before"));
+                h.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                h.setStatus(rs.getString("status"));
+                list.add(h);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
     }
     
     public static void main(String[] args) {

@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
 import dao.ProductsDAO;
@@ -13,45 +12,46 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
+import java.time.LocalDateTime;
+import model.HistoryPrice;
 import model.Products;
 
 /**
  *
  * @author admin
  */
+public class UpdatePriceServlet extends HttpServlet {
 
-
-
-public class ListProductsServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListProducts</title>");  
+            out.println("<title>Servlet UpdatePriceServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListProducts at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet UpdatePriceServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -59,41 +59,25 @@ public class ListProductsServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String indexPage = request.getParameter("index");
-        int currentPage = 1;
-       if (indexPage != null) {
-            try {
-                currentPage = Integer.parseInt(indexPage);
-            } catch (NumberFormatException e) {
-            }
-        }else{
-            indexPage = "1";
+        String id_raw = request.getParameter("product_id");
+        int id;
+        ProductsDAO pd = new ProductsDAO();
+        try {
+            id = Integer.parseInt(id_raw);
+            Products p = pd.getProductById(id);
+            session.setAttribute("product", p);
+            request.getRequestDispatcher("/view/product-edit-price.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            System.out.println(e);
         }
-        
-        
-        
-        int index = Integer.parseInt(indexPage);
-         ProductsDAO dao = new ProductsDAO();
-        int count = dao.getTotalProduct();
-        int endPage = count/5;
-        if(count % 5 != 0){
-           endPage++;
-        }
-        List<Products> list = dao.pagingProducts(index);
-        
-        
-        
-//        request.setAttribute("Pro", list);
-        request.setAttribute("currentPage", currentPage);
-        session.setAttribute("Pro", list);
-        request.setAttribute("endPage", endPage);
-        request.getRequestDispatcher("/view/ProductList.jsp").forward(request, response);
-    } 
 
-    /** 
+    }
+
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -101,14 +85,32 @@ public class ListProductsServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException {
+        ProductsDAO pd = new ProductsDAO();
+        String id_raw = request.getParameter("idPro");
+        String newPrice_raw = request.getParameter("pricePro");
+        int id = Integer.parseInt(id_raw);
+        float newPrice = Float.parseFloat(newPrice_raw);
+        Products p1 = pd.getProductById(id);
+        float price = p1.getPrice();
+        String status;
+         if (newPrice > price) {
+            status = "Tăng giá";
+        } else if (newPrice < price) {
+            status = "Giảm giá";
+        } else {
+            status = "Giữ nguyên"; // Giá không thay đổi
+        }
+        LocalDateTime updatedAt = LocalDateTime.now();
+        HistoryPrice hNew = new HistoryPrice(p1, newPrice, price, updatedAt, status);
+        pd.insertHisPrice(hNew);
+        pd.updateProductPrice(id, newPrice);
+        response.sendRedirect("ListPrice?product_id="+id);
+        
+        
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
+   
     @Override
     public String getServletInfo() {
         return "Short description";

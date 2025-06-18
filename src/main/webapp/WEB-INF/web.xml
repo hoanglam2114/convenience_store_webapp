@@ -16,6 +16,14 @@
         <servlet-name>DeleteCategoriesServlet</servlet-name>
         <servlet-class>controller.DeleteCategoriesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdatePriceServlet</servlet-name>
+        <servlet-class>controller.UpdatePriceServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListPriceServlet</servlet-name>
+        <servlet-class>controller.ListPriceServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListCustomerServlet</servlet-name>
         <url-pattern>/listCustomer</url-pattern>
@@ -51,6 +59,14 @@
     <servlet-mapping>
         <servlet-name>DeleteCategoriesServlet</servlet-name>
         <url-pattern>/DeleteCate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdatePriceServlet</servlet-name>
+        <url-pattern>/UpdatePrice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListPriceServlet</servlet-name>
+        <url-pattern>/ListPrice</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>
