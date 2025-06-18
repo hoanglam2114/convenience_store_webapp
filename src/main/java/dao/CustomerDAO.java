@@ -174,30 +174,44 @@ public class CustomerDAO extends DBContext {
     }
 
     public Customers findByPhone(String phone) {
-    String sql = "SELECT * FROM Customers WHERE customer_phone = ?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setString(1, phone.trim());
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return new Customers(
-                        rs.getInt("customer_id"),
-                        rs.getString("customer_name"),
-                        rs.getString("customer_phone"),
-                        rs.getInt("point"),
-                        rs.getInt("customer_type_id")
-                );
+        String sql = "SELECT * FROM Customers WHERE customer_phone = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, phone.trim());
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Customers(
+                            rs.getInt("customer_id"),
+                            rs.getString("customer_name"),
+                            rs.getString("customer_phone"),
+                            rs.getInt("point"),
+                            rs.getInt("customer_type_id")
+                    );
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
+        return null;
+    }
+    
+    public int getCustomerIdByPhone(String phone) {
+    String sql = "SELECT customer_id FROM Customers WHERE phone = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, phone);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("customer_id");
+        }
+    } catch (SQLException e) {
         e.printStackTrace();
     }
-    return null;
+    return -1;
 }
-
 
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
         Customers c = dao.findByPhone("0886801877");
         System.out.println(c.toString());
     }
+
 }

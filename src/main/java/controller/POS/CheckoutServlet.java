@@ -5,8 +5,7 @@
 package controller.POS;
 
 import dao.CustomerDAO;
-import dao.ProductCategoriesDAO;
-import dao.ProductsDAO;
+import dao.OrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,9 +13,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Customers;
+import java.sql.Date;
+import java.util.List;
+import model.Cart;
+import model.CartItem;
+import model.Order;
 
-public class CustomerLookup extends HttpServlet {
+/**
+ *
+ * @author Admin
+ */
+public class CheckoutServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -26,10 +33,10 @@ public class CustomerLookup extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CustomerLookup</title>");
+            out.println("<title>Servlet CheckoutServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CustomerLookup at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CheckoutServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -44,21 +51,24 @@ public class CustomerLookup extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String phone = request.getParameter("customer_phone");
-        CustomerDAO dao = new CustomerDAO();
-        Customers customer = dao.findByPhone(phone);
-
         HttpSession session = request.getSession();
-        if (customer != null) {
-            session.setAttribute("phone", customer.getPhone());
-            session.setAttribute("name", customer.getName());
-        } else {
-            session.setAttribute("phone", phone);
-            session.setAttribute("name", null);
-        }
+        int employeeId = 1; // tạm thời cố định
+        int paymentMethodId = 1; // 1 = tiền mặt, bạn gán theo enum hoặc bảng PaymentMethod nếu có
 
-        // Quay về trang chính (loadProducts sẽ lấy dữ liệu từ session)
-        response.sendRedirect("loadProducts");
+        try {
+            int orderId = orderDAO.createOrder(customerId, totalAmount, cart.getItems(), null, employeeId, paymentMethodId);
+
+            session.removeAttribute("cart");
+
+            request.setAttribute("orderId", orderId);
+            request.setAttribute("order", orderDAO.getOrderById(orderId));
+            request.setAttribute("cartItems", cart.getItems());
+
+            request.getRequestDispatcher("/view/receipt.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(500, "Lỗi xử lý đơn hàng");
+        }
     }
 
     @Override

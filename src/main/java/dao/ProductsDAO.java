@@ -213,7 +213,7 @@ public class ProductsDAO extends DBContext {
     }
 
     public List<Products> searchProductByName(String product_name) {
-        String sql = "select * from Products where product_name like ?";
+        String sql = "select * from Products where product_name COLLATE Latin1_General_CI_AI LIKE ?";
         List<Products> list = new ArrayList<>();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -434,31 +434,35 @@ public class ProductsDAO extends DBContext {
         return list;
     }
 
-    public List<Products> getProductsByCategory(int categoryId) throws SQLException {
+    public List<Products> getProductsByCategory(int categoryId) {
         List<Products> list = new ArrayList<>();
-        
+
         String sql = "SELECT * FROM Products WHERE category_id = ?";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, categoryId);
-        ResultSet rs = ps.executeQuery();
-        
-        while (rs.next()) {
-            Products p = new Products();
-            p.setId(rs.getInt("product_id"));
-            p.setBarcode(rs.getString("barcode"));
-            p.setName(rs.getString("product_name"));
-            p.setPrice(rs.getFloat("product_price"));
-            p.setImage(rs.getString("product_image"));
-            ProductCategories pc = getCategoryById(rs.getInt("category_id"));
-            p.setProductCategories(pc);
-            WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
-            p.setWeightUnit(wu);
-            Suppliers sup = getSupById(rs.getInt("supplier_id"));
-            p.setSuppliers(sup);
-            p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-            p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-            p.setBatch(rs.getInt("batch"));
-            list.add(p);
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, categoryId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Products p = new Products();
+                p.setId(rs.getInt("product_id"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setName(rs.getString("product_name"));
+                p.setPrice(rs.getFloat("product_price"));
+                p.setImage(rs.getString("product_image"));
+                ProductCategories pc = getCategoryById(rs.getInt("category_id"));
+                p.setProductCategories(pc);
+                WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
+                p.setWeightUnit(wu);
+                Suppliers sup = getSupById(rs.getInt("supplier_id"));
+                p.setSuppliers(sup);
+                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
+                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
+                p.setBatch(rs.getInt("batch"));
+                list.add(p);
+            }
+        } catch (Exception e) {
+
         }
         return list;
     }

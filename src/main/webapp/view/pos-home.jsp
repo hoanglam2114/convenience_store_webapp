@@ -123,39 +123,63 @@
                             <h2 class="text-xl font-bold text-gray-800">Hóa Đơn</h2>
                             <div class="flex items-center space-x-2">
                                 <span class="text-sm text-gray-500">#HD12345</span>
-                                <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
-                                    <i class="fas fa-plus mr-1"></i>Mới
-                                </button>
+                                <a href="resetOrder"
+                                   class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                                    Làm Mới
+                                </a>
                             </div>
                         </div>
 
                         <!-- Customer Information -->
-                        <!-- Số điện thoại -->
-                        <div>
+                        <form method="post" action="customerLookup">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại</label>
                             <input type="text" name="customer_phone" placeholder="Nhập số điện thoại"
-                                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
+                                   value="${phone != null ? phone : ''}"
+                                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   onblur="this.form.submit()" />
+                        </form>
 
-                        <!-- Tên khách hàng -->
-                        <div>
+                        <!-- Hiển thị tên khách nếu có -->
+                        <div class="mt-2">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Tên khách hàng</label>
-                            <input type="text" name="customer_name" placeholder="Tên khách hàng"
-                                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="text" name="customer_name"
+                                   value="${name != null ? name : ''}"
+                                   id="customerNameInput"
+                                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   ${name == null ? "" : "readonly"} />
                         </div>
 
-                        <!-- Tạo tài khoản -->
-                        <div class="flex items-center text-sm text-gray-600">
-                            <input type="checkbox" id="create-account" class="mr-2">
-                            <label for="create-account">Tạo tài khoản tích điểm</label>
-                        </div>
+                        <c:if test="${name == null && phone != null}">
+                            <div class="mt-2 text-sm text-red-500">
+                                Khách hàng chưa tồn tại.
+                                Bạn có muốn tạo tài khoản tích điểm không?
+                                <div class="mt-2 space-x-2">
+                                    <button onclick="showModal()" class="bg-blue-500 text-white px-3 py-1 rounded">Có</button>
+                                    <button onclick="allowManualName()" class="bg-gray-300 px-3 py-1 rounded">Không</button>
+                                </div>
+                            </div>
+                        </c:if>
 
-                        <!-- Trường email nếu tạo tài khoản -->
-                        <div id="account-fields" class="hidden space-y-2">
-                            <input type="email" placeholder="Email (tùy chọn)" 
-                                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <!-- Modal tạo khách hàng mới -->
+                        <div id="customerModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                            <div class="bg-white rounded-lg p-6 shadow-md w-full max-w-md">
+                                <h3 class="text-lg font-bold mb-4">Tạo tài khoản khách hàng</h3>
+                                <form method="post" action="addCustomerPos">
+                                    <div class="mb-3">
+                                        <label class="block text-sm font-medium">Số điện thoại</label>
+                                        <input name="phone" required class="border rounded px-3 py-2 w-full" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="block text-sm font-medium">Tên khách hàng</label>
+                                        <input name="name" required class="border rounded px-3 py-2 w-full" />
+                                    </div>
+                                    <div class="flex justify-end gap-2">
+                                        <button type="button" onclick="closeModal()" class="bg-gray-300 px-4 py-2 rounded">Hủy</button>
+                                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Tạo</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-
 
                         <!-- Order Items -->
                         <label class="block text-sm font-medium text-gray-700 mb-1">Sản Phẩm</label>
@@ -193,7 +217,7 @@
                         <div class="space-y-2 mb-4">
                             <div class="flex justify-between">
                                 <span>Tạm tính:</span>
-                                <span>30.000đ</span>
+                                <span>0đ</span>
                             </div>
                             <div class="flex justify-between">
                                 <span>Giảm giá:</span>
@@ -228,59 +252,16 @@
             </div>
         </main>
         <script>
-            const contextPath = "${pageContext.request.contextPath}";
-            document.addEventListener("DOMContentLoaded", function () {
-                console.log("✅ DOM đã sẵn sàng");
-
-                const phoneInput = document.querySelector('input[name="customer_phone"]');
-                const nameInput = document.querySelector('input[name="customer_name"]');
-                const createCheckbox = document.getElementById('create-account');
-                const accountFields = document.getElementById('account-fields');
-
-                console.log("👉 Phone Input:", phoneInput);
-
-                phoneInput.addEventListener('blur', function () {
-                    const rawPhone = phoneInput.value.trim();
-                    console.log("Phone value khi blur:", rawPhone);
-
-                    if (rawPhone.length >= 8) {
-                        const encodedPhone = encodeURIComponent(rawPhone);
-                        const contextPath = "/" + window.location.pathname.split("/")[1];
-                        const url = `/convenience_store_webapp/api/customer-lookup?customer_phone=${encodedPhone}`;
-
-                                        console.log("Gửi fetch với URL:", url);
-
-                                        fetch(url)
-                                                .then(res => {
-                                                    if (!res.ok)
-                                                        throw new Error("❌ Lỗi gọi API: " + res.status);
-                                                    return res.json();
-                                                })
-                                                .then(data => {
-                                                    console.log("✅ Dữ liệu nhận được:", data);
-                                                    if (data && data.name) {
-                                                        nameInput.value = data.name;
-                                                        createCheckbox.checked = false;
-                                                        accountFields.classList.add('hidden');
-                                                    } else {
-                                                        nameInput.value = '';
-                                                        if (confirm("Khách hàng mới. Tạo tài khoản tích điểm?")) {
-                                                            createCheckbox.checked = true;
-                                                            accountFields.classList.remove('hidden');
-                                                        } else {
-                                                            createCheckbox.checked = false;
-                                                            accountFields.classList.add('hidden');
-                                                        }
-                                                    }
-                                                })
-                                                .catch(err => {
-                                                    console.error("❌ Lỗi fetch dữ liệu khách hàng:", err);
-                                                });
-                                    }
-                                });
-                            });
-
+            function allowManualName() {
+                document.getElementById("customerNameInput").removeAttribute("readonly");
+                document.getElementById("customerNameInput").focus();
+            }
+            function showModal() {
+                document.getElementById('customerModal').classList.remove('hidden');
+            }
+            function closeModal() {
+                document.getElementById('customerModal').classList.add('hidden');
+            }
         </script>
-
     </body>
 </html>
