@@ -5,8 +5,7 @@
 
 package controller;
 
-import dao.CustomerDAO;
-import dao.ShiftDAO;
+import dao.ShiftDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,14 +13,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Customers;
-import model.Shifts;
+import model.ShiftDetail;
 
 /**
  *
  * @author nguye
  */
-public class ListShiftStaffServlet extends HttpServlet {
+public class ShiftDetailServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +36,10 @@ public class ListShiftStaffServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListShiftStaffServlet</title>");  
+            out.println("<title>Servlet ShiftDetailServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListShiftStaffServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ShiftDetailServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,11 +56,17 @@ public class ListShiftStaffServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        ShiftDAO dao = new ShiftDAO();
-        List<Shifts> listShift = dao.getAll(); // Đảm bảo totalRevenue được tính toán ở đây
-    
-        request.setAttribute("shift", listShift);
-        request.getRequestDispatcher("view/shift-list.jsp").forward(request, response);
+        String idParam = request.getParameter("id");
+
+        if (idParam != null) {
+            int shiftManagerId = Integer.parseInt(idParam);
+            ShiftDetailDAO shiftDetailDAO = new ShiftDetailDAO();
+            List<ShiftDetail> shiftDetails = shiftDetailDAO.getShiftDetailsById(shiftManagerId);
+            request.setAttribute("shiftDetails", shiftDetails);
+            request.getRequestDispatcher("view/shift-list-detail.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("view/shift-list.jsp");
+        }
     } 
 
     /** 

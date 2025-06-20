@@ -12,6 +12,18 @@
         <servlet-name>ListShiftStaffServlet</servlet-name>
         <servlet-class>controller.ListShiftStaffServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShiftDetailServlet</servlet-name>
+        <servlet-class>controller.ShiftDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListAccountServlet</servlet-name>
+        <servlet-class>controller.ListAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <servlet-class>controller.DeleteAccountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListCustomerServlet</servlet-name>
         <url-pattern>/listCustomer</url-pattern>
@@ -43,6 +55,18 @@
     <servlet-mapping>
         <servlet-name>ListShiftStaffServlet</servlet-name>
         <url-pattern>/ListShiftStaffServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShiftDetailServlet</servlet-name>
+        <url-pattern>/ShiftDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListAccountServlet</servlet-name>
+        <url-pattern>/ListAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <url-pattern>/DeleteAccountServlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>
@@ -83,6 +107,14 @@
         <servlet-name>DeleteCustomerServlet</servlet-name>
         <servlet-class>controller.DeleteCustomerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteShiftServlet</servlet-name>
+        <servlet-class>controller.DeleteShiftServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteShiftServlet</servlet-name>
+        <url-pattern>/DeleteShift</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ListProductsServlet</servlet-name>
         <url-pattern>/ListProduct</url-pattern>
