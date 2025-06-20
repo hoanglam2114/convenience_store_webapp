@@ -28,8 +28,8 @@
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Chỉnh sửa sản phẩm</h5>
-            <a href="ListProduct" class="btn btn-sm btn-primary">
-                <i class="bx bx-left-arrow-alt"></i> Trở về danh sách sản phẩm
+            <a href="ListProduct" class="btn btn-info text-white">
+                <i class="bx bx-arrow-back me-1"></i> Trở về danh sách sản phẩm
             </a>
         </div>
         <div class="card-body">

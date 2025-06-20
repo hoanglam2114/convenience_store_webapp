@@ -10,15 +10,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Notification;
 
-/**
- *
- * @author lmq02
- */
 public class AddEmployee extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -54,16 +49,14 @@ public class AddEmployee extends HttpServlet {
 
         List<String> errors = new ArrayList<>();
 
-        if (name == null || name.trim().isEmpty()) {
-            errors.add("Name is required.");
+        if (!name.matches("^[a-zA-ZÀ-Ỹà-ỹ]+(\\s[a-zA-ZÀ-Ỹà-ỹ]+)*$")) {
+            errors.add("Name is invalid.");
         }
-        if (phone == null || phone.trim().isEmpty()) {
-            errors.add("Phone is required.");
-        } else if (!phone.matches("^\\d{10}$")) {
+        if (!phone.matches("^0\\d{9}$")) {
             errors.add("Phone number must contain 10 to digits.");
         }
-        if (address == null || address.trim().isEmpty()) {
-            errors.add("Address is required.");
+        if (!address.matches("^[a-zA-ZÀ-Ỹà-ỹ]+(\\s[a-zA-ZÀ-Ỹà-ỹ]+)*$")) {
+            errors.add("Address is invalid.");
         }
         int accountId = -1;
         try {

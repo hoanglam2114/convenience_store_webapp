@@ -1,4 +1,3 @@
-
 package dao;
 
 import java.sql.PreparedStatement;
@@ -9,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Customers;
 
-public class CustomerDAO extends DBContext{
+public class CustomerDAO extends DBContext {
+
     public List<Customers> getAllCustomer() {
         List<Customers> customerList = new ArrayList<>();
         try {
@@ -31,7 +31,7 @@ public class CustomerDAO extends DBContext{
         }
         return customerList;
     }
-    
+
     public Customers getCustomerById(int id) {
         Customers customer = null;
         String sql = "SELECT customer_id, customer_name, customer_phone, point, customer_type_id FROM Customers WHERE customer_id = ?";
@@ -84,7 +84,7 @@ public class CustomerDAO extends DBContext{
 
     public List<Customers> searchCustomer(String keyword) throws SQLException {
         List<Customers> customers = new ArrayList<>();
-        String sql = "SELECT * FROM Customers WHERE LOWER(customer_name) LIKE ?";
+        String sql = "SELECT * FROM customers WHERE customer_name COLLATE Latin1_General_CI_AI LIKE ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, "%" + keyword.toLowerCase() + "%");
@@ -95,7 +95,7 @@ public class CustomerDAO extends DBContext{
                         rs.getString("customer_name"),
                         rs.getString("customer_phone"),
                         rs.getInt("point"),
-                        rs.getInt("type_id")
+                        rs.getInt("customer_type_id")
                 );
                 customers.add(customer);
             }
@@ -122,11 +122,82 @@ public class CustomerDAO extends DBContext{
             ps.setString(2, customer.getPhone());
             ps.setInt(3, customer.getPoint());
             ps.setInt(4, customer.getId());
-            
+
             int rowsUpdated = ps.executeUpdate();
             System.out.println("Rows updated: " + rowsUpdated);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Customers> pagingCustomer(int index) {
+        List<Customers> list = new ArrayList<>();
+        String sql = "SELECT [customer_id],\n"
+                + "       [customer_name],\n"
+                + "       [customer_phone],\n"
+                + "       [point],\n"
+                + "       [customer_type_id] \n"
+                + "from Customers\n"
+                + "order by customer_id\n"
+                + "offset ?  rows fetch next 5 rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, (index - 1) * 5);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Customers c = new Customers();
+                c.setId(rs.getInt("customer_id"));
+                c.setName(rs.getString("customer_name"));
+                c.setPhone(rs.getString("customer_phone"));
+                c.setPoint(rs.getInt("point"));
+                c.setType_id(rs.getInt("customer_type_id"));
+                list.add(c);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+
+    public int getTotalCustomer() {
+        String sql = "SELECT COUNT(*) from [dbo].[Customers]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    public Customers findByPhone(String phone) {
+    String sql = "SELECT * FROM Customers WHERE customer_phone = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, phone.trim());
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return new Customers(
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name"),
+                        rs.getString("customer_phone"),
+                        rs.getInt("point"),
+                        rs.getInt("customer_type_id")
+                );
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
+
+    public static void main(String[] args) {
+        CustomerDAO dao = new CustomerDAO();
+        Customers c = dao.findByPhone("0886801877");
+        System.out.println(c.toString());
     }
 }

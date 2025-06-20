@@ -4,11 +4,10 @@
  */
 package model;
 
-/**
- *
- * @author Admin
- */
+import com.google.gson.annotations.SerializedName;
+
 public class Customers {
+    @SerializedName("type_id")
     private int id;
     private String name;
     private String phone;

@@ -123,7 +123,7 @@ public class LoginServlet extends HttpServlet {
             if (account.getRole_id() == 1) {
                 response.sendRedirect("HomeAdmin");
             } else {
-                response.sendRedirect("confirm");
+                response.sendRedirect("HomeAdmin");
             }
         }
     }
