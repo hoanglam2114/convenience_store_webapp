@@ -32,6 +32,18 @@
         <servlet-name>ListShiftStaffServlet</servlet-name>
         <servlet-class>controller.ListShiftStaffServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoadProducts</servlet-name>
+        <servlet-class>controller.POS.LoadProducts</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchProduct</servlet-name>
+        <servlet-class>controller.POS.SearchProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddToCart</servlet-name>
+        <servlet-class>controller.POS.AddToCart</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListCustomerServlet</servlet-name>
         <url-pattern>/listCustomer</url-pattern>
@@ -83,6 +95,18 @@
     <servlet-mapping>
         <servlet-name>ListShiftStaffServlet</servlet-name>
         <url-pattern>/ListShiftStaffServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadProducts</servlet-name>
+        <url-pattern>/loadProducts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchProduct</servlet-name>
+        <url-pattern>/searchProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToCart</servlet-name>
+        <url-pattern>/addToCart</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>LoginServlet</welcome-file>

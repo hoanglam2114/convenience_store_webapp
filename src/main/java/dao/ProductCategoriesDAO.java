@@ -86,9 +86,8 @@ public class ProductCategoriesDAO extends DBContext {
             System.out.println(e);
         }
         return list;
-
     }
-
+    
     public List<ProductCategories> findCategoryByName(String category_name) {
         String sql = "select * from Product_Categories where category_name COLLATE Latin1_General_CI_AI LIKE ?";
         List<ProductCategories> list = new ArrayList<>();
