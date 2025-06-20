@@ -63,7 +63,7 @@ public class ChangePasswordServlet extends HttpServlet {
         accountDAO.createAccount(email, password, 2);
         session.removeAttribute("authmail");
         session.removeAttribute("authcode");
-        response.sendRedirect("LoginServlet");
+        response.sendRedirect("addEmployee");
         
     }
 
