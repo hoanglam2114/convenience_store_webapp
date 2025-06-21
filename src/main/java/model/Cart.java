@@ -1,13 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Cart {
+
     private List<CartItem> items;
 
     public Cart() {
@@ -18,40 +17,68 @@ public class Cart {
         return items;
     }
 
-    public void addItem(Products product) {
+    public int getQuantityById(int storeStockId) {
+        return getItemById(storeStockId).getQuantity();
+    }
+
+    public CartItem getItemById(int storeStockId) {
         for (CartItem item : items) {
-            if (item.getProduct().getId() == product.getId()) {
-                item.setQuantity(item.getQuantity() + 1);
-                return;
+            if (item.getStoreStock().getStoreStockId() == storeStockId) {
+                return item;
             }
         }
-        items.add(new CartItem(product, 1));
+        return null;
     }
 
-    public void removeItem(int productId) {
-        items.removeIf(item -> item.getProduct().getId() == productId);
-    }
-
-    public void updateItem(int productId, int quantity) {
-        for (CartItem item : items) {
-            if (item.getProduct().getId() == productId) {
-                if (quantity <= 0) {
-                    removeItem(productId);
-                } else {
-                    item.setQuantity(quantity);
-                }
-                return;
-            }
+    public void addItem(CartItem newItem) {
+        if (getItemById(newItem.getStoreStock().getStoreStockId()) != null) {
+            CartItem oldItem = getItemById(newItem.getStoreStock().getStoreStockId());
+            oldItem.setQuantity(oldItem.getQuantity() + newItem.getQuantity());
+        } else {
+            items.add(newItem);
         }
     }
 
-    public double getTotalAmount() {
+//    public void removeItem(int storeStockId) {
+//        items.removeIf(item -> item.getStoreStock().getStoreStockId() == storeStockId);
+//    }
+    public void removeItem(int storeStockId) {
+        // Kiểm tra null
+        if (items == null) {
+            return;
+        }
+
+        // Sử dụng Iterator để tránh ConcurrentModificationException
+        Iterator<CartItem> iterator = items.iterator();
+        while (iterator.hasNext()) {
+            CartItem item = iterator.next();
+            if (item.getStoreStock().getStoreStockId() == storeStockId) {
+                iterator.remove();
+                break;
+            }
+        }
+    }
+
+    public void printCart() {
+        System.out.println("Cart items: " + items.size());
+        for (CartItem item : items) {
+            System.out.println("StoreStockId: " + item.getStoreStock().getStoreStockId());
+        }
+    }
+
+    public double getTotalMoney() {
+        if (items == null || items.isEmpty()) {
+            return 0;
+        }
         return items.stream()
-                .mapToDouble(CartItem::getTotalPrice)
+                .mapToDouble(item -> item.getQuantity() * item.getPrice())
                 .sum();
     }
 
-    public void clear() {
-        items.clear();
+    public CartItem findItem(int storeStockId) {
+        return items.stream()
+                .filter(item -> item.getStoreStock().getStoreStockId() == storeStockId)
+                .findFirst()
+                .orElse(null);
     }
 }

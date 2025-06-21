@@ -2,6 +2,7 @@ package controller.POS;
 
 import dao.ProductCategoriesDAO;
 import dao.ProductsDAO;
+import dao.StoreStockDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -10,7 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
+import model.ProductCategories;
 import model.Products;
+import model.StoreStock;
 
 public class SearchProduct extends HttpServlet {
 
@@ -34,20 +38,18 @@ public class SearchProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductsDAO dao = new ProductsDAO();
-        ProductCategoriesDAO pcDAO = new ProductCategoriesDAO();
         String keyword = request.getParameter("keyword");
-        List<Products> listProducts;
+        StoreStockDAO stockDAO = new StoreStockDAO();
+        ProductCategoriesDAO catDAO = new ProductCategoriesDAO();
 
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            listProducts = dao.searchProductByName(keyword);
-        } else {
-            listProducts = dao.getAllProduct();
-        }
+        List<ProductCategories> listCategories = catDAO.getAll();
+        request.setAttribute("listCategories", listCategories);
 
-        request.setAttribute("listProducts", listProducts);
-        request.setAttribute("listCategories", pcDAO.getAll());
-        request.getRequestDispatcher("/view/pos-home.jsp").forward(request, response);
+        List<StoreStock> listStocks = stockDAO.searchInStockByName(keyword);
+        request.setAttribute("listStocks", listStocks);
+        request.setAttribute("keyword", keyword);
+
+        request.getRequestDispatcher("view/pos-home.jsp").forward(request, response);
     }
 
     @Override

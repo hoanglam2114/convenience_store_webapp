@@ -60,6 +60,14 @@
         <servlet-name>CheckoutServlet</servlet-name>
         <servlet-class>controller.POS.CheckoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>QrPaymentServlet</servlet-name>
+        <servlet-class>controller.POS.QrPaymentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateVNPayQRServlet</servlet-name>
+        <servlet-class>controller.POS.CreateVNPayQRServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListCustomerServlet</servlet-name>
         <url-pattern>/listCustomer</url-pattern>
@@ -139,6 +147,14 @@
     <servlet-mapping>
         <servlet-name>CheckoutServlet</servlet-name>
         <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QrPaymentServlet</servlet-name>
+        <url-pattern>/qrPayment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateVNPayQRServlet</servlet-name>
+        <url-pattern>/createVNPayQR</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>LoginServlet</welcome-file>

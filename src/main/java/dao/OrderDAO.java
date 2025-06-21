@@ -4,7 +4,6 @@
  */
 package dao;
 
-import dao.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import model.CartItem;
-import model.Coupons;
+//import model.Coupons;
 import model.Order;
 import model.OrderDetails;
 import model.Products;
@@ -68,16 +67,43 @@ public class OrderDAO extends DBContext {
         return orders;
     }
 
-    // Method to get a specific order by its ID including details
+//    public Order getOrderById(int orderId) {
+//        Order order = null;
+//        String sql = "SELECT o.order_id, o.customer_id, c.customer_name, o.order_date, "
+//                + "o.order_total_amount, o.order_status, e.employee_name, co.coupon_code "
+//                + "FROM Orders o "
+//                + "LEFT JOIN Customers c ON o.customer_id = c.customer_id "
+//                + "LEFT JOIN Employees e ON o.employee_id = e.employee_id "
+//                + "LEFT JOIN CustomerCoupon cc ON o.customer_coupon_id = cc.customer_coupon_id "
+//                + "LEFT JOIN Coupons co ON cc.coupon_id = co.coupon_id "
+//                + "WHERE o.order_id = ?";
+//        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+//            ps.setInt(1, orderId);
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                order = new Order();
+//                order.setOrderId(rs.getInt("order_id"));
+//                order.setCustomerId(rs.getInt("customer_id")); // Thêm dòng này
+//                order.setCustomerName(rs.getString("customer_name"));
+//                order.setOrderDate(rs.getDate("order_date"));
+//                order.setOrderTotalAmount(rs.getInt("order_total_amount"));
+//                order.setOrderStatus(rs.getString("order_status"));
+//                order.setEmployeeName(rs.getString("employee_name"));
+//                order.setCouponCode(rs.getString("coupon_code"));
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return order;
+//    }
+    //2. Temporary
     public Order getOrderById(int orderId) {
         Order order = null;
         String sql = "SELECT o.order_id, o.customer_id, c.customer_name, o.order_date, "
-                + "o.order_total_amount, o.order_status, e.employee_name, co.coupon_code "
+                + "o.order_total_amount, o.order_status, e.employee_name "
                 + "FROM Orders o "
                 + "LEFT JOIN Customers c ON o.customer_id = c.customer_id "
                 + "LEFT JOIN Employees e ON o.employee_id = e.employee_id "
-                + "LEFT JOIN CustomerCoupon cc ON o.customer_coupon_id = cc.customer_coupon_id "
-                + "LEFT JOIN Coupons co ON cc.coupon_id = co.coupon_id "
                 + "WHERE o.order_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderId);
@@ -85,43 +111,15 @@ public class OrderDAO extends DBContext {
             if (rs.next()) {
                 order = new Order();
                 order.setOrderId(rs.getInt("order_id"));
-                order.setCustomerId(rs.getInt("customer_id")); // Thêm dòng này
+                order.setCustomerId(rs.getInt("customer_id"));
                 order.setCustomerName(rs.getString("customer_name"));
                 order.setOrderDate(rs.getDate("order_date"));
                 order.setOrderTotalAmount(rs.getInt("order_total_amount"));
                 order.setOrderStatus(rs.getString("order_status"));
                 order.setEmployeeName(rs.getString("employee_name"));
-                order.setCouponCode(rs.getString("coupon_code"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return order;
-    }
-
-    public Order getOrderById1(int orderId) {
-        Order order = null;
-        String sql = "SELECT o.order_id, o.customer_id, c.customer_name, o.order_date, "
-                + "o.order_total_amount, o.order_status, e.employee_name, co.coupon_code "
-                + "FROM Orders o "
-                + "LEFT JOIN Customers c ON o.customer_id = c.customer_id "
-                + "LEFT JOIN Employees e ON o.employee_id = e.employee_id "
-                + "LEFT JOIN CustomerCoupon cc ON o.customer_coupon_id = cc.customer_coupon_id "
-                + "LEFT JOIN Coupons co ON cc.coupon_id = co.coupon_id "
-                + "WHERE o.order_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, orderId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                order = new Order();
-                order.setOrderId(rs.getInt("order_id"));
-                order.setCustomerId(rs.getInt("customer_id")); // Thêm dòng này
-                order.setCustomerName(rs.getString("customer_name"));
-                order.setOrderDate(rs.getDate("order_date"));
-                order.setOrderTotalAmount(rs.getInt("order_total_amount"));
-                order.setOrderStatus(rs.getString("order_status"));
-                order.setEmployeeName(rs.getString("employee_name"));
-                order.setCouponCode(rs.getString("coupon_code"));
+                order.setCouponCode(null); // Vì bạn chưa làm phần coupon
+            } else {
+                System.out.println("⚠️ Không tìm thấy đơn hàng với ID: " + orderId);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -130,8 +128,8 @@ public class OrderDAO extends DBContext {
     }
 
     // Method to get order details by orderId
-    public List<OrderDetail> getOrderDetailsByOrderId(int orderId) {
-        List<OrderDetail> orderDetails = new ArrayList<>();
+    public List<OrderDetails> getOrderDetailsByOrderId(int orderId) {
+        List<OrderDetails> orderDetails = new ArrayList<>();
         String sql = "SELECT p.product_name, od.quantity, od.unit_price, od.total_price "
                 + "FROM OrdersDetails od "
                 + "LEFT JOIN Products p ON od.product_id = p.product_id "
@@ -141,7 +139,7 @@ public class OrderDAO extends DBContext {
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                OrderDetail detail = new OrderDetail();
+                OrderDetails detail = new OrderDetails();
                 detail.setProductName(rs.getString("product_name"));
                 detail.setQuantity(rs.getInt("quantity"));
                 detail.setUnitPrice(rs.getDouble("unit_price"));
@@ -210,17 +208,17 @@ public class OrderDAO extends DBContext {
         }
     }
 
-    public List<Product> getAllProducts() {
-        List<Product> products = new ArrayList<>();
+    public List<Products> getAllProducts() {
+        List<Products> products = new ArrayList<>();
         try {
-            String sql = "SELECT product_id, product_name, product_price FROM Products"; // Simplified for example
+            String sql = "SELECT product_id, product_name, product_price FROM Products";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Product p = new Product();
-                p.setProductId(rs.getInt("product_id"));
-                p.setProductName(rs.getString("product_name"));
-                p.setProductPrice(rs.getInt("product_price"));
+                Products p = new Products();
+                p.setId(rs.getInt("product_id"));
+                p.setName(rs.getString("product_name"));
+                p.setPrice(rs.getInt("product_price"));
                 products.add(p);
             }
         } catch (SQLException e) {
@@ -283,51 +281,50 @@ public class OrderDAO extends DBContext {
         }
     }
 
-    public int createOrder(int customerId, double totalAmount, List<CartItem> items, Coupons appliedCoupon, Integer employeeId, int paymentMethodId) throws SQLException {
-        try {
-            connection.setAutoCommit(false);
-
-            String orderSql = "INSERT INTO Orders (customer_id, order_date, order_total_amount, order_status, employee_id, customer_coupon_id) "
-                    + "VALUES (?, GETDATE(), ?, 'COMPLETED', ?, ?)";
-
-            int orderId;
-            try (PreparedStatement ps = connection.prepareStatement(orderSql, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setInt(1, customerId);
-                ps.setDouble(2, totalAmount);
-                ps.setObject(3, employeeId);
-
-                if (appliedCoupon != null) {
-                    int customerCouponId = createCustomerCoupon(customerId, appliedCoupon.getCoupon_id());
-                    ps.setInt(4, customerCouponId);
-                } else {
-                    ps.setNull(4, java.sql.Types.INTEGER);
-                }
-
-                ps.executeUpdate();
-
-                ResultSet rs = ps.getGeneratedKeys();
-                if (!rs.next()) {
-                    throw new SQLException("Failed to create order");
-                }
-                orderId = rs.getInt(1);
-            }
-
-            processOrderDetails(orderId, items);
-            createInvoice(orderId, customerId, totalAmount, employeeId, paymentMethodId);
-
-            // Cộng điểm cho khách hàng (Hiện tại: 1 điểm cho mỗi đơn hàng)
-            updateCustomerPoints(customerId, 1);
-            connection.commit();
-            return orderId;
-
-        } catch (SQLException e) {
-            connection.rollback();
-            throw e;
-        } finally {
-            connection.setAutoCommit(true);
-        }
-    }
-
+//    public int createOrder(int customerId, double totalAmount, List<CartItem> items, Coupons appliedCoupon, Integer employeeId, int paymentMethodId) throws SQLException {
+//        try {
+//            connection.setAutoCommit(false);
+//
+//            String orderSql = "INSERT INTO Orders (customer_id, order_date, order_total_amount, order_status, employee_id, customer_coupon_id) "
+//                    + "VALUES (?, GETDATE(), ?, 'COMPLETED', ?, ?)";
+//
+//            int orderId;
+//            try (PreparedStatement ps = connection.prepareStatement(orderSql, Statement.RETURN_GENERATED_KEYS)) {
+//                ps.setInt(1, customerId);
+//                ps.setDouble(2, totalAmount);
+//                ps.setObject(3, employeeId);
+//
+//                if (appliedCoupon != null) {
+//                    int customerCouponId = createCustomerCoupon(customerId, appliedCoupon.getCoupon_id());
+//                    ps.setInt(4, customerCouponId);
+//                } else {
+//                    ps.setNull(4, java.sql.Types.INTEGER);
+//                }
+//
+//                ps.executeUpdate();
+//
+//                ResultSet rs = ps.getGeneratedKeys();
+//                if (!rs.next()) {
+//                    throw new SQLException("Failed to create order");
+//                }
+//                orderId = rs.getInt(1);
+//            }
+//
+//            processOrderDetails(orderId, items);
+//            createInvoice(orderId, customerId, totalAmount, employeeId, paymentMethodId);
+//
+//            // Cộng điểm cho khách hàng (Hiện tại: 1 điểm cho mỗi đơn hàng)
+//            updateCustomerPoints(customerId, 1);
+//            connection.commit();
+//            return orderId;
+//
+//        } catch (SQLException e) {
+//            connection.rollback();
+//            throw e;
+//        } finally {
+//            connection.setAutoCommit(true);
+//        }
+//    }
     private int createCustomerCoupon(int customerId, int couponId) throws SQLException {
         String sql = "INSERT INTO CustomerCoupon (customer_id, coupon_id) VALUES (?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -381,36 +378,37 @@ public class OrderDAO extends DBContext {
         }
     }
 
-    public void createInvoice(int orderId, int customerId, double totalAmount, int employeeId, int paymentMethodId) throws SQLException {
-        ShiftDAO shiftDAO = new ShiftDAO();
-        Integer shiftManagerId = shiftDAO.getCurrentShiftManagerId(employeeId);
-
-        if (shiftManagerId == null) {
-            throw new SQLException("No active shift found for employee " + employeeId);
-        }
-
-        String invoiceSql = "INSERT INTO Invoices (order_id, invoice_date, invoice_total_amount, invoice_status, "
-                + "payment_method_id, employee_id, customer_id, shift_manager_id) "
-                + "VALUES (?, GETDATE(), ?, 'COMPLETED', ?, ?, ?, ?)";
-
-        try (PreparedStatement ps = connection.prepareStatement(invoiceSql)) {
-            ps.setInt(1, orderId);
-            ps.setDouble(2, totalAmount);
-            ps.setInt(3, paymentMethodId);
-            ps.setInt(4, employeeId);
-            ps.setInt(5, customerId);
-            ps.setInt(6, shiftManagerId);
-            ps.executeUpdate();
-        }
-    }
-
-    public int createPendingOrder(int customerId, int employeeId) throws SQLException {
-        String sql = "INSERT INTO Orders (customer_id, order_date, order_status, employee_id) "
-                + "VALUES (?, GETDATE(), 'PENDING', ?)";
+//    public void createInvoice(int orderId, int customerId, double totalAmount, int employeeId, int paymentMethodId) throws SQLException {
+//        ShiftDAO shiftDAO = new ShiftDAO();
+//        Integer shiftManagerId = shiftDAO.getCurrentShiftManagerId(employeeId);
+//
+//        if (shiftManagerId == null) {
+//            throw new SQLException("No active shift found for employee " + employeeId);
+//        }
+//
+//        String invoiceSql = "INSERT INTO Invoices (order_id, invoice_date, invoice_total_amount, invoice_status, "
+//                + "payment_method_id, employee_id, customer_id, shift_manager_id) "
+//                + "VALUES (?, GETDATE(), ?, 'COMPLETED', ?, ?, ?, ?)";
+//
+//        try (PreparedStatement ps = connection.prepareStatement(invoiceSql)) {
+//            ps.setInt(1, orderId);
+//            ps.setDouble(2, totalAmount);
+//            ps.setInt(3, paymentMethodId);
+//            ps.setInt(4, employeeId);
+//            ps.setInt(5, customerId);
+//            ps.setInt(6, shiftManagerId);
+//            ps.executeUpdate();
+//        }
+//    }
+    
+    public int createPendingOrder(int customerId, int employeeId, double totalAmount) throws SQLException {
+        String sql = "INSERT INTO Orders (customer_id, order_date, order_total_amount, order_status, employee_id) "
+                + "VALUES (?, GETDATE(), ?, 'PENDING', ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, customerId);
-            ps.setInt(2, employeeId);
+            ps.setDouble(2, totalAmount);
+            ps.setInt(3, employeeId);
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {

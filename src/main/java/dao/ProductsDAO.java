@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dao;
 
 import java.sql.PreparedStatement;
@@ -14,10 +11,6 @@ import model.Products;
 import model.Suppliers;
 import model.WeightUnit;
 
-/**
- *
- * @author admin
- */
 public class ProductsDAO extends DBContext {
 
     public List<Products> getAllProduct() {

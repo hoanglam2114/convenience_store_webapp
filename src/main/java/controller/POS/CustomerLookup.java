@@ -52,13 +52,20 @@ public class CustomerLookup extends HttpServlet {
         if (customer != null) {
             session.setAttribute("phone", customer.getPhone());
             session.setAttribute("name", customer.getName());
+
+            // Thêm hai dòng này:
+            session.setAttribute("customerId", customer.getId());
+            session.setAttribute("customerName", customer.getName());  // đúng theo tên bạn dùng trong CheckoutServlet
         } else {
             session.setAttribute("phone", phone);
             session.setAttribute("name", null);
-        }
 
-        // Quay về trang chính (loadProducts sẽ lấy dữ liệu từ session)
+            // Clear nếu trước đó có tồn tại
+            session.removeAttribute("customerId");
+            session.removeAttribute("customerName");
+        }
         response.sendRedirect("loadProducts");
+
     }
 
     @Override

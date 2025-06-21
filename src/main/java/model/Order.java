@@ -1,4 +1,3 @@
-
 package model;
 
 import java.util.Date;
@@ -9,7 +8,7 @@ public class Order {
     private int customerId;
     private String customerName;
     private Date orderDate;
-    private int orderTotalAmount;
+    private double orderTotalAmount;
     private String orderStatus;
     private String employeeName;
     private String couponCode;
@@ -18,7 +17,13 @@ public class Order {
     public Order() {
     }
 
-    public Order(int orderId, String customerName, Date orderDate, int orderTotalAmount, String orderStatus, String employeeName, String couponCode, int employeeId) {
+    public Order(int orderId, double orderTotalAmount, String orderStatus) {
+        this.orderId = orderId;
+        this.orderTotalAmount = orderTotalAmount;
+        this.orderStatus = orderStatus;
+    }
+
+    public Order(int orderId, String customerName, Date orderDate, double orderTotalAmount, String orderStatus, String employeeName, String couponCode, int employeeId) {
         this.orderId = orderId;
         this.customerName = customerName;
         this.orderDate = orderDate;
@@ -29,7 +34,7 @@ public class Order {
         this.employeeId = employeeId;
     }
 
-    public Order(int orderId, int customerId, String customerName, Date orderDate, int orderTotalAmount, String orderStatus, String employeeName, String couponCode, int employeeId) {
+    public Order(int orderId, int customerId, String customerName, Date orderDate, double orderTotalAmount, String orderStatus, String employeeName, String couponCode, int employeeId) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.customerName = customerName;
@@ -41,7 +46,6 @@ public class Order {
         this.employeeId = employeeId;
     }
 
-    
     // Getters and setters
     public int getOrderId() {
         return orderId;
@@ -67,7 +71,7 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public int getOrderTotalAmount() {
+    public double getOrderTotalAmount() {
         return orderTotalAmount;
     }
 
@@ -114,5 +118,5 @@ public class Order {
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
-    
+
 }

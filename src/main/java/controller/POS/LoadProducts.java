@@ -3,6 +3,7 @@ package controller.POS;
 import dao.CustomerDAO;
 import dao.ProductCategoriesDAO;
 import dao.ProductsDAO;
+import dao.StoreStockDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,8 +12,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
+import model.Cart;
 import model.Customers;
+import model.ProductCategories;
 import model.Products;
+import model.StoreStock;
 
 /**
  *
@@ -41,32 +46,35 @@ public class LoadProducts extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        ProductsDAO productDAO = new ProductsDAO();
-        ProductCategoriesDAO categoryDAO = new ProductCategoriesDAO();
+        StoreStockDAO stockDAO = new StoreStockDAO();
+        ProductCategoriesDAO catDAO = new ProductCategoriesDAO();
 
-        String keyword = request.getParameter("keyword");
-        String categoryIdStr = request.getParameter("categoryId");
+        List<ProductCategories> listCategories = catDAO.getAll();
+        request.setAttribute("listCategories", listCategories);
 
-        List<Products> listProducts;
+        String categoryIdRaw = request.getParameter("categoryId");
+        List<StoreStock> listStocks;
 
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            listProducts = productDAO.searchProductByName(keyword);
-        } else if (categoryIdStr != null) {
-            int categoryId = Integer.parseInt(categoryIdStr);
-            listProducts = productDAO.getProductsByCategory(categoryId);
+        if (categoryIdRaw != null && !categoryIdRaw.isEmpty()) {
+            int categoryId = Integer.parseInt(categoryIdRaw);
+            listStocks = stockDAO.getInStockByCategory(categoryId);
+            request.setAttribute("selectedCategoryId", categoryId);
         } else {
-            listProducts = productDAO.getAllProduct();
+            listStocks = stockDAO.getAllInStock();
         }
 
-        request.setAttribute("listProducts", listProducts);
-        request.setAttribute("listCategories", categoryDAO.getAll());
+        request.setAttribute("listStocks", listStocks);
 
-        // Lấy thông tin khách hàng từ session
         HttpSession session = request.getSession();
-        request.setAttribute("phone", session.getAttribute("phone"));
-        request.setAttribute("name", session.getAttribute("name"));
+        String customerName = (String) session.getAttribute("name");
+        String customerPhone = (String) session.getAttribute("phone");
+        Cart cart = (Cart) session.getAttribute("cart");
 
-        request.getRequestDispatcher("/view/pos-home.jsp").forward(request, response);
+        if (customerName != null) request.setAttribute("name", customerName);
+        if (customerPhone != null) request.setAttribute("phone", customerPhone);
+        if (cart != null) request.setAttribute("cart", cart);
+
+        request.getRequestDispatcher("view/pos-home.jsp").forward(request, response);
     }
 
     @Override
