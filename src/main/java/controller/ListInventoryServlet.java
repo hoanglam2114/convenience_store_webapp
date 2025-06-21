@@ -85,6 +85,11 @@ public class ListInventoryServlet extends HttpServlet {
      */
     private void handleInventoryDashboard(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        String warehouseIdParam = req.getParameter("warehouse_id");
+        Integer warehouseId = null;
+        if (warehouseIdParam != null && !warehouseIdParam.isEmpty()) {
+            warehouseId = Integer.parseInt(warehouseIdParam);
+        }
 
         // Get pagination parameters
         int page = 1;
@@ -107,11 +112,11 @@ public class ListInventoryServlet extends HttpServlet {
         int totalCount;
 
         if (productName != null && !productName.trim().isEmpty()) {
-            inventoryList = inventoryDAO.getInventoryPaginated(page, pageSize, productName, status, sortBy);
-            totalCount = inventoryDAO.getTotalInventoryCount(productName, status);
+            inventoryList = inventoryDAO.getInventoryPaginated(page, pageSize, productName, status, sortBy, warehouseId);
+            totalCount = inventoryDAO.getTotalInventoryCount(productName, status, warehouseId);
         } else {
-            inventoryList = inventoryDAO.getInventoryPaginated(page, pageSize, null, status, sortBy);
-            totalCount = inventoryDAO.getTotalInventoryCount(null, status);
+            inventoryList = inventoryDAO.getInventoryPaginated(page, pageSize, null, status, sortBy, warehouseId);
+            totalCount = inventoryDAO.getTotalInventoryCount(null, status, warehouseId);
         }
 
         // Get statistics for dashboard
