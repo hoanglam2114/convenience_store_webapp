@@ -1,8 +1,6 @@
 package controller.POS;
 
-import dao.CustomerDAO;
 import dao.ProductCategoriesDAO;
-import dao.ProductsDAO;
 import dao.StoreStockDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,11 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import java.util.stream.Collectors;
 import model.Cart;
-import model.Customers;
 import model.ProductCategories;
-import model.Products;
 import model.StoreStock;
 
 /**

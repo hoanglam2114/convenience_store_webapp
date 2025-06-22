@@ -70,8 +70,8 @@
                         <!-- Danh mục -->
                         <div class="flex space-x-2 mb-4 overflow-x-auto pb-2">
                             <c:forEach var="cat" items="${listCategories}">
-                                <a href="loadProducts?categoryId=${cat.id}" class="px-4 py-2 rounded-lg whitespace-nowrap ${param.categoryId == cat.id ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'}">${cat.name}</a>
-                            </c:forEach>
+                                <a href="loadProducts?categoryId=${cat.id}" class="px-4 py-2 rounded-lg whitespace-nowrap ${param.categoryId == cat.id ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'}">${cat.name}</a>                             
+                            </c:forEach>                               
                         </div>
 
                         <!-- Lưới sản phẩm -->
@@ -219,11 +219,6 @@
                                         <i class="fas fa-qrcode mr-2"></i>QR Code
                                     </button>
                                 </form>
-
-
-                                <button class="bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600 font-medium">
-                                    <i class="fas fa-credit-card mr-2"></i>Thẻ
-                                </button>
                             </div>
                         </c:if>
                     </div>

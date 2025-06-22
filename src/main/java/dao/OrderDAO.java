@@ -1,4 +1,3 @@
-
 package dao;
 
 import java.sql.PreparedStatement;
@@ -19,7 +18,8 @@ public class OrderDAO extends DBContext {
 
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT o.order_id, c.customer_name, o.order_date, o.order_total_amount, o.order_status, e.employee_name, co.coupon_code, o.employee_id "
+        String sql = "SELECT o.order_id, o.customer_coupon_id, c.customer_name, o.order_date, o.order_total_amount, \n"
+                + "       o.order_status, e.employee_name, co.coupon_code, o.employee_id "
                 + "FROM Orders o "
                 + "LEFT JOIN Customers c ON o.customer_id = c.customer_id "
                 + "LEFT JOIN Employees e ON o.employee_id = e.employee_id "
@@ -33,6 +33,7 @@ public class OrderDAO extends DBContext {
             while (rs.next()) {
                 Order order = new Order();
                 order.setOrderId(rs.getInt("order_id"));
+                order.setCustomerCouponId(rs.getObject("customer_coupon_id") != null ? rs.getInt("customer_coupon_id") : null);
                 order.setCustomerName(rs.getString("customer_name"));
                 order.setOrderDate(rs.getDate("order_date"));
                 order.setOrderTotalAmount(rs.getInt("order_total_amount"));
@@ -318,7 +319,6 @@ public class OrderDAO extends DBContext {
 //            connection.setAutoCommit(true);
 //        }
 //    }
-    
     private int createCustomerCoupon(int customerId, int couponId) throws SQLException {
         String sql = "INSERT INTO CustomerCoupon (customer_id, coupon_id) VALUES (?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -394,7 +394,7 @@ public class OrderDAO extends DBContext {
             ps.executeUpdate();
         }
     }
-    
+
     public int createPendingOrder(int customerId, int employeeId, double totalAmount) throws SQLException {
         String sql = "INSERT INTO Orders (customer_id, order_date, order_total_amount, order_status, employee_id) "
                 + "VALUES (?, GETDATE(), ?, 'PENDING', ?)";

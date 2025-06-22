@@ -7,6 +7,7 @@ public class Order {
     private int orderId;
     private int customerId;
     private String customerName;
+    private Integer customerCouponId;
     private Date orderDate;
     private double orderTotalAmount;
     private String orderStatus;
@@ -61,6 +62,14 @@ public class Order {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public Integer getCustomerCouponId() {
+        return customerCouponId;
+    }
+
+    public void setCustomerCouponId(Integer customerCouponId) {
+        this.customerCouponId = customerCouponId;
     }
 
     public Date getOrderDate() {

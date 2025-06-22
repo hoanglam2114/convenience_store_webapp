@@ -72,6 +72,10 @@
         <servlet-name>VNPayReturnServlet</servlet-name>
         <servlet-class>controller.POS.VNPayReturnServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListOrderServlet</servlet-name>
+        <servlet-class>controller.ListOrderServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListCustomerServlet</servlet-name>
         <url-pattern>/listCustomer</url-pattern>
@@ -163,6 +167,10 @@
     <servlet-mapping>
         <servlet-name>VNPayReturnServlet</servlet-name>
         <url-pattern>/vnPayReturn</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListOrderServlet</servlet-name>
+        <url-pattern>/listOrder</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>LoginServlet</welcome-file>
