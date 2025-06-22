@@ -213,19 +213,13 @@
                                 </form>
 
                                 <!-- QR Payment button mở modal -->
-                                <button onclick="openQrModal(${sessionScope.cart.totalMoney})"
-                                        class="bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 font-medium">
-                                    <i class="fas fa-qrcode mr-2"></i>QR Code
-                                </button>
+                                <form action="createVNPayQR" method="post" class="col-span-1">
+                                    <button type="submit"
+                                            class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 font-medium">
+                                        <i class="fas fa-qrcode mr-2"></i>QR Code
+                                    </button>
+                                </form>
 
-                                <!-- Modal hiển thị QR -->
-                                <div id="qrModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
-                                    <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                                        <h3 class="text-xl font-bold mb-4">Quét mã QR để thanh toán</h3>
-                                        <img id="qrImage" src="" alt="QR Code" class="mx-auto" />
-                                        <button onclick="closeQrModal()" class="mt-4 bg-gray-400 text-white px-4 py-2 rounded">Đóng</button>
-                                    </div>
-                                </div>
 
                                 <button class="bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600 font-medium">
                                     <i class="fas fa-credit-card mr-2"></i>Thẻ
@@ -247,14 +241,6 @@
             }
             function closeModal() {
                 document.getElementById('customerModal').classList.add('hidden');
-            }
-            function openQrModal(amount) {
-                const orderId = Math.floor(Math.random() * 10000); // giả lập ID
-                document.getElementById("qrImage").src = `qrPayment?orderId=${orderId}&amount=${amount}`;
-                document.getElementById("qrModal").classList.remove("hidden");
-            }
-            function closeQrModal() {
-                document.getElementById("qrModal").classList.add("hidden");
             }
         </script>
     </body>

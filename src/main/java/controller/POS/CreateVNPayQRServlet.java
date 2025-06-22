@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
 package controller.POS;
 
-
-import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +10,6 @@ import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import model.Cart;
 import java.text.SimpleDateFormat;
@@ -23,13 +17,17 @@ import java.util.Collections;
 import java.util.Date;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 public class CreateVNPayQRServlet extends HttpServlet {
 
-    private final String vnp_TmnCode = "YOUR_TMN_CODE";
-    private final String vnp_HashSecret = "YOUR_HASH_SECRET";
+    private final String vnp_TmnCode = "5IJF7TIR";
+    private final String vnp_HashSecret = "F80NQVO3Q5OIPGQERLQTO5ORV2266CKI";
+    private final String vnp_ReturnUrl = "https://convenient-store.onrender.com/vnPayReturn";
     private final String vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    private final String vnp_ReturnUrl = "http://localhost:8080/convenient_store_webapp/vnpayReturn";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -106,6 +104,26 @@ public class CreateVNPayQRServlet extends HttpServlet {
 
         String paymentUrl = vnp_Url + "?" + query.toString();
         response.sendRedirect(paymentUrl);
+    }
+
+    public static String hmacSHA512(String key, String data) {
+        try {
+            Mac hmac512 = Mac.getInstance("HmacSHA512");
+            SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "HmacSHA512");
+            hmac512.init(secretKeySpec);
+            byte[] bytes = hmac512.doFinal(data.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(bytes);
+        } catch (Exception ex) {
+            throw new RuntimeException("Lỗi mã hóa HmacSHA512", ex);
+        }
+    }
+
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder hash = new StringBuilder();
+        for (byte b : bytes) {
+            hash.append(String.format("%02x", b));
+        }
+        return hash.toString();
     }
 
     @Override

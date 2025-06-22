@@ -8,10 +8,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- *
- * @author nguye
- */
 public class Shifts {
     private int shiftManageId;
     private LocalDateTime shiftStartTime;

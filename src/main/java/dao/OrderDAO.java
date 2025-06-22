@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dao;
 
 import java.sql.PreparedStatement;
@@ -18,10 +15,6 @@ import model.Order;
 import model.OrderDetails;
 import model.Products;
 
-/**
- *
- * @author ankha
- */
 public class OrderDAO extends DBContext {
 
     public List<Order> getAllOrders() {
@@ -325,6 +318,7 @@ public class OrderDAO extends DBContext {
 //            connection.setAutoCommit(true);
 //        }
 //    }
+    
     private int createCustomerCoupon(int customerId, int couponId) throws SQLException {
         String sql = "INSERT INTO CustomerCoupon (customer_id, coupon_id) VALUES (?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -378,28 +372,28 @@ public class OrderDAO extends DBContext {
         }
     }
 
-//    public void createInvoice(int orderId, int customerId, double totalAmount, int employeeId, int paymentMethodId) throws SQLException {
-//        ShiftDAO shiftDAO = new ShiftDAO();
-//        Integer shiftManagerId = shiftDAO.getCurrentShiftManagerId(employeeId);
-//
-//        if (shiftManagerId == null) {
-//            throw new SQLException("No active shift found for employee " + employeeId);
-//        }
-//
-//        String invoiceSql = "INSERT INTO Invoices (order_id, invoice_date, invoice_total_amount, invoice_status, "
-//                + "payment_method_id, employee_id, customer_id, shift_manager_id) "
-//                + "VALUES (?, GETDATE(), ?, 'COMPLETED', ?, ?, ?, ?)";
-//
-//        try (PreparedStatement ps = connection.prepareStatement(invoiceSql)) {
-//            ps.setInt(1, orderId);
-//            ps.setDouble(2, totalAmount);
-//            ps.setInt(3, paymentMethodId);
-//            ps.setInt(4, employeeId);
-//            ps.setInt(5, customerId);
-//            ps.setInt(6, shiftManagerId);
-//            ps.executeUpdate();
-//        }
-//    }
+    public void createInvoice(int orderId, int customerId, double totalAmount, int employeeId, int paymentMethodId) throws SQLException {
+        ShiftDAO shiftDAO = new ShiftDAO();
+        Integer shiftManagerId = shiftDAO.getCurrentShiftManagerId(employeeId);
+
+        if (shiftManagerId == null) {
+            throw new SQLException("No active shift found for employee " + employeeId);
+        }
+
+        String invoiceSql = "INSERT INTO Invoices (order_id, invoice_date, invoice_total_amount, invoice_status, "
+                + "payment_method_id, employee_id, customer_id, shift_manager_id) "
+                + "VALUES (?, GETDATE(), ?, 'COMPLETED', ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(invoiceSql)) {
+            ps.setInt(1, orderId);
+            ps.setDouble(2, totalAmount);
+            ps.setInt(3, paymentMethodId);
+            ps.setInt(4, employeeId);
+            ps.setInt(5, customerId);
+            ps.setInt(6, shiftManagerId);
+            ps.executeUpdate();
+        }
+    }
     
     public int createPendingOrder(int customerId, int employeeId, double totalAmount) throws SQLException {
         String sql = "INSERT INTO Orders (customer_id, order_date, order_total_amount, order_status, employee_id) "
