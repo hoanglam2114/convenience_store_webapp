@@ -658,7 +658,7 @@ public class InventoryDAO extends DBContext {
         }
 
         if (inventoryList.isEmpty()) {
-            System.out.println("No DATA");
+            System.out.println("No DATA");  
         } else {
             for (Inventory item : inventoryList) {
                 System.out.println(item);

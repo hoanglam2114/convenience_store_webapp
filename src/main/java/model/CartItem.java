@@ -1,28 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package model;
 
-/**
- *
- * @author Admin
- */
 public class CartItem {
-    private Products product;
+
+    private StoreStock storeStock;
     private int quantity;
+    private double price;
 
-    public CartItem(Products product, int quantity) {
-        this.product = product;
+    public CartItem() {
+    }
+
+    public CartItem(StoreStock storeStock, int quantity, double price) {
+        this.storeStock = storeStock;
         this.quantity = quantity;
+        this.price = price;
     }
 
-    public Products getProduct() {
-        return product;
+    public StoreStock getStoreStock() {
+        return storeStock;
     }
 
-    public void setProduct(Products product) {
-        this.product = product;
+    public void setStoreStock(StoreStock storeStock) {
+        this.storeStock = storeStock;
     }
 
     public int getQuantity() {
@@ -33,7 +32,22 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public double getTotalPrice() {
-        return product.getPrice() * quantity;
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getSubTotal() {
+        return this.quantity * this.price;
+    }
+
+    public Products getProduct() {
+        if (storeStock != null && storeStock.getInventory() != null) {
+            return storeStock.getInventory().getProduct();
+        }
+        return null;
     }
 }

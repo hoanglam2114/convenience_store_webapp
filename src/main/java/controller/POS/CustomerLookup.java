@@ -4,19 +4,18 @@
  */
 package controller.POS;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import dao.CustomerDAO;
+import dao.ProductCategoriesDAO;
+import dao.ProductsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Customers;
 
-@WebServlet(name = "CustomerLookup", urlPatterns = {"/api/customer-lookup"})
 public class CustomerLookup extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -39,37 +38,34 @@ public class CustomerLookup extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String phone = request.getParameter("customer_phone");
-        System.out.println("Received phone: " + phone);
-        response.setContentType("application/json;charset=UTF-8");
-
-        try {
-            CustomerDAO dao = new CustomerDAO();
-            Customers customer = dao.findByPhone(phone);
-
-            if (customer != null) {
-                JsonObject json = new JsonObject();
-                json.addProperty("id", customer.getId());
-                json.addProperty("name", customer.getName());
-                json.addProperty("phone", customer.getPhone());
-                json.addProperty("point", customer.getPoint());
-                json.addProperty("type_id", customer.getType_id());
-
-                response.getWriter().write(json.toString());
-            } else {
-                response.getWriter().write("{}");
-            }
-
-        } catch (Exception e) {
-            response.setStatus(500);
-            response.getWriter().write("{\"error\":\"Internal Server Error\"}");
-            e.printStackTrace();
-        }
+        processRequest(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String phone = request.getParameter("customer_phone");
+        CustomerDAO dao = new CustomerDAO();
+        Customers customer = dao.findByPhone(phone);
+
+        HttpSession session = request.getSession();
+        if (customer != null) {
+            session.setAttribute("phone", customer.getPhone());
+            session.setAttribute("name", customer.getName());
+
+            // Thêm hai dòng này:
+            session.setAttribute("customerId", customer.getId());
+            session.setAttribute("customerName", customer.getName());  // đúng theo tên bạn dùng trong CheckoutServlet
+        } else {
+            session.setAttribute("phone", phone);
+            session.setAttribute("name", null);
+
+            // Clear nếu trước đó có tồn tại
+            session.removeAttribute("customerId");
+            session.removeAttribute("customerName");
+        }
+        response.sendRedirect("loadProducts");
+
     }
 
     @Override

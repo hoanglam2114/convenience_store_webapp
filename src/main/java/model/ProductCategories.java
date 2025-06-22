@@ -9,7 +9,7 @@ package model;
  * @author admin
  */
 public class ProductCategories {
-      private int id;
+    private int id;
     private String name;
 
     public ProductCategories() {

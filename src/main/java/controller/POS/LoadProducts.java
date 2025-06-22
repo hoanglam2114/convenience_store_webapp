@@ -1,75 +1,80 @@
-
 package controller.POS;
 
 import dao.ProductCategoriesDAO;
-import dao.ProductsDAO;
+import dao.StoreStockDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Products;
+import model.Cart;
+import model.ProductCategories;
+import model.StoreStock;
 
 /**
  *
  * @author Admin
  */
 public class LoadProducts extends HttpServlet {
-   
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoadProducts</title>");  
+            out.println("<title>Servlet LoadProducts</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoadProducts at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet LoadProducts at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
-        try {
-            ProductsDAO productDAO = new ProductsDAO();
-            ProductCategoriesDAO categoryDAO = new ProductCategoriesDAO();
+            throws ServletException, IOException {
 
-            String keyword = request.getParameter("keyword");
-            String categoryIdStr = request.getParameter("categoryId");
+        StoreStockDAO stockDAO = new StoreStockDAO();
+        ProductCategoriesDAO catDAO = new ProductCategoriesDAO();
 
-            List<Products> listProducts;
+        List<ProductCategories> listCategories = catDAO.getAll();
+        request.setAttribute("listCategories", listCategories);
 
-            if (keyword != null && !keyword.trim().isEmpty()) {
-                listProducts = productDAO.searchProductByName(keyword);
-            } else if (categoryIdStr != null) {
-                int categoryId = Integer.parseInt(categoryIdStr);
-                listProducts = productDAO.getProductsByCategory(categoryId);
-            } else {
-                listProducts = productDAO.getAllProduct();
-            }
+        String categoryIdRaw = request.getParameter("categoryId");
+        List<StoreStock> listStocks;
 
-            request.setAttribute("listProducts", listProducts);
-            request.setAttribute("listCategories", categoryDAO.getAll());
-            request.getRequestDispatcher("/view/pos-home.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(500, "Lỗi xử lý sản phẩm");
+        if (categoryIdRaw != null && !categoryIdRaw.isEmpty()) {
+            int categoryId = Integer.parseInt(categoryIdRaw);
+            listStocks = stockDAO.getInStockByCategory(categoryId);
+            request.setAttribute("selectedCategoryId", categoryId);
+        } else {
+            listStocks = stockDAO.getAllInStock();
         }
-    } 
+
+        request.setAttribute("listStocks", listStocks);
+
+        HttpSession session = request.getSession();
+        String customerName = (String) session.getAttribute("name");
+        String customerPhone = (String) session.getAttribute("phone");
+        Cart cart = (Cart) session.getAttribute("cart");
+
+        if (customerName != null) request.setAttribute("name", customerName);
+        if (customerPhone != null) request.setAttribute("phone", customerPhone);
+        if (cart != null) request.setAttribute("cart", cart);
+
+        request.getRequestDispatcher("view/pos-home.jsp").forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 

@@ -8,16 +8,15 @@ import model.StoreStock;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.DiscountProduct;
 import model.Inventory;
-import model.Products;
-import model.Products;
 import model.Products;
 import model.WeightUnit;
 
 /**
- * @author hoang on 6/8/2025-10:47 AM
- * IntelliJ IDEA
+ * @author hoang on 6/8/2025-10:47 AM IntelliJ IDEA
  */
 public class StoreStockDAO extends DBContext {
 
@@ -146,8 +145,11 @@ public class StoreStockDAO extends DBContext {
                 stock.setInventory(inventory);
                 stock.setStock(rs.getInt("quantity_in_stock"));
                 stock.setLastStockCheckDate(rs.getDate("last_stock_check_date").toLocalDate());
-                DiscountProduct dp = getDiscountProductById(rs.getInt("discount_product_id"));
-                stock.setDiscount(dp);
+                int discountId = rs.getInt("discount_product_id");
+                if (!rs.wasNull() && discountId > 0) {
+                    DiscountProduct dp = getDiscountProductById(discountId);
+                    stock.setDiscount(dp);
+                }
                 stock.setAlert(rs.getString("alert"));
                 return stock;
             }
@@ -296,4 +298,86 @@ public class StoreStockDAO extends DBContext {
         }
         return null;
     }
+
+    private StoreStock mapResultSetToStoreStock(ResultSet rs) throws SQLException {
+        StoreStock stock = new StoreStock();
+        stock.setStoreStockId(rs.getInt("store_stock_id"));
+        stock.setStock(rs.getInt("quantity_in_stock")); // fix: dùng setStock thay vì setQuantityInStock
+        Date sqlDate = rs.getDate("last_stock_check_date");
+        if (sqlDate != null) {
+            stock.setLastStockCheckDate(sqlDate.toLocalDate());
+        }
+        stock.setAlert(rs.getString("alert"));
+
+        // Load Inventory
+        int inventoryId = rs.getInt("inventory_id");
+        InventoryDAO inventoryDAO = new InventoryDAO();
+        Inventory inventory = inventoryDAO.getInventoryById(inventoryId);
+        stock.setInventory(inventory);
+
+        // Load Discount
+        int discountId = rs.getInt("discount_product_id");
+        if (!rs.wasNull()) {
+            DiscountProductDAO discountDAO = new DiscountProductDAO();
+            DiscountProduct discount = discountDAO.getDiscountById(discountId);
+            stock.setDiscount(discount);
+        }
+
+        return stock;
+    }
+
+    public List<StoreStock> getAllInStock() {
+        List<StoreStock> list = new ArrayList<>();
+        String sql = "SELECT * FROM StoreStock WHERE quantity_in_stock > 0";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToStoreStock(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<StoreStock> searchInStockByName(String keyword) {
+        List<StoreStock> list = new ArrayList<>();
+        String sql = """
+            SELECT ss.* FROM StoreStock ss
+            JOIN Inventory i ON ss.inventory_id = i.inventory_id
+            JOIN Products p ON i.product_id = p.product_id
+            WHERE ss.quantity_in_stock > 0 AND p.product_name LIKE ?
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToStoreStock(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<StoreStock> getInStockByCategory(int categoryId) {
+        List<StoreStock> list = new ArrayList<>();
+        String sql = """
+            SELECT ss.* FROM StoreStock ss
+            JOIN Inventory i ON ss.inventory_id = i.inventory_id
+            JOIN Products p ON i.product_id = p.product_id
+            WHERE ss.quantity_in_stock > 0 AND p.category_id = ?
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, categoryId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToStoreStock(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }
