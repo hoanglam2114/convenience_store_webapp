@@ -6,6 +6,8 @@
 package controller;
 
 import dao.AccountDAO;
+import dao.EmployeeAttendanceDAO;
+import dao.EmployeeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import model.Accounts;
 import utils.EmailValidator;
 
@@ -63,7 +66,7 @@ public class LoginServlet extends HttpServlet {
 //        Nếu đã đăng nhập rồi (session có tồn tại account) thì chuyển hướng về các trang theo Role, không sẽ bị xung đột
         if (account != null) {
             if (account.getRole_id() == 1) {
-                response.sendRedirect("....");
+                response.sendRedirect("view/index.jsp");
             } else if (account.getRole_id() == 2) {
                 response.sendRedirect("....");
             }
@@ -94,19 +97,7 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("error", "Email không hợp lệ!");
             request.getRequestDispatcher("view/auth-sign-in.jsp").forward(request, response);
             return;
-        }
-        
-//        if (!PasswordValidator.isValid(password)) {
-//        // Nếu mật khẩu không hợp lệ, đặt thông báo lỗi và chuyển hướng về trang đăng ký
-//        request.setAttribute("error", PasswordValidator.getPasswordRequirements());
-//        request.getRequestDispatcher("view/auth-sign-in.jsp").forward(request, response);
-//        return;
-//    }
-        
-        
-        
-        
-        
+        }      
         if (account == null) {
             request.setAttribute("mess", "Sai tên đăng nhập hoặc mật khẩu!");
             request.getRequestDispatcher("view/auth-sign-in.jsp").forward(request, response);
@@ -115,12 +106,24 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("view/auth-sign-in.jsp").forward(request, response);
         } else if (account != null && account.getStatus_id() == 1) {
             HttpSession session = request.getSession();
+            // Luu account vao session
             session.setAttribute("account", account);
+            
+            EmployeeDAO employeeDAO = new EmployeeDAO();
+            Integer employeeId = employeeDAO.getEmployeeIdByAccountId(account.getAccount_id());
+            
+            if(employeeId!=null) {
+                // Luu employeeId vao session
+                session.setAttribute("employeeId", employeeId);
+                Timestamp loginTime = new Timestamp(System.currentTimeMillis());
+                EmployeeAttendanceDAO attendanceDAO = new EmployeeAttendanceDAO();
+                attendanceDAO.recordLoginTime(employeeId, loginTime);
+            }
             // Điều hướng dựa trên vai trò của người dùng
             if (account.getRole_id() == 1) {
-                response.sendRedirect("register");
+                response.sendRedirect("HomeAdmin");
             } else {
-                response.sendRedirect("view/auth-confirm-mail.jsp");
+                response.sendRedirect("HomeAdmin");
             }
         }
     }

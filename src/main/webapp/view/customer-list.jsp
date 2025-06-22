@@ -36,23 +36,22 @@
                 <div class="layout-page">
 
                     <!-- Navbar -->
-                    <nav class="layout-navbar container-xxl navbar navbar-expand-xl">
-                        <!-- Navbar -->
-                    </nav>
+                    <%@ include file="/common/nav-bar.jsp" %>
 
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
+                        <div class="container-xxl flex-grow-1 container-p-y">
 
                         <!-- Main content -->
                         <div class="container-xxl flex-grow-1 container-p-y">
                             <h4 class="fw-bold py-3 mb-4">
-                                <span class="text-muted fw-light">Management /</span> Customer Management
+                                <span class="text-muted fw-light">Quản Lý /</span> Quản Lý Khách Hàng
                             </h4>
 
                             <!-- Add Customer Button -->
                             <div class="mb-3">
                                 <a href="addCustomer" class="btn btn-primary">
-                                    <i class="bx bx-plus"></i> Add
+                                    <i class="bx bx-plus"></i> Thêm
                                 </a>
                             </div>
 
@@ -65,7 +64,7 @@
                                             id="customerSearch"
                                             name="customerSearch"
                                             class="form-control"
-                                            placeholder="Search..."
+                                            placeholder="Tìm Kiếm..."
                                             aria-label="Search"
                                             aria-describedby="basic-addon-search"
                                             />
@@ -85,11 +84,11 @@
                                     <table class="table"> 
                                         <thead class="table-light"> 
                                             <tr> 
-                                                <th>Name</th>
-                                                <th>Phone</th>
-                                                <th>Point</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
+                                                <th>Tên</th>
+                                                <th>Số Điện Thoại</th>
+                                                <th>Điểm</th>
+                                                <th>Trạng Thái</th>
+                                                <th>Hoạt Động</th>
                                             </tr> 
                                         </thead> 
                                         <tbody class="table-border-bottom-0"> 
@@ -116,7 +115,7 @@
                                                 } 
                                             }else{
                                             %>
-                                            <tr><td colspan="5">Nothing to show</td></tr>
+                                            <tr><td colspan="5">Không có thông tin để hiển thị.</td></tr>
                                             <% 
                                                 } 
                                             %>
@@ -129,10 +128,22 @@
 
                         <!-- Footer -->
                         <footer class="content-footer footer bg-footer-theme">
-                            <div class="container-xxl d-flex justify-content-between py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">© 2025, Sneat Admin Template</div>
-                                <div>Developed by You</div>
+                            <div class="container-xxl d-flex justify-content-center py-3">
+                                <div class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                    <a class="page-link" href="listCustomer?index=${currentPage - 1}"><</a>
+                                </div>
+
+                                <c:forEach begin="1" end="${endPage}" var="i">
+                                    <div class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="listCustomer?index=${i}">${i}</a>
+                                    </div>
+                                </c:forEach>
+
+                                <div class="page-item ${currentPage == endPage ? 'disabled' : ''}">
+                                    <a class="page-link" href="listCustomer?index=${currentPage + 1}">></a>
+                                </div>
                             </div>
+
                         </footer>
                         <!-- /Footer -->
 
@@ -147,13 +158,12 @@
         </div>
         <!-- /Layout wrapper -->
 
-        <!-- Core JS -->
+        <!-- Sneat JS -->
         <script src="assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="assets/vendor/libs/popper/popper.js"></script>
         <script src="assets/vendor/js/bootstrap.js"></script>
-        <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
         <script src="assets/vendor/js/menu.js"></script>
+        <script src="assets/vendor/js/helpers.js"></script>
+        <script src="assets/js/config.js"></script>
         <script src="assets/js/main.js"></script>
         <script src="assets/js/customer.js"></script>
     </body>

@@ -18,8 +18,8 @@
 
         <script type="text/javascript">
             function doDelete(id) {
-                if (confirm("Bạn có muốn xóa đơn vị sản phẩm có mã là " + id + " không ?")) {
-                    window.location = "DeleteUnit?unit_id=" + id;
+                if (confirm("Bạn có muốn xóa lịch sử thay đổi sản phẩm có mã là " + id + " không ?")) {
+                    window.location = "DeleteHistory?history_id=" + id;
                 }
             }
         </script>
@@ -72,7 +72,7 @@
                                                 <td>
                                                     <div class="d-flex align-items-center list-action">
                                                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa sản phẩm"
-                                                           href="#" onclick="doDelete(${p.getId()})" class="btn btn-sm btn-danger rounded-pill" >
+                                                           href="#" onclick="doDelete(${h.getHistoryId()})" class="btn btn-sm btn-danger rounded-pill" >
                                                             <i class="bx bx-trash"></i>
                                                         </a>
                                                     </div>

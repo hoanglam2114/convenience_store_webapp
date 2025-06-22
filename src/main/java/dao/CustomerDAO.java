@@ -84,7 +84,7 @@ public class CustomerDAO extends DBContext{
 
     public List<Customers> searchCustomer(String keyword) throws SQLException {
         List<Customers> customers = new ArrayList<>();
-        String sql = "SELECT * FROM Customers WHERE LOWER(customer_name) LIKE ?";
+        String sql = "SELECT * FROM customers WHERE customer_name COLLATE Latin1_General_CI_AI LIKE ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, "%" + keyword.toLowerCase() + "%");
@@ -95,7 +95,7 @@ public class CustomerDAO extends DBContext{
                         rs.getString("customer_name"),
                         rs.getString("customer_phone"),
                         rs.getInt("point"),
-                        rs.getInt("type_id")
+                        rs.getInt("customer_type_id")
                 );
                 customers.add(customer);
             }
@@ -128,5 +128,48 @@ public class CustomerDAO extends DBContext{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<Customers> pagingCustomer(int index) {
+        List<Customers> list = new ArrayList<>();
+        String sql = "SELECT [customer_id],\n"
+                + "       [customer_name],\n"
+                + "       [customer_phone],\n"
+                + "       [point],\n"
+                + "       [customer_type_id] \n"
+                + "from Customers\n"
+                + "order by customer_id\n"
+                + "offset ?  rows fetch next 5 rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, (index - 1) * 5);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Customers c = new Customers();
+                c.setId(rs.getInt("customer_id"));
+                c.setName(rs.getString("customer_name"));
+                c.setPhone(rs.getString("customer_phone"));
+                c.setPoint(rs.getInt("point"));
+                c.setType_id(rs.getInt("customer_type_id"));
+                list.add(c);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+
+    public int getTotalCustomer() {
+        String sql = "SELECT COUNT(*) from [dbo].[Customers]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
     }
 }

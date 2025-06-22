@@ -135,7 +135,7 @@
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-2">Forgot Password? ?</h4>
+              <h4 class="mb-2">Forgot Password? </h4>
               <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
               <form id="formAuthentication" class="mb-3" action="ForgotPassword" method="POST">
                 <div class="mb-3">

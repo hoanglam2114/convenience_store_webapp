@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
         <link rel="stylesheet" href="assets/vendor/css/theme-default.css" />
         <link rel="stylesheet" href="assets/css/demo.css" />
+
         <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
         <link rel="stylesheet" href="assets/vendor/css/pages/page-auth.css" />
         <!-- Font and icon -->
@@ -74,6 +75,7 @@
 
 
                         </div>
+
 
 
 

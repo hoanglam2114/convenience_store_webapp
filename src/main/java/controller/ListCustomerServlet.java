@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Customers;
+import model.Employees;
 
 /**
  *
@@ -42,10 +43,31 @@ public class ListCustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+
+        String indexPage = request.getParameter("index");
+        int currentPage = 1;
+
+        if (indexPage != null) {
+            try {
+                currentPage = Integer.parseInt(indexPage);
+            } catch (NumberFormatException e) {
+            }
+        }else{
+            indexPage = "1";
+        }
+
+        int index = Integer.parseInt(indexPage);
         CustomerDAO dao = new CustomerDAO();
-        List<Customers> customerList = dao.getAllCustomer();
-        
+        int count = dao.getTotalCustomer();
+        int endPage = count / 5;
+        if (count % 5 != 0) {
+            endPage++;
+        }
+        List<Customers> customerList = dao.pagingCustomer(index);
+
         request.setAttribute("customerList", customerList);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("endPage", endPage);
         request.getRequestDispatcher("view/customer-list.jsp").forward(request, response);
     } 
 
