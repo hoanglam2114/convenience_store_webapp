@@ -58,10 +58,10 @@
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
                             <form action="FindProduct"  method="get">
                                 <div class="d-flex  align-items-center gap-2 mb-2">
-                                    <input type="text" class="form-control" name="namePro" placeholder="Search products by name" />
-                                    <button type="submit" class="btn btn-primary me-2"><i ></i> Search</button>
-                                    <a href="ListProduct" class="btn btn-primary ">
-                                        <i style="max-width: 50px"></i> Refresh
+                                    <input type="text" class="form-control" name="namePro" placeholder="Tìm kiếm sản phẩm theo tên" />
+                                    <button style="width: 180px"  type="submit" class="btn btn-primary me-2"><i ></i> Tìm kiếm</button>
+                                    <a style="width: 150px" href="ListProduct" class="btn btn-primary ">
+                                        <i ></i> Làm mới
                                     </a>
                                 </div>
 
@@ -88,17 +88,17 @@
                                 <table class="table product-table">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Barcode</th>
-                                            <th>Product</th>
-                                            <th>Product Name</th>
-                                            <th>Product Category</th>
-                                            <th>Price</th>
-                                            <th>Brand</th>
-                                            <th>Unit</th>
-                                            <th>Production Date</th>
-                                            <th>Expiration date</th>
-                                            <th>batch</th>
-                                            <th>Action</th>
+                                            <th>Mã vạch</th>
+                                            <th>Sản phẩm</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Loại sản phẩm</th>
+                                            <th>Giá</th>
+                                            <th>Thương hiệu</th>
+                                            <th>Đơn vị</th>
+                                            <th>Ngày sản xuất</th>
+                                            <th>Ngày hết hạn</th>
+                                            <th>Lô</th>
+                                            <th>Chức năng</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-border-bottom-0">

@@ -58,7 +58,7 @@
                                            placeholder="Tìm cửa hàng theo tên" />
                                     <button style="width: 150px" class=" btn btn-outline-primary" >tìm kiếm</button>
                                     <a href='ListShop' style="width: 150px" class=" btn btn-outline-primary" >làm mới </a>
-                                
+
                                 </form>
 
                             </div>
@@ -79,6 +79,7 @@
                                                     <th>Thời gian hoạt động</th>
                                                     <th>Ảnh Cửa Hàng</th>
                                                     <th>Chức Năng</th>
+                                                    
                                                 </tr>
                                             </thead>
                                             <tbody class="table-border-bottom-0">
@@ -90,12 +91,14 @@
                                                         <td>${s.getShopEmail()}</td>
                                                         <td>${s.getShopOpeningHours()}</td>
                                                         <td>
-                                                           <img src="assets/img/shop/${s.getShopLogo()}"  width="80px" height="80px" />
+                                                            <img src="assets/img/shop/${s.getShopLogo()}"  width="80px" height="80px" />
                                                         </td>
                                                         <td>
                                                             <a href="UpdateShop?shop_id=${s.getShopId()}" class="btn btn-sm btn-info mb-1">Sửa</a><br/>
                                                             <a href="#" onclick="doDelete(${s.getShopId()})" class="btn btn-sm btn-danger">Xóa</a>
+
                                                         </td>
+                         
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>

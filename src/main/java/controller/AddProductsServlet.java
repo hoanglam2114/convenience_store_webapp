@@ -166,10 +166,10 @@ public class AddProductsServlet extends HttpServlet {
         ProductCategoriesDAO pcd = new ProductCategoriesDAO();
 
         if (expirationDate.isBefore(manufactureDate)) {
-            request.setAttribute("errorMessage", "The expiration date must be after the date of manufacture.");
+            request.setAttribute("errorMessage", "Ngày hết hạn phải sau ngày sản xuất.");
             request.getRequestDispatcher("/view/AddProduct.jsp").forward(request, response);
         } else if (expirationDate.isBefore(currentDate)) {
-            request.setAttribute("errorMessage", "Expiration date must be after current date.");
+            request.setAttribute("errorMessage", "Ngày hết hạn phải sau ngày hiện tại.");
             request.getRequestDispatcher("/view/AddProduct.jsp").forward(request, response);
         } else {
             Products s = pd.getProductByName(namePro);

@@ -180,6 +180,10 @@
         <servlet-name>DeleteShopServlet</servlet-name>
         <servlet-class>controller.DeleteShopServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DetailShopServlet</servlet-name>
+        <servlet-class>controller.DetailShopServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListCustomerServlet</servlet-name>
         <url-pattern>/listCustomer</url-pattern>
@@ -359,6 +363,10 @@
     <servlet-mapping>
         <servlet-name>DeleteShopServlet</servlet-name>
         <url-pattern>/DeleteShop</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailShopServlet</servlet-name>
+        <url-pattern>/DetailShop</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>LoginServlet</welcome-file>
