@@ -53,6 +53,18 @@
         <servlet-class>controller.POS.AddToCart</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ShiftDetailServlet</servlet-name>
+        <servlet-class>controller.ShiftDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListAccountServlet</servlet-name>
+        <servlet-class>controller.ListAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <servlet-class>controller.DeleteAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>CustomerLookup</servlet-name>
         <servlet-class>controller.POS.CustomerLookup</servlet-class>
     </servlet>
@@ -105,26 +117,6 @@
         <url-pattern>/deleteCustomer</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SearchCustomerServlet</servlet-name>
-        <url-pattern>/searchCustomer</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FindCategoriesServlet</servlet-name>
-        <url-pattern>/FindCate</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddCategoriesServlet</servlet-name>
-        <url-pattern>/AddCate</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdateCategoriesServlet</servlet-name>
-        <url-pattern>/UpdateCate</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteCategoriesServlet</servlet-name>
-        <url-pattern>/DeleteCate</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
     </servlet-mapping>
@@ -135,6 +127,18 @@
     <servlet-mapping>
         <servlet-name>ListShiftStaffServlet</servlet-name>
         <url-pattern>/ListShiftStaffServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShiftDetailServlet</servlet-name>
+        <url-pattern>/ShiftDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListAccountServlet</servlet-name>
+        <url-pattern>/ListAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <url-pattern>/DeleteAccountServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoadProducts</servlet-name>
@@ -181,7 +185,7 @@
         <url-pattern>/listOrder</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>LoginServlet</welcome-file>
+        <welcome-file>view/index.jsp</welcome-file>
     </welcome-file-list>
     <servlet>
         <servlet-name>ListProductsServlet</servlet-name>
@@ -247,6 +251,30 @@
         <servlet-name>ListCategories</servlet-name>
         <servlet-class>controller.ListCategories</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteShiftServlet</servlet-name>
+        <servlet-class>controller.DeleteShiftServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteShiftServlet</servlet-name>
+        <url-pattern>/DeleteShift</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListProductsServlet</servlet-name>
+        <url-pattern>/ListProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FindProductsServlet</servlet-name>
+        <url-pattern>/FindProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProductsServlet</servlet-name>
+        <url-pattern>/AddProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProductsServlet</servlet-name>
+        <url-pattern>/UpdateProduct</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>ListEmployee</servlet-name>
         <servlet-class>controller.ListEmployee</servlet-class>

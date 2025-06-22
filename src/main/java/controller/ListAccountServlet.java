@@ -5,7 +5,9 @@
 
 package controller;
 
-import dao.CustomerDAO;
+import dao.AccountDAO;
+import dao.AccountStatusDAO;
+import dao.EmployeeDAO;
 import dao.ShiftDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,14 +16,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Customers;
+import model.AccountStatus;
+import model.Accounts;
+import model.Employees;
 import model.Shifts;
 
 /**
  *
  * @author nguye
  */
-public class ListShiftStaffServlet extends HttpServlet {
+public class ListAccountServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +42,10 @@ public class ListShiftStaffServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListShiftStaffServlet</title>");  
+            out.println("<title>Servlet ListAccountServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListShiftStaffServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ListAccountServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,11 +62,16 @@ public class ListShiftStaffServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        ShiftDAO dao = new ShiftDAO();
-        List<Shifts> listShift = dao.getAll(); // Đảm bảo totalRevenue được tính toán ở đây
-    
-        request.setAttribute("shift", listShift);
-        request.getRequestDispatcher("view/shift-list.jsp").forward(request, response);
+        AccountDAO dao = new AccountDAO();
+        List<Accounts> listAccount = dao.getAllAccount();
+        EmployeeDAO edao = new EmployeeDAO();
+        List<Employees>  listEmp = edao.getAllEmployee();
+        AccountStatusDAO asDAO = new AccountStatusDAO();
+        List<AccountStatus> statusList = asDAO.getAllAccountStatus();
+        request.setAttribute("account", listAccount);
+        request.setAttribute("employee", listEmp);
+        request.setAttribute("statusList", statusList);
+        request.getRequestDispatcher("view/account-list.jsp").forward(request, response);
     } 
 
     /** 
