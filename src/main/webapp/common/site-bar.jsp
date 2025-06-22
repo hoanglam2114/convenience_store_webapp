@@ -140,8 +140,8 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="inventory" class="menu-link">
-                        <div data-i18n="Inventory Management">Inventory</div>
+                    <a href="list-warehouse" class="menu-link">
+                        <div data-i18n="Inventory Management">Warehouse</div>
                     </a>
                 </li>
                 <li class="menu-item">
