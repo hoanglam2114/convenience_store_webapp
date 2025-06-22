@@ -64,16 +64,17 @@
         .menu-inner .menu-link {
             text-decoration: none !important;
         }
+
         .warehouse-card {
             transition: all 0.3s ease;
             border: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             border-radius: 12px;
         }
 
         .warehouse-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .status-badge {
@@ -115,8 +116,14 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .header-section {
@@ -131,7 +138,7 @@
             background: white;
             border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             margin-bottom: 2rem;
         }
 
@@ -141,7 +148,7 @@
 
         .card-header {
             background: transparent;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             padding: 1.25rem;
         }
 
@@ -196,7 +203,8 @@
                                 <p class="mb-0 opacity-75">Danh sách và quản lý các kho hàng trong hệ thống</p>
                             </div>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addWarehouseModal">
+                                <button class="btn btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#addWarehouseModal">
                                     <a href="add-warehouse" class="btn btn-warning">
                                         <i class="bi bi-plus-lg me-1"></i> Thêm kho mới
                                     </a>
@@ -206,28 +214,38 @@
                     </div>
 
                     <!-- Search Section -->
-                    <div class="search-section">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="input-group">
+                    <form id="filterForm" method="get" action="list-warehouse">
+                        <div class="search-section">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
                                     <span class="input-group-text bg-light border-0">
                                         <i class="bi bi-search text-muted"></i>
                                     </span>
-                                    <input type="text" class="form-control border-0 bg-light"
-                                           placeholder="Tìm kiếm theo tên kho, địa chỉ hoặc số điện thoại..."
-                                           id="searchInput">
+                                        <input name="search" type="text" class="form-control border-0 bg-light"
+                                               placeholder="Tìm kiếm theo tên kho." value="${param.search}"
+                                               onkeydown="if(event.key === 'Enter') this.form.submit();">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <select name="status" class="form-select border-0 bg-light"
+                                            onchange="document.getElementById('filterForm').submit();">
+                                        <option value="">Tất cả trạng thái</option>
+                                        <option value="ACTIVE">Hoạt động</option>
+                                        <option value="MAINTENANCE">Bảo trì</option>
+                                        <option value="CLOSED">Đóng cửa</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary me-2"
+                                            onclick="window.location.href='list-warehouse'">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <select class="form-select border-0 bg-light" id="statusFilter">
-                                    <option value="">Tất cả trạng thái</option>
-                                    <option value="active">Hoạt động</option>
-                                    <option value="inactive">Tạm ngưng</option>
-                                    <option value="maintenance">Bảo trì</option>
-                                </select>
-                            </div>
                         </div>
-                    </div>
+                    </form>
 
                     <!-- Warehouse Cards Grid -->
                     <div class="row warehouse-grid" id="warehouseContainer">
@@ -253,7 +271,12 @@
                                             </c:choose>
                                         </div>
                                         <div class="d-flex align-items-center gap-2">
-                                            <button class="btn btn-outline-primary btn-sm" onclick="toggleDetails(${w.warehouseID})">
+                                            <button class="btn btn-primary btn-sm"
+                                                    onclick="toggleDetailsAndRedirect(${w.warehouseID})">
+                                                Quản lý hàng
+                                            </button>
+                                            <button class="btn btn-outline-primary btn-sm"
+                                                    onclick="toggleDetails(${w.warehouseID})">
                                                 <i class="bi bi-eye me-1" id="detailIcon${w.warehouseID}"></i> Chi tiết
                                             </button>
                                             <div class="action-buttons">
@@ -334,7 +357,8 @@
                                                             <div>
                                                                 <strong>Manager ID: ${w.managerID}</strong><br>
                                                                 <small class="text-muted">
-                                                                    <i class="bi bi-telephone me-1"></i>Liên hệ qua hệ thống
+                                                                    <i class="bi bi-telephone me-1"></i>Liên hệ qua hệ
+                                                                    thống
                                                                 </small>
                                                             </div>
                                                             <button class="btn btn-outline-primary btn-sm"
@@ -348,7 +372,8 @@
                                                     <div class="no-manager mb-3">
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <div>
-                                                                <h6 class="mb-1"><i class="bi bi-person-x me-1"></i>Chưa có quản lý</h6>
+                                                                <h6 class="mb-1"><i class="bi bi-person-x me-1"></i>Chưa
+                                                                    có quản lý</h6>
                                                                 <small>Kho này chưa được phân công quản lý</small>
                                                             </div>
                                                             <button class="btn btn-primary btn-sm"
@@ -387,17 +412,18 @@
                                                     <i class="bi bi-gear me-1"></i>Điều khiển trạng thái
                                                 </h6>
                                                 <button class="btn ${w.status.name() == 'ACTIVE' ? 'btn-success' : 'btn-outline-success'} btn-sm"
-                                                        onclick="updateStatus(${w.warehouseID}, 'ACTIVE')">
+                                                        onclick="updateStatus(${w.warehouseID}, '${w.name}', 'ACTIVE')">
                                                     <i class="bi bi-check-circle me-1"></i>Hoạt động
                                                 </button>
                                                 <button class="btn ${w.status.name() == 'MAINTENANCE' ? 'btn-warning' : 'btn-outline-warning'} btn-sm"
-                                                        onclick="updateStatus(${w.warehouseID}, 'MAINTENANCE')">
+                                                        onclick="updateStatus(${w.warehouseID}, '${w.name}', 'MAINTENANCE')">
                                                     <i class="bi bi-pause-circle me-1"></i>Bảo Trì
                                                 </button>
                                                 <button class="btn ${w.status.name() == 'CLOSED' ? 'btn-info' : 'btn-outline-info'} btn-sm"
-                                                        onclick="updateStatus(${w.warehouseID}, 'CLOSED')">
+                                                        onclick="updateStatus(${w.warehouseID}, '${w.name}', 'CLOSED')">
                                                     <i class="bi bi-wrench me-1"></i>Đóng cửa
                                                 </button>
+
 
                                             </div>
 
@@ -448,7 +474,8 @@
                         </div>
                         <div>
                             <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
-                            <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
+                            <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More
+                                Themes</a>
                             <a href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
                                target="_blank" class="footer-link me-4">Documentation</a>
                             <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
@@ -503,21 +530,36 @@
         }
     }
 
+    function toggleDetailsAndRedirect(warehouseID) {
+        toggleDetails(warehouseID);
+        setTimeout(() => {
+            window.location.href = `inventory?warehouse_id=` + warehouseID;
+        });
+    }
+
     // Edit warehouse
-    function editWarehouse(warehouseId) {
-        // Implement edit functionality
-        alert('Chỉnh sửa kho ID: ' + warehouseId);
-        // You can redirect to edit page or open a modal
-        // window.location.href = 'edit-warehouse?id=' + warehouseId;
+    function editWarehouse(warehouseID) {
+        alert('Chỉnh sửa kho ID: ' + warehouseID);
+        toggleDetails(warehouseID);
+        setTimeout(() => {
+            window.location.href = `edit-warehouse?warehouse_id=` + warehouseID;
+        });
+    }
+
+    function updateStatus(warehouseID, warehouseName, newStatus) {
+        const confirmed = confirm("Bạn có chắc chắn muốn cập nhật trạng thái của kho '" + warehouseName + "' sang '" + newStatus + "'?");
+        if (confirmed) {
+            window.location.href = "update-warehouse-status?warehouse_id=" + warehouseID + "&status=" + newStatus;
+        }
     }
 
     // Delete warehouse
-    function deleteWarehouse(warehouseId) {
-        if (confirm('Bạn có chắc chắn muốn xóa kho này không?')) {
-            // Implement delete functionality
-            alert('Xóa kho ID: ' + warehouseId);
-            // You can make an AJAX call or redirect
-            // window.location.href = 'delete-warehouse?id=' + warehouseId;
+    function deleteWarehouse(warehouseID) {
+        if (confirm("Bạn có chắc chắn muốn xóa kho '" + warehouseID + "' không ?")) {
+            alert('Xóa kho ID: ' + warehouseID);
+            setTimeout(() => {
+                window.location.href = `delete-warehouse?warehouse_id=` + warehouseID;
+            });
         }
     }
 
@@ -539,13 +581,6 @@
         alert('Liên kết cửa hàng cho kho ID: ' + warehouseId);
     }
 
-    // Update status
-    function updateStatus(warehouseId, status) {
-        // Implement status update functionality
-        alert('Cập nhật trạng thái "' + status + '" cho kho ID: ' + warehouseId);
-        // You can make an AJAX call to update status
-    }
-
     // View warehouse history
     function viewWarehouseHistory(warehouseId) {
         // Implement view history functionality
@@ -558,29 +593,12 @@
         alert('Tạo báo cáo cho kho ID: ' + warehouseId);
     }
 
-    // Search functionality
-    document.getElementById('searchInput').addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        const warehouseCards = document.querySelectorAll('.warehouse-card').parentNode;
-
-        warehouseCards.forEach(function(card) {
-            const cardText = card.textContent.toLowerCase();
-            const cardContainer = card.closest('.col-lg-6');
-
-            if (cardText.includes(searchTerm)) {
-                cardContainer.style.display = 'block';
-            } else {
-                cardContainer.style.display = 'none';
-            }
-        });
-    });
-
     // Status filter functionality
-    document.getElementById('statusFilter').addEventListener('change', function() {
+    document.getElementById('statusFilter').addEventListener('change', function () {
         const selectedStatus = this.value.toLowerCase();
         const warehouseCards = document.querySelectorAll('.warehouse-card');
 
-        warehouseCards.forEach(function(card) {
+        warehouseCards.forEach(function (card) {
             const statusBadge = card.querySelector('.status-badge');
             const cardContainer = card.closest('.col-lg-6');
 

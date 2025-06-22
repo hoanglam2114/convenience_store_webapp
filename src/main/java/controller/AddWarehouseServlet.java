@@ -25,6 +25,7 @@ public class AddWarehouseServlet extends HttpServlet {
     public void init() throws ServletException {
         warehouseDAO = new WarehouseDAO();
     }
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/view/add-warehouse.jsp").forward(request, response);
     }
@@ -43,17 +44,21 @@ public class AddWarehouseServlet extends HttpServlet {
             String managerIDRaw = request.getParameter("managerID");
             String storeLinkedIDRaw = request.getParameter("storeLinkedID");
             String statusRaw = request.getParameter("status");
-            WarehouseStatus status = WarehouseStatus.valueOf(statusRaw);
+            WarehouseStatus status = (statusRaw == null || statusRaw.isEmpty())
+                    ? WarehouseStatus.ACTIVE
+                    : WarehouseStatus.valueOf(statusRaw);
+
 
             logger.log(Level.INFO, "Received parameters: name={0}, address={1}, phone={2}, workingHours={3}, managerIDRaw={4}, storeLinkedIDRaw={5}",
                     new Object[]{name, address, phone, workingHours, managerIDRaw, storeLinkedIDRaw});
 
-            // Chuyển đổi managerID và storeLinkedID với xử lý ngoại lệ
             Integer managerID = null;
-            try {
-                managerID = (managerIDRaw != null && !managerIDRaw.isEmpty()) ? Integer.parseInt(managerIDRaw) : null;
-            } catch (NumberFormatException e) {
-                logger.log(Level.WARNING, "Invalid managerID format: {0}", managerIDRaw);
+            if (managerIDRaw != null && !managerIDRaw.trim().isEmpty()) {
+                try {
+                    managerID = Integer.parseInt(managerIDRaw);
+                } catch (NumberFormatException e) {
+                    logger.log(Level.WARNING, "Invalid managerID format: {0}", managerIDRaw);
+                }
             }
 
             Integer storeLinkedID = null;

@@ -21,6 +21,7 @@ public class Inventory {
     private String inventoryStatus;
     private LocalDateTime lastRestockDate;
     private String alert;
+    private Warehouse warehouse;
 
     public Inventory(Products pNew, int q, String status, LocalDateTime lastUpdate, String alert) {
         this.product = pNew;
