@@ -97,38 +97,6 @@
         <servlet-class>controller.ListOrderServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ListCustomerServlet</servlet-name>
-        <url-pattern>/listCustomer</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddCustomerServlet</servlet-name>
-        <url-pattern>/addCustomer</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>EditCustomerServlet</servlet-name>
-        <url-pattern>/editCustomer</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>NotificationServlet</servlet-name>
-        <url-pattern>/notificationServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteCustomerServlet</servlet-name>
-        <url-pattern>/deleteCustomer</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/LogoutServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>HomeAdmin</servlet-name>
-        <url-pattern>/HomeAdmin</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ListShiftStaffServlet</servlet-name>
-        <url-pattern>/ListShiftStaffServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ShiftDetailServlet</servlet-name>
         <url-pattern>/ShiftDetailServlet</url-pattern>
     </servlet-mapping>
@@ -258,22 +226,6 @@
     <servlet-mapping>
         <servlet-name>DeleteShiftServlet</servlet-name>
         <url-pattern>/DeleteShift</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ListProductsServlet</servlet-name>
-        <url-pattern>/ListProduct</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FindProductsServlet</servlet-name>
-        <url-pattern>/FindProduct</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddProductsServlet</servlet-name>
-        <url-pattern>/AddProduct</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdateProductsServlet</servlet-name>
-        <url-pattern>/UpdateProduct</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>ListEmployee</servlet-name>
