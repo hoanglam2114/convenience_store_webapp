@@ -30,4 +30,5 @@ public class DiscountProduct {
         this.productId = productId;
         this.priceSell = priceSell;
     }
+    
 }

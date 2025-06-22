@@ -124,7 +124,41 @@ public class AddProductsServlet extends HttpServlet {
         String pricePro = request.getParameter("pricePro");
         String suppPro = request.getParameter("suppPro");
 
+        int price = Integer.parseInt(pricePro);
         String img = (fileName != null && !fileName.isEmpty()) ? fileName : null;
+
+        boolean hasError = false;
+
+        // Validate barcode
+        if (!barcode.matches("\\d+")) {
+            request.setAttribute("errorbarcode", "Mã vạch chỉ được chứa chữ số.");
+            hasError = true;
+        }
+
+        // Validate tên sản phẩm
+        if (namePro.startsWith(" ") || namePro.length() > 40 || !namePro.matches("^[\\p{L}0-9 ]+$")) {
+            request.setAttribute("errornamePro", "Tên sản phẩm không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
+            hasError = true;
+        }
+
+        // Validate giá tiền
+       
+        try {
+            price = Integer.parseInt(pricePro);
+            if (price < 0) {
+                request.setAttribute("errorpricePro", "Giá tiền không được âm.");
+                hasError = true;
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorpricePro", "Giá tiền phải là số nguyên.");
+            hasError = true;
+        }
+
+        // Trả về nếu có lỗi
+        if (hasError) {
+            request.getRequestDispatcher("/view/AddProduct.jsp").forward(request, response);
+            return;
+        }
 
         ProductsDAO pd = new ProductsDAO();
         SuppliersDAO sd = new SuppliersDAO();
@@ -132,43 +166,43 @@ public class AddProductsServlet extends HttpServlet {
         ProductCategoriesDAO pcd = new ProductCategoriesDAO();
 
         if (expirationDate.isBefore(manufactureDate)) {
-            request.setAttribute("errorMessage", "The expiration date must be after the date of manufacture.");
+            request.setAttribute("errorMessage", "Ngày hết hạn phải sau ngày sản xuất.");
             request.getRequestDispatcher("/view/AddProduct.jsp").forward(request, response);
         } else if (expirationDate.isBefore(currentDate)) {
-            request.setAttribute("errorMessage", "Expiration date must be after current date.");
+            request.setAttribute("errorMessage", "Ngày hết hạn phải sau ngày hiện tại.");
             request.getRequestDispatcher("/view/AddProduct.jsp").forward(request, response);
         } else {
             Products s = pd.getProductByName(namePro);
-          if(s == null){
-              int cate = Integer.parseInt( catePro);
-              ProductCategories ci = pcd.getCategoryById(cate);
-              int unit = Integer.parseInt(unitPro);
-              WeightUnit wu = wud.getUnitById(unit);
-              int supp = Integer.parseInt(suppPro);
-              Suppliers su = sd.getSupById(supp);
-              int price = Integer.parseInt(pricePro);
-              int batch = 1;
-              Products pNew = new Products(namePro, price, img, barcode,
-              ci, su, wu, manufactureDate, expirationDate, batch);
-              pd.insertPro(pNew);
-              response.sendRedirect("ListProduct");
-          }else{
-              int latest_batch = pd.getLatestBatchByName(namePro);
-              int new_batch = latest_batch + 1;
-              
-               int cate = Integer.parseInt( catePro);
-              ProductCategories ci = pcd.getCategoryById(cate);
-              int unit = Integer.parseInt(unitPro);
-              WeightUnit wu = wud.getUnitById(unit);
-              int supp = Integer.parseInt(suppPro);
-              Suppliers su = sd.getSupById(supp);
-              int price = Integer.parseInt(pricePro);
-              Products pNew = new Products(namePro, price, img, barcode,
-              ci, su, wu, manufactureDate, expirationDate, new_batch);
-              pd.insertPro(pNew);
-              response.sendRedirect("ListProduct");
-              
-          }
+            if (s == null) {
+                int cate = Integer.parseInt(catePro);
+                ProductCategories ci = pcd.getCategoryById(cate);
+                int unit = Integer.parseInt(unitPro);
+                WeightUnit wu = wud.getUnitById(unit);
+                int supp = Integer.parseInt(suppPro);
+                Suppliers su = sd.getSupById(supp);
+
+                int batch = 1;
+                Products pNew = new Products(namePro, price, img, barcode,
+                        ci, su, wu, manufactureDate, expirationDate, batch);
+                pd.insertPro(pNew);
+                response.sendRedirect("ListProduct");
+            } else {
+                int latest_batch = pd.getLatestBatchByName(namePro);
+                int new_batch = latest_batch + 1;
+
+                int cate = Integer.parseInt(catePro);
+                ProductCategories ci = pcd.getCategoryById(cate);
+                int unit = Integer.parseInt(unitPro);
+                WeightUnit wu = wud.getUnitById(unit);
+                int supp = Integer.parseInt(suppPro);
+                Suppliers su = sd.getSupById(supp);
+
+                Products pNew = new Products(namePro, price, img, barcode,
+                        ci, su, wu, manufactureDate, expirationDate, new_batch);
+                pd.insertPro(pNew);
+                response.sendRedirect("ListProduct");
+
+            }
         }
 
     }

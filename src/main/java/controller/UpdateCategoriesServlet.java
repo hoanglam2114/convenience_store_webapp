@@ -103,14 +103,7 @@ public class UpdateCategoriesServlet extends HttpServlet {
                 request.getRequestDispatcher("/view/category-update.jsp").forward(request, response);
                 return;
             }
-            
-            
-            
-            
-            
-            
-            
-            
+
             ProductCategories pc = new ProductCategories(id, name);
             pcd.updateCategory(pc);
             response.sendRedirect("ListCate");
