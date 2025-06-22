@@ -5,7 +5,9 @@
 package model;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.Builder;
 
+@Builder
 public class Customers {
     @SerializedName("type_id")
     private int id;

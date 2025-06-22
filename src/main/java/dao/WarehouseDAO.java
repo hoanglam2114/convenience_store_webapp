@@ -77,22 +77,123 @@ public class WarehouseDAO extends DBContext {
         return false;
     }
 
+    public List<Warehouse> searchAndFilter(String search, String status) {
+        List<Warehouse> result = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM Warehouses WHERE 1=1");
+
+        if (search != null && !search.trim().isEmpty()) {
+            query.append(" AND (name LIKE ? OR address LIKE ?)");
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            query.append(" AND status = ?");
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement(query.toString())) {
+
+            int index = 1;
+            if (search != null && !search.trim().isEmpty()) {
+                ps.setString(index++, "%" + search + "%");
+                ps.setString(index++, "%" + search + "%");
+            }
+            if (status != null && !status.trim().isEmpty()) {
+                ps.setString(index++, status);
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Warehouse w = buildWarehouse(rs);
+                result.add(w);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public Warehouse getWarehouseByID(int warehouseID) {
+        Warehouse warehouse = null;
+        String query = "SELECT * FROM Warehouses WHERE warehouse_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, warehouseID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                warehouse = buildWarehouse(rs);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(WarehouseDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return warehouse;
+    }
+
+    public boolean updateWarehouse(Warehouse warehouse) {
+        String query = "UPDATE Warehouses SET name = ?, address = ?, phone = ?, working_hours = ?, manager_id = ?, store_linked_id = ?, status = ? WHERE warehouse_id = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, warehouse.getName());
+            ps.setString(2, warehouse.getAddress());
+            ps.setString(3, warehouse.getPhone());
+            ps.setString(4, warehouse.getWorkingHours());
+
+            if (warehouse.getManagerID() != null) {
+                ps.setInt(5, warehouse.getManagerID());
+            } else {
+                ps.setNull(5, java.sql.Types.INTEGER);
+            }
+
+            if (warehouse.getStoreLinkedID() != null) {
+                ps.setInt(6, warehouse.getStoreLinkedID());
+            } else {
+                ps.setNull(6, java.sql.Types.INTEGER);
+            }
+
+            ps.setString(7, warehouse.getStatus().name());
+            ps.setInt(8, warehouse.getWarehouseID());
+
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateStatus(int warehouseID, WarehouseStatus status) {
+        String query = "UPDATE Warehouses SET status = ? WHERE warehouse_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, status.name());
+            ps.setInt(2, warehouseID);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean deleteWarehouseByID(int warehouseID) {
+        String query = "DELETE FROM Warehouses WHERE warehouse_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, warehouseID);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     public static void main(String[] args) {
         WarehouseDAO dao = new WarehouseDAO();
 
-        Warehouse testWarehouse = Warehouse.builder()
-                .name("Kho Quận 7")
-                .address("123 Đường Tự Do")
-                .phone("0123456789")
-                .workingHours("8:00AM - 6:00PM")
-                .managerID(null)
-                .storeLinkedID(null)
-                .status(WarehouseStatus.ACTIVE)
-                .build();
-
-        boolean added = dao.addWarehouse(testWarehouse);
-        System.out.println("Inserted: " + added);
+        Warehouse warehouse = dao.getWarehouseByID(1);
+        System.out.println(warehouse);
     }
-
 }

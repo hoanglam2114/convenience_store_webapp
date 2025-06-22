@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: hoang
-  Date: 6/21/2025
-  Time: 11:34 AM
+  Date: 6/22/2025
+  Time: 5:00 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -23,7 +23,7 @@
             content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Add Warehouse</title>
+    <title>Edit Warehouse</title>
 
     <meta name="description" content=""/>
 
@@ -85,18 +85,20 @@
                             <div class="card shadow">
                                 <div class="card-header bg-primary text-white">
                                     <h4 class="card-title mb-0">
-                                        <i class="fas fa-warehouse me-2"></i>Add New Warehouse
+                                        <i class="fas fa-warehouse me-2"></i>Edit Warehouse
                                     </h4>
                                 </div>
                                 <div class="card-body">
-                                    <form action="add-warehouse" method="post">
+                                    <form action="edit-warehouse" method="post">
+                                        <input type="hidden" name="warehouse_id" value="${warehouse.warehouseID}"/>
+
                                         <!-- Warehouse Name -->
                                         <div class="mb-3">
                                             <label for="name" class="form-label">
                                                 Warehouse Name <span class="text-danger">*</span>
                                             </label>
                                             <input type="text" class="form-control" id="name" name="name" required
-                                                   placeholder="Enter warehouse name">
+                                                   value="${warehouse.name}">
                                         </div>
 
                                         <!-- Address -->
@@ -104,8 +106,9 @@
                                             <label for="address" class="form-label">
                                                 Address <span class="text-danger">*</span>
                                             </label>
-                                            <textarea class="form-control" id="address" name="address" rows="3" required
-                                                      placeholder="Enter warehouse address"></textarea>
+                                            <textarea class="form-control" id="address" name="address" rows="3"
+                                                      required>${warehouse.address}</textarea>
+
                                         </div>
 
                                         <!-- Phone -->
@@ -114,7 +117,7 @@
                                                 Phone <span class="text-danger">*</span>
                                             </label>
                                             <input type="tel" class="form-control" id="phone" name="phone" required
-                                                   placeholder="Enter phone number">
+                                                   value="${warehouse.phone}">
                                         </div>
 
                                         <!-- Working Hours -->
@@ -122,32 +125,36 @@
                                             <label for="workingHours" class="form-label">Working Hours</label>
                                             <input type="text" class="form-control" id="workingHours"
                                                    name="workingHours"
-                                                   placeholder="e.g., 8:00 AM - 6:00 PM">
+                                                   value="${warehouse.workingHours}">
                                         </div>
+                                        <!-- Status -->
+                                        <select name="status" class="form-select" required>
+                                            <option value="ACTIVE" ${warehouse.status == 'ACTIVE' ? 'selected' : ''}>Đang hoạt động</option>
+                                            <option value="MAINTENANCE" ${warehouse.status == 'MAINTENANCE' ? 'selected' : ''}>Bảo trì</option>
+                                            <option value="CLOSED" ${warehouse.status == 'CLOSED' ? 'selected' : ''}>Đóng cửa</option>
+                                        </select>
 
                                         <!-- Store Linked ID -->
                                         <div class="mb-3">
                                             <label for="storeLinkedID" class="form-label">Store Linked ID</label>
                                             <input type="number" class="form-control" id="storeLinkedID"
                                                    name="storeLinkedID"
-                                                   placeholder="Enter store ID" min="1">
+                                                   value="${warehouse.storeLinkedID}" min="1">
                                         </div>
 
                                         <!-- Note -->
                                         <div class="mb-3">
                                             <label for="note" class="form-label">Note</label>
                                             <textarea class="form-control" id="note" name="note" rows="3"
-                                                      placeholder="Additional notes (optional)"></textarea>
+                                                      >${warehouse.note}</textarea>
                                         </div>
 
                                         <!-- Submit Button -->
                                         <div class="d-grid gap-2">
                                             <button type="submit" class="btn btn-primary btn-lg">
-                                                <i class="fas fa-plus me-2"></i>Add Warehouse
+                                                <i class="fas fa-plus me-2"></i>Confirm
                                             </button>
-                                            <button type="reset" class="btn btn-outline-secondary">
-                                                <i class="fas fa-undo me-2"></i>Reset Form
-                                            </button>
+                                            <a href="list-warehouse" class="btn btn-secondary">Quay lại danh sách</a>
                                         </div>
                                     </form>
                                 </div>

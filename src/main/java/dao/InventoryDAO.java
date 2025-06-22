@@ -2,7 +2,6 @@ package dao;
 
 import model.Inventory;
 import model.InventoryDetails;
-import model.Products;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -20,6 +19,7 @@ public class InventoryDAO extends DBContext {
 
     private Inventory buildInventory(ResultSet rs) {
         ProductsDAO pd = new ProductsDAO();
+        WarehouseDAO wd = new WarehouseDAO();
         try{
             return Inventory.builder()
                     .inventoryID(rs.getInt("inventory_id"))
@@ -28,6 +28,7 @@ public class InventoryDAO extends DBContext {
                     .inventoryStatus(rs.getString("inventory_status"))
                     .lastRestockDate(rs.getTimestamp("last_restock_date").toLocalDateTime())
                     .alert(rs.getString("alert"))
+                    .warehouse(wd.getWarehouseByID(rs.getInt("warehouse_id")))
                     .build();
         }catch(SQLException ex){
             Logger.getLogger(InventoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -649,7 +650,12 @@ public class InventoryDAO extends DBContext {
     public static void main(String[] args) {
         InventoryDAO inventoryDAO = new InventoryDAO();
 
-        List<Inventory> inventoryList = inventoryDAO.getAllInventory();
+        List<Inventory> inventoryList = null;
+        try {
+            inventoryList = inventoryDAO.getInventoryByWarehouse(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         if (inventoryList.isEmpty()) {
             System.out.println("No DATA");

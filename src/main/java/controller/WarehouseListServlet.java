@@ -20,12 +20,24 @@ public class WarehouseListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String search = req.getParameter("search");
+        String status = req.getParameter("status");
+
         WarehouseDAO warehouseDAO = new WarehouseDAO();
-        List<Warehouse> list = warehouseDAO.getAllWarehouses();
+        List<Warehouse> list;
+
+        if ((search == null || search.trim().isEmpty()) && (status == null || status.trim().isEmpty())) {
+            // Không search, không filter → lấy tất cả
+            list = warehouseDAO.getAllWarehouses();
+        } else {
+            // Có search hoặc filter → lọc theo điều kiện
+            list = warehouseDAO.searchAndFilter(search, status);
+        }
+
         req.setAttribute("list", list);
         req.getRequestDispatcher("/view/list-warehouse.jsp").forward(req, resp);
-
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
