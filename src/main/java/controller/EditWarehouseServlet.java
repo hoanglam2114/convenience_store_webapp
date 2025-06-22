@@ -50,11 +50,15 @@ public class EditWarehouseServlet extends HttpServlet {
             String name = request.getParameter("name");
             String address = request.getParameter("address");
             String phone = request.getParameter("phone");
-            String workingHours = request.getParameter("workingHours");
+            String startTime = request.getParameter("startTime"); // Lấy startTime
+            String endTime = request.getParameter("endTime");     // Lấy endTime
             String managerIDRaw = request.getParameter("managerID");
             String storeLinkedIDRaw = request.getParameter("storeLinkedID");
             String statusRaw = request.getParameter("status");
 
+            String workingHours = (startTime != null && endTime != null && !startTime.isEmpty() && !endTime.isEmpty())
+                    ? startTime.trim() + " - " + endTime.trim()
+                    : null;
             if (statusRaw == null || statusRaw.isEmpty()) {
                 throw new IllegalArgumentException("Status must not be empty.");
             }

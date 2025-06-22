@@ -164,6 +164,11 @@
                 <div data-i18n="Basic">Pos Home </div>
             </a>
         </li>
+        <li class="menu-item">
+            <a href="customer-home" class="menu-link">
+                <div data-i18n="Basic">Customer Home </div>
+            </a>
+        </li>
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">convema</span>
         </li>

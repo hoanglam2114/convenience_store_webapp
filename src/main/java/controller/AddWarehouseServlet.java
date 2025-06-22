@@ -40,7 +40,8 @@ public class AddWarehouseServlet extends HttpServlet {
             String name = request.getParameter("name");
             String address = request.getParameter("address");
             String phone = request.getParameter("phone");
-            String workingHours = request.getParameter("workingHours");
+            String startTime = request.getParameter("startTime"); // Lấy startTime
+            String endTime = request.getParameter("endTime");     // Lấy endTime
             String managerIDRaw = request.getParameter("managerID");
             String storeLinkedIDRaw = request.getParameter("storeLinkedID");
             String statusRaw = request.getParameter("status");
@@ -48,9 +49,13 @@ public class AddWarehouseServlet extends HttpServlet {
                     ? WarehouseStatus.ACTIVE
                     : WarehouseStatus.valueOf(statusRaw);
 
+            // Gộp startTime và endTime thành workingHours
+            String workingHours = (startTime != null && endTime != null && !startTime.isEmpty() && !endTime.isEmpty())
+                    ? startTime.trim() + " - " + endTime.trim()
+                    : null;
 
-            logger.log(Level.INFO, "Received parameters: name={0}, address={1}, phone={2}, workingHours={3}, managerIDRaw={4}, storeLinkedIDRaw={5}",
-                    new Object[]{name, address, phone, workingHours, managerIDRaw, storeLinkedIDRaw});
+            logger.log(Level.INFO, "Received parameters: name={0}, address={1}, phone={2}, startTime={3}, endTime={4}, managerIDRaw={5}, storeLinkedIDRaw={6}",
+                    new Object[]{name, address, phone, startTime, endTime, managerIDRaw, storeLinkedIDRaw});
 
             Integer managerID = null;
             if (managerIDRaw != null && !managerIDRaw.trim().isEmpty()) {
