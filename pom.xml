@@ -16,15 +16,6 @@
         <maven.compiler.source>17</maven.compiler.source>
         <junit.version>5.11.0</junit.version>
     </properties>
-    
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.4.0</version>
-        <configuration>
-            <warName>convenient_store_webapp</warName>
-        </configuration>
-    </plugin>
 
     <dependencies>
         
@@ -124,6 +115,7 @@
     </dependencies>
 
     <build>
+        <finalName>convenient_store_webapp</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

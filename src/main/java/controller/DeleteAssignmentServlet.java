@@ -5,23 +5,19 @@
 
 package controller;
 
-import dao.CustomerDAO;
-import dao.ShiftDAO;
+import dao.EmployeeStoreAssignmentDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Customers;
-import model.Shifts;
 
 /**
  *
  * @author nguye
  */
-public class ListShiftStaffServlet extends HttpServlet {
+public class DeleteAssignmentServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +34,10 @@ public class ListShiftStaffServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListShiftStaffServlet</title>");  
+            out.println("<title>Servlet DeleteAssignmentServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListShiftStaffServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DeleteAssignmentServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,15 +54,27 @@ public class ListShiftStaffServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int shopId = Integer.parseInt(request.getParameter("shopId"));
-        ShiftDAO dao = new ShiftDAO();
-        List<Shifts> listShift = dao.getAllByShopID(shopId); // Đảm bảo totalRevenue được tính toán ở đây
-        
-        request.setAttribute("shift", listShift);
-        request.getRequestDispatcher("view/shift-list.jsp").forward(request, response);
-        
-    } 
+        try {
+            int employeeId = Integer.parseInt(request.getParameter("employeeId"));
+            int shopId = Integer.parseInt(request.getParameter("shopId"));
+            
+            EmployeeStoreAssignmentDAO dao = new EmployeeStoreAssignmentDAO();
+            boolean deleted = dao.removeShiftFromAssignment(employeeId, shopId);
 
+            if (deleted) {
+                request.setAttribute("message", "Đã xoá ca làm của nhân viên.");
+            } else {
+                request.setAttribute("error", "Không thể xoá ca làm. Kiểm tra lại.");
+            }
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Dữ liệu không hợp lệ.");
+        }
+
+        // Load lại danh sách
+        request.getRequestDispatcher("AssignEmployeeServlet").forward(request, response);
+    }
+    
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request

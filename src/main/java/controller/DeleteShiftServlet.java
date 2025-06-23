@@ -48,7 +48,10 @@ public class DeleteShiftServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String id = request.getParameter("id");
+        ShiftDAO dao  = new ShiftDAO();
+        dao.deleteShift(id);
+        response.sendRedirect("ListShiftStaffServlet");
     } 
 
     /** 

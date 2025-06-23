@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Shift;
 import model.Shifts;
 
 /**
@@ -45,6 +46,42 @@ public class ShiftDAO extends DBContext {
         }
         return list;
     }
+    
+    public List<Shifts> getAllByShopID(int shopId) {
+    List<Shifts> list = new ArrayList<>();
+    String sql = "SELECT SM.shift_manager_id, SM.shift_start_time, SM.shift_end_time, " +
+                 "SM.total_revenue, SM.total_hours, SM.notes, " +
+                 "SM.employee_id, E.employee_name " +
+                 "FROM ShiftManagers SM " +
+                 "JOIN Employees E ON SM.employee_id = E.employee_id " +
+                 "JOIN Accounts A ON E.account_id = A.account_id " +
+                 "JOIN EmployeeStoreAssignment ESA ON E.employee_id = ESA.employee_id " +
+                 "WHERE ESA.shop_id = ? AND A.role_id = 2";
+
+    try {
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, shopId);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Shifts shift = new Shifts(
+                rs.getInt("shift_manager_id"),
+                rs.getTimestamp("shift_start_time") != null ? rs.getTimestamp("shift_start_time").toLocalDateTime() : null,
+                rs.getTimestamp("shift_end_time") != null ? rs.getTimestamp("shift_end_time").toLocalDateTime() : null,
+                rs.getBigDecimal("total_revenue"),
+                rs.getBigDecimal("total_hours"),
+                rs.getString("notes"),
+                rs.getInt("employee_id"),
+                rs.getString("employee_name")
+            );
+            list.add(shift);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error fetching shifts: " + e.getMessage());
+    }
+    return list;
+}
+
 
     // Lấy thông tin ca làm của nhân viên theo id
     public Shifts getShiftById(int shiftManagerId) {
@@ -112,5 +149,27 @@ public class ShiftDAO extends DBContext {
             }
         }
         return null; // Trả về null nếu không tìm thấy ca làm việc hiện tại
+    }
+    
+    
+    public List<Shift> getAllShifts() {
+        List<Shift> list = new ArrayList<>();
+        String sql = "SELECT * FROM Shifts";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Shift s = new Shift();
+                s.setId(rs.getInt("shift_id"));
+                s.setName(rs.getString("shift_name"));
+                s.setStartTime(rs.getString("start_time"));
+                s.setEndTime(rs.getString("end_time"));
+                list.add(s);
+            }
+        } catch (SQLException e) {
+            System.out.println("getAllShifts ERROR: " + e.getMessage());
+        }
+
+        return list;
     }
 }

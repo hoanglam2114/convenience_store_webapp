@@ -74,6 +74,7 @@ public class ListAccountServlet extends HttpServlet {
         request.getRequestDispatcher("view/account-list.jsp").forward(request, response);
     } 
 
+    
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request

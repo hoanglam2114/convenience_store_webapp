@@ -1,6 +1,6 @@
-
 package controller;
 
+import dao.AccountDAO;
 import dao.EmployeeDAO;
 import dao.NotificationDAO;
 import model.Employees;
@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import model.Notification;
@@ -58,15 +59,21 @@ public class AddEmployee extends HttpServlet {
         if (!address.matches("^[a-zA-ZÀ-Ỹà-ỹ]+(\\s[a-zA-ZÀ-Ỹà-ỹ]+)*$")) {
             errors.add("Address is invalid.");
         }
-        int accountId = -1;
-        try {
-            accountId = Integer.parseInt(request.getParameter("accountId"));
-        } catch (NumberFormatException e) {
-            errors.add("Invalid account ID.");
-        }
 
+//        int accountId = -1;
+//        try {
+//            accountId = Integer.parseInt(request.getParameter("accountId"));
+//        } catch (NumberFormatException e) {
+//            errors.add("Invalid account ID.");
+//        }
         // Nếu có lỗi quay lại trang form và hiển thị danh sách lỗi
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("authemail");
+        AccountDAO dbAccount = new AccountDAO();
+        int accountId = dbAccount.getAccountId(email);
+        session.removeAttribute("authmail");
         if (!errors.isEmpty()) {
+
             request.setAttribute("errors", errors);
             request.setAttribute("name", name);
             request.setAttribute("phone", phone);
@@ -80,12 +87,12 @@ public class AddEmployee extends HttpServlet {
         // Ghi thông báo
         String message = "Admin đã thêm nhân viên " + name + " vào hệ thống.";
         notiDAO.insert(new Notification(message, "Admin", "add"));
-        
+
         EmployeeDAO dao = new EmployeeDAO();
         Employees emp = new Employees(name, phone, address, accountId);
         dao.addEmployee(emp);
         response.sendRedirect("listEmployee");
-        
+
     }
 
     @Override
