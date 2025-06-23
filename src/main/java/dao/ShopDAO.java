@@ -13,9 +13,9 @@ import model.Shop;
 
 /**
  *
- * @author pqtru
+ * @author admin
  */
-public class ShopDAO extends DBContext{
+public class ShopDAO extends DBContext {
     public List<Shop> getAll() {
         List<Shop> list = new ArrayList<>();
         String sql = "select * from ShopDetails";
@@ -171,12 +171,50 @@ public class ShopDAO extends DBContext{
         }
         return list;
     }
-
    
+   
+   
+    public List<Shop> pagingShop(int index) {
+         List<Shop> list = new ArrayList<>();
+        String sql = "SELECT * FROM ShopDetails ORDER BY shop_id OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, (index - 1) * 5);
+            ResultSet rs = st.executeQuery();
+             while (rs.next()) {
+               Shop shop = new Shop(rs.getInt("shop_id"),
+                        rs.getString("shop_name"),
+                        rs.getString("shop_address"),
+                        rs.getString("shop_phone"),
+                        rs.getString("shop_email"),
+                        rs.getString("shop_opening_hours"),
+                        rs.getString("shop_logo"));
+                list.add(shop);
+             }
+            
+        }catch (SQLException e) {
+               System.out.println(e);
+        }
+        return list;
+    }
+    
+     
+    
+    
+    
+    
+    
    
     public static void main(String[] args) {
-        ShopDAO dao = new ShopDAO();
-        int count = dao.getTotalShopCount();
-        System.out.println(count);
+        ShopDAO s = new ShopDAO();
+        List<Shop> list = s.pagingShop(1);
+        for (Shop shop : list) {
+            System.out.println(shop);
+        }
     }
+   
+   
+   
+   
+   
 }

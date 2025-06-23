@@ -3,7 +3,7 @@ package dao;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.*;
-import model.EmployeeWithRole;
+
 import model.Employees;
 
 public class EmployeeDAO extends DBContext {
@@ -187,29 +187,29 @@ public class EmployeeDAO extends DBContext {
         return 0;
     }
     
-    public List<EmployeeWithRole> getAllEmployeesWithRoles() {
-    List<EmployeeWithRole> list = new ArrayList<>();
-    String sql = """
-        SELECT e.employee_id, e.employee_name, r.role_name
-        FROM Employees e
-        JOIN Accounts a ON e.account_id = a.account_id
-        JOIN Roles r ON a.role_id = r.role_id
-        where r.role_id in (2,3)         
-    """;
-    try (PreparedStatement ps = connection.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
-        while (rs.next()) {
-            EmployeeWithRole emp = new EmployeeWithRole();
-            emp.setId(rs.getInt("employee_id"));
-            emp.setName(rs.getString("employee_name"));
-            emp.setRoleName(rs.getString("role_name"));
-            list.add(emp);
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return list;
-}
+//    public List<EmployeeWithRole> getAllEmployeesWithRoles() {
+//    List<EmployeeWithRole> list = new ArrayList<>();
+//    String sql = """
+//        SELECT e.employee_id, e.employee_name, r.role_name
+//        FROM Employees e
+//        JOIN Accounts a ON e.account_id = a.account_id
+//        JOIN Roles r ON a.role_id = r.role_id
+//        where r.role_id in (2,3)         
+//    """;
+//    try (PreparedStatement ps = connection.prepareStatement(sql);
+//         ResultSet rs = ps.executeQuery()) {
+//        while (rs.next()) {
+//            EmployeeWithRole emp = new EmployeeWithRole();
+//            emp.setId(rs.getInt("employee_id"));
+//            emp.setName(rs.getString("employee_name"));
+//            emp.setRoleName(rs.getString("role_name"));
+//            list.add(emp);
+//        }
+//    } catch (SQLException e) {
+//        e.printStackTrace();
+//    }
+//    return list;
+//}
 
 
     public String getRoleNameByEmployeeId(int employeeId) {
