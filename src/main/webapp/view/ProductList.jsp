@@ -6,15 +6,15 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Product List</title>
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Sneat CSS -->
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
         <link rel="stylesheet" href="assets/vendor/css/theme-default.css" />
         <link rel="stylesheet" href="assets/css/demo.css" />
 
-
         <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
-
-        <!-- Favicon -->
+        <link rel="stylesheet" href="assets/vendor/css/pages/page-auth.css" />
+        <!-- Font and icon -->
         <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
 
         <script type="text/javascript">
@@ -37,51 +37,48 @@
 
                 <!-- Layout page -->
                 <div class="layout-page">
-
                     <!-- Navbar -->
-                    <nav class="layout-navbar container-xxl navbar navbar-expand-xl">
-                        <!-- Navbar -->
-                    </nav>
+                    <%@ include file="/common/nav-bar.jsp" %>
+                    <!-- / Navbar -->
 
-                    <!-- Content wrapper -->
-                    <div class="content-wrapper">
 
-                        <!-- Main content -->
-                        <div class="container-xxl flex-grow-1 container-p-y">
+                    <!-- Main content -->
+                    <div class="container-xxl flex-grow-1 container-p-y">
 
 
 
 
-                            <h4 class="fw-bold py-3 mb-4">Danh sách sản phẩm</h4>
+                        <h4 class="fw-bold py-3 mb-4">Danh sách sản phẩm</h4>
 
-                            <p class="mb-4 text-muted">
+                        <p class="mb-4 text-muted">
 
 
-                            </p>
+                        </p>
 
-                            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-                                <form action="FindProduct"  method="get">
-                                    <div class="d-flex  align-items-center gap-2 mb-2">
-                                        <input type="text" class="form-control" name="namePro" placeholder="Search products by name" />
-                                        <button type="submit" class="btn btn-primary me-2"><i ></i> Search</button>
-                                        <a href="ListProduct" class="btn btn-primary ">
-                                            <i style="max-width: 50px"></i> Refresh
-                                        </a>
-                                    </div>
-
-                                </form>
-
-                                <div>
-                                    <a href="AddProduct" class="btn btn-primary">
-                                        <i class="bx bx-plus"></i> Add Product
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                            <form action="FindProduct"  method="get">
+                                <div class="d-flex  align-items-center gap-2 mb-2">
+                                    <input type="text" class="form-control" name="namePro" placeholder="Tìm kiếm sản phẩm theo tên" />
+                                    <button style="width: 180px"  type="submit" class="btn btn-primary me-2"><i ></i> Tìm kiếm</button>
+                                    <a style="width: 150px" href="ListProduct" class="btn btn-primary ">
+                                        <i ></i> Làm mới
                                     </a>
                                 </div>
 
+                            </form>
 
+                            <div>
+                                <a href="AddProduct" class="btn btn-primary">
+                                    <i class="bx bx-plus"></i> Add Product
+                                </a>
                             </div>
 
 
                         </div>
+
+
+
+
 
 
 
@@ -91,17 +88,17 @@
                                 <table class="table product-table">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Barcode</th>
-                                            <th>Product</th>
-                                            <th>Product Name</th>
-                                            <th>Product Category</th>
-                                            <th>Price</th>
-                                            <th>Brand</th>
-                                            <th>Unit</th>
-                                            <th>Production Date</th>
-                                            <th>Expiration date</th>
-                                            <th>batch</th>
-                                            <th>Action</th>
+                                            <th>Mã vạch</th>
+                                            <th>Sản phẩm</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Loại sản phẩm</th>
+                                            <th>Giá</th>
+                                            <th>Thương hiệu</th>
+                                            <th>Đơn vị</th>
+                                            <th>Ngày sản xuất</th>
+                                            <th>Ngày hết hạn</th>
+                                            <th>Lô</th>
+                                            <th>Chức năng</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-border-bottom-0">
@@ -121,12 +118,18 @@
                                                 <td>
                                                     <div class="d-flex align-items-center list-action">
                                                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Lịch sử giá"
-                                                           href="PriceEdit.jsp?id=1" class="btn btn-info btn-sm">
+                                                           href="ListPrice?product_id=${p.getId()}" class="btn btn-info btn-sm">
                                                             <i class="bx bx-show"></i>
                                                         </a>
 
                                                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa thông tin"
                                                            href="UpdateProduct?product_id=${p.getId()} " class="btn btn-warning btn-sm">
+                                                            <i class="bx bx-edit"></i>
+
+                                                        </a>
+
+                                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa giá"
+                                                           href="UpdatePrice?product_id=${p.getId()} " class="btn btn-warning btn-sm">
                                                             <i class="bx bx-edit"></i>
 
                                                         </a>
@@ -142,17 +145,34 @@
                                                 </td>
                                             </tr>
 
-                                        </c:forEach>
+                                            </c:forEach>
 
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
 
                             </div>
 
-                            <c:forEach begin="1" end="${endPage}" var="i">
-                                <a href="ListProduct?index=${i}">${i}</a>
-                            </c:forEach>
+                            <!-- Footer -->
+                            <footer class="content-footer footer bg-footer-theme">
+                                <div class="container-xxl d-flex justify-content-center py-3">
+                                    <div class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                        <a class="page-link" href="ListProduct?index=${currentPage - 1}">Previous</a>
+                                    </div>
+
+                                    <c:forEach begin="1" end="${endPage}" var="i">
+                                        <div class="page-item ${i == currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="ListProduct?index=${i}">${i}</a>
+                                        </div>
+                                    </c:forEach>
+
+                                    <div class="page-item ${currentPage == endPage ? 'disabled' : ''}">
+                                        <a class="page-link" href="ListProduct?index=${currentPage + 1}">Next</a>
+                                    </div>
+                                </div>
+
+                            </footer>
+                            <!-- /Footer -->
 
 
 
@@ -164,16 +184,19 @@
                             </footer>
                         </div>
                     </div>
-
                 </div>
+
             </div>
         </div>
 
+
         <!-- Sneat JS -->
-        <script src="assets/vendor/js/core.js"></script>
+        <script src="assets/vendor/libs/jquery/jquery.js"></script>
+        <script src="assets/vendor/js/bootstrap.js"></script>
+        <script src="assets/vendor/js/menu.js"></script>
         <script src="assets/vendor/js/helpers.js"></script>
-        <script src="assets/js/main.js"></script>
-        <script src="assets/js/title_icon.js"></script>
+        <script src="assets/js/config.js"></script>
+        <script src="assets/js/main.js"></script> <!-- Quan trọng -->
 
     </body>
 </html>

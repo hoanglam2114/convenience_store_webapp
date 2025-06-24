@@ -161,6 +161,34 @@ public class UpdateProductsServlet extends HttpServlet {
             String ExpirationDateStr = request.getParameter("ExpirationDate");
             String batch_raw = request.getParameter("batch");
             
+            float price = Float.parseFloat(price_raw);
+            
+            boolean hasError = false;
+
+        // Validate barcode
+        if (!barcode.matches("\\d+")) {
+            request.setAttribute("errorbarcode", "Mã vạch chỉ được chứa chữ số.");
+            hasError = true;
+        }
+
+        // Validate tên sản phẩm
+        if (name.startsWith(" ") || name.length() > 40 || !name.matches("^[\\p{L}0-9 ]+$")) {
+            request.setAttribute("errornamePro", "Tên sản phẩm không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
+            hasError = true;
+        }
+
+        // Validate giá tiền
+       
+      
+        // Trả về nếu có lỗi
+        if (hasError) {
+            request.getRequestDispatcher("/view/UpdateProduct.jsp").forward(request, response);
+            return;
+        }
+            
+            
+            
+            
             
             int id = Integer.parseInt(id_raw);
             Products p1 = pd.getProductById(id);
@@ -175,7 +203,7 @@ public class UpdateProductsServlet extends HttpServlet {
             int unit = Integer.parseInt(unit_raw);
             WeightUnit wu = wud.getUnitById(unit);
             
-            float price = Float.parseFloat(price_raw);
+            
             LocalDate manufactureDate = LocalDate.parse(manufactureDateStr);
             LocalDate expirationDate = LocalDate.parse( ExpirationDateStr);
             

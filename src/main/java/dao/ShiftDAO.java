@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package dao;
 
 import java.sql.PreparedStatement;
@@ -7,8 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Shifts;
 
+/**
+ *
+ * @author nguye
+ */
 public class ShiftDAO extends DBContext {
-
     public List<Shifts> getAll() {
         List<Shifts> list = new ArrayList<>();
         String sql = "SELECT SM.shift_manager_id, SM.shift_start_time, SM.shift_end_time, "

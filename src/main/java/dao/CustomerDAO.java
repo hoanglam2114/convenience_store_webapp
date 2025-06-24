@@ -1,9 +1,6 @@
 package dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.Customers;
@@ -32,31 +29,6 @@ public class CustomerDAO extends DBContext {
         return customerList;
     }
 
-    public Customers getCustomerById(int id) {
-        Customers customer = null;
-        String sql = "SELECT customer_id, customer_name, customer_phone, point, customer_type_id FROM Customers WHERE customer_id = ?";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                customer = new Customers();
-                customer.setId(rs.getInt("customer_id"));
-                customer.setName(rs.getString("customer_name"));
-                customer.setPhone(rs.getString("customer_phone"));
-                customer.setPoint(rs.getInt("point"));
-                customer.setType_id(rs.getInt("customer_type_id"));
-            }
-
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return customer;
-    }
 
     public void addCustomer(Customers customer) {
         try {
@@ -129,6 +101,44 @@ public class CustomerDAO extends DBContext {
             e.printStackTrace();
         }
     }
+
+    public boolean editCustomerNameById(int customerId, String newName) {
+        String sql = "UPDATE Customers SET customer_name = ? WHERE customer_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, newName);
+            ps.setInt(2, customerId);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Customers getCustomerById(int id) {
+        String sql = "SELECT * FROM Customers WHERE customer_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Customers.builder()
+                            .id(rs.getInt("customer_id"))
+                            .name(rs.getString("customer_name"))
+                            .phone(rs.getString("customer_phone"))
+                            .point(rs.getInt("point"))
+                            .type_id(rs.getInt("customer_type_id"))
+                            .build();
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public List<Customers> pagingCustomer(int index) {
         List<Customers> list = new ArrayList<>();

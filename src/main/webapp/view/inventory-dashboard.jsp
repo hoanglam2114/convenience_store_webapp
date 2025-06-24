@@ -258,6 +258,7 @@
                             <div class="d-flex flex-wrap align-items-center justify-content-between">
                                 <div>
                                     <h4 class="mb-1">Quản Lý Kho Hàng</h4>
+                                    <h2>Kho đang xem: #${warehouseID}</h2>
                                     <p class="text-muted mb-0">Theo dõi và quản lý tồn kho một cách hiệu quả</p>
                                 </div>
                                 <div class="quick-actions d-flex">

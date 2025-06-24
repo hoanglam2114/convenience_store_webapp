@@ -40,10 +40,16 @@ public class ListProductsServlet extends HttpServlet {
     throws ServletException, IOException {
         HttpSession session = request.getSession();
         String indexPage = request.getParameter("index");
-        
-        if(indexPage == null){
+        int currentPage = 1;
+       if (indexPage != null) {
+            try {
+                currentPage = Integer.parseInt(indexPage);
+            } catch (NumberFormatException e) {
+            }
+        }else{
             indexPage = "1";
         }
+
         int index = Integer.parseInt(indexPage);
          ProductsDAO dao = new ProductsDAO();
         int count = dao.getTotalProduct();
@@ -52,10 +58,10 @@ public class ListProductsServlet extends HttpServlet {
            endPage++;
         }
         List<Products> list = dao.pagingProducts(index);
-        
-        session.setAttribute("Pro", list);
-        
+
 //        request.setAttribute("Pro", list);
+        request.setAttribute("currentPage", currentPage);
+        session.setAttribute("Pro", list);
         request.setAttribute("endPage", endPage);
         request.getRequestDispatcher("/view/ProductList.jsp").forward(request, response);
     } 

@@ -2,7 +2,6 @@ package dao;
 
 import model.Inventory;
 import model.InventoryDetails;
-import model.Products;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -20,6 +19,7 @@ public class InventoryDAO extends DBContext {
 
     private Inventory buildInventory(ResultSet rs) {
         ProductsDAO pd = new ProductsDAO();
+        WarehouseDAO wd = new WarehouseDAO();
         try{
             return Inventory.builder()
                     .inventoryID(rs.getInt("inventory_id"))
@@ -28,6 +28,7 @@ public class InventoryDAO extends DBContext {
                     .inventoryStatus(rs.getString("inventory_status"))
                     .lastRestockDate(rs.getTimestamp("last_restock_date").toLocalDateTime())
                     .alert(rs.getString("alert"))
+                    .warehouse(wd.getWarehouseByID(rs.getInt("warehouse_id")))
                     .build();
         }catch(SQLException ex){
             Logger.getLogger(InventoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -529,7 +530,7 @@ public class InventoryDAO extends DBContext {
     /**
      * Get paginated inventory results
      */
-    public List<Inventory> getInventoryPaginated(int page, int pageSize, String productName, String status, String sortBy) {
+    public List<Inventory> getInventoryPaginated(int page, int pageSize, String productName, String status, String sortBy, Integer warehouseId) {
         List<Inventory> inventory = new ArrayList<>();
         int offset = (page - 1) * pageSize;
 
@@ -548,7 +549,13 @@ public class InventoryDAO extends DBContext {
             parameters.add(status);
         }
 
-        // Add sorting and pagination
+        // ✅ Thêm filter theo warehouseId nếu có
+        if (warehouseId != null) {
+            query.append(" AND i.warehouse_id = ?");
+            parameters.add(warehouseId);
+        }
+
+        // Sorting
         query.append(" ORDER BY ");
         switch (sortBy != null ? sortBy : "name_asc") {
             case "name_desc":
@@ -567,6 +574,7 @@ public class InventoryDAO extends DBContext {
                 query.append("p.product_name ASC");
         }
 
+        // Pagination
         query.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
         parameters.add(offset);
         parameters.add(pageSize);
@@ -588,7 +596,7 @@ public class InventoryDAO extends DBContext {
     /**
      * Get total count for pagination
      */
-    public int getTotalInventoryCount(String productName, String status) {
+    public int getTotalInventoryCount(String productName, String status, Integer warehouseId) {
         StringBuilder query = new StringBuilder("SELECT COUNT(*) as total FROM dbo.Inventory i " +
                 "JOIN dbo.Products p ON i.product_id = p.product_id WHERE 1=1");
 
@@ -602,6 +610,11 @@ public class InventoryDAO extends DBContext {
         if (status != null && !status.trim().isEmpty()) {
             query.append(" AND i.inventory_status = ?");
             parameters.add(status);
+        }
+
+        if (warehouseId != null) {
+            query.append(" AND i.warehouse_id = ?");
+            parameters.add(warehouseId);
         }
 
         try (PreparedStatement statement = connection.prepareStatement(query.toString())) {
@@ -618,10 +631,31 @@ public class InventoryDAO extends DBContext {
         return 0;
     }
 
+    public List<Inventory> getInventoryByWarehouse(int warehouseId) throws SQLException {
+        String query = "SELECT * FROM Inventory WHERE warehouse_id = ?";
+        List<Inventory> inventoryList = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, warehouseId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                inventoryList.add(buildInventory(rs));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InventoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+    }
+        return inventoryList;
+    }
+
+
     public static void main(String[] args) {
         InventoryDAO inventoryDAO = new InventoryDAO();
 
-        List<Inventory> inventoryList = inventoryDAO.getAllInventory();
+        List<Inventory> inventoryList = null;
+        try {
+            inventoryList = inventoryDAO.getInventoryByWarehouse(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         if (inventoryList.isEmpty()) {
             System.out.println("No DATA");  
