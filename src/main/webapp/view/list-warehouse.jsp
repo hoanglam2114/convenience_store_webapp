@@ -402,7 +402,6 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </div>
-
                                             </div>
 
                                             <!-- Status Controls -->
@@ -423,26 +422,21 @@
                                                     <i class="bi bi-wrench me-1"></i>Đóng cửa
                                                 </button>
                                             </div>
+
+                                            <!-- Additional Actions -->
+                                            <div class="d-flex gap-2 justify-content-end">
+                                                <button class="btn btn-outline-info btn-sm"
+                                                        onclick="viewWarehouseHistory(${w.warehouseID})">
+                                                    <i class="bi bi-clock-history me-1"></i>Lịch sử
+                                                </button>
+                                                <button class="btn btn-outline-secondary btn-sm"
+                                                        onclick="generateReport(${w.warehouseID})">
+                                                    <i class="bi bi-file-earmark-text me-1"></i>Báo cáo
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </c:forEach>
-
-                        <div class="d-flex justify-content-between align-items-center mt-4">
-                            <!-- Page Info -->
-                            <div class="text-muted">
-                                <small>
-                                    Trang ${currentPage} của ${totalPages}
-                                    <c:if test="${not empty list}">
-                                        <c:if test="${not empty totalItems}">
-                                            (${totalItems} kho)
-                                        </c:if>
-                                        <c:if test="${empty totalItems}">
-                                            (có kho)
-                                        </c:if>
-                                    </c:if>
-                                </small>
                             </div>
 
                             <!-- Pagination -->
