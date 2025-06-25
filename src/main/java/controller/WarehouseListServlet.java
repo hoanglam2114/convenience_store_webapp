@@ -22,25 +22,41 @@ public class WarehouseListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String search = req.getParameter("search");
         String status = req.getParameter("status");
+        String pageParam = req.getParameter("page");
+
+        int page = 1;
+        int pageSize = 3;
+
+        if (pageParam != null && !pageParam.isEmpty()) {
+            try {
+                page = Integer.parseInt(pageParam);
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
+
+        int offset = (page - 1) * pageSize;
 
         WarehouseDAO warehouseDAO = new WarehouseDAO();
         List<Warehouse> list;
+        int totalWarehouses;
 
         if ((search == null || search.trim().isEmpty()) && (status == null || status.trim().isEmpty())) {
-            // Không search, không filter → lấy tất cả
-            list = warehouseDAO.getAllWarehouses();
+            list = warehouseDAO.getWarehousesPaging(offset, pageSize);
+            totalWarehouses = warehouseDAO.countAll();
         } else {
-            // Có search hoặc filter → lọc theo điều kiện
-            list = warehouseDAO.searchAndFilter(search, status);
+            list = warehouseDAO.searchAndFilterPaging(search, status, offset, pageSize);
+            totalWarehouses = warehouseDAO.countFiltered(search, status); // cần hàm đếm riêng
         }
 
+        int totalPages = (int) Math.ceil((double) totalWarehouses / pageSize);
+
         req.setAttribute("list", list);
+        req.setAttribute("currentPage", page);
+        req.setAttribute("totalPages", totalPages);
+        req.setAttribute("search", search);
+        req.setAttribute("status", status);
+
         req.getRequestDispatcher("/view/list-warehouse.jsp").forward(req, resp);
-    }
-
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
     }
 }

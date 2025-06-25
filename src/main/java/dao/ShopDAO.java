@@ -197,24 +197,12 @@ public class ShopDAO extends DBContext {
         }
         return list;
     }
-    
-     
-    
-    
-    
-    
-    
    
     public static void main(String[] args) {
         ShopDAO s = new ShopDAO();
-        List<Shop> list = s.pagingShop(1);
+        List<Shop> list = s.getAll();
         for (Shop shop : list) {
             System.out.println(shop);
         }
     }
-   
-   
-   
-   
-   
 }

@@ -28,15 +28,24 @@ public class WarehouseDAO extends DBContext {
                 .workingHours(rs.getString("working_hours"))
                 .status(WarehouseStatus.valueOf(rs.getString("status").toUpperCase()))
                 .note(rs.getString("note") == null ? "N/A" : rs.getString("note"))
-                .managerID(rs.getObject("manager_id", Integer.class))
+                .managerID(rs.getObject("employee_id", Integer.class))
                 .storeLinkedID(rs.getObject("store_linked_id", Integer.class))
+                .storeName(rs.getObject("shop_name", String.class))
+                .managerName(rs.getObject("manager_name", String.class))
                 .build();
     }
 
 
     public List<Warehouse> getAllWarehouses() {
         List<Warehouse> warehouses = new ArrayList<>();
-        String query = "SELECT * FROM Warehouses";
+        String query = "SELECT w.*,\n" +
+                "       wa.employee_id,\n" +
+                "       u.employee_name AS manager_name,\n" +
+                "       s.shop_name\n" +
+                "FROM Warehouses w\n" +
+                "         LEFT JOIN WarehouseAssignments wa ON w.warehouse_id = wa.warehouse_id\n" +
+                "         LEFT JOIN Employees u ON wa.employee_id = u.employee_id\n" +
+                "         LEFT JOIN ShopDetails s ON w.store_linked_id = s.shop_id";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -46,6 +55,130 @@ public class WarehouseDAO extends DBContext {
             Logger.getLogger(WarehouseDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return warehouses;
+    }
+
+    public List<Warehouse> getWarehousesPaging(int offset, int limit) {
+        List<Warehouse> warehouses = new ArrayList<>();
+        String query = "SELECT w.*,\n" +
+                "       wa.employee_id,\n" +
+                "       u.employee_name AS manager_name,\n" +
+                "       s.shop_name\n" +
+                "FROM Warehouses w\n" +
+                "LEFT JOIN WarehouseAssignments wa ON w.warehouse_id = wa.warehouse_id\n" +
+                "LEFT JOIN Employees u ON wa.employee_id = u.employee_id\n" +
+                "LEFT JOIN ShopDetails s ON w.store_linked_id = s.shop_id\n" +
+                "ORDER BY w.warehouse_id\n" +
+                "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY\n";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, offset);
+            ps.setInt(2, limit);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    warehouses.add(buildWarehouse(rs)); // hoặc gán thủ công
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return warehouses;
+    }
+
+    public int countAll() {
+        String query = "SELECT COUNT(*) FROM Warehouses";
+        try (PreparedStatement ps = connection.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    // Phân trang có search + filter
+    public List<Warehouse> searchAndFilterPaging(String search, String status, int offset, int limit) {
+        List<Warehouse> list = new ArrayList<>();
+
+        String query = "SELECT w.*, " +
+                "wa.employee_id, u.employee_name AS manager_name, s.shop_name " +
+                "FROM Warehouses w " +
+                "LEFT JOIN WarehouseAssignments wa ON w.warehouse_id = wa.warehouse_id " +
+                "LEFT JOIN Employees u ON wa.employee_id = u.employee_id " +
+                "LEFT JOIN ShopDetails s ON w.store_linked_id = s.shop_id " +
+                "WHERE 1=1 ";
+
+        if (search != null && !search.trim().isEmpty()) {
+            query += "AND w.name LIKE ? ";
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            query += "AND w.status = ? ";
+        }
+
+        query += "ORDER BY w.warehouse_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+            int paramIndex = 1;
+
+            if (search != null && !search.trim().isEmpty()) {
+                ps.setString(paramIndex++, "%" + search + "%");
+            }
+            if (status != null && !status.trim().isEmpty()) {
+                ps.setString(paramIndex++, status);
+            }
+
+            ps.setInt(paramIndex++, offset);
+            ps.setInt(paramIndex, limit);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Warehouse w = buildWarehouse(rs); // hoặc gán thủ công từng field
+                list.add(w);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
+    // Đếm số lượng sau khi search + filter
+    public int countFiltered(String search, String status) {
+        int count = 0;
+
+        String query = "SELECT COUNT(*) FROM Warehouses w WHERE 1=1 ";
+
+        if (search != null && !search.trim().isEmpty()) {
+            query += "AND w.name LIKE ? ";
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            query += "AND w.status = ? ";
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+            int paramIndex = 1;
+
+            if (search != null && !search.trim().isEmpty()) {
+                ps.setString(paramIndex++, "%" + search + "%");
+            }
+            if (status != null && !status.trim().isEmpty()) {
+                ps.setString(paramIndex, status);
+            }
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 
     public boolean addWarehouse(Warehouse warehouse) {
@@ -113,19 +246,42 @@ public class WarehouseDAO extends DBContext {
     }
 
     public Warehouse getWarehouseByID(int warehouseID) {
-        Warehouse warehouse = null;
-        String query = "SELECT * FROM Warehouses WHERE warehouse_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, warehouseID);
-            ResultSet rs = stmt.executeQuery();
+        String query = "SELECT w.*, " +
+                "wa.employee_id, " +
+                "u.employee_name AS manager_name, " +
+                "s.shop_name " +
+                "FROM Warehouses w " +
+                "LEFT JOIN WarehouseAssignments wa ON w.warehouse_id = wa.warehouse_id " +
+                "LEFT JOIN Employees u ON wa.employee_id = u.employee_id " +
+                "LEFT JOIN ShopDetails s ON w.store_linked_id = s.shop_id " +
+                "WHERE w.warehouse_id = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, warehouseID);
+            ResultSet rs = ps.executeQuery();
+
             if (rs.next()) {
-                warehouse = buildWarehouse(rs);
+                return Warehouse.builder()
+                        .warehouseID(rs.getInt("warehouse_id"))
+                        .name(rs.getString("name"))
+                        .address(rs.getString("address"))
+                        .phone(rs.getString("phone"))
+                        .workingHours(rs.getString("working_hours"))
+                        .status(WarehouseStatus.valueOf(rs.getString("status")))
+                        .note(rs.getString("note") == null ? "N/A" : rs.getString("note"))
+                        .managerID(rs.getObject("employee_id", Integer.class))
+                        .storeLinkedID(rs.getObject("store_linked_id", Integer.class))
+                        .storeName(rs.getObject("shop_name", String.class))
+                        .managerName(rs.getObject("manager_name", String.class))
+                        .build();
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(WarehouseDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return warehouse;
+        return null;
     }
+
 
     public boolean updateWarehouse(Warehouse warehouse) {
         String query = "UPDATE Warehouses SET name = ?, address = ?, phone = ?, working_hours = ?, manager_id = ?, store_linked_id = ?, status = ? WHERE warehouse_id = ?";

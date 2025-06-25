@@ -23,5 +23,7 @@ public class Warehouse {
     private String note;
     private Integer managerID;
     private Integer storeLinkedID;
+    private String storeName;
+    private String managerName;
 }
 

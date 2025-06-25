@@ -1,15 +1,18 @@
 package controller;
 
+import dao.ShopDAO;
 import dao.WarehouseDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Shop;
 import model.Warehouse;
 import model.WarehouseStatus;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -20,13 +23,17 @@ import java.util.logging.Level;
 @WebServlet(name =  "AddWarehouseServlet", urlPatterns = "/add-warehouse")
 public class AddWarehouseServlet extends HttpServlet {
     private WarehouseDAO warehouseDAO;
+    private ShopDAO shopDAO;
 
     @Override
     public void init() throws ServletException {
         warehouseDAO = new WarehouseDAO();
+        shopDAO = new ShopDAO();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Shop> shopList = shopDAO.getAll();
+        request.setAttribute("shopList", shopList);
         request.getRequestDispatcher("/view/add-warehouse.jsp").forward(request, response);
     }
 
@@ -40,8 +47,8 @@ public class AddWarehouseServlet extends HttpServlet {
             String name = request.getParameter("name");
             String address = request.getParameter("address");
             String phone = request.getParameter("phone");
-            String startTime = request.getParameter("startTime"); // Lấy startTime
-            String endTime = request.getParameter("endTime");     // Lấy endTime
+            String startTime = request.getParameter("startTime");
+            String endTime = request.getParameter("endTime");
             String managerIDRaw = request.getParameter("managerID");
             String storeLinkedIDRaw = request.getParameter("storeLinkedID");
             String statusRaw = request.getParameter("status");
@@ -66,12 +73,7 @@ public class AddWarehouseServlet extends HttpServlet {
                 }
             }
 
-            Integer storeLinkedID = null;
-            try {
-                storeLinkedID = (storeLinkedIDRaw != null && !storeLinkedIDRaw.isEmpty()) ? Integer.parseInt(storeLinkedIDRaw) : null;
-            } catch (NumberFormatException e) {
-                logger.log(Level.WARNING, "Invalid storeLinkedID format: {0}", storeLinkedIDRaw);
-            }
+            int storeLinkedID = Integer.parseInt(request.getParameter("store_linked_id"));
 
             // Tạo đối tượng Warehouse
             Warehouse warehouse = Warehouse.builder()
