@@ -44,7 +44,7 @@ public class ListOrderServlet extends HttpServlet {
         try {
             // Lấy danh sách đơn hàng từ DAO
             OrderDAO orderDAO = new OrderDAO();
-            List<Order> orderList = orderDAO.getAllOrders();  // Bạn đã có sẵn hàm này
+            List<Order> orderList = orderDAO.getAllOrders();
 
             // Đưa danh sách vào request scope
             request.setAttribute("orderList", orderList);

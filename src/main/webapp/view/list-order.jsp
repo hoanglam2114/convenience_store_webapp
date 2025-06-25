@@ -99,8 +99,8 @@
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order Date</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Staff</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Coupon</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Staff</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -111,7 +111,7 @@
                                         #HD${order.orderId}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        ${order.customerId}
+                                        ${order.customerName}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         <fmt:formatDate value="${order.orderDate}" pattern="dd-MM-yyyy HH:mm:ss"/>
@@ -133,7 +133,7 @@
                                         <c:out value="${empty order.customerCouponId ? '-' : order.customerCouponId}" />
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        ${order.employeeId}
+                                        ${order.employeeName}
                                     </td>
                                     <td class="px-6 py-4 text-right text-sm font-medium">
                                         <button class="text-blue-600 hover:text-blue-900 view-btn" data-id="${order.orderId}">
