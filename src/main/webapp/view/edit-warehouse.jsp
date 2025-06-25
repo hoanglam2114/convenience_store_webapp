@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html
         lang="en"
@@ -121,7 +121,7 @@
                                         <!-- Warehouse Name -->
                                         <div class="mb-3">
                                             <label for="name" class="form-label">
-                                                Warehouse Name <span class="text-danger">*</span>
+                                                Tên Nhà Kho <span class="text-danger">*</span>
                                             </label>
                                             <input type="text" class="form-control" id="name" name="name" required
                                                    value="${warehouse.name}" minlength="2" maxlength="100">
@@ -131,7 +131,7 @@
                                         <!-- Address -->
                                         <div class="mb-3">
                                             <label for="address" class="form-label">
-                                                Address <span class="text-danger">*</span>
+                                                Địa Chỉ <span class="text-danger">*</span>
                                             </label>
                                             <textarea class="form-control" id="address" name="address" rows="3"
                                                       required minlength="10"
@@ -142,7 +142,7 @@
                                         <!-- Phone -->
                                         <div class="mb-3">
                                             <label for="phone" class="form-label">
-                                                Phone <span class="text-danger">*</span>
+                                                SDT Liên Hệ <span class="text-danger">*</span>
                                             </label>
                                             <input type="tel" class="form-control" id="phone" name="phone" required
                                                    value="${warehouse.phone}">
@@ -151,54 +151,59 @@
 
                                         <!-- Working Hours -->
                                         <div class="mb-3">
-                                            <label for="workingHours" class="form-label">Working Hours</label>
+                                            <label for="workingHours" class="form-label">Giờ Hoạt Động</label>
                                             <div class="row g-2">
                                                 <div class="col-md-5">
-                                                    <label for="startTime" class="form-label small">From</label>
+                                                    <label for="startTime" class="form-label small">Từ</label>
                                                     <input type="time" class="form-control" id="startTime"
                                                            name="startTime">
                                                     <div class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="col-md-2 d-flex align-items-end justify-content-center">
-                                                    <span class="mb-2">to</span>
-                                                </div>
                                                 <div class="col-md-5">
-                                                    <label for="endTime" class="form-label small">To</label>
+                                                    <label for="endTime" class="form-label small">Đến</label>
                                                     <input type="time" class="form-control" id="endTime" name="endTime">
                                                     <div class="invalid-feedback"></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- Status -->
-                                        <select name="status" class="form-select" required>
-                                            <option value="ACTIVE" ${warehouse.status == 'ACTIVE' ? 'selected' : ''}>
-                                                Đang hoạt động
-                                            </option>
-                                            <option value="MAINTENANCE" ${warehouse.status == 'MAINTENANCE' ? 'selected' : ''}>
-                                                Bảo trì
-                                            </option>
-                                            <option value="CLOSED" ${warehouse.status == 'CLOSED' ? 'selected' : ''}>
-                                                Đóng cửa
-                                            </option>
-                                        </select>
+                                        <div class="mb-3">
+                                            <label for="status" class="form-label">Trạng Thái</label>
+                                            <select name="status" id="status" class="form-select" required>
+                                                <option value="ACTIVE" ${warehouse.status == 'ACTIVE' ? 'selected' : ''}>
+                                                    Đang hoạt động
+                                                </option>
+                                                <option value="MAINTENANCE" ${warehouse.status == 'MAINTENANCE' ? 'selected' : ''}>
+                                                    Bảo trì
+                                                </option>
+                                                <option value="CLOSED" ${warehouse.status == 'CLOSED' ? 'selected' : ''}>
+                                                    Đóng cửa
+                                                </option>
+                                            </select>
 
+                                        </div>
                                         <!-- Store Linked ID -->
                                         <div class="mb-3">
-                                            <label for="storeLinkedID" class="form-label">Store Linked ID</label>
-                                            <input type="number" class="form-control" id="storeLinkedID"
-                                                   name="storeLinkedID"
-                                                   value="${warehouse.storeLinkedID}" min="1">
-                                            <div class="invalid-feedback"></div>
+                                            <label for="shop_link" class="form-label">Trạng Thái</label>
+                                            <select name="storeLinkedID" id="shop_link" class="form-select">
+                                                <option value="">-- Chọn cửa hàng --</option>
+                                                <c:forEach var="shop" items="${shopList}">
+                                                    <option value="${shop.shopId}" ${shop.shopId == warehouse.storeLinkedID ? 'selected' : ''}>
+                                                            ${shop.shopName}
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
 
                                         <!-- Note -->
                                         <div class="mb-3">
-                                            <label for="note" class="form-label">Note</label>
-                                            <textarea class="form-control" id="note" name="note" rows="3" maxlength="1000">
+                                            <label for="note" class="form-label">Ghi chú</label>
+                                            <textarea class="form-control" id="note" name="note" rows="3"
+                                                      maxlength="1000">
                                                 ${warehouse.note}</textarea>
                                             <div class="invalid-feedback"></div>
                                             <div class="form-text">
-                                                <span id="noteCounter">0</span>/1000 characters
+                                                <span id="noteCounter">0</span>/1000 ký tự.
                                             </div>
                                         </div>
 

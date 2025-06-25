@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="model.WarehouseStatus" %>
 <!DOCTYPE html>
 <html
@@ -355,16 +356,16 @@
                                                         </h6>
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <div>
-                                                                <strong>Manager ID: ${w.managerID}</strong><br>
+                                                                <strong>Quản lý: ${w.managerName}</strong>
+                                                                <small class="text-muted ms-1">(${w.managerID})</small>
                                                                 <small class="text-muted">
                                                                     <i class="bi bi-telephone me-1"></i>Liên hệ qua hệ
                                                                     thống
                                                                 </small>
                                                             </div>
-                                                            <button class="btn btn-outline-primary btn-sm"
-                                                                    onclick="changeManager(${w.warehouseID})">
-                                                                <i class="bi bi-person-gear me-1"></i>Thay đổi
-                                                            </button>
+                                                            <a href="assignment-management"
+                                                               class="btn btn-primary btn-sm"> <i
+                                                                    class="bi bi-person-plus me-1"></i>Thay Đổi</a>
                                                         </div>
                                                     </div>
                                                 </c:when>
@@ -376,10 +377,9 @@
                                                                     có quản lý</h6>
                                                                 <small>Kho này chưa được phân công quản lý</small>
                                                             </div>
-                                                            <button class="btn btn-primary btn-sm"
-                                                                    onclick="assignManager(${w.warehouseID})">
-                                                                <i class="bi bi-person-plus me-1"></i>Phân công
-                                                            </button>
+                                                            <a href="assignment-management"
+                                                               class="btn btn-primary btn-sm"> <i
+                                                                    class="bi bi-person-plus me-1"></i>Phân công</a>
                                                         </div>
                                                     </div>
                                                 </c:otherwise>
@@ -393,17 +393,16 @@
                                                 <div class="d-flex align-items-center justify-content-between">
                                                     <c:choose>
                                                         <c:when test="${not empty w.storeLinkedID && w.storeLinkedID > 0}">
-                                                            <span class="badge bg-info fs-6">Store ID: ${w.storeLinkedID}</span>
+            <span class="badge bg-info fs-6">
+                Liên kết: ${w.storeName}
+            </span>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <span class="text-muted">Chưa liên kết cửa hàng</span>
                                                         </c:otherwise>
                                                     </c:choose>
-                                                    <button class="btn btn-outline-success btn-sm"
-                                                            onclick="linkStore(${w.warehouseID})">
-                                                        <i class="bi bi-link-45deg me-1"></i>Liên kết cửa hàng
-                                                    </button>
                                                 </div>
+
                                             </div>
 
                                             <!-- Status Controls -->
@@ -423,26 +422,184 @@
                                                         onclick="updateStatus(${w.warehouseID}, '${w.name}', 'CLOSED')">
                                                     <i class="bi bi-wrench me-1"></i>Đóng cửa
                                                 </button>
-
-
-                                            </div>
-
-                                            <!-- Additional Actions -->
-                                            <div class="d-flex gap-2 justify-content-end">
-                                                <button class="btn btn-outline-info btn-sm"
-                                                        onclick="viewWarehouseHistory(${w.warehouseID})">
-                                                    <i class="bi bi-clock-history me-1"></i>Lịch sử
-                                                </button>
-                                                <button class="btn btn-outline-secondary btn-sm"
-                                                        onclick="generateReport(${w.warehouseID})">
-                                                    <i class="bi bi-file-earmark-text me-1"></i>Báo cáo
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </c:forEach>
+                        <!-- Improved Pagination Section -->
+                        <div class="d-flex justify-content-center mt-4">
+                            <nav aria-label="Warehouse pagination">
+                                <ul class="pagination pagination-lg">
+                                    <!-- Previous Button -->
+                                    <c:if test="${currentPage > 1}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=${currentPage - 1}&search=${param.search}&status=${param.status}"
+                                               aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${currentPage <= 1}">
+                                        <li class="page-item disabled">
+                                            <span class="page-link">&laquo;</span>
+                                        </li>
+                                    </c:if>
+
+                                    <!-- Page Numbers -->
+                                    <c:forEach begin="1" end="${totalPages}" var="i">
+                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="?page=${i}&search=${param.search}&status=${param.status}">
+                                                    ${i}
+                                                <c:if test="${i == currentPage}">
+                                                    <span class="visually-hidden">(current)</span>
+                                                </c:if>
+                                            </a>
+                                        </li>
+                                    </c:forEach>
+
+                                    <!-- Next Button -->
+                                    <c:if test="${currentPage < totalPages}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=${currentPage + 1}&search=${param.search}&status=${param.status}"
+                                               aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${currentPage >= totalPages}">
+                                        <li class="page-item disabled">
+                                            <span class="page-link">&raquo;</span>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </nav>
+                        </div>
+
+                        <!-- Alternative: Pagination with Page Info -->
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <!-- Page Info -->
+                            <div class="text-muted">
+                                <small>
+                                    Trang ${currentPage} của ${totalPages}
+                                    <c:if test="${not empty list}">
+                                        <!-- Option 1: Show total items if you pass it from controller -->
+                                        <c:if test="${not empty totalItems}">
+                                            (${totalItems} kho)
+                                        </c:if>
+                                        <!-- Option 2: Just show that there are items -->
+                                        <c:if test="${empty totalItems}">
+                                            (có kho)
+                                        </c:if>
+                                    </c:if>
+                                </small>
+                            </div>
+
+                            <!-- Pagination -->
+                            <nav aria-label="Warehouse pagination">
+                                <ul class="pagination mb-0">
+                                    <!-- Previous Button -->
+                                    <c:if test="${currentPage > 1}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=${currentPage - 1}&search=${param.search}&status=${param.status}">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                    </c:if>
+
+                                    <!-- Show limited page numbers for better UX -->
+                                    <c:choose>
+                                        <c:when test="${totalPages <= 7}">
+                                            <!-- Show all pages if total is 7 or less -->
+                                            <c:forEach begin="1" end="${totalPages}" var="i">
+                                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                    <a class="page-link" href="?page=${i}&search=${param.search}&status=${param.status}">
+                                                            ${i}
+                                                    </a>
+                                                </li>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <!-- Show limited pages with ellipsis -->
+                                            <c:choose>
+                                                <c:when test="${currentPage <= 4}">
+                                                    <!-- Show first 5 pages + ellipsis + last page -->
+                                                    <c:forEach begin="1" end="5" var="i">
+                                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                            <a class="page-link" href="?page=${i}&search=${param.search}&status=${param.status}">
+                                                                    ${i}
+                                                            </a>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">...</span>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page=${totalPages}&search=${param.search}&status=${param.status}">
+                                                                ${totalPages}
+                                                        </a>
+                                                    </li>
+                                                </c:when>
+                                                <c:when test="${currentPage >= totalPages - 3}">
+                                                    <!-- Show first page + ellipsis + last 5 pages -->
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page=1&search=${param.search}&status=${param.status}">
+                                                            1
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">...</span>
+                                                    </li>
+                                                    <c:forEach begin="${totalPages - 4}" end="${totalPages}" var="i">
+                                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                            <a class="page-link" href="?page=${i}&search=${param.search}&status=${param.status}">
+                                                                    ${i}
+                                                            </a>
+                                                        </li>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <!-- Show first page + ellipsis + current-1, current, current+1 + ellipsis + last page -->
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page=1&search=${param.search}&status=${param.status}">
+                                                            1
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">...</span>
+                                                    </li>
+                                                    <c:forEach begin="${currentPage - 1}" end="${currentPage + 1}" var="i">
+                                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                            <a class="page-link" href="?page=${i}&search=${param.search}&status=${param.status}">
+                                                                    ${i}
+                                                            </a>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">...</span>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page=${totalPages}&search=${param.search}&status=${param.status}">
+                                                                ${totalPages}
+                                                        </a>
+                                                    </li>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                    <!-- Next Button -->
+                                    <c:if test="${currentPage < totalPages}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=${currentPage + 1}&search=${param.search}&status=${param.status}">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
 
                     <!-- Empty State -->
@@ -459,6 +616,7 @@
                         </div>
                     </c:if>
                 </div>
+
                 <!-- / Content -->
 
                 <!-- Footer -->
@@ -563,34 +721,10 @@
         }
     }
 
-    // Assign manager
-    function assignManager(warehouseId) {
-        // Implement assign manager functionality
-        alert('Phân công quản lý cho kho ID: ' + warehouseId);
-    }
-
-    // Change manager
-    function changeManager(warehouseId) {
-        // Implement change manager functionality
-        alert('Thay đổi quản lý cho kho ID: ' + warehouseId);
-    }
-
     // Link store
     function linkStore(warehouseId) {
         // Implement link store functionality
         alert('Liên kết cửa hàng cho kho ID: ' + warehouseId);
-    }
-
-    // View warehouse history
-    function viewWarehouseHistory(warehouseId) {
-        // Implement view history functionality
-        alert('Xem lịch sử kho ID: ' + warehouseId);
-    }
-
-    // Generate report
-    function generateReport(warehouseId) {
-        // Implement generate report functionality
-        alert('Tạo báo cáo cho kho ID: ' + warehouseId);
     }
 
     // Status filter functionality

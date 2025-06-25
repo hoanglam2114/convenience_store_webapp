@@ -1,3 +1,4 @@
+
 <%--
   Created by IntelliJ IDEA.
   User: hoang
@@ -6,7 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html
         lang="en"
@@ -114,14 +115,14 @@
                         <div class="col-md-8 col-lg-6">
                             <div class="card shadow">
                                 <div class="card-header bg-primary text-white">
-                                    <h4 class="mb-0"><i class="fas fa-warehouse me-2"></i>Add New Warehouse</h4>
+                                    <h4 class="mb-0"><i class="fas fa-warehouse me-2"></i>THÊM NHÀ KHO MỚI</h4>
                                 </div>
                                 <div class="card-body">
                                     <form id="warehouseForm" action="add-warehouse" method="post" novalidate>
                                         <!-- Warehouse Name -->
                                         <div class="mb-3">
                                             <label for="name" class="form-label">
-                                                Warehouse Name <span class="text-danger">*</span>
+                                                Tên nhà kho <span class="text-danger">*</span>
                                             </label>
                                             <input type="text" class="form-control" id="name" name="name" required
                                                    placeholder="Enter warehouse name" minlength="2" maxlength="100">
@@ -131,7 +132,7 @@
                                         <!-- Address -->
                                         <div class="mb-3">
                                             <label for="address" class="form-label">
-                                                Address <span class="text-danger">*</span>
+                                                Địa chỉ <span class="text-danger">*</span>
                                             </label>
                                             <textarea class="form-control" id="address" name="address" rows="3" required
                                                       placeholder="Enter warehouse address" minlength="10"
@@ -142,7 +143,7 @@
                                         <!-- Phone -->
                                         <div class="mb-3">
                                             <label for="phone" class="form-label">
-                                                Phone <span class="text-danger">*</span>
+                                                SDT liên hệ <span class="text-danger">*</span>
                                             </label>
                                             <input type="tel" class="form-control" id="phone" name="phone" required
                                                    placeholder="Enter phone number (e.g., +1-234-567-8900)">
@@ -151,10 +152,10 @@
 
                                         <!-- Working Hours -->
                                         <div class="mb-3">
-                                            <label class="form-label">Working Hours</label>
+                                            <label class="form-label">Giờ làm việc</label>
                                             <div class="row g-2">
                                                 <div class="col-md-5">
-                                                    <label for="startTime" class="form-label small">From</label>
+                                                    <label for="startTime" class="form-label small">Từ</label>
                                                     <input type="time" class="form-control" id="startTime"
                                                            name="startTime">
                                                     <div class="invalid-feedback"></div>
@@ -163,7 +164,7 @@
                                                     <span class="mb-2">to</span>
                                                 </div>
                                                 <div class="col-md-5">
-                                                    <label for="endTime" class="form-label small">To</label>
+                                                    <label for="endTime" class="form-label small">Đến</label>
                                                     <input type="time" class="form-control" id="endTime" name="endTime">
                                                     <div class="invalid-feedback"></div>
                                                 </div>
@@ -172,29 +173,31 @@
 
                                         <!-- Store Linked ID -->
                                         <div class="mb-3">
-                                            <label for="storeLinkedID" class="form-label">Store Linked ID</label>
-                                            <input type="number" class="form-control" id="storeLinkedID"
-                                                   name="storeLinkedID"
-                                                   placeholder="Enter store ID" min="1" max="999999">
-                                            <div class="invalid-feedback"></div>
+                                            <label for="store_linked_id">Cửa hàng liên kết:</label>
+                                            <select name="store_linked_id" id="store_linked_id" class="form-control" required>
+                                                <option value="">-- Chọn cửa hàng --</option>
+                                                <c:forEach var="shop" items="${shopList}">
+                                                    <option value="${shop.shopId}">${shop.shopName}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
 
                                         <!-- Note -->
                                         <div class="mb-3">
-                                            <label for="note" class="form-label">Note</label>
+                                            <label for="note" class="form-label">Ghi chú</label>
                                             <textarea class="form-control" id="note" name="note" rows="3"
                                                       placeholder="Additional notes (optional)"
                                                       maxlength="1000"></textarea>
                                             <div class="invalid-feedback"></div>
                                             <div class="form-text">
-                                                <span id="noteCounter">0</span>/1000 characters
+                                                <span id="noteCounter">0</span>/1000 ký tự
                                             </div>
                                         </div>
 
                                         <!-- Submit Button -->
                                         <div class="d-grid gap-2">
                                             <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
-                                                <i class="fas fa-plus me-2"></i>Add Warehouse
+                                                <i class="fas fa-plus me-2"></i>Thêm mới
                                             </button>
                                             <a href="list-warehouse" class="btn btn-secondary">Quay lại danh sách</a>
                                         </div>
