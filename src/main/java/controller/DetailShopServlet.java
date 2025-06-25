@@ -56,18 +56,18 @@ public class DetailShopServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-//        HttpSession session = request.getSession();
-//        String id_raw = request.getParameter("shop_id");
-//        ShopDAO sd = new ShopDAO();
-//        int id;
-//        try {
-//            id = Integer.parseInt(id_raw);
-//            Shop s = sd.getShopId(id);
-//            session.setAttribute("Shop", s);
+        HttpSession session = request.getSession();
+        String id_raw = request.getParameter("shop_id");
+        ShopDAO sd = new ShopDAO();
+        int id;
+        try {
+            id = Integer.parseInt(id_raw);
+            Shop s = sd.getShopId(id);
+            session.setAttribute("Shop", s);
           request.getRequestDispatcher("/view/detail-shop.jsp").forward(request, response);
-//        } catch (NumberFormatException e) {
-//            System.out.println(e);
-//        }
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
         
         
     } 

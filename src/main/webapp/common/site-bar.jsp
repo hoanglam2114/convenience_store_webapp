@@ -109,22 +109,6 @@
                         <div data-i18n="Customer Management">Customer</div>
                     </a>
                 </li>
-                
-                <li class="menu-item">
-                    <a href="assignment-management" class="menu-link">
-                        <div data-i18n="Assignment Management">Employee Assignment</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="ListShift" class="menu-link">
-                        <div data-i18n="Shift Management">Shift Management</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="ListAccountServlet" class="menu-link">
-                        <div data-i18n="Account Management">Account Management</div>
-                    </a>
-                </li>
             </ul>
         </li>
 
@@ -156,8 +140,8 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="list-warehouse" class="menu-link">
-                        <div data-i18n="Inventory Management">Warehouse</div>
+                    <a href="inventory" class="menu-link">
+                        <div data-i18n="Inventory Management">Inventory</div>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -165,41 +149,42 @@
                         <div data-i18n="Supplier Management">Suppliers</div>
                     </a>
                 </li>
+
                 <li class="menu-item">
-                    <a href="${pageContext.request.contextPath}/warehouse-assignment" class="menu-link">
-                        <div data-i18n="Product Management">Warehouse Assignment</div>
+                    <a href="ProductDiscount" class="menu-link">
+                        <div data-i18n="Basic">List Of Discount Products</div>
                     </a>
                 </li>
-            </ul>
-        </li>
-        <!-- Shop Section -->
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-package"></i>
-                <div data-i18n="Product">Shop</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="${pageContext.request.contextPath}/shop-assignment" class="menu-link">
-                        <div data-i18n="Product Management">Shop Assignment</div>
-                    </a>
-                </li>
+
+
             </ul>
         </li>
         <!-- Notification -->
         <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Management">Store Management</div>
+            </a>
+            <ul class="menu-sub">
+
+                <li class="menu-item">
+                    <a href="ListShop" class="menu-link">
+                        <div data-i18n="Basic">Store Management</div>
+                    </a>
+                </li>
+
+            </ul>
+
+        </li>
+
+
+
+
+
+        <!-- Notification -->
+        <li class="menu-item">
             <a href="notificationServlet" class="menu-link">
                 <div data-i18n="Basic">Notification</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="loadProducts" class="menu-link">
-                <div data-i18n="Basic">Pos Home </div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="customer-home" class="menu-link">
-                <div data-i18n="Basic">Customer Home </div>
             </a>
         </li>
         <li class="menu-header small text-uppercase">

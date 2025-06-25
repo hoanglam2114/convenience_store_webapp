@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Product List</title>
+        <title>Danh sách sản phẩm</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <!-- Sneat CSS -->
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
@@ -78,11 +78,6 @@
 
 
 
-
-
-
-
-
                         <div class="card">
                             <div class="table-responsive text-nowrap">
                                 <table class="table product-table">
@@ -102,6 +97,14 @@
                                         </tr>
                                     </thead>
                                     <tbody class="table-border-bottom-0">
+                                        
+                                        <c:if test="${empty Pro}">
+                                            <tr>
+                                                <td colspan="10" style="text-align: center;">Không tìm thấy sản phẩm.</td>
+                                            </tr>
+                                        </c:if>
+                                        
+                                        
                                         <c:forEach items="${Pro}" var="p">
 
                                             <tr>

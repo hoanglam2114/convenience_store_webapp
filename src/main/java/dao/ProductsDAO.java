@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package dao;
 
 import java.sql.PreparedStatement;
@@ -13,48 +16,11 @@ import model.Products;
 import model.Suppliers;
 import model.WeightUnit;
 
+/**
+ *
+ * @author admin
+ */
 public class ProductsDAO extends DBContext {
-
-    public List<Products> getAllProduct() {
-        List<Products> listProducts = new ArrayList<>();
-        String sql = "Select [product_id],\n"
-                + "       [category_id],\n"
-                + "       [barcode],\n"
-                + "       [product_name],\n"
-                + "       [product_price],\n"
-                + "       [weight_unit_id],\n"
-                + "       [supplier_id],\n"
-                + "       [product_image],\n"
-                + "       [manufacture_date],\n"
-                + "       [expiration_date],\n"
-                + "       [batch]\n"
-                + " from Products\n";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                Products p = new Products();
-                p.setId(rs.getInt("product_id"));
-                p.setBarcode(rs.getString("barcode"));
-                p.setName(rs.getString("product_name"));
-                p.setPrice(rs.getFloat("product_price"));
-                p.setImage(rs.getString("product_image"));
-                ProductCategories pc = getCategoryById(rs.getInt("category_id"));
-                p.setProductCategories(pc);
-                WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
-                p.setWeightUnit(wu);
-                Suppliers sup = getSupById(rs.getInt("supplier_id"));
-                p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
-                listProducts.add(p);
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return listProducts;
-    }
 
     public WeightUnit getWUById(int weight_unit_id) {
         String sql = "select * from Weight_unit where weight_unit_id = ?";
@@ -208,7 +174,7 @@ public class ProductsDAO extends DBContext {
     }
 
     public List<Products> searchProductByName(String product_name) {
-        String sql = "select * from Products where product_name COLLATE Latin1_General_CI_AI LIKE ?";
+        String sql = "select * from Products where product_name like ?";
         List<Products> list = new ArrayList<>();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -515,7 +481,8 @@ public class ProductsDAO extends DBContext {
         }
         return list;
     }
-     public void deleteHis(int id) {
+
+    public void deleteHis(int id) {
         String sql = "DELETE FROM HistoryPrice where history_id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -526,6 +493,23 @@ public class ProductsDAO extends DBContext {
         }
     }
 
+    public boolean isBarcodeExists(String barcode) {
+        boolean exists = false;
+        String sql = "SELECT 1 FROM Products WHERE barcode = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setString(1, barcode);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    exists = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exists;
+    }
 
     public static void main(String[] args) {
 
@@ -537,11 +521,8 @@ public class ProductsDAO extends DBContext {
 //          for (Products o : list){
 //              System.out.println(o);
 //          }
-
-         ProductsDAO pd = new ProductsDAO();
-         pd.deleteProduct(27);
-
-
+        ProductsDAO pd = new ProductsDAO();
+        pd.deleteProduct(27);
 
     }
 

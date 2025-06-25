@@ -62,15 +62,15 @@
                                     <div class="mb-3">
                                         <label for="unitName" class="form-label">Giá mới</label>
                                         <input type="number" name="pricePro"  value="${p.getPrice()}"  
-                                               class="form-control ${not empty error ? 'is-invalid' : ''}"
+                                               class="form-control ${not empty errorpricePro ? 'is-invalid' : ''}"
                                                class="form-control"  placeholder="Nhập tên đơn vị mới" 
-                                               value="${param.nameUnit != null ? param.nameUnit : ''}"
+                                               value="${param.pricePro != null ? param.pricePro : ''}"
                                                />
-                                        <c:if test="${not empty error}">
-                                            <div class="invalid-feedback">
-                                                ${error}
-                                            </div>
-                                        </c:if>
+                                      <c:if test="${not empty errorpricePro}">
+                                        <div class="invalid-feedback">
+                                            ${errorpricePro}
+                                        </div>
+                                    </c:if>
                                     </div>
                                     <div class="d-flex gap-2">
                                         <button type="submit" class="btn btn-outline-info" >Cập nhật giá</button>

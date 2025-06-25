@@ -91,10 +91,31 @@ public class UpdatePriceServlet extends HttpServlet {
         String newPrice_raw = request.getParameter("pricePro");
         int id = Integer.parseInt(id_raw);
         float newPrice = Float.parseFloat(newPrice_raw);
+        boolean hasError = false;
+        try {
+
+            if (newPrice < 0) {
+                request.setAttribute("errorpricePro", "Giá tiền không được âm.");
+                hasError = true;
+            } else if (newPrice > 100000000) { // 👈 THÊM MỚI: kiểm tra vượt quá 100 triệu
+                request.setAttribute("errorpricePro", "Giá tiền không được vượt quá 100 triệu.");
+                hasError = true;
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorpricePro", "Giá tiền phải là số nguyên.");
+            hasError = true;
+        }
+
+        // Trả về nếu có lỗi
+        if (hasError) {
+            request.getRequestDispatcher("/view/product-edit-price.jsp").forward(request, response);
+            return;
+        }
+        
         Products p1 = pd.getProductById(id);
         float price = p1.getPrice();
         String status;
-         if (newPrice > price) {
+        if (newPrice > price) {
             status = "Tăng giá";
         } else if (newPrice < price) {
             status = "Giảm giá";
@@ -105,12 +126,10 @@ public class UpdatePriceServlet extends HttpServlet {
         HistoryPrice hNew = new HistoryPrice(p1, newPrice, price, updatedAt, status);
         pd.insertHisPrice(hNew);
         pd.updateProductPrice(id, newPrice);
-        response.sendRedirect("ListPrice?product_id="+id);
-        
-        
+        response.sendRedirect("ListPrice?product_id=" + id);
+
     }
 
-   
     @Override
     public String getServletInfo() {
         return "Short description";
