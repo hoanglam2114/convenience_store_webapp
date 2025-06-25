@@ -235,6 +235,28 @@ public class EmployeeDAO extends DBContext {
 
     return roleName;
 }
+    
+    public Employees getEmployeeByAccountId(int accountId) {
+    Employees emp = null;
+    String sql = "SELECT employee_id, employee_name, employee_phone, employee_address, account_id FROM Employees WHERE account_id = ?";
+
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, accountId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            emp = new Employees();
+            emp.setId(rs.getInt("employee_id"));
+            emp.setName(rs.getString("employee_name"));
+            emp.setPhone(rs.getString("employee_phone"));
+            emp.setAddress(rs.getString("employee_address"));
+            emp.setAccountId(rs.getInt("account_id"));
+        }
+        rs.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return emp;
+}
 
     
     
