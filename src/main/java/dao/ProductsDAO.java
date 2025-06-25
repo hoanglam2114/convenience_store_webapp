@@ -21,6 +21,46 @@ import model.WeightUnit;
  * @author admin
  */
 public class ProductsDAO extends DBContext {
+    public List<Products> getAllProduct() {
+        List<Products> listProducts = new ArrayList<>();
+        String sql = "Select [product_id],\n"
+                + "       [category_id],\n"
+                + "       [barcode],\n"
+                + "       [product_name],\n"
+                + "       [product_price],\n"
+                + "       [weight_unit_id],\n"
+                + "       [supplier_id],\n"
+                + "       [product_image],\n"
+                + "       [manufacture_date],\n"
+                + "       [expiration_date],\n"
+                + "       [batch]\n"
+                + " from Products\n";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Products p = new Products();
+                p.setId(rs.getInt("product_id"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setName(rs.getString("product_name"));
+                p.setPrice(rs.getFloat("product_price"));
+                p.setImage(rs.getString("product_image"));
+                ProductCategories pc = getCategoryById(rs.getInt("category_id"));
+                p.setProductCategories(pc);
+                WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
+                p.setWeightUnit(wu);
+                Suppliers sup = getSupById(rs.getInt("supplier_id"));
+                p.setSuppliers(sup);
+                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
+                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
+                p.setBatch(rs.getInt("batch"));
+                listProducts.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listProducts;
+    }
 
     public WeightUnit getWUById(int weight_unit_id) {
         String sql = "select * from Weight_unit where weight_unit_id = ?";

@@ -140,8 +140,8 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="inventory" class="menu-link">
-                        <div data-i18n="Inventory Management">Inventory</div>
+                    <a href="list-warehouse" class="menu-link">
+                        <div data-i18n="Inventory Management">Warehouse</div>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -185,6 +185,16 @@
         <li class="menu-item">
             <a href="notificationServlet" class="menu-link">
                 <div data-i18n="Basic">Notification</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="loadProducts" class="menu-link">
+                <div data-i18n="Basic">Pos Home </div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="customer-home" class="menu-link">
+                <div data-i18n="Basic">Customer Home </div>
             </a>
         </li>
         <li class="menu-header small text-uppercase">
