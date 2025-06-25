@@ -372,28 +372,28 @@ public class OrderDAO extends DBContext {
         }
     }
 
-    public void createInvoice(int orderId, int customerId, double totalAmount, int employeeId, int paymentMethodId) throws SQLException {
-        ShiftDAO shiftDAO = new ShiftDAO();
-        Integer shiftManagerId = shiftDAO.getCurrentShiftManagerId(employeeId);
-
-        if (shiftManagerId == null) {
-            throw new SQLException("No active shift found for employee " + employeeId);
-        }
-
-        String invoiceSql = "INSERT INTO Invoices (order_id, invoice_date, invoice_total_amount, invoice_status, "
-                + "payment_method_id, employee_id, customer_id, shift_manager_id) "
-                + "VALUES (?, GETDATE(), ?, 'COMPLETED', ?, ?, ?, ?)";
-
-        try (PreparedStatement ps = connection.prepareStatement(invoiceSql)) {
-            ps.setInt(1, orderId);
-            ps.setDouble(2, totalAmount);
-            ps.setInt(3, paymentMethodId);
-            ps.setInt(4, employeeId);
-            ps.setInt(5, customerId);
-            ps.setInt(6, shiftManagerId);
-            ps.executeUpdate();
-        }
-    }
+//    public void createInvoice(int orderId, int customerId, double totalAmount, int employeeId, int paymentMethodId) throws SQLException {
+//        ShiftDAO shiftDAO = new ShiftDAO();
+//        Integer shiftManagerId = shiftDAO.getCurrentShiftManagerId(employeeId);
+//
+//        if (shiftManagerId == null) {
+//            throw new SQLException("No active shift found for employee " + employeeId);
+//        }
+//
+//        String invoiceSql = "INSERT INTO Invoices (order_id, invoice_date, invoice_total_amount, invoice_status, "
+//                + "payment_method_id, employee_id, customer_id, shift_manager_id) "
+//                + "VALUES (?, GETDATE(), ?, 'COMPLETED', ?, ?, ?, ?)";
+//
+//        try (PreparedStatement ps = connection.prepareStatement(invoiceSql)) {
+//            ps.setInt(1, orderId);
+//            ps.setDouble(2, totalAmount);
+//            ps.setInt(3, paymentMethodId);
+//            ps.setInt(4, employeeId);
+//            ps.setInt(5, customerId);
+//            ps.setInt(6, shiftManagerId);
+//            ps.executeUpdate();
+//        }
+//    }
 
     public int createPendingOrder(int customerId, int employeeId, double totalAmount) throws SQLException {
         String sql = "INSERT INTO Orders (customer_id, order_date, order_total_amount, order_status, employee_id) "

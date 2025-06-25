@@ -599,7 +599,7 @@
                 </div>
             </div>
 
-
+        </div>
 
 
             <!-- Core JS -->
@@ -632,7 +632,7 @@
                                                 const warehouses = [
                 <c:forEach var="warehouse" items="${warehouses}" varStatus="status">
                                                 {
-                                                id: ${warehouse.warehouseId},
+                                                id: ${warehouse.warehouseID},
                                                         name: '${fn:escapeXml(warehouse.name)}',
                                                         address: '${fn:escapeXml(warehouse.address)}'
                                                 }<c:if test="${!status.last}">,</c:if>
@@ -737,6 +737,5 @@
                                                         });
                                                 }
             </script>
-
     </body>
 </html>

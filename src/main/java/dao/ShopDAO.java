@@ -79,11 +79,11 @@ public class ShopDAO extends DBContext {
         }
     }
     
-    public void deleteShop(String id){
+    public void deleteShop(int id){
         String sql = "delete from ShopDetails where shop_id = ?";
         try{
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, id);
+            st.setInt(1, id);
             st.executeUpdate();
         }catch(SQLException e){
             
