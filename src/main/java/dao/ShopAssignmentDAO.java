@@ -279,6 +279,53 @@ public class ShopAssignmentDAO extends DBContext {
         return assignment;
     }
     
+    public boolean hasShopManager(int employeeId) {
+    String sql = "SELECT COUNT(*) FROM ShopAssignments " +
+                 "WHERE employee_id = ? " +
+                 "AND assignment_role IN (N'Quản lý', 'Manager') " +
+                 "AND is_active = 1";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, employeeId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    public boolean shopHasOtherManager(int shopId, int excludeAssignmentId) {
+    String sql = "SELECT COUNT(*) FROM ShopAssignments " +
+                 "WHERE shop_id = ? AND assignment_role = 'Manager' AND is_active = 1 " +
+                 "AND assignment_id != ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, shopId);
+        ps.setInt(2, excludeAssignmentId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt(1) > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    public boolean employeeIsManagerElsewhere(int employeeId, int currentShopId) {
+    String sql = "SELECT COUNT(*) FROM ShopAssignments " +
+                 "WHERE employee_id = ? AND shop_id != ? AND assignment_role = 'Manager' AND is_active = 1";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, employeeId);
+        ps.setInt(2, currentShopId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt(1) > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    
     // Delete assignment
     public boolean deleteAssignment(int assignmentId) {
         String sql = "DELETE FROM [ShopAssignments] WHERE assignment_id = ?";

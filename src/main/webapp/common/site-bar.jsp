@@ -109,6 +109,22 @@
                         <div data-i18n="Customer Management">Customer</div>
                     </a>
                 </li>
+                
+                <li class="menu-item">
+                    <a href="assignment-management" class="menu-link">
+                        <div data-i18n="Assignment Management">Employee Assignment</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ListShift" class="menu-link">
+                        <div data-i18n="Shift Management">Shift Management</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ListAccountServlet" class="menu-link">
+                        <div data-i18n="Account Management">Account Management</div>
+                    </a>
+                </li>
             </ul>
         </li>
 

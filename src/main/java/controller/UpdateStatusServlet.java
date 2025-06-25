@@ -6,8 +6,6 @@
 package controller;
 
 import dao.AccountDAO;
-import dao.AccountStatusDAO;
-import dao.EmployeeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,17 +13,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.AccountStatus;
 import model.Accounts;
-import model.Employees;
 
 /**
  *
  * @author nguye
  */
-@WebServlet(name="ListAccountServlet", urlPatterns={"/ListAccountServlet"})
-public class ListAccountServlet extends HttpServlet {
+@WebServlet(name="UpdateStatusServlet", urlPatterns={"/UpdateStatusServlet"})
+public class UpdateStatusServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +37,10 @@ public class ListAccountServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListAccountServlet</title>");  
+            out.println("<title>Servlet UpdateStatusServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListAccountServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet UpdateStatusServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,16 +57,15 @@ public class ListAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        int accountId = Integer.parseInt(request.getParameter("id"));
         AccountDAO dao = new AccountDAO();
-        List<Accounts> listAccount = dao.getAllAccount();
-        EmployeeDAO edao = new EmployeeDAO();
-        List<Employees>  listEmp = edao.getAllEmployee();
-        AccountStatusDAO asDAO = new AccountStatusDAO();
-        List<AccountStatus> statusList = asDAO.getAllAccountStatus();
-        request.setAttribute("account", listAccount);
-        request.setAttribute("employee", listEmp);
-        request.setAttribute("statusList", statusList);
-        request.getRequestDispatcher("view/account-list.jsp").forward(request, response);
+
+        // Giả sử bạn muốn toggle giữa 1 và 2
+        Accounts acc = dao.getAccountById(accountId);
+        int newStatus = (acc.getStatus_id() == 1) ? 2 : 1;
+
+        dao.updateStatus(newStatus, accountId);
+        response.sendRedirect("ListAccountServlet");
     } 
 
     /** 
