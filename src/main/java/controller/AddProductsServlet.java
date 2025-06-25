@@ -157,7 +157,7 @@ public class AddProductsServlet extends HttpServlet {
             if (price < 0) {
                 request.setAttribute("errorpricePro", "Giá tiền không được âm.");
                 hasError = true;
-            } else if (price > 100000000) { // 👈 THÊM MỚI: kiểm tra vượt quá 100 triệu
+            } else if (price > 100000000) {
                 request.setAttribute("errorpricePro", "Giá tiền không được vượt quá 100 triệu.");
                 hasError = true;
             }
