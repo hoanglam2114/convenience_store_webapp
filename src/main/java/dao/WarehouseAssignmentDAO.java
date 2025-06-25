@@ -96,6 +96,8 @@ public class WarehouseAssignmentDAO extends DBContext {
                 assignment.setWarehousePhone(rs.getString("warehouse_phone"));
                 assignment.setWarehouseWorkingHours(rs.getString("warehouse_working_hours"));
                 
+                
+                
                 assignments.add(assignment);
             }
         } catch (SQLException e) {
@@ -286,6 +288,53 @@ public class WarehouseAssignmentDAO extends DBContext {
             return false;
         }
     }
+    
+    public boolean hasWarehouseManager(int employeeId) {
+    String sql = "SELECT COUNT(*) FROM WarehouseAssignments " +
+                 "WHERE employee_id = ? " +
+                 "AND assignment_role IN (N'Quản lý', 'Manager') " +
+                 "AND is_active = 1";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, employeeId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    public boolean warehouseHasOtherManager(int warehouseId, int excludeAssignmentId) {
+    String sql = "SELECT COUNT(*) FROM WarehouseAssignments " +
+                 "WHERE warehouse_id = ? AND assignment_role = 'Manager' AND is_active = 1 " +
+                 "AND assignment_id != ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, warehouseId);
+        ps.setInt(2, excludeAssignmentId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt(1) > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    public boolean employeeIsManagerElsewhere(int employeeId, int currentWarehouseId) {
+    String sql = "SELECT COUNT(*) FROM WarehouseAssignments " +
+                 "WHERE employee_id = ? AND warehouse_id != ? AND assignment_role = 'Manager' AND is_active = 1";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, employeeId);
+        ps.setInt(2, currentWarehouseId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt(1) > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
     
     public static void main(String[] args) {
         WarehouseAssignmentDAO d = new WarehouseAssignmentDAO();

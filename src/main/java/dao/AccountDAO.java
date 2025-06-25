@@ -259,6 +259,28 @@ public class AccountDAO extends DBContext {
         return false;
     }
     
+    public Accounts getAccountById(int accountId) {
+    String sql = "SELECT * FROM Accounts WHERE account_id = ?";
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setInt(1, accountId);
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+            return new Accounts(
+                rs.getInt("account_id"),
+                rs.getString("email"),
+                rs.getString("password"),
+                rs.getInt("role_id"),
+                rs.getInt("status_id")
+            );
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
+    
     public static void main(String[] args) {
         AccountDAO ac = new AccountDAO();
         for (Accounts account : ac.getAllAccount()) {

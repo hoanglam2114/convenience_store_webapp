@@ -166,9 +166,10 @@
                                                                 </button>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <a href="AccountDetailServlet?id=${account.account_id}" class="btn btn-sm btn-outline-primary me-1" title="Chi tiết">
-                                                                    <i class="bx bx-show"></i>
+                                                                <a href="UpdateStatusServlet?id=${account.account_id}" class="btn btn-sm btn-outline-primary me-1" title="Cập nhật trạng thái">
+                                                                    <i class="bx bx-edit-alt"></i>
                                                                 </a>
+
                                                                 <a href="DeleteAccountServlet?id=${account.account_id}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc muốn xóa không?');" title="Xóa">
                                                                     <i class="bx bx-trash"></i>
                                                                 </a>
@@ -203,12 +204,13 @@
             </div>
         </div>
 
-        <!-- Scripts -->
+        <!-- Sneat JS -->
         <script src="assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="assets/vendor/libs/popper/popper.js"></script>
         <script src="assets/vendor/js/bootstrap.js"></script>
-        <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
         <script src="assets/vendor/js/menu.js"></script>
+        <script src="assets/vendor/js/helpers.js"></script>
+        <script src="assets/js/config.js"></script>
         <script src="assets/js/main.js"></script>
+        <script src="assets/js/customer.js"></script>
     </body>
 </html>

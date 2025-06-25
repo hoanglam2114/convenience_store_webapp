@@ -13,6 +13,7 @@ public class WarehouseAssignment {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     
+    
     // Additional fields for display
     private String employeeName;
     private String employeePhone;
@@ -21,6 +22,7 @@ public class WarehouseAssignment {
     private String warehouseAddress;
     private String warehousePhone;
     private String warehouseWorkingHours;
+    
     
     // Constructors
     public WarehouseAssignment() {}
