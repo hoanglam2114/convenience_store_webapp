@@ -51,71 +51,35 @@
 
 
                         <div class="card " style="padding: 20px">
-                            <c:set value="${Shop}" var="s" />
+                           <c:set value="${Shop}" var="s" />
                             <form  action="UpdateShop" method="post" enctype="multipart/form-data">
                                 <div class="row mb-3">
                                     <input type="hidden" name="shopId" value="${s.getShopId()}" />
                                     <div class="col-md-6">
                                         <label class="form-label">Tên cửa hàng *</label>
-                                        <input type="text" class="form-control ${not empty errorStoreName ? 'is-invalid' : ''}" 
-                                               name="shopName" value="${s.getShopName()}"
-                                               value="${param.shopName != null ? param.shopName : ''}" required>
-                                        <c:if test="${not empty errorStoreName}">
-                                            <div class="invalid-feedback">
-                                                ${errorStoreName}
-                                            </div>
-                                        </c:if>
+                                        <input type="text" class="form-control" name="shopName" value="${s.getShopName()}" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Địa chỉ cửa hàng *</label>
-                                        <input type="text" class="form-control ${not empty errorStoreAddress ? 'is-invalid' : ''}" 
-                                               name="shopAddress" value="${s.getShopAddress()}" 
-                                               value="${param.shopAddress != null ? param.shopAddress : ''}"required>
-                                        <c:if test="${not empty errorStoreAddress }">
-                                            <div class="invalid-feedback">
-                                                ${errorStoreAddress}
-                                            </div>
-                                        </c:if>
-
+                                        <input type="text" class="form-control" name="shopAddress" value="${s.getShopAddress()}" required>
                                     </div>
                                 </div>
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Số điện thoại cửa hàng *</label>
-                                        <input type="text" class="form-control ${not empty errorStorePhone ? 'is-invalid' : ''}"
-                                               name="shopPhone" value="${s.getShopPhone()}" 
-                                               value="${param.shopPhone != null ? param.shopPhone : ''}" required>
-                                        <c:if test="${not empty errorStorePhone }">
-                                            <div class="invalid-feedback">
-                                                ${errorStorePhone}
-                                            </div>
-                                        </c:if>
+                                        <input type="text" class="form-control" name="shopPhone" value="${s.getShopPhone()}" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Email *</label>
-                                        <input type="email" class="form-control ${not empty errorStoreEmail ? 'is-invalid' : ''}" 
-                                               name="shopEmail" value="${s.getShopEmail()}" 
-                                               value="${param.shopEmail != null ? param.shopEmail : ''}" required>
-                                        <c:if test="${not empty errorStoreEmail }">
-                                            <div class="invalid-feedback">
-                                                ${errorStoreEmail}
-                                            </div>
-                                        </c:if>
+                                        <input type="email" class="form-control" name="shopEmail" value="${s.getShopEmail()}" required>
                                     </div>
                                 </div>
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Giờ mở cửa *</label>
-                                        <input type="text" class="form-control ${not empty errorStoreHours ? 'is-invalid' : ''}" 
-                                               name="shopOpenHours" value="${s.getShopOpeningHours()}" 
-                                               value="${param.shopOpenHours != null ? param.shopOpenHours : ''}"  required>
-                                        <c:if test="${not empty errorStoreHours}">
-                                            <div class="invalid-feedback">
-                                                ${errorStoreHours}
-                                            </div>
-                                        </c:if>
+                                        <input type="text" class="form-control" name="shopOpenHours" value="${s.getShopOpeningHours()}" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Hình ảnh *</label>

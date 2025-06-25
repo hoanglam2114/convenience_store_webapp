@@ -100,48 +100,12 @@ public class AddShopServlet extends HttpServlet {
         String name = request.getParameter("storeName");
         String phone = request.getParameter("storePhone");
         String address = request.getParameter("storeAddress");
-        String email = request.getParameter("storeEmail").trim();
+        String email = request.getParameter("storeEmail");
         String opening = request.getParameter("storeHours");
 
         String img = (fileName != null && !fileName.isEmpty()) ? fileName : null;
 
-        boolean hasError = false;
-
-        // Validate sđt
-        if (!phone.equals(phone.trim()) || !phone.matches("\\d{10}")) {
-            request.setAttribute("errorStorePhone", "số điện thoại chỉ được nhập chữ số và không quá 10 chữ số.");
-            hasError = true;
-        }
-
-        // Validate tên cửa hàng
-        if (!name.equals(name.trim()) ||  name.startsWith(" ") || name.length() > 40 || !name.matches("^[\\p{L}0-9 ]+$")) {
-            request.setAttribute("errorStoreName", "Tên cửa hàng không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
-            hasError = true;
-        }
-
-        // Validate địa chỉ
-        if (!address.equals(address.trim()) || address.startsWith(" ") || address.length() > 50) {
-            request.setAttribute("errorStoreAddress", "Địa chỉ cửa hàng không được bắt đầu bằng dấu cách và tối đa 50 ký tự.");
-            hasError = true;
-        }
-
-        if (email.startsWith(" ") || email.length() > 50) {
-            request.setAttribute("errorStoreEmail", "Email không được bắt đầu bằng dấu cách và tối đa 50 ký tự.");
-            hasError = true;
-        }
-
-        if (!opening.equals(opening.trim()) || opening.startsWith(" ") || opening.length() > 50) {
-            request.setAttribute("errorStoreHours", "Giờ mở cửa không được bắt đầu bằng dấu cách và tối đa 50 ký tự.");
-            hasError = true;
-        }
-
-        // Trả về nếu có lỗi
-        if (hasError) {
-            request.getRequestDispatcher("/view/page-add-shop.jsp").forward(request, response);
-            return;
-        }
-
-        sd.insertShop(name, address, phone, email, opening, img);
+        sd.insertShop(name, phone, address, email, opening, img);
         response.sendRedirect("ListShop");
 
     }

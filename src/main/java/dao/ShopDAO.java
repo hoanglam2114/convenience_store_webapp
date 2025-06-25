@@ -79,24 +79,24 @@ public class ShopDAO extends DBContext {
         }
     }
     
-    public void deleteShop(int id){
+    public void deleteShop(String id){
         String sql = "delete from ShopDetails where shop_id = ?";
         try{
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, id);
+            st.setString(1, id);
             st.executeUpdate();
         }catch(SQLException e){
             
         }
     }
     
-    public void insertShop(String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo){
+    public void insertShop(String shopName, String shopPhone, String shopAddress, String shopEmail, String shopOpeningHours, String shopLogo){
         String sql = "insert into ShopDetails values(?, ?, ?, ?, ?, ?);";
         try{
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, shopName);
-            statement.setString(2, shopAddress);
-            statement.setString(3, shopPhone);
+            statement.setString(2, shopPhone);
+            statement.setString(3, shopAddress);
             statement.setString(4, shopEmail);
             statement.setString(5, shopOpeningHours);
             statement.setString(6, shopLogo);

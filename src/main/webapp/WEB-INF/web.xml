@@ -5,10 +5,6 @@
         <servlet-class>controller.FindCategoriesServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddCategoriesServlet</servlet-name>
-        <servlet-class>controller.AddCategoriesServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>UpdateCategoriesServlet</servlet-name>
         <servlet-class>controller.UpdateCategoriesServlet</servlet-class>
     </servlet>
@@ -33,12 +29,8 @@
         <servlet-class>controller.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>HomeAdmin</servlet-name>
-        <servlet-class>controller.HomeAdmin</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ListShiftStaffServlet</servlet-name>
-        <servlet-class>controller.ListShiftStaffServlet</servlet-class>
+        <servlet-name>AddCategoriesServlet</servlet-name>
+        <servlet-class>controller.AddCategoriesServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoadProducts</servlet-name>
@@ -51,10 +43,6 @@
     <servlet>
         <servlet-name>AddToCart</servlet-name>
         <servlet-class>controller.POS.AddToCart</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ShiftDetailServlet</servlet-name>
-        <servlet-class>controller.ShiftDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ListAccountServlet</servlet-name>
@@ -96,10 +84,6 @@
         <servlet-name>ListOrderServlet</servlet-name>
         <servlet-class>controller.ListOrderServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>ShiftDetailServlet</servlet-name>
-        <url-pattern>/ShiftDetailServlet</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ListAccountServlet</servlet-name>
         <url-pattern>/ListAccountServlet</url-pattern>
@@ -155,6 +139,10 @@
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>ListShiftStaffServlet</servlet-name>
+        <servlet-class>controller.ListShiftStaffServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>ListProductsServlet</servlet-name>
         <servlet-class>controller.ListProductsServlet</servlet-class>

@@ -6,10 +6,10 @@ package model;
 
 /**
  *
- * @author admin
+ * @author pqtru
  */
 public class Shop {
-     private int shopId;
+    private int shopId;
     private String shopName;
     private String shopAddress;
     private String shopPhone;
