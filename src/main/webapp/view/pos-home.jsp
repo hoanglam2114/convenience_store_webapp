@@ -78,18 +78,19 @@
                         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             <c:forEach var="stock" items="${listStocks}">
                                 <c:set var="product" value="${stock.inventory.product}" />
-                                <form action="addToCart" method="post">
+                                <form action="addToCart" method="post" onsubmit="return validateCustomerInfo(event)">
                                     <input type="hidden" name="storeStockId" value="${stock.storeStockId}" />
                                     <input type="hidden" name="quantity" value="1" />
                                     <button type="submit" class="w-full text-left">
                                         <div class="bg-white border rounded-lg p-3 hover:shadow-md transition cursor-pointer">
                                             <div class="h-32 bg-gray-100 rounded mb-2 flex items-center justify-center overflow-hidden">
-                                                <img src="assets/img/product/${product.image}" class="w-[100px] h-[100px] object-contain" />
+                                                <img src="${pageContext.request.contextPath}/assets/img/product/${product.image}" class="w-[100px] h-[100px] object-contain" />
                                             </div>
                                             <h3 class="font-medium text-gray-800">${product.name}</h3>
                                             <p class="text-blue-600 font-bold mt-1">
                                                 <fmt:formatNumber value="${stock.discount != null ? stock.discount.priceSell : product.price}" type="number" groupingUsed="true" /> đ
                                             </p>
+                                            <p class="text-sm text-gray-500 mt-1">Còn lại: ${stock.stock}</p>
                                         </div>
                                     </button>
                                 </form>
@@ -110,26 +111,26 @@
                         </div>
 
                         <!-- Lookup khách hàng -->
-                        <form method="post" action="customerLookup">
+                        <form method="post" action="customerLookup" onsubmit="return validateCustomerInfo()">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại</label>
                             <input type="text" name="customer_phone" placeholder="Nhập số điện thoại"
                                    value="${sessionScope.phone != null ? sessionScope.phone : ''}"
                                    class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   onblur="this.form.submit()" />
+                                   required/>
                         </form>
 
                         <!-- Tên khách hàng -->
                         <div class="mt-2">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Tên khách hàng</label>
-                            <input type="text" name="customer_name"
+                            <input type="text" name="customer_name""
                                    value="${sessionScope.name != null ? sessionScope.name : ''}"
                                    id="customerNameInput"
                                    class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   ${sessionScope.name == null ? "" : "readonly"} />
+                                   ${sessionScope.name == null ? "" : "readonly"} required/>
                         </div>
 
                         <!-- Gợi ý tạo mới khách hàng -->
-                        <c:if test="${sessionScope.name == null && sessionScope.phone != null}">
+                        <c:if test="${sessionScope.name == null && not empty sessionScope.phone}">
                             <div class="mt-2 text-sm text-red-500">
                                 Khách hàng chưa tồn tại. Bạn có muốn tạo tài khoản tích điểm không?
                                 <div class="mt-2 space-x-2">
@@ -231,11 +232,41 @@
                 document.getElementById("customerNameInput").removeAttribute("readonly");
                 document.getElementById("customerNameInput").focus();
             }
+
             function showModal() {
                 document.getElementById('customerModal').classList.remove('hidden');
             }
+
             function closeModal() {
                 document.getElementById('customerModal').classList.add('hidden');
+            }
+
+            //Chua them sdt va ten thi khong duoc them san pham
+            function validateCustomerInfo(e) {
+                const phoneInput = document.querySelector('input[name="customer_phone"]');
+                const nameInput = document.getElementById('customerNameInput');
+
+                const phone = phoneInput.value.trim();
+                const name = nameInput.value.trim();
+                const phoneRegex = /^(0|\+84)[0-9]{9}$/;
+                
+                if(!phone && !name){
+                    alert("Vui lòng nhập thông tin khách hàng.")
+                }
+                
+                if (!phone || !phoneRegex.test(phone)) {
+                    alert("Vui lòng nhập số điện thoại hợp lệ (10 chữ số, bắt đầu bằng 0 hoặc +84).");
+                    phoneInput.focus();
+                    return false;
+                }
+
+                if (!name) {
+                    alert("Vui lòng nhập tên khách hàng.");
+                    nameInput.focus();
+                    return false;
+                }
+
+                return true; // cho phép gửi form nếu hợp lệ
             }
         </script>
     </body>

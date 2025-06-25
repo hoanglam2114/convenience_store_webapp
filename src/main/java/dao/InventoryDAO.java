@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Products;
 
 /**
  * @author hoang on 5/26/2025-8:53 AM IntelliJ IDEA
@@ -20,7 +21,7 @@ public class InventoryDAO extends DBContext {
     private Inventory buildInventory(ResultSet rs) {
         ProductsDAO pd = new ProductsDAO();
         WarehouseDAO wd = new WarehouseDAO();
-        try{
+        try {
             return Inventory.builder()
                     .inventoryID(rs.getInt("inventory_id"))
                     .product(pd.getProductById(rs.getInt("product_id")))
@@ -30,7 +31,7 @@ public class InventoryDAO extends DBContext {
                     .alert(rs.getString("alert"))
                     .warehouse(wd.getWarehouseByID(rs.getInt("warehouse_id")))
                     .build();
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             Logger.getLogger(InventoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -55,10 +56,10 @@ public class InventoryDAO extends DBContext {
      */
     public List<Inventory> searchInventoryByProductName(String productName) {
         List<Inventory> inventory = new ArrayList<>();
-        String query = "SELECT i.* FROM dbo.Inventory i " +
-                "JOIN dbo.Products p ON i.product_id = p.product_id " +
-                "WHERE p.product_name LIKE ? " +
-                "ORDER BY p.product_name";
+        String query = "SELECT i.* FROM dbo.Inventory i "
+                + "JOIN dbo.Products p ON i.product_id = p.product_id "
+                + "WHERE p.product_name LIKE ? "
+                + "ORDER BY p.product_name";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, "%" + productName + "%");
             ResultSet rs = statement.executeQuery();
@@ -94,8 +95,8 @@ public class InventoryDAO extends DBContext {
      */
     public List<Inventory> getInventoryWithFilters(String productName, String status, String category, String sortBy) {
         List<Inventory> inventory = new ArrayList<>();
-        StringBuilder query = new StringBuilder("SELECT i.* FROM dbo.Inventory i " +
-                "JOIN dbo.Products p ON i.product_id = p.product_id WHERE 1=1");
+        StringBuilder query = new StringBuilder("SELECT i.* FROM dbo.Inventory i "
+                + "JOIN dbo.Products p ON i.product_id = p.product_id WHERE 1=1");
 
         List<Object> parameters = new ArrayList<>();
 
@@ -201,10 +202,10 @@ public class InventoryDAO extends DBContext {
      */
     public boolean importProduct(int productId, int quantity, String batch, String notes) {
         String checkQuery = "SELECT inventory_id, current_stock FROM dbo.Inventory WHERE product_id = ?";
-        String updateQuery = "UPDATE dbo.Inventory SET current_stock = current_stock + ?, " +
-                "last_restock_date = ?, inventory_status = ? WHERE product_id = ?";
-        String insertQuery = "INSERT INTO dbo.Inventory (product_id, current_stock, inventory_status, " +
-                "last_restock_date, alert) VALUES (?, ?, ?, ?, ?)";
+        String updateQuery = "UPDATE dbo.Inventory SET current_stock = current_stock + ?, "
+                + "last_restock_date = ?, inventory_status = ? WHERE product_id = ?";
+        String insertQuery = "INSERT INTO dbo.Inventory (product_id, current_stock, inventory_status, "
+                + "last_restock_date, alert) VALUES (?, ?, ?, ?, ?)";
 
         try {
             connection.setAutoCommit(false);
@@ -263,8 +264,8 @@ public class InventoryDAO extends DBContext {
      */
     public boolean exportProduct(int inventoryId, int quantity, String reason, String notes) {
         String selectQuery = "SELECT product_id, current_stock FROM dbo.Inventory WHERE inventory_id = ?";
-        String updateQuery = "UPDATE dbo.Inventory SET current_stock = current_stock - ?, " +
-                "last_restock_date = ?, inventory_status = ?, alert = ? WHERE inventory_id = ?";
+        String updateQuery = "UPDATE dbo.Inventory SET current_stock = current_stock - ?, "
+                + "last_restock_date = ?, inventory_status = ?, alert = ? WHERE inventory_id = ?";
 
         try {
             connection.setAutoCommit(false);
@@ -322,6 +323,7 @@ public class InventoryDAO extends DBContext {
 
     /**
      * Insert new inventory record
+     *
      * @param i Inventory object to insert
      */
     public void addInventoryProduct(Inventory i) {
@@ -374,9 +376,15 @@ public class InventoryDAO extends DBContext {
             return false;
         } finally {
             try {
-                if (ps1 != null) ps1.close();
-                if (ps2 != null) ps2.close();
-                if (ps3 != null) ps3.close();
+                if (ps1 != null) {
+                    ps1.close();
+                }
+                if (ps2 != null) {
+                    ps2.close();
+                }
+                if (ps3 != null) {
+                    ps3.close();
+                }
                 connection.setAutoCommit(true); // Trả lại trạng thái ban đầu
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -388,21 +396,47 @@ public class InventoryDAO extends DBContext {
      * Get inventory by ID
      */
     public Inventory getInventoryById(int inventoryId) {
-        String query = "SELECT * FROM dbo.Inventory WHERE inventory_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, inventoryId);
-            ResultSet rs = statement.executeQuery();
+        Inventory inventory = null;
+        String sql = """
+        SELECT i.inventory_id, i.current_stock, i.inventory_status, i.last_restock_date, i.alert,
+               p.product_id, p.product_name, p.product_image, p.product_price
+        FROM Inventory i
+        JOIN Products p ON i.product_id = p.product_id
+        WHERE i.inventory_id = ?
+    """;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, inventoryId);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return buildInventory(rs);
+                inventory = new Inventory();
+                inventory.setInventoryID(rs.getInt("inventory_id"));
+                inventory.setCurrentStock(rs.getInt("current_stock"));
+                inventory.setInventoryStatus(rs.getString("inventory_status"));
+                Date restockDate = rs.getDate("last_restock_date");
+                if (restockDate != null) {
+                    inventory.setLastRestockDate(restockDate.toLocalDate().atStartOfDay());
+                }
+                inventory.setAlert(rs.getString("alert"));
+
+                // Gán sản phẩm
+                Products product = new Products();
+                product.setId(rs.getInt("product_id"));
+                product.setName(rs.getString("product_name"));
+                product.setImage(rs.getString("product_image"));
+                product.setPrice(rs.getFloat("product_price"));
+
+                inventory.setProduct(product);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(InventoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return null;
+        return inventory;
     }
 
     /**
      * Update inventory details
+     *
      * @param i Inventory object containing updated details
      */
     public void updateInventoryDetail(Inventory i) {
@@ -429,6 +463,7 @@ public class InventoryDAO extends DBContext {
 
     /**
      * Insert inventory details
+     *
      * @param d InventoryDetails object containing details to insert
      */
     public void insertInventoryDetails(InventoryDetails d) {
@@ -451,18 +486,18 @@ public class InventoryDAO extends DBContext {
      * Update inventory status and alerts
      */
     public void updateInventoryAlerts() {
-        String query = "UPDATE dbo.Inventory SET " +
-                "inventory_status = CASE " +
-                "    WHEN current_stock = 0 THEN N'Hết hàng' " +
-                "    WHEN current_stock < 10 THEN N'Sắp hết' " +
-                "    ELSE 'Còn hàng' " +
-                "END, " +
-                "alert = CASE " +
-                "    WHEN current_stock = 0 THEN N'Sản phẩm đã hết hàng' " +
-                "    WHEN current_stock < 5 THEN N'Nguy hiểm: Sắp hết hàng' " +
-                "    WHEN current_stock < 10 THEN N'Cảnh báo: Tồn kho thấp' " +
-                "    ELSE NULL " +
-                "END";
+        String query = "UPDATE dbo.Inventory SET "
+                + "inventory_status = CASE "
+                + "    WHEN current_stock = 0 THEN N'Hết hàng' "
+                + "    WHEN current_stock < 10 THEN N'Sắp hết' "
+                + "    ELSE 'Còn hàng' "
+                + "END, "
+                + "alert = CASE "
+                + "    WHEN current_stock = 0 THEN N'Sản phẩm đã hết hàng' "
+                + "    WHEN current_stock < 5 THEN N'Nguy hiểm: Sắp hết hàng' "
+                + "    WHEN current_stock < 10 THEN N'Cảnh báo: Tồn kho thấp' "
+                + "    ELSE NULL "
+                + "END";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.executeUpdate();
@@ -473,6 +508,7 @@ public class InventoryDAO extends DBContext {
 
     /**
      * Get the last inventory record
+     *
      * @return Inventory object representing the last inventory record
      */
     public Inventory getInventoryLast() {
@@ -534,8 +570,8 @@ public class InventoryDAO extends DBContext {
         List<Inventory> inventory = new ArrayList<>();
         int offset = (page - 1) * pageSize;
 
-        StringBuilder query = new StringBuilder("SELECT i.* FROM dbo.Inventory i " +
-                "JOIN dbo.Products p ON i.product_id = p.product_id WHERE 1=1");
+        StringBuilder query = new StringBuilder("SELECT i.* FROM dbo.Inventory i "
+                + "JOIN dbo.Products p ON i.product_id = p.product_id WHERE 1=1");
 
         List<Object> parameters = new ArrayList<>();
 
@@ -597,8 +633,8 @@ public class InventoryDAO extends DBContext {
      * Get total count for pagination
      */
     public int getTotalInventoryCount(String productName, String status, Integer warehouseId) {
-        StringBuilder query = new StringBuilder("SELECT COUNT(*) as total FROM dbo.Inventory i " +
-                "JOIN dbo.Products p ON i.product_id = p.product_id WHERE 1=1");
+        StringBuilder query = new StringBuilder("SELECT COUNT(*) as total FROM dbo.Inventory i "
+                + "JOIN dbo.Products p ON i.product_id = p.product_id WHERE 1=1");
 
         List<Object> parameters = new ArrayList<>();
 
@@ -642,10 +678,9 @@ public class InventoryDAO extends DBContext {
             }
         } catch (SQLException ex) {
             Logger.getLogger(InventoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-    }
+        }
         return inventoryList;
     }
-
 
     public static void main(String[] args) {
         InventoryDAO inventoryDAO = new InventoryDAO();
@@ -658,7 +693,7 @@ public class InventoryDAO extends DBContext {
         }
 
         if (inventoryList.isEmpty()) {
-            System.out.println("No DATA");  
+            System.out.println("No DATA");
         } else {
             for (Inventory item : inventoryList) {
                 System.out.println(item);
