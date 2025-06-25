@@ -12,14 +12,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Shift;
 
 /**
  *
  * @author nguye
  */
-@WebServlet(name = "DeleteShiftServlet", urlPatterns = {"/deleteShift"})
+@WebServlet(name = "DeleteShiftServlet", urlPatterns = "/deleteShift")
 public class DeleteShiftServlet extends HttpServlet {
 
     /**

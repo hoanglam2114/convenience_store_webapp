@@ -208,14 +208,6 @@
         <servlet-class>controller.ListCategories</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DeleteShiftServlet</servlet-name>
-        <servlet-class>controller.DeleteShiftServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DeleteShiftServlet</servlet-name>
-        <url-pattern>/DeleteShift</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>ListEmployee</servlet-name>
         <servlet-class>controller.ListEmployee</servlet-class>
     </servlet>
