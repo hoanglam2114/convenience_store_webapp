@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="model.WarehouseStatus" %>
 <!DOCTYPE html>
 <html
@@ -402,6 +401,7 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </div>
+
                                             </div>
 
                                             <!-- Status Controls -->
@@ -422,21 +422,28 @@
                                                     <i class="bi bi-wrench me-1"></i>Đóng cửa
                                                 </button>
                                             </div>
-
-                                            <!-- Additional Actions -->
-                                            <div class="d-flex gap-2 justify-content-end">
-                                                <button class="btn btn-outline-info btn-sm"
-                                                        onclick="viewWarehouseHistory(${w.warehouseID})">
-                                                    <i class="bi bi-clock-history me-1"></i>Lịch sử
-                                                </button>
-                                                <button class="btn btn-outline-secondary btn-sm"
-                                                        onclick="generateReport(${w.warehouseID})">
-                                                    <i class="bi bi-file-earmark-text me-1"></i>Báo cáo
-                                                </button>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </c:forEach>
+
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <!-- Page Info -->
+                            <div class="text-muted">
+                                <small>
+                                    Trang ${currentPage} của ${totalPages}
+                                    <c:if test="${not empty list}">
+                                        <!-- Option 1: Show total items if you pass it from controller -->
+                                        <c:if test="${not empty totalItems}">
+                                            (${totalItems} kho)
+                                        </c:if>
+                                        <!-- Option 2: Just show that there are items -->
+                                        <c:if test="${empty totalItems}">
+                                            (có kho)
+                                        </c:if>
+                                    </c:if>
+                                </small>
                             </div>
 
                             <!-- Pagination -->
