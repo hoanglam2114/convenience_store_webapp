@@ -423,7 +423,7 @@ public class OrderDAO extends DBContext {
         }
     }
 
-    public List<Order> getOrdersWithFilter(String customerName, String orderDate,
+    public List<Order> getOrdersWithFilter(String customerName, String startDate, String endDate,
             String status, String employeeName, int page, int pageSize) {
         List<Order> orders = new ArrayList<>();
         int offset = (page - 1) * pageSize;
@@ -441,13 +441,8 @@ public class OrderDAO extends DBContext {
         List<Object> params = new ArrayList<>();
 
         if (customerName != null && !customerName.trim().isEmpty()) {
-            sql.append("AND c.customer_name LIKE ? ");
+            sql.append("AND c.customer_name COLLATE Latin1_General_CI_AI LIKE ? ");
             params.add("%" + customerName + "%");
-        }
-
-        if (orderDate != null && !orderDate.trim().isEmpty()) {
-            sql.append("AND CONVERT(DATE, o.order_date) = ? ");
-            params.add(orderDate);
         }
 
         if (status != null && !status.trim().isEmpty()) {
@@ -456,8 +451,15 @@ public class OrderDAO extends DBContext {
         }
 
         if (employeeName != null && !employeeName.trim().isEmpty()) {
-            sql.append("AND e.employee_name LIKE ? ");
+            sql.append("AND e.employee_name COLLATE Latin1_General_CI_AI LIKE ? ");
             params.add("%" + employeeName + "%");
+        }
+
+        if (startDate != null && !startDate.isEmpty()
+                && endDate != null && !endDate.isEmpty()) {
+            sql.append("AND CONVERT(DATE, o.order_date) BETWEEN ? AND ? ");
+            params.add(startDate);
+            params.add(endDate);
         }
 
         sql.append("ORDER BY o.order_date DESC ")
@@ -490,10 +492,9 @@ public class OrderDAO extends DBContext {
         return orders;
     }
 
-    public int getTotalOrders(String customerName, String orderDate, String status, String employeeName) {
+    public int getTotalOrders(String customerName, String startDate, String endDate, String status, String employeeName) {
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT COUNT(*) ")
-                .append("FROM Orders o ")
+        sql.append("SELECT COUNT(*) FROM Orders o ")
                 .append("LEFT JOIN Customers c ON o.customer_id = c.customer_id ")
                 .append("LEFT JOIN Employees e ON o.employee_id = e.employee_id ")
                 .append("WHERE 1=1 ");
@@ -505,9 +506,11 @@ public class OrderDAO extends DBContext {
             params.add("%" + customerName + "%");
         }
 
-        if (orderDate != null && !orderDate.trim().isEmpty()) {
-            sql.append("AND CONVERT(DATE, o.order_date) = ? ");
-            params.add(orderDate);
+        if (startDate != null && !startDate.isEmpty()
+                && endDate != null && !endDate.isEmpty()) {
+            sql.append("AND CONVERT(DATE, o.order_date) BETWEEN ? AND ? ");
+            params.add(startDate);
+            params.add(endDate);
         }
 
         if (status != null && !status.trim().isEmpty()) {
@@ -531,6 +534,18 @@ public class OrderDAO extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getTotalOrders() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Orders";
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
         }
         return 0;
     }
@@ -628,5 +643,57 @@ public class OrderDAO extends DBContext {
             e.printStackTrace();
         }
         return totalMax;
+    }
+
+    public List<Order> getOrdersWithPaging(int page, int pageSize) throws SQLException {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT o.order_id, o.customer_coupon_id, c.customer_name, o.order_date, o.order_total_amount, \n"
+                + "       o.order_status, e.employee_name, co.coupon_code, o.employee_id "
+                + "FROM Orders o "
+                + "LEFT JOIN Customers c ON o.customer_id = c.customer_id "
+                + "LEFT JOIN Employees e ON o.employee_id = e.employee_id "
+                + "LEFT JOIN CustomerCoupon cc ON o.customer_coupon_id = cc.customer_coupon_id "
+                + "LEFT JOIN Coupons co ON cc.coupon_id = co.coupon_id "
+                + "ORDER BY o.order_id DESC "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            int offset = (page - 1) * pageSize;
+            ps.setInt(1, offset);
+            ps.setInt(2, pageSize);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order order = new Order(); // hoặc dùng builder nếu bạn đã có
+                order.setOrderId(rs.getInt("order_id"));
+                order.setCustomerCouponId(rs.getObject("customer_coupon_id") != null ? rs.getInt("customer_coupon_id") : null);
+                order.setCustomerName(rs.getString("customer_name"));
+                order.setOrderDate(rs.getDate("order_date"));
+                order.setOrderTotalAmount(rs.getInt("order_total_amount"));
+                order.setOrderStatus(rs.getString("order_status"));
+                order.setEmployeeName(rs.getString("employee_name"));
+                order.setCouponCode(rs.getString("coupon_code"));
+                order.setEmployeeId(rs.getInt("employee_id"));
+                orders.add(order);
+            }
+        }
+        return orders;
+    }
+
+    private Order mapResultSetToOrder(ResultSet rs) throws SQLException {
+        Order order = new Order();
+
+        order.setOrderId(rs.getInt("order_id"));
+        order.setCustomerId(rs.getInt("customer_id"));
+        order.setOrderDate(rs.getTimestamp("order_date"));
+        order.setOrderTotalAmount(rs.getInt("order_total_amount")); // sẽ là 0.0 nếu null, bạn có thể kiểm tra null nếu cần
+        order.setOrderStatus(rs.getString("order_status"));
+        order.setCustomerCouponId(rs.getInt("customer_coupon_id")); // có thể null
+        order.setEmployeeId(rs.getInt("employee_id"));
+
+        // Optional: Nếu bạn có cột employee_name hoặc customer_name được JOIN, thì thêm set vào đây
+        // order.setEmployeeName(rs.getString("employee_name"));
+        // order.setCustomerName(rs.getString("customer_name"));
+        return order;
     }
 }

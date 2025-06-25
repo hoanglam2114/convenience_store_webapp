@@ -13,12 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Order;
+import model.OrderDetails;
 
-/**
- *
- * @author Admin
- */
-public class ListOrderServlet extends HttpServlet {
+public class OrderDetailServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -28,10 +25,10 @@ public class ListOrderServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListOrderServlet</title>");
+            out.println("<title>Servlet OrderDetailServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListOrderServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet OrderDetailServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -40,37 +37,19 @@ public class ListOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            int page = 1;
-            int pageSize = 10;
+        int orderId = Integer.parseInt(request.getParameter("orderId"));
 
-            String pageParam = request.getParameter("page");
-            if (pageParam != null) {
-                try {
-                    page = Integer.parseInt(pageParam);
-                } catch (NumberFormatException e) {
-                    page = 1;
-                }
-            }
+        OrderDAO orderDAO = new OrderDAO();
 
-            OrderDAO dao = new OrderDAO();
-            int totalOrders = dao.getTotalOrders(); 
-            int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
+        // Lấy thông tin đơn hàng và danh sách sản phẩm
+        Order order = orderDAO.getOrderById(orderId);
+        List<OrderDetails> orderItems = orderDAO.getOrderDetailsByOrderId(orderId);
 
-            List<Order> orderList = dao.getOrdersWithPaging(page, pageSize);
+        // Gửi dữ liệu sang JSP
+        request.setAttribute("order", order);
+        request.setAttribute("orderItems", orderItems);
 
-            request.setAttribute("orderList", orderList);
-            request.setAttribute("currentPage", page);
-            request.setAttribute("ordersPerPage", pageSize);
-            request.setAttribute("totalOrders", totalOrders);
-            request.setAttribute("totalPages", totalPages);
-
-            request.getRequestDispatcher("view/order-list.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(500, "Lỗi khi phân trang đơn hàng: " + e.getMessage());
-        }
+        request.getRequestDispatcher("view/order-detail.jsp").forward(request, response);
     }
 
     @Override
