@@ -138,7 +138,11 @@
                                                 <input type="cate" class="form-control"  name="batch" value="${p.getBatch()}" readonly />
                                             </div>
                                         </div>
-
+                                        <c:if test="${not empty errorMessage}">
+                                            <div class="alert alert-danger">
+                                                ${errorMessage}
+                                            </div>
+                                        </c:if>
                                         <div class="mt-4">
                                             <button type="submit" class="btn btn-success">Cập nhật sản phẩm</button>
                                         </div>

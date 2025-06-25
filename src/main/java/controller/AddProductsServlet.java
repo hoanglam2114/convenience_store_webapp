@@ -124,10 +124,20 @@ public class AddProductsServlet extends HttpServlet {
         String pricePro = request.getParameter("pricePro");
         String suppPro = request.getParameter("suppPro");
 
-        int price = Integer.parseInt(pricePro);
+        
         String img = (fileName != null && !fileName.isEmpty()) ? fileName : null;
 
+        ProductsDAO pd = new ProductsDAO();
+        SuppliersDAO sd = new SuppliersDAO();
+        WeightUnitDAO wud = new WeightUnitDAO();
+        ProductCategoriesDAO pcd = new ProductCategoriesDAO();
+
         boolean hasError = false;
+
+        if (pd.isBarcodeExists(barcode)) {
+            request.setAttribute("errorbarcode", "Mã vạch đã tồn tại trong hệ thống.");
+            hasError = true;
+        }
 
         // Validate barcode
         if (!barcode.matches("\\d+")) {
@@ -142,11 +152,13 @@ public class AddProductsServlet extends HttpServlet {
         }
 
         // Validate giá tiền
-       
         try {
-            price = Integer.parseInt(pricePro);
+           int price = Integer.parseInt(pricePro);
             if (price < 0) {
                 request.setAttribute("errorpricePro", "Giá tiền không được âm.");
+                hasError = true;
+            } else if (price > 100000000) { // 👈 THÊM MỚI: kiểm tra vượt quá 100 triệu
+                request.setAttribute("errorpricePro", "Giá tiền không được vượt quá 100 triệu.");
                 hasError = true;
             }
         } catch (NumberFormatException e) {
@@ -159,11 +171,6 @@ public class AddProductsServlet extends HttpServlet {
             request.getRequestDispatcher("/view/AddProduct.jsp").forward(request, response);
             return;
         }
-
-        ProductsDAO pd = new ProductsDAO();
-        SuppliersDAO sd = new SuppliersDAO();
-        WeightUnitDAO wud = new WeightUnitDAO();
-        ProductCategoriesDAO pcd = new ProductCategoriesDAO();
 
         if (expirationDate.isBefore(manufactureDate)) {
             request.setAttribute("errorMessage", "Ngày hết hạn phải sau ngày sản xuất.");
@@ -180,7 +187,7 @@ public class AddProductsServlet extends HttpServlet {
                 WeightUnit wu = wud.getUnitById(unit);
                 int supp = Integer.parseInt(suppPro);
                 Suppliers su = sd.getSupById(supp);
-
+                int price = Integer.parseInt(pricePro);
                 int batch = 1;
                 Products pNew = new Products(namePro, price, img, barcode,
                         ci, su, wu, manufactureDate, expirationDate, batch);
@@ -189,7 +196,7 @@ public class AddProductsServlet extends HttpServlet {
             } else {
                 int latest_batch = pd.getLatestBatchByName(namePro);
                 int new_batch = latest_batch + 1;
-
+                int price = Integer.parseInt(pricePro);
                 int cate = Integer.parseInt(catePro);
                 ProductCategories ci = pcd.getCategoryById(cate);
                 int unit = Integer.parseInt(unitPro);

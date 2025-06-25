@@ -149,6 +149,13 @@
                         <div data-i18n="Supplier Management">Suppliers</div>
                     </a>
                 </li>
+                
+                <li class="menu-item">
+                    <a href="ProductDiscount" class="menu-link">
+                        <div data-i18n="Basic">List Of Discount Products</div>
+                    </a>
+                </li>
+                
 
             </ul>
         </li>

@@ -447,7 +447,6 @@ public class ProductsDAO extends DBContext {
         return list;
     }
 
-    
     public List<Products> getAllProductExpired() {
         List<Products> list = new ArrayList<>();
 
@@ -482,8 +481,8 @@ public class ProductsDAO extends DBContext {
         }
         return list;
     }
-    
-     public void deleteHis(int id) {
+
+    public void deleteHis(int id) {
         String sql = "DELETE FROM HistoryPrice where history_id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -493,8 +492,25 @@ public class ProductsDAO extends DBContext {
             System.out.println(e);
         }
     }
-    
-    
+
+    public boolean isBarcodeExists(String barcode) {
+        boolean exists = false;
+        String sql = "SELECT 1 FROM Products WHERE barcode = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setString(1, barcode);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    exists = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exists;
+    }
+
     public static void main(String[] args) {
 
 //        int count = dao.getTotalProduct();
@@ -505,11 +521,8 @@ public class ProductsDAO extends DBContext {
 //          for (Products o : list){
 //              System.out.println(o);
 //          }
-        
-         ProductsDAO pd = new ProductsDAO();
-         pd.deleteProduct(27);
-         
-        
+        ProductsDAO pd = new ProductsDAO();
+        pd.deleteProduct(27);
 
     }
 

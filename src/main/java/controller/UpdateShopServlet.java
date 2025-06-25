@@ -143,16 +143,18 @@ public class UpdateShopServlet extends HttpServlet {
         
         
         
-          boolean hasError = false;
+           boolean hasError = false;
+        // Kiểm tra định dạng thời gian hoạt động
+        String timeRegex = "^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM) - (0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$";
 
         // Validate sđt
-        if (!phone.equals(phone.trim()) || !phone.matches("\\d{10}")) {
-            request.setAttribute("errorStorePhone", "số điện thoại chỉ được nhập chữ số và không quá 10 chữ số.");
+        if (!phone.equals(phone.trim()) || !phone.matches("^0\\d{9}$")) {
+            request.setAttribute("errorStorePhone", "Số điện thoại phải gồm 10 chữ số và bắt đầu bằng số 0.");
             hasError = true;
         }
 
         // Validate tên cửa hàng
-        if (!name.equals(name.trim()) ||  name.startsWith(" ") || name.length() > 40 || !name.matches("^[\\p{L}0-9 ]+$")) {
+        if (!name.equals(name.trim()) || name.startsWith(" ") || name.length() > 40 || !name.matches("^[\\p{L}0-9 ]+$")) {
             request.setAttribute("errorStoreName", "Tên cửa hàng không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
             hasError = true;
         }
@@ -163,13 +165,19 @@ public class UpdateShopServlet extends HttpServlet {
             hasError = true;
         }
 
-        if (email.startsWith(" ") || email.length() > 50) {
+        if (email.startsWith(" ") || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$") || email.length() > 50) {
             request.setAttribute("errorStoreEmail", "Email không được bắt đầu bằng dấu cách và tối đa 50 ký tự.");
             hasError = true;
         }
 
-        if (!openHours.equals(openHours.trim()) || openHours.startsWith(" ") || openHours.length() > 50) {
+        if (openHours == null || openHours.trim().isEmpty()) {
+            request.setAttribute("errorStoreHours", "Vui lòng nhập giờ hoạt động.");
+            hasError = true;
+        } else if (!openHours.equals(openHours.trim()) || openHours.length() > 50) {
             request.setAttribute("errorStoreHours", "Giờ mở cửa không được bắt đầu bằng dấu cách và tối đa 50 ký tự.");
+            hasError = true;
+        } else if (!openHours.matches(timeRegex)) {
+            request.setAttribute("errorStoreHours", "Giờ hoạt động phải đúng định dạng: hh:mm AM/PM - hh:mm AM/PM. VD: 7:00 AM - 9:00 PM");
             hasError = true;
         }
 
@@ -178,7 +186,6 @@ public class UpdateShopServlet extends HttpServlet {
             request.getRequestDispatcher("/view/update-shop.jsp").forward(request, response);
             return;
         }
-        
  
 
         int id = Integer.parseInt(id_raw);
