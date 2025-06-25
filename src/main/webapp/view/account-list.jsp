@@ -1,10 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.*, model.Shifts" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
-<html lang="en" class="light-style layout-menu-fixed" dir="ltr"
+<html lang="vi" class="light-style layout-menu-fixed" dir="ltr"
       data-theme="theme-default"
       data-assets-path="../assets/"
       data-template="vertical-menu-template-free">
@@ -12,7 +11,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Account Management</title>
+        <title>Quản lý tài khoản</title>
 
         <!-- Stylesheets -->
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
@@ -87,7 +86,6 @@
                                             <option value="1" ${param.role == '1' ? 'selected' : ''}>Admin</option>
                                             <option value="2" ${param.role == '2' ? 'selected' : ''}>Staff</option>
                                             <option value="3" ${param.role == '3' ? 'selected' : ''}>Manager</option>
-<!--                                            <option value="unknown" ${param.role == 'unknown' ? 'selected' : ''}>Unknown</option>-->
                                         </select>
                                     </div>
 
@@ -113,7 +111,6 @@
                                 </div>
                             </form>
 
-
                             <!-- Account Table -->
                             <div class="card border shadow-sm">
                                 <div class="table-responsive text-nowrap">
@@ -121,11 +118,11 @@
                                         <thead>
                                             <tr>
                                                 <th>Account ID</th>
-                                                <th>Full Name</th>
+                                                <th>Họ tên</th>
                                                 <th>Email</th>
-                                                <th>Role</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
+                                                <th>Vai trò</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -166,10 +163,12 @@
                                                                 </button>
                                                             </c:when>
                                                             <c:otherwise>
+                                                                <a href="ChangePassword?id=${account.account_id}" class="btn btn-sm btn-outline-info me-1" title="Xem chi tiết">
+                                                                    <i class="bx bx-show"></i>
+                                                                </a>
                                                                 <a href="UpdateStatusServlet?id=${account.account_id}" class="btn btn-sm btn-outline-primary me-1" title="Cập nhật trạng thái">
                                                                     <i class="bx bx-edit-alt"></i>
                                                                 </a>
-
                                                                 <a href="DeleteAccountServlet?id=${account.account_id}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc muốn xóa không?');" title="Xóa">
                                                                     <i class="bx bx-trash"></i>
                                                                 </a>
@@ -204,7 +203,7 @@
             </div>
         </div>
 
-        <!-- Sneat JS -->
+        <!-- Scripts -->
         <script src="assets/vendor/libs/jquery/jquery.js"></script>
         <script src="assets/vendor/js/bootstrap.js"></script>
         <script src="assets/vendor/js/menu.js"></script>

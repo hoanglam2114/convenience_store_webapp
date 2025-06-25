@@ -380,7 +380,7 @@
                                 </c:when>
                                 <c:otherwise>
                                     <!-- Main Warehouse List View -->
-                                    <h1>Quản lý Kho</h1>
+                                    <h1>Quản lý Phân Công Kho</h1>
 
                                     <div class="row">
                                         <c:forEach var="warehouse" items="${warehouses}">

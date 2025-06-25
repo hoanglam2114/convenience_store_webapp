@@ -107,14 +107,18 @@ public class AddShiftServlet extends HttpServlet {
             shift.setWorkingDays(workingDays);
             shift.setDescription(description);
 
-            
-
             long duration = ChronoUnit.MINUTES.between(startTime, endTime);
             if (duration <= 0) {
                 duration += 24 * 60; // xử lý ca đêm
             }
             if (duration > 12 * 60) {
                 request.setAttribute("error", "Thời lượng ca làm không được vượt quá 12 tiếng.");
+                request.getRequestDispatcher("view/shift-add.jsp").forward(request, response);
+                return;
+            }
+
+            if (!name.matches("[\\p{L}\\d\\s]+")) {
+                request.setAttribute("error", "Tên ca không được chứa ký tự đặc biệt.");
                 request.getRequestDispatcher("view/shift-add.jsp").forward(request, response);
                 return;
             }
