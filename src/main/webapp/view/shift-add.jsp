@@ -93,3 +93,44 @@
                         </ul>
                     </div>
                 </div>
+                <script>
+                    document.querySelector("form").addEventListener("submit", function (e) {
+                        const shiftName = document.getElementById("shiftName").value.trim();
+                        const startTime = document.getElementById("startTime").value;
+                        const endTime = document.getElementById("endTime").value;
+                        const workingDays = document.querySelectorAll("input[name='workingDays']:checked");
+
+                        let errorMessages = [];
+
+                        // 1. shiftName không rỗng và không chứa ký tự đặc biệt
+                        if (shiftName === "") {
+                            errorMessages.push("Tên ca không được để trống.");
+                        } else if (!/^[a-zA-Z0-9\sÀ-ỹ]+$/.test(shiftName)) {
+                            errorMessages.push("Tên ca không được chứa ký tự đặc biệt.");
+                        }
+
+                        // 2. Thời gian
+                        if (!startTime || !endTime) {
+                            errorMessages.push("Vui lòng nhập giờ bắt đầu và giờ kết thúc.");
+                        } else if (startTime >= endTime) {
+                            errorMessages.push("Giờ kết thúc phải lớn hơn giờ bắt đầu.");
+                        }
+
+                        // 3. Phải chọn ít nhất một ngày làm việc
+                        if (workingDays.length === 0) {
+                            errorMessages.push("Vui lòng chọn ít nhất một ngày làm việc.");
+                        }
+
+                        // Nếu có lỗi thì hiển thị và ngăn form submit
+                        if (errorMessages.length > 0) {
+                            e.preventDefault();
+                            alert(errorMessages.join("\n"));
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

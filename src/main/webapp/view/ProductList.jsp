@@ -69,8 +69,7 @@
 
                             <div>
                                 <a href="AddProduct" class="btn btn-primary">
-                                    <i class="bx bx-plus"></i> Add Product
-                                </a>
+                                    <i class="bx bx-plus"></i> Thêm sản phẩm                                </a>
                             </div>
 
 

@@ -109,6 +109,21 @@
                         <div data-i18n="Customer Management">Customer</div>
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a href="assignment-management" class="menu-link">
+                        <div data-i18n="Assignment Management">Employee Assignment</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ListShift" class="menu-link">
+                        <div data-i18n="Shift Management">Shift Management</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ListAccountServlet" class="menu-link">
+                        <div data-i18n="Account Management">Account Management</div>
+                    </a>
+                </li>
             </ul>
         </li>
 
@@ -155,8 +170,25 @@
                         <div data-i18n="Basic">List Of Discount Products</div>
                     </a>
                 </li>
-
-
+                <li class="menu-item">
+                    <a href="${pageContext.request.contextPath}/warehouse-assignment" class="menu-link">
+                        <div data-i18n="Product Management">Warehouse Assignment</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!--Shop-->
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-package"></i>
+                <div data-i18n="Product">Shop</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="${pageContext.request.contextPath}/shop-assignment" class="menu-link">
+                        <div data-i18n="Product Management">Shop Assignment</div>
+                    </a>
+                </li>
             </ul>
         </li>
         <!-- Notification -->

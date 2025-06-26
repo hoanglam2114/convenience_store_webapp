@@ -76,5 +76,39 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById("editShiftForm").addEventListener("submit", function (e) {
+        const shiftName = document.getElementById("shiftName").value.trim();
+        const startTime = document.getElementById("startTime").value;
+        const endTime = document.getElementById("endTime").value;
+        const workingDays = document.querySelectorAll("input[name='workingDays']:checked");
+
+        let errors = [];
+
+        // 1. Tên ca không được để trống và không có ký tự đặc biệt
+        if (shiftName === "") {
+            errors.push("Tên ca không được để trống.");
+        } else if (!/^[a-zA-Z0-9\sÀ-ỹ]+$/.test(shiftName)) {
+            errors.push("Tên ca không được chứa ký tự đặc biệt.");
+        }
+
+        // 2. Giờ bắt đầu < giờ kết thúc
+        if (!startTime || !endTime) {
+            errors.push("Giờ bắt đầu và kết thúc không được để trống.");
+        } else if (startTime >= endTime) {
+            errors.push("Giờ kết thúc phải lớn hơn giờ bắt đầu.");
+        }
+
+        // 3. Phải chọn ít nhất một ngày làm việc
+        if (workingDays.length === 0) {
+            errors.push("Vui lòng chọn ít nhất một ngày làm việc.");
+        }
+
+        if (errors.length > 0) {
+            e.preventDefault();
+            alert(errors.join("\n"));
+        }
+    });
+</script>
 </body>
 </html>

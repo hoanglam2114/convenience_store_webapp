@@ -116,7 +116,7 @@
                             <input type="text" name="customer_phone" placeholder="Nhập số điện thoại"
                                    value="${sessionScope.phone != null ? sessionScope.phone : ''}"
                                    class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   required/>
+                                   onblur="on.click.submit()" required/>
                         </form>
 
                         <!-- Tên khách hàng -->
@@ -241,33 +241,8 @@
                 document.getElementById('customerModal').classList.add('hidden');
             }
 
-            //Chua them sdt va ten thi khong duoc them san pham
-            function validateCustomerInfo(e) {
-                const phoneInput = document.querySelector('input[name="customer_phone"]');
-                const nameInput = document.getElementById('customerNameInput');
 
-                const phone = phoneInput.value.trim();
-                const name = nameInput.value.trim();
-                const phoneRegex = /^(0|\+84)[0-9]{9}$/;
-                
-                if(!phone && !name){
-                    alert("Vui lòng nhập thông tin khách hàng.")
-                }
-                
-                if (!phone || !phoneRegex.test(phone)) {
-                    alert("Vui lòng nhập số điện thoại hợp lệ (10 chữ số, bắt đầu bằng 0 hoặc +84).");
-                    phoneInput.focus();
-                    return false;
-                }
 
-                if (!name) {
-                    alert("Vui lòng nhập tên khách hàng.");
-                    nameInput.focus();
-                    return false;
-                }
-
-                return true; // cho phép gửi form nếu hợp lệ
-            }
         </script>
     </body>
 </html>
