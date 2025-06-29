@@ -111,36 +111,38 @@
                         </div>
 
                         <!-- Lookup khách hàng -->
-                        <form method="post" action="customerLookup" onsubmit="return validateCustomerInfo()">
+                        <form method="post" action="customerLookup" id="customerForm">
+                            <!-- Số điện thoại -->
                             <label class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại</label>
-                            <input type="text" name="customer_phone" placeholder="Nhập số điện thoại"
+                            <input type="text" name="customer_phone" id="customerPhoneInput"
+                                   placeholder="Nhập số điện thoại"
                                    value="${sessionScope.phone != null ? sessionScope.phone : ''}"
                                    class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   onblur="on.click.submit()" required/>
+                                   onblur="handlePhoneLookupSubmit()" required />
+
+                            <!-- Tên khách hàng -->
+                            <div class="mt-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tên khách hàng</label>
+                                <input type="text" name="customer_name" id="customerNameInput"
+                                       value="${sessionScope.name != null ? sessionScope.name : ''}"
+                                       class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                       ${sessionScope.name == null ? "" : "readonly"}
+                                       required />
+                            </div>
                         </form>
 
-                        <!-- Tên khách hàng -->
-                        <div class="mt-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tên khách hàng</label>
-                            <input type="text" name="customer_name""
-                                   value="${sessionScope.name != null ? sessionScope.name : ''}"
-                                   id="customerNameInput"
-                                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   ${sessionScope.name == null ? "" : "readonly"} required/>
-                        </div>
-
-                        <!-- Gợi ý tạo mới khách hàng -->
+                        <!-- Gợi ý tạo mới nếu chưa có -->
                         <c:if test="${sessionScope.name == null && not empty sessionScope.phone}">
                             <div class="mt-2 text-sm text-red-500">
                                 Khách hàng chưa tồn tại. Bạn có muốn tạo tài khoản tích điểm không?
                                 <div class="mt-2 space-x-2">
-                                    <button onclick="showModal()" class="bg-blue-500 text-white px-3 py-1 rounded">Có</button>
-                                    <button onclick="allowManualName()" class="bg-gray-300 px-3 py-1 rounded">Không</button>
+                                    <button onclick="showModal()" type="button" class="bg-blue-500 text-white px-3 py-1 rounded">Có</button>
+                                    <button onclick="allowManualName()" type="button" class="bg-gray-300 px-3 py-1 rounded">Không</button>
                                 </div>
                             </div>
                         </c:if>
 
-                        <!-- Modal -->
+                        <!-- Modal tạo mới khách hàng -->
                         <div id="customerModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                             <div class="bg-white rounded-lg p-6 shadow-md w-full max-w-md">
                                 <h3 class="text-lg font-bold mb-4">Tạo tài khoản khách hàng</h3>
@@ -229,8 +231,9 @@
 
         <script>
             function allowManualName() {
-                document.getElementById("customerNameInput").removeAttribute("readonly");
-                document.getElementById("customerNameInput").focus();
+                const nameInput = document.getElementById("customerNameInput");
+                nameInput.removeAttribute("readonly");
+                nameInput.focus();
             }
 
             function showModal() {
@@ -241,7 +244,73 @@
                 document.getElementById('customerModal').classList.add('hidden');
             }
 
+            function validateForm() {
+                const phone = document.getElementById("customerPhoneInput").value.trim();
+                const name = document.getElementById("customerNameInput").value.trim();
 
+                const phoneRegex = /^0\d{9}$/;
+                const nameRegex = /^[A-Za-zÀ-ỹ\s]+$/;
+
+                if (!phoneRegex.test(phone)) {
+                    alert("Số điện thoại phải bắt đầu bằng 0 và gồm đúng 10 chữ số.");
+                    return false;
+                }
+
+                if (name === "") {
+                    alert("Vui lòng nhập tên khách hàng.");
+                    return false;
+                }
+
+                if (!nameRegex.test(name)) {
+                    alert("Tên khách hàng không được chứa ký tự đặc biệt hoặc số.");
+                    return false;
+                }
+
+                return true;
+            }
+
+            function handlePhoneLookupSubmit() {
+                const phone = document.getElementById("customerPhoneInput").value.trim();
+                const phoneRegex = /^0\d{9}$/;
+
+                if (!phoneRegex.test(phone)) {
+                    alert("Số điện thoại không hợp lệ. Phải bắt đầu bằng 0 và gồm đúng 10 chữ số.");
+                    return;
+                }
+
+                document.getElementById("customerForm").submit();
+            }
+
+            function validateCustomerInfo(event) {
+                const phone = document.getElementById("customerPhoneInput").value.trim();
+                const name = document.getElementById("customerNameInput").value.trim();
+
+                const phoneRegex = /^0\d{9}$/;
+                const nameRegex = /^[A-Za-zÀ-ỹ\s]+$/;
+
+                if (!phoneRegex.test(phone)) {
+                    alert("Vui lòng nhập số điện thoại hợp lệ trước khi thêm sản phẩm.");
+                    if (event)
+                        event.preventDefault(); // CHẶN submit
+                    return false;
+                }
+
+                if (name === "") {
+                    alert("Vui lòng nhập tên khách hàng trước khi thêm sản phẩm.");
+                    if (event)
+                        event.preventDefault();
+                    return false;
+                }
+
+                if (!nameRegex.test(name)) {
+                    alert("Tên khách hàng không hợp lệ.");
+                    if (event)
+                        event.preventDefault();
+                    return false;
+                }
+
+                return true;
+            }
 
         </script>
     </body>
