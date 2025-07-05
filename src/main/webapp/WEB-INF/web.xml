@@ -108,6 +108,18 @@
         <servlet-name>EditOrderServlet</servlet-name>
         <servlet-class>controller.EditOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ScanBarcodeServlet</servlet-name>
+        <servlet-class>controller.POS.ScanBarcodeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BarcodeImageServlet</servlet-name>
+        <servlet-class>controller.POS.BarcodeImageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCartServlet</servlet-name>
+        <servlet-class>controller.POS.UpdateCartServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShiftDetailServlet</servlet-name>
         <url-pattern>/ShiftDetailServlet</url-pattern>
@@ -175,6 +187,18 @@
     <servlet-mapping>
         <servlet-name>EditOrderServlet</servlet-name>
         <url-pattern>/editOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScanBarcodeServlet</servlet-name>
+        <url-pattern>/scan-barcode</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BarcodeImageServlet</servlet-name>
+        <url-pattern>/barcode-image</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCartServlet</servlet-name>
+        <url-pattern>/update-cart</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>

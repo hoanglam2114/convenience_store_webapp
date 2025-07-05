@@ -63,12 +63,6 @@ public class LoadProducts extends HttpServlet {
         HttpSession session = request.getSession();
         String customerName = (String) session.getAttribute("name");
         String customerPhone = (String) session.getAttribute("phone");
-        if(customerPhone != null && customerPhone.matches("^(?:\\+84|0)?(?:[3|5|7|8|9][0-9]{8}|2[0-9]{9}|(1800|1900)[0-9]{4,6}|11[0-9]|1[0-9]{2,3})$")){
-            request.setAttribute("phone", customerPhone);
-        }
-        if (customerName != null && customerName.matches("^[a-zA-ZÀ-ỹ]+$")) {
-            request.setAttribute("name", customerName);
-        }
         Cart cart = (Cart) session.getAttribute("cart");
 
         if (cart != null) request.setAttribute("cart", cart);

@@ -339,21 +339,53 @@ public class StoreStockDAO extends DBContext {
 
     public List<StoreStock> getAllInStock() {
         List<StoreStock> list = new ArrayList<>();
-        String sql = "SELECT * FROM StoreStock WHERE quantity_in_stock > 0";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
+        String sql = """
+        SELECT ss.store_stock_id, ss.quantity_in_stock, ss.last_stock_check_date, ss.discount_product_id, ss.alert,
+               i.inventory_id, i.current_stock, i.inventory_status, i.last_restock_date, i.alert as inventory_alert,
+               p.product_id, p.product_name, p.product_image, p.product_price, p.barcode
+        FROM StoreStock ss
+        JOIN Inventory i ON ss.inventory_id = i.inventory_id
+        JOIN Products p ON i.product_id = p.product_id
+        WHERE ss.quantity_in_stock > 0
+    """;
 
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
+                // Product
+                Products product = new Products();
+                product.setId(rs.getInt("product_id"));
+                product.setName(rs.getString("product_name"));
+                product.setImage(rs.getString("product_image"));
+                product.setPrice(rs.getFloat("product_price"));
+                product.setBarcode(rs.getString("barcode"));
+
+                // Inventory
+                Inventory inventory = new Inventory();
+                inventory.setInventoryID(rs.getInt("inventory_id"));
+                inventory.setCurrentStock(rs.getInt("current_stock"));
+                inventory.setInventoryStatus(rs.getString("inventory_status"));
+                inventory.setAlert(rs.getString("inventory_alert"));
+                Date restockDate = rs.getDate("last_restock_date");
+                if (restockDate != null) {
+                    inventory.setLastRestockDate(restockDate.toLocalDate().atStartOfDay());
+                }
+                inventory.setProduct(product);
+
+                // StoreStock
                 StoreStock stock = new StoreStock();
                 stock.setStoreStockId(rs.getInt("store_stock_id"));
-                Inventory inventory = getInventoryById(rs.getInt("inventory_id"));
                 stock.setInventory(inventory);
                 stock.setStock(rs.getInt("quantity_in_stock"));
                 stock.setLastStockCheckDate(rs.getDate("last_stock_check_date").toLocalDate());
-                DiscountProduct dp = getDiscountProductById(rs.getInt("discount_product_id"));
-                stock.setDiscount(dp);
                 stock.setAlert(rs.getString("alert"));
+
+                int discountId = rs.getInt("discount_product_id");
+                if (!rs.wasNull() && discountId > 0) {
+                    DiscountProduct dp = getDiscountProductById(discountId);
+                    stock.setDiscount(dp);
+                }
+
                 list.add(stock);
             }
         } catch (SQLException e) {
@@ -401,6 +433,41 @@ public class StoreStockDAO extends DBContext {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public StoreStock getStoreStockByBarcode(String barcode) {
+        String sql = "SELECT ss.* "
+                + "FROM StoreStock ss "
+                + "JOIN Inventory i ON ss.inventory_id = i.inventory_id "
+                + "JOIN Products p ON i.product_id = p.product_id "
+                + "WHERE p.barcode = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, barcode);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                StoreStock stock = new StoreStock();
+                stock.setStoreStockId(rs.getInt("store_stock_id"));
+                Inventory inventory = getInventoryById(rs.getInt("inventory_id"));
+                stock.setInventory(inventory);
+                stock.setStock(rs.getInt("quantity_in_stock"));
+                stock.setLastStockCheckDate(rs.getDate("last_stock_check_date").toLocalDate());
+
+                int discountId = rs.getInt("discount_product_id");
+                if (!rs.wasNull() && discountId > 0) {
+                    DiscountProduct dp = getDiscountProductById(discountId);
+                    stock.setDiscount(dp);
+                }
+
+                stock.setAlert(rs.getString("alert"));
+                return stock;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
     }
 
 }

@@ -20,6 +20,18 @@
                 .no-print {
                     display: none;
                 }
+                body {
+                    background: white !important;
+                    padding: 0;
+                    margin: 0;
+                }
+                table, th, td {
+                    border: 1px solid #ccc;
+                    border-collapse: collapse;
+                }
+                th, td {
+                    padding: 6px;
+                }
             }
         </style>
     </head>
@@ -60,9 +72,9 @@
                     Tổng cộng: <%= String.format("%,.0f", order.getOrderTotalAmount()) %> đ
                 </div>
 
-                <div class="text-center mt-6 no-print">
-                    <button onclick="exportToPDF()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded mt-4">
-                        <i class="fas fa-file-pdf mr-2"></i> Xuất hóa đơn PDF
+                <div class="text-center mt-2 no-print">
+                    <button onclick="window.print()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                        <i class="fas fa-print mr-2"></i> In hóa đơn
                     </button>
                 </div>
             </div>
@@ -73,16 +85,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <script>
-                        function exportToPDF() {
-                            const element = document.getElementById('invoice-content'); // phần bạn muốn in
-                            const opt = {
-                                margin: 0.3,
-                                filename: 'hoa_don.pdf',
-                                image: {type: 'jpeg', quality: 0.98},
-                                html2canvas: {scale: 2},
-                                jsPDF: {unit: 'in', format: 'a4', orientation: 'portrait'}
-                            };
-                            html2pdf().set(opt).from(element).save();
+                        function printInvoice() {
+                            const content = document.getElementById('invoice-content').innerHTML;
+
+                            const printWindow = window.open('', '', 'width=800,height=600');
+                            printWindow.document.write('<html><head><title>Hóa đơn</title>');
+                            printWindow.document.write('<style>body{font-family:sans-serif;padding:20px;} table{width:100%;border-collapse:collapse;} td, th{border:1px solid #ccc;padding:8px;text-align:left;} .text-center{text-align:center}</style>');
+                            printWindow.document.write('</head><body >');
+                            printWindow.document.write(content);
+                            printWindow.document.write('</body></html>');
+
+                            printWindow.document.close();
+                            printWindow.focus();
+
+                            setTimeout(() => {
+                                printWindow.print();
+                                printWindow.close();
+                            }, 500); // chờ load nội dung
                         }
     </script>
 </html>
