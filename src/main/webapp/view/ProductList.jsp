@@ -69,7 +69,7 @@
 
                             <div>
                                 <a href="AddProduct" class="btn btn-primary">
-                                    <i class="bx bx-plus"></i> Add Product
+                                    <i class="bx bx-plus"></i> Thêm sản phẩm
                                 </a>
                             </div>
 
@@ -90,9 +90,6 @@
                                             <th>Giá</th>
                                             <th>Thương hiệu</th>
                                             <th>Đơn vị</th>
-                                            <th>Ngày sản xuất</th>
-                                            <th>Ngày hết hạn</th>
-                                            <th>Lô</th>
                                             <th>Chức năng</th>
                                         </tr>
                                     </thead>
@@ -115,9 +112,6 @@
                                                 <td>${p.getPrice()}</td>
                                                 <td>${p.suppliers.getName()}</td>
                                                 <td>${p.weightUnit.getName()}</td>
-                                                <td>${p.getManufactureDate()}</td>
-                                                <td>${p.getExpirationDate()}</td>
-                                                <td>${p.getBatch()}</td>
                                                 <td>
                                                     <div class="d-flex align-items-center list-action">
                                                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Lịch sử giá" 

@@ -184,6 +184,18 @@
         <servlet-name>DetailShopServlet</servlet-name>
         <servlet-class>controller.DetailShopServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PromotionManageServlet</servlet-name>
+        <servlet-class>controller.PromotionManageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddPromotionServlet</servlet-name>
+        <servlet-class>controller.AddPromotionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdatePromotionServlet</servlet-name>
+        <servlet-class>controller.UpdatePromotionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListCustomerServlet</servlet-name>
         <url-pattern>/listCustomer</url-pattern>
@@ -367,6 +379,18 @@
     <servlet-mapping>
         <servlet-name>DetailShopServlet</servlet-name>
         <url-pattern>/DetailShop</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PromotionManageServlet</servlet-name>
+        <url-pattern>/PromotionManage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPromotionServlet</servlet-name>
+        <url-pattern>/AddPromotion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdatePromotionServlet</servlet-name>
+        <url-pattern>/UpdatePromotion</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>LoginServlet</welcome-file>

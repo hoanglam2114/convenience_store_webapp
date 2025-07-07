@@ -116,9 +116,7 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
+
                 return p;
             }
         } catch (SQLException e) {
@@ -136,10 +134,7 @@ public class ProductsDAO extends DBContext {
                 + "       [product_price],\n"
                 + "       [weight_unit_id],\n"
                 + "       [supplier_id],\n"
-                + "       [product_image],\n"
-                + "       [manufacture_date],\n"
-                + "       [expiration_date],\n"
-                + "       [batch]\n"
+                + "       [product_image]\n"
                 + "from Products\n"
                 + "order by product_id\n"
                 + "offset ?  rows fetch next 5 rows only";
@@ -160,9 +155,6 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
                 list.add(p);
             }
 
@@ -193,9 +185,7 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
+
                 list.add(p);
             }
         } catch (SQLException e) {
@@ -224,9 +214,7 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
+
                 return p;
             }
         } catch (SQLException e) {
@@ -236,7 +224,7 @@ public class ProductsDAO extends DBContext {
     }
 
     public void insertPro(Products p) {
-        String sql = "INSERT INTO Products VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Products VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, p.getProductCategories().getId());
@@ -246,9 +234,7 @@ public class ProductsDAO extends DBContext {
             st.setInt(5, p.getWeightUnit().getId());
             st.setInt(6, p.getSuppliers().getId());
             st.setString(7, p.getImage());
-            st.setDate(8, java.sql.Date.valueOf(p.getManufactureDate()));
-            st.setDate(9, java.sql.Date.valueOf(p.getExpirationDate()));
-            st.setInt(10, p.getBatch());
+
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -264,9 +250,6 @@ public class ProductsDAO extends DBContext {
                 + "      ,[weight_unit_id] = ?\n"
                 + "      ,[supplier_id] = ?\n"
                 + "      ,[product_image] = ?\n"
-                + "      ,[manufacture_date] = ?\n"
-                + "      ,[expiration_date] = ?\n"
-                + "      ,[batch] = ?\n"
                 + " WHERE product_id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -277,10 +260,7 @@ public class ProductsDAO extends DBContext {
             st.setInt(5, p.getWeightUnit().getId());
             st.setInt(6, p.getSuppliers().getId());
             st.setString(7, p.getImage());
-            st.setDate(8, java.sql.Date.valueOf(p.getManufactureDate()));
-            st.setDate(9, java.sql.Date.valueOf(p.getExpirationDate()));
-            st.setInt(10, p.getBatch());
-            st.setInt(11, p.getId());
+            st.setInt(8, p.getId());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -314,9 +294,7 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
+
                 return p;
             }
         } catch (SQLException e) {
@@ -435,9 +413,7 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
+
                 list.add(p);
             }
 
@@ -470,9 +446,7 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
+
                 list.add(p);
             }
 
@@ -512,17 +486,15 @@ public class ProductsDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-
+        ProductsDAO dao = new ProductsDAO();
 //        int count = dao.getTotalProduct();
 //        System.out.println(count);
 //        ProductsDAO dao = new ProductsDAO();
 //
-//          List<Products>list = dao.getAllProductExpired();
-//          for (Products o : list){
-//              System.out.println(o);
-//          }
-        ProductsDAO pd = new ProductsDAO();
-        pd.deleteProduct(27);
+        List<Products> list = dao.pagingProducts(1);
+        for (Products o : list) {
+            System.out.println(o);
+        }
 
     }
 

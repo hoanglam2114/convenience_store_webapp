@@ -19,7 +19,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
-import java.time.LocalDate;
 import java.util.List;
 import model.ProductCategories;
 import model.Products;
@@ -156,15 +155,10 @@ public class UpdateProductsServlet extends HttpServlet {
         String unit_raw = request.getParameter("unitPro");
         String price_raw = request.getParameter("pricePro");
         String barcode = request.getParameter("barcode");
-        String manufactureDateStr = request.getParameter("ManufactureDate");
-        String ExpirationDateStr = request.getParameter("ExpirationDate");
-        String batch_raw = request.getParameter("batch");
 
         float price = Float.parseFloat(price_raw);
 
         boolean hasError = false;
-
-       
 
         // Validate barcode
         if (!barcode.matches("\\d+")) {
@@ -198,25 +192,11 @@ public class UpdateProductsServlet extends HttpServlet {
         int unit = Integer.parseInt(unit_raw);
         WeightUnit wu = wud.getUnitById(unit);
 
-        LocalDate manufactureDate = LocalDate.parse(manufactureDateStr);
-        LocalDate expirationDate = LocalDate.parse(ExpirationDateStr);
-        LocalDate currentDate = LocalDate.now();
-        int batch = Integer.parseInt(batch_raw);
+        Products pNew = new Products(id, name, price, img, barcode,
+                pc, s, wu);
 
-        if (expirationDate.isBefore(manufactureDate)) {
-            request.setAttribute("errorMessage", "Ngày hết hạn phải sau ngày sản xuất.");
-            request.getRequestDispatcher("/view/UpdateProduct.jsp").forward(request, response);
-        } else if (expirationDate.isBefore(currentDate)) {
-            request.setAttribute("errorMessage", "Ngày hết hạn phải sau ngày hiện tại.");
-            request.getRequestDispatcher("/view/UpdateProduct.jsp").forward(request, response);
-        } else {
-
-            Products pNew = new Products(id, name, price, img, barcode,
-                    pc, s, wu, manufactureDate, expirationDate, batch);
-
-            pd.updateProduct(pNew);
-            response.sendRedirect("ListProduct");
-        }
+        pd.updateProduct(pNew);
+        response.sendRedirect("ListProduct");
     }
 
     @Override

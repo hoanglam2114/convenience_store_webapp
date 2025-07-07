@@ -119,30 +119,13 @@
                                                 </select>
                                             </div>
 
-
-
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label" for="mfgDate">Ngày sản xuất</label>
-                                                <input type="date" class="form-control"  name="ManufactureDate" value="${p.getManufactureDate()}" />
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label" for="expDate">Ngày hết hạn</label>
-                                                <input type="date" class="form-control"  name="ExpirationDate" value="${p. getExpirationDate()}" />
-                                            </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label" for="image">Hình ảnh</label>
                                                 <input class="form-control" type="file"  name="imgPro" accept="img/* /">
                                             </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label" for="lot">Lô</label>
-                                                <input type="cate" class="form-control"  name="batch" value="${p.getBatch()}" readonly />
-                                            </div>
+
                                         </div>
-                                        <c:if test="${not empty errorMessage}">
-                                            <div class="alert alert-danger">
-                                                ${errorMessage}
-                                            </div>
-                                        </c:if>
+
                                         <div class="mt-4">
                                             <button type="submit" class="btn btn-success">Cập nhật sản phẩm</button>
                                         </div>

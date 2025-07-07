@@ -120,27 +120,14 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="manufactureDate" class="form-label">Ngày sản xuất</label>
-                                    <input type="date" class="form-control" id="manufactureDate" name="manufactureDate" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="expiryDate" class="form-label">Ngày hết hạn</label>
-                                    <input type="date" class="form-control"  id="expirationDate" name="expirationDate" />
-                                </div>
-                            </div>
+                           
 
                             <div class="mb-3">
                                 <label for="productImage" class="form-label">Hình ảnh sản phẩm</label>
                                 <input class="form-control" type="file" name="imgPro" accept="image/*"/>
                             </div>
 
-                            <c:if test="${not empty errorMessage}">
-                                <div class="alert alert-danger">
-                                    ${errorMessage}
-                                </div>
-                            </c:if>
+                          
 
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-primary">Thêm sản phẩm mới</button>

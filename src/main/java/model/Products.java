@@ -19,16 +19,13 @@ public class Products {
     private ProductCategories productCategories;
     private Suppliers suppliers;
     private WeightUnit weightUnit;
-    private LocalDate manufactureDate;
-    private LocalDate expirationDate;
-    private int batch;
     private float weight;
     
 
     public Products() {
     }
 
-    public Products(int id, String name, float price, String image, String barcode, ProductCategories productCategories, Suppliers suppliers, WeightUnit weightUnit, LocalDate manufactureDate, LocalDate expirationDate, int batch) {
+    public Products(int id, String name, float price, String image, String barcode, ProductCategories productCategories, Suppliers suppliers, WeightUnit weightUnit) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -37,12 +34,10 @@ public class Products {
         this.productCategories = productCategories;
         this.suppliers = suppliers;
         this.weightUnit = weightUnit;
-        this.manufactureDate = manufactureDate;
-        this.expirationDate = expirationDate;
-        this.batch = batch;
+
     }
 
-    public Products(String name, float price, String image, String barcode, ProductCategories productCategories, Suppliers suppliers, WeightUnit weightUnit, LocalDate manufactureDate, LocalDate expirationDate, int batch) {
+    public Products(String name, float price, String image, String barcode, ProductCategories productCategories, Suppliers suppliers, WeightUnit weightUnit) {
         this.name = name;
         this.price = price;
         this.image = image;
@@ -50,9 +45,7 @@ public class Products {
         this.productCategories = productCategories;
         this.suppliers = suppliers;
         this.weightUnit = weightUnit;
-        this.manufactureDate = manufactureDate;
-        this.expirationDate = expirationDate;
-        this.batch = batch;
+
     }
 
     public int getId() {
@@ -119,30 +112,6 @@ public class Products {
         this.weightUnit = weightUnit;
     }
 
-    public LocalDate getManufactureDate() {
-        return manufactureDate;
-    }
-
-    public void setManufactureDate(LocalDate manufactureDate) {
-        this.manufactureDate = manufactureDate;
-    }
-
-    public LocalDate getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(LocalDate expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public int getBatch() {
-        return batch;
-    }
-
-    public void setBatch(int batch) {
-        this.batch = batch;
-    }
-
     public float getWeight() {
         return weight;
     }
@@ -153,6 +122,6 @@ public class Products {
 
     @Override
     public String toString() {
-        return "Products{" + "id=" + id + ", name=" + name + ", price=" + price + ", image=" + image + ", barcode=" + barcode + ", productCategories=" + productCategories + ", suppliers=" + suppliers + ", weightUnit=" + weightUnit + ", manufactureDate=" + manufactureDate + ", expirationDate=" + expirationDate + ", batch=" + batch + '}';
+        return "Products{" + "id=" + id + ", name=" + name + ", price=" + price + ", image=" + image + ", barcode=" + barcode + ", productCategories=" + productCategories + ", suppliers=" + suppliers + ", weightUnit=" + weightUnit +  '}';
     }
 }
