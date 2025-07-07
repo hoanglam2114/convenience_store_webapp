@@ -268,7 +268,7 @@
             </div>
         </main>
 
-        <script>
+        <script>            
             function allowManualName() {
                 const nameInput = document.getElementById("customerNameInput");
                 nameInput.removeAttribute("readonly");
@@ -378,4 +378,7 @@
 
         </script>
     </body>
+    
+    <jsp:include page="/common/faq_chatbox_iframe.jsp" />
+    
 </html>
