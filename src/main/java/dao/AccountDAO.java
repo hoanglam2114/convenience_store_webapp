@@ -145,6 +145,30 @@ public class AccountDAO extends DBContext {
         }
         return accounts;
     }
+    
+    public List<Accounts> getAllAccountByRole(int role_id) { 
+    List<Accounts> accounts = new ArrayList<>();
+    try {
+        String sql = "SELECT * FROM Accounts WHERE role_id = ?";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setInt(1, role_id); // Thiết lập tham số role_id
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            accounts.add(new Accounts(
+                rs.getInt(1),  // account_id
+                rs.getString(2),  // username
+                rs.getString(3),  // password
+                rs.getInt(4),  // role_id
+                rs.getInt(5)   // status hoặc các trường khác tùy vào định nghĩa class Accounts
+            ));
+        }
+    } catch (Exception e) {
+        // Gợi ý: log lỗi để dễ debug, hoặc ném ra exception cụ thể
+        e.printStackTrace(); 
+    }
+    return accounts;
+}
+
 
     public int getAccountId(String email) {
         try {
@@ -234,6 +258,28 @@ public class AccountDAO extends DBContext {
         }
         return false;
     }
+    
+    public Accounts getAccountById(int accountId) {
+    String sql = "SELECT * FROM Accounts WHERE account_id = ?";
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setInt(1, accountId);
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+            return new Accounts(
+                rs.getInt("account_id"),
+                rs.getString("email"),
+                rs.getString("password"),
+                rs.getInt("role_id"),
+                rs.getInt("status_id")
+            );
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
     
     public static void main(String[] args) {
         AccountDAO ac = new AccountDAO();

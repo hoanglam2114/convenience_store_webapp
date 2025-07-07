@@ -90,13 +90,13 @@ public class ShopDAO extends DBContext {
         }
     }
     
-    public void insertShop(String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo){
+    public void insertShop(String shopName, String shopPhone, String shopAddress, String shopEmail, String shopOpeningHours, String shopLogo){
         String sql = "insert into ShopDetails values(?, ?, ?, ?, ?, ?);";
         try{
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, shopName);
-            statement.setString(2, shopAddress);
-            statement.setString(3, shopPhone);
+            statement.setString(2, shopPhone);
+            statement.setString(3, shopAddress);
             statement.setString(4, shopEmail);
             statement.setString(5, shopOpeningHours);
             statement.setString(6, shopLogo);
@@ -197,24 +197,12 @@ public class ShopDAO extends DBContext {
         }
         return list;
     }
-    
-     
-    
-    
-    
-    
-    
    
     public static void main(String[] args) {
         ShopDAO s = new ShopDAO();
-        List<Shop> list = s.pagingShop(1);
+        List<Shop> list = s.getAll();
         for (Shop shop : list) {
             System.out.println(shop);
         }
     }
-   
-   
-   
-   
-   
 }

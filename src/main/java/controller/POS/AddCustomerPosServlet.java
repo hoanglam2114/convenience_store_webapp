@@ -3,20 +3,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.POS;
 
+import dao.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Customers;
 
 /**
  *
- * @author nguye
+ * @author Admin
  */
-public class ListShiftStaffServlet extends HttpServlet {
+public class AddCustomerPosServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,10 +36,10 @@ public class ListShiftStaffServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListShiftStaffServlet</title>");  
+            out.println("<title>Servlet AddCustomerPosServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListShiftStaffServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet AddCustomerPosServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,13 +69,19 @@ public class ListShiftStaffServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String phone = request.getParameter("phone");
+        String name = request.getParameter("name");
+
+        CustomerDAO dao = new CustomerDAO();
+        dao.addCustomer(new Customers(name, phone, 0, 1)); // loại 1 = khách thường
+
+        HttpSession session = request.getSession();
+        session.setAttribute("phone", phone);
+        session.setAttribute("name", name);
+
+        response.sendRedirect("loadProducts");
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

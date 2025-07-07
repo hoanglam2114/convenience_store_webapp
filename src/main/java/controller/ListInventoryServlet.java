@@ -14,6 +14,7 @@ import model.Products;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,41 +29,28 @@ public class ListInventoryServlet extends HttpServlet {
     private final ProductsDAO productsDAO = new ProductsDAO();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getServletPath();
-
-        switch (action) {
-            case "/inventory":
-                handleInventoryDashboard(req, resp);
-                break;
-            case "/findProInInven":
-                handleSearchProducts(req, resp);
-                break;
-            case "/inventoryStats":
-                handleInventoryStats(req, resp);
-                break;
-            case "/inventorySearch":
-                handleAdvancedSearch(req, resp);
-                break;
-            default:
-                handleInventoryDashboard(req, resp);
-        }
-    }
-
-    private void handleInventoryStats(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        InventoryDAO inventoryDAO = new InventoryDAO();
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Map<String, Object> stats = inventoryDAO.getInventoryStatistics();
-            req.setAttribute("stats", stats);
+            String idParam = request.getParameter("warehouse_id");
+            if (idParam == null) {
+                response.sendRedirect("list-warehouse");
+                return;
+            }
 
-            req.getRequestDispatcher("/inventoryStats.jsp").forward(req, resp); // hoặc trang hiển thị stats
+            int warehouseID = Integer.parseInt(idParam);
+
+            List<Inventory> list = inventoryDAO.getInventoryByWarehouse(warehouseID);
+
+            request.setAttribute("inven", list);
+            request.setAttribute("warehouseID", warehouseID);
+            request.getRequestDispatcher("/view/inventory-dashboard.jsp").forward(request, response);
+
         } catch (Exception e) {
-            req.setAttribute("toastMessage", "Không thể lấy thống kê kho hàng.");
-            req.setAttribute("toastType", "error");
-            req.getRequestDispatcher("/view/inventory-dashboard.jsp").forward(req, resp);
+            e.printStackTrace();
+            response.sendRedirect("error.jsp");
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -85,6 +73,11 @@ public class ListInventoryServlet extends HttpServlet {
      */
     private void handleInventoryDashboard(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        String warehouseIdParam = req.getParameter("warehouse_id");
+        Integer warehouseId = null;
+        if (warehouseIdParam != null && !warehouseIdParam.isEmpty()) {
+            warehouseId = Integer.parseInt(warehouseIdParam);
+        }
 
         // Get pagination parameters
         int page = 1;
@@ -107,11 +100,11 @@ public class ListInventoryServlet extends HttpServlet {
         int totalCount;
 
         if (productName != null && !productName.trim().isEmpty()) {
-            inventoryList = inventoryDAO.getInventoryPaginated(page, pageSize, productName, status, sortBy);
-            totalCount = inventoryDAO.getTotalInventoryCount(productName, status);
+            inventoryList = inventoryDAO.getInventoryPaginated(page, pageSize, productName, status, sortBy, warehouseId);
+            totalCount = inventoryDAO.getTotalInventoryCount(productName, status, warehouseId);
         } else {
-            inventoryList = inventoryDAO.getInventoryPaginated(page, pageSize, null, status, sortBy);
-            totalCount = inventoryDAO.getTotalInventoryCount(null, status);
+            inventoryList = inventoryDAO.getInventoryPaginated(page, pageSize, null, status, sortBy, warehouseId);
+            totalCount = inventoryDAO.getTotalInventoryCount(null, status, warehouseId);
         }
 
         // Get statistics for dashboard
@@ -146,66 +139,6 @@ public class ListInventoryServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
 
         req.getRequestDispatcher("/view/inventory-dashboard.jsp").forward(req, resp);
-    }
-
-    /**
-     * Handle product search
-     */
-    private void handleSearchProducts(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        String productName = req.getParameter("namePro");
-        String status = req.getParameter("status");
-        String category = req.getParameter("category");
-        String sortBy = req.getParameter("sortBy");
-
-        List<Inventory> inventoryList;
-
-        if (productName != null && !productName.trim().isEmpty()) {
-            inventoryList = inventoryDAO.getInventoryWithFilters(productName, status, category, sortBy);
-        } else {
-            inventoryList = inventoryDAO.getAllInventory();
-        }
-
-        // Get statistics
-        Map<String, Object> stats = inventoryDAO.getInventoryStatistics();
-
-        // Set attributes
-        req.setAttribute("inven", inventoryList);
-        req.setAttribute("stats", stats);
-        req.setAttribute("searchTerm", productName);
-        req.setAttribute("selectedStatus", status);
-        req.setAttribute("selectedCategory", category);
-        req.setAttribute("selectedSort", sortBy);
-        // Set encoding
-        resp.setContentType("text/html; charset=UTF-8");
-        resp.setCharacterEncoding("UTF-8");
-        req.setCharacterEncoding("UTF-8");
-
-        req.getRequestDispatcher("/view/inventory-dashboard.jsp").forward(req, resp);
-    }
-
-    /**
-     * Handle advanced search with AJAX
-     */
-    private void handleAdvancedSearch(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        String productName = req.getParameter("namePro");
-        String status = req.getParameter("status");
-        String category = req.getParameter("category");
-        String sortBy = req.getParameter("sortBy");
-
-        List<Inventory> inventoryList = inventoryDAO.getInventoryWithFilters(productName, status, category, sortBy);
-
-        // Return JSON response for AJAX
-        resp.setContentType("application/json; charset=UTF-8");
-        resp.setCharacterEncoding("UTF-8");
-
-        Gson gson = new Gson();
-        PrintWriter out = resp.getWriter();
-        out.print(gson.toJson(inventoryList));
-        out.flush();
     }
 
     /**
@@ -293,7 +226,6 @@ public class ListInventoryServlet extends HttpServlet {
             boolean success = inventoryDAO.exportProduct(inventoryId, quantity, reason, notes);
 
             if (success) {
-                // Redirect to inventory page with success message
                 HttpSession session = req.getSession();
                 req.setAttribute("toastMessage", "Xuất kho thành công");
                 resp.sendRedirect(req.getContextPath() + "/inventory");

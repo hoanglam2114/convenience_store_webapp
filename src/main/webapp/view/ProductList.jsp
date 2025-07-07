@@ -114,22 +114,22 @@
                                                 <td>${p.weightUnit.getName()}</td>
                                                 <td>
                                                     <div class="d-flex align-items-center list-action">
-                                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Lịch sử giá" 
+                                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Lịch sử giá"
                                                            href="ListPrice?product_id=${p.getId()}" class="btn btn-info btn-sm">
                                                             <i class="bx bx-show"></i>
                                                         </a>
 
-                                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa thông tin" 
+                                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa thông tin"
                                                            href="UpdateProduct?product_id=${p.getId()} " class="btn btn-warning btn-sm">
-                                                            <i class="bx bx-edit"></i> 
+                                                            <i class="bx bx-edit"></i>
 
                                                         </a>
 
-                                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa giá" 
+                                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa giá"
                                                            href="UpdatePrice?product_id=${p.getId()} " class="btn btn-warning btn-sm">
-                                                            <i class="bx bx-edit"></i> 
+                                                            <i class="bx bx-edit"></i>
 
-                                                        </a>    
+                                                        </a>
 
                                                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa sản phẩm"
                                                            href="#" onclick="doDelete(${p.getId()})" class="btn btn-danger btn-sm" >
@@ -142,11 +142,11 @@
                                                 </td>
                                             </tr>
 
-                                        </c:forEach>
+                                            </c:forEach>
 
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
 
                             </div>
 
@@ -183,7 +183,7 @@
                     </div>
                 </div>
 
-            </div>                        
+            </div>
         </div>
 
 

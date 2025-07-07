@@ -1,161 +1,230 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Shift" %>
+
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr"
       data-theme="theme-default"
-      data-assets-path="../assets/"
+      data-assets-path="assets/"
       data-template="vertical-menu-template-free">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Shift Management</title>
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Shift Staff Management</title>
+    <!-- Sneat CSS -->
+    <link rel="stylesheet" href="assets/vendor/css/core.css"/>
+    <link rel="stylesheet" href="assets/vendor/css/theme-default.css"/>
+    <link rel="stylesheet" href="assets/css/demo.css"/>
+    <link rel="stylesheet" href="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+    <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css"/>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico"/>
 
-        <!-- Sneat CSS -->
-        <link rel="stylesheet" href="assets/vendor/css/core.css" />
-        <link rel="stylesheet" href="assets/vendor/css/theme-default.css" /> 
-        <link rel="stylesheet" href="assets/css/demo.css" />
-        <link rel="stylesheet" href="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <!-- Custom Styling -->
+    <style>
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Public Sans', sans-serif;
+        }
 
-        <!-- Boxicons -->
-        <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
+        .page-title {
+            background: linear-gradient(90deg, #696cff, #00cfe8);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.5rem;
+            box-shadow: 0 3px 8px rgba(105, 108, 255, 0.3);
+        }
 
-        <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-        <%@ page import="java.util.*, model.Customers" %>
-        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    </head>
+        .table thead {
+            background: linear-gradient(to right, #696cff, #00cfe8);
+        }
 
-    <body>
-        <!-- Layout wrapper -->
-        <div class="layout-wrapper layout-content-navbar">
-            <div class="layout-container">
+        .table thead th {
+            color: white !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-                <!-- Sidebar -->
-                <%@ include file="/common/site-bar.jsp" %>
+        .table-hover tbody tr:hover {
+            background-color: #eef2f7;
+            transition: background 0.3s;
+        }
 
-                <!-- Layout page -->
-                <div class="layout-page">
+        .btn {
+            border-radius: 0.5rem;
+            transition: all 0.3s ease-in-out;
+        }
 
-                    <!-- Navbar -->
-                    <nav class="layout-navbar container-xxl navbar navbar-expand-xl">
-                        <!-- Navbar -->
-                    </nav>
+        .btn:hover {
+            box-shadow: 0 4px 12px rgba(67, 89, 113, 0.2);
+        }
 
-                    <!-- Content wrapper -->
-                    <div class="content-wrapper">
+        .btn-primary {
+            background-color: #696cff;
+            border-color: #696cff;
+        }
 
-                        <!-- Main content -->
-                        <div class="container-xxl flex-grow-1 container-p-y">
-                            <h4 class="fw-bold py-3 mb-4">
-                                <span class="text-muted fw-light">Management /</span> Shift Staff Management
-                            </h4>
+        .btn-secondary {
+            background-color: #8592a3;
+            border-color: #8592a3;
+        }
 
-                            <!-- Add Customer Button -->
-                            <div class="mb-3">
-                                <a href="addCustomer" class="btn btn-primary">
-                                    <i class="bx bx-plus"></i> Add
-                                </a>
-                            </div>
+        .btn-success {
+            background-color: #71dd37;
+            border-color: #71dd37;
+        }
 
-                            <!--Add Staff Search-->                            
-                            <div class="mb-3" style="max-width: 300px;">
-                                <form action="searchCustomer" method="POST">
-                                    <div class="input-group input-group-merge">
-                                        <input
-                                            type="text"
-                                            id="customerSearch"
-                                            name="customerSearch"
-                                            class="form-control"
-                                            placeholder="Search..."
-                                            aria-label="Search"
-                                            aria-describedby="basic-addon-search"
-                                            />
-                                        <button class="btn btn-outline-secondary" type="submit" id="btnSearch">
-                                            <i class="bx bx-search"></i>
-                                        </button>
-                                        <button class="btn btn-outline-secondary" type="button" id="btnReset" onclick="window.location.href='listCustomer'">
-                                            <i class="bx bx-reset"></i>
-                                        </button>
-                                    </div>
-                                </form>                               
-                            </div>
+        .btn-outline-primary {
+            border-color: #696cff;
+            color: #696cff;
+        }
 
-                            <!-- Staff Table -->
-                            <div class="card">
-                                <div class="table-responsive text-nowrap">
-                                    <table class="table"> 
-                                        <thead class="table-light"> 
-                                            <tr> 
-                                                <th>Name</th>
-                                                <th>Phone</th>
-                                                <th>Point</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr> 
-                                        </thead> 
-                                        <tbody class="table-border-bottom-0"> 
-                                            <% 
-                                            List<Customers> customerList = (List<Customers>) request.getAttribute("customerList");
-                                            if (customerList != null && !customerList.isEmpty()) {
-                                            for (Customers customer : customerList) { 
-                                            %>
-                                            <tr>
-                                                <td><%= customer.getName()%></td>
-                                                <td><%= customer.getPhone()%></td>
-                                                <td><%= customer.getPoint()%></td>
-                                                <td><span class="badge bg-success">Active</span></td>
-                                                <td> 
-                                                    <a href="editCustomer?id=<%= customer.getId()%>" class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="tooltip" title="Edit">
-                                                        <i class="bx bx-edit"></i>
-                                                    </a> 
-                                                    <button type="button" class="btn btn-sm btn-icon btn-outline-danger" onclick="confirmDelete(<%= customer.getId()%>)">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button> 
-                                                </td>
-                                            </tr>
-                                            <% 
-                                                } 
-                                            }else{
-                                            %>
-                                            <tr><td colspan="5">Nothing to show</td></tr>
-                                            <% 
-                                                } 
-                                            %>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+        .btn-outline-primary:hover {
+            background-color: #696cff;
+            color: white;
+        }
+
+        .btn-outline-danger {
+            border-color: #ff3e1d;
+            color: #ff3e1d;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #ff3e1d;
+            color: white;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #696cff;
+            border-color: #696cff;
+            color: white;
+        }
+
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(105, 108, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <%@ include file="/common/site-bar.jsp" %>
+
+        <div class="layout-page">
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl"></nav>
+
+            <div class="content-wrapper">
+                <div class="container-xxl flex-grow-1 container-p-y">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="page-title">
+                            Shift Management
                         </div>
-                        <!-- /Main content -->
-
-                        <!-- Footer -->
-                        <footer class="content-footer footer bg-footer-theme">
-                            <div class="container-xxl d-flex justify-content-between py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">© 2025, Sneat Admin Template</div>
-                                <div>Developed by You</div>
-                            </div>
-                        </footer>
-                        <!-- /Footer -->
-
                     </div>
-                    <!-- /Content wrapper -->
 
+                    <form method="get" action="ListShift" class="mb-3">
+                        <div class="input-group mb-3" style="max-width: 700px;">
+                            <input type="text" name="keyword" class="form-control" placeholder="Search shift name..."
+                                   value="${param.keyword != null ? param.keyword : ''}" />
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bx bx-search"></i> Filter
+                            </button>
+                            <a href="ListShift" class="btn btn-secondary">
+                                <i class="bx bx-reset"></i> Reset
+                            </a>
+                        </div>
+
+                        <div class="mb-4">
+                            <a href="AddShiftServlet" class="btn btn-success shadow">
+                                <i class="bx bx-plus"></i> Add Shift
+                            </a>
+                        </div>
+                    </form>
+
+                    <div class="card">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Shift</th>
+                                        <th>From Time</th>
+                                        <th>To Time</th>
+                                        <th>Weekdays</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="shift" items="${shiftList}">
+                                        <tr>
+                                            <td>${shift.shiftName}</td>
+                                            <td>${shift.startTime}</td>
+                                            <td>${shift.endTime}</td>
+                                            <td>
+                                                <c:forEach var="day" items="${shift.workingDays}">
+                                                    <div>${day}</div>
+                                                </c:forEach>
+                                            </td>
+                                            <td>
+                                                <a href="EditShift?id=${shift.shiftId}"
+                                                   class="btn btn-sm btn-icon btn-outline-primary me-1" title="Edit">
+                                                    <i class="bx bx-edit-alt"></i>
+                                                </a>
+                                                <a href="deleteShift?id=${shift.shiftId}"
+                                                   class="btn btn-sm btn-icon btn-outline-danger"
+                                                   onclick="return confirm('Are you sure?');" title="Delete">
+                                                    <i class="bx bx-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+
+                                    <c:if test="${empty shiftList}">
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted">No shift available.</td>
+                                        </tr>
+                                    </c:if>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <!-- /Layout page -->
 
+                <!-- Footer Pagination -->
+                <footer class="content-footer footer bg-footer-theme mt-3">
+                    <div class="container-xxl d-flex justify-content-center py-3">
+                        <ul class="pagination pagination-rounded mb-0">
+                            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                <a class="page-link" href="ListShift?index=${currentPage - 1}">&laquo;</a>
+                            </li>
+
+                            <c:forEach begin="1" end="${endPage}" var="i">
+                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                    <a class="page-link" href="ListShift?index=${i}">${i}</a>
+                                </li>
+                            </c:forEach>
+
+                            <li class="page-item ${currentPage == endPage ? 'disabled' : ''}">
+                                <a class="page-link" href="ListShift?index=${currentPage + 1}">&raquo;</a>
+                            </li>
+                        </ul>
+                    </div>
+                </footer>
             </div>
-            <!-- /Layout container -->
         </div>
-        <!-- /Layout wrapper -->
+    </div>
+</div>
 
-        <!-- Core JS -->
-        <script src="assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="assets/vendor/libs/popper/popper.js"></script>
-        <script src="assets/vendor/js/bootstrap.js"></script>
-        <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
-        <script src="assets/vendor/js/menu.js"></script>
-        <script src="assets/js/main.js"></script>
-        <script src="assets/js/customer.js"></script>
-    </body>
-
+<!-- Sneat JS -->
+<script src="assets/vendor/libs/jquery/jquery.js"></script>
+<script src="assets/vendor/js/bootstrap.js"></script>
+<script src="assets/vendor/js/menu.js"></script>
+<script src="assets/vendor/js/helpers.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
 </html>
