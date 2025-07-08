@@ -16,21 +16,23 @@ import model.Shop;
  * @author admin
  */
 public class ShopDAO extends DBContext {
+
     public List<Shop> getAll() {
         List<Shop> list = new ArrayList<>();
         String sql = "select * from ShopDetails";
         try {
-                PreparedStatement statement = connection.prepareStatement(sql);
-                ResultSet rs = statement.executeQuery();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Shop shop = new Shop(rs.getInt("shop_id"), 
-                        rs.getString("shop_name"), 
+                Shop shop = new Shop(rs.getInt("shop_id"),
+                        rs.getString("shop_name"),
                         rs.getString("shop_address"),
-                        rs.getString("shop_phone"), 
-                        rs.getString("shop_email"), 
+                        rs.getString("shop_phone"),
+                        rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
-                        rs.getString("shop_logo")
-                        );
+                        rs.getString("shop_logo"),
+                        rs.getString("map")
+                );
                 list.add(shop);
             }
         } catch (SQLException e) {
@@ -38,7 +40,7 @@ public class ShopDAO extends DBContext {
         }
         return list;
     }
-    
+
     public Shop getShopId(int shopId) {
         Shop shop = null;
         String sql = "SELECT * FROM ShopDetails WHERE shop_id = ?";
@@ -47,21 +49,22 @@ public class ShopDAO extends DBContext {
             statement.setInt(1, shopId);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                shop = new Shop(rs.getInt("shop_id"), 
-                        rs.getString("shop_name"), 
+                shop = new Shop(rs.getInt("shop_id"),
+                        rs.getString("shop_name"),
                         rs.getString("shop_address"),
-                        rs.getString("shop_phone"), 
-                        rs.getString("shop_email"), 
+                        rs.getString("shop_phone"),
+                        rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
-                        rs.getString("shop_logo")
-                        );
+                        rs.getString("shop_logo"),
+                        rs.getString("map")
+                );
             }
         } catch (SQLException e) {
             System.out.println("Error fetching employee: " + e.getMessage());
         }
         return shop;
     }
-    
+
     public void updateShop(Shop shop) {
         String sql = "UPDATE ShopDetails SET shop_name = ?, shop_address = ?, shop_phone = ?,  shop_email = ?, shop_opening_hours = ?, shop_logo = ? WHERE shop_id = ?";
         try {
@@ -78,21 +81,21 @@ public class ShopDAO extends DBContext {
             System.out.println("Error updating employee: " + e.getMessage());
         }
     }
-    
-    public void deleteShop(int id){
+
+    public void deleteShop(int id) {
         String sql = "delete from ShopDetails where shop_id = ?";
-        try{
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
             st.executeUpdate();
-        }catch(SQLException e){
-            
+        } catch (SQLException e) {
+
         }
     }
-    
-    public void insertShop(String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo){
+
+    public void insertShop(String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo) {
         String sql = "insert into ShopDetails values(?, ?, ?, ?, ?, ?);";
-        try{
+        try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, shopName);
             statement.setString(2, shopAddress);
@@ -101,39 +104,38 @@ public class ShopDAO extends DBContext {
             statement.setString(5, shopOpeningHours);
             statement.setString(6, shopLogo);
             statement.executeUpdate();
-            
-        }catch(SQLException e){
-            
+
+        } catch (SQLException e) {
+
         }
     }
-    
-    
-   public List<Shop> searchShop(String txtSearch){
-       List<Shop> list = new ArrayList<>();
-       String sql = "select * from ShopDetails where shop_name like ?";
-       try{
-           PreparedStatement statement = connection.prepareStatement(sql);
-           statement.setString(1, "%" + txtSearch + "%");
-           ResultSet rs = statement.executeQuery();
-           while(rs.next()){
-               Shop shop = new Shop();
-               shop.setShopId(rs.getInt("shop_id"));
-               shop.setShopName(rs.getString("shop_name"));
-               shop.setShopAddress(rs.getString("shop_address"));
-               shop.setShopPhone(rs.getString("shop_phone"));
-               shop.setShopEmail(rs.getString("shop_email"));
-               shop.setShopOpeningHours(rs.getString("shop_opening_hours"));
-               shop.setShopLogo(rs.getString("shop_logo"));
 
-               list.add(shop);
-           }
-       }catch(SQLException e){
-           
-       }
-       return list;
-   }
-    
-   public int getTotalShopCount() {
+    public List<Shop> searchShop(String txtSearch) {
+        List<Shop> list = new ArrayList<>();
+        String sql = "select * from ShopDetails where shop_name like ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, "%" + txtSearch + "%");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Shop shop = new Shop();
+                shop.setShopId(rs.getInt("shop_id"));
+                shop.setShopName(rs.getString("shop_name"));
+                shop.setShopAddress(rs.getString("shop_address"));
+                shop.setShopPhone(rs.getString("shop_phone"));
+                shop.setShopEmail(rs.getString("shop_email"));
+                shop.setShopOpeningHours(rs.getString("shop_opening_hours"));
+                shop.setShopLogo(rs.getString("shop_logo"));
+
+                list.add(shop);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
+    }
+
+    public int getTotalShopCount() {
         String sql = "SELECT COUNT(*) FROM ShopDetails";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -146,8 +148,8 @@ public class ShopDAO extends DBContext {
         }
         return 0;
     }
-   
-   public List<Shop> getShopsByPage(int page, int recordsPerPage) {
+
+    public List<Shop> getShopsByPage(int page, int recordsPerPage) {
         List<Shop> list = new ArrayList<>();
         String sql = "SELECT * FROM ShopDetails ORDER BY shop_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
@@ -163,7 +165,10 @@ public class ShopDAO extends DBContext {
                         rs.getString("shop_phone"),
                         rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
-                        rs.getString("shop_logo"));
+                        rs.getString("shop_logo"),
+                        rs.getString("map")
+                );
+
                 list.add(shop);
             }
         } catch (SQLException e) {
@@ -171,40 +176,32 @@ public class ShopDAO extends DBContext {
         }
         return list;
     }
-   
-   
-   
+
     public List<Shop> pagingShop(int index) {
-         List<Shop> list = new ArrayList<>();
+        List<Shop> list = new ArrayList<>();
         String sql = "SELECT * FROM ShopDetails ORDER BY shop_id OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, (index - 1) * 5);
             ResultSet rs = st.executeQuery();
-             while (rs.next()) {
-               Shop shop = new Shop(rs.getInt("shop_id"),
+            while (rs.next()) {
+                Shop shop = new Shop(rs.getInt("shop_id"),
                         rs.getString("shop_name"),
                         rs.getString("shop_address"),
                         rs.getString("shop_phone"),
                         rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
-                        rs.getString("shop_logo"));
+                        rs.getString("shop_logo"),
+                        rs.getString("map"));
                 list.add(shop);
-             }
-            
-        }catch (SQLException e) {
-               System.out.println(e);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
         }
         return list;
     }
-    
-     
-    
-    
-    
-    
-    
-   
+
     public static void main(String[] args) {
         ShopDAO s = new ShopDAO();
         List<Shop> list = s.pagingShop(1);
@@ -212,9 +209,5 @@ public class ShopDAO extends DBContext {
             System.out.println(shop);
         }
     }
-   
-   
-   
-   
-   
+
 }

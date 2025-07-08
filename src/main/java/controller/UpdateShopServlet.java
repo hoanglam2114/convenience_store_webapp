@@ -143,7 +143,7 @@ public class UpdateShopServlet extends HttpServlet {
         
         
         
-          boolean hasError = false;
+        boolean hasError = false;
 
         // Validate sđt
         if (!phone.equals(phone.trim()) || !phone.matches("\\d{10}")) {
