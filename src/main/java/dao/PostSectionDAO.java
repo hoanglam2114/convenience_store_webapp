@@ -15,8 +15,8 @@ public class PostSectionDAO extends DBContext{
 
     public List<PostSection> getSectionsByPostId(int postId) {
         List<PostSection> list = new ArrayList<>();
-        String sql = "SELECT ps.section_id, ps.post_id, ps.section_title, ps.section_content, ps.section_html, ps.section_image_url, ps.sort_order, pi.image_url " +
-                     "FROM PostSection ps JOIN PostImages pi on ps.post_id = pi.post_id  WHERE post_id = ? ORDER BY sort_order ASC";
+        String sql = "SELECT section_id, post_id, section_title, section_content, section_html, section_image_url, sort_order " +
+                     "FROM PostSection WHERE post_id = ? ORDER BY sort_order ASC";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, postId);
             ResultSet rs = ps.executeQuery();
@@ -29,7 +29,6 @@ public class PostSectionDAO extends DBContext{
                 section.setSectionHtml(rs.getString("section_html"));
                 section.setSectionImageUrl(rs.getString("section_image_url"));
                 section.setSortOrder(rs.getInt("sort_order"));
-                section.setPostImageUrl(rs.getString("image_url"));
                 list.add(section);
             }
         } catch (SQLException e) {

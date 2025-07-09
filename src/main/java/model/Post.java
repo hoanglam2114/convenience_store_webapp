@@ -14,6 +14,7 @@ public class Post {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private PostImage postImage;
+    private int likes;
 
     public Post() {
     }
@@ -108,5 +109,14 @@ public class Post {
     public void setPostImage(PostImage postImage) {
         this.postImage = postImage;
     }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+    
     
 }

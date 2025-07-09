@@ -59,8 +59,8 @@
         <!-- Hero Section -->
         <section class="bg-blue-600 text-white py-12">
             <div class="container mx-auto px-4 max-w-screen-lg text-center">
-                <h2 class="text-3xl md:text 4xl font-bold mb-4">CHÀO MỪNG ĐẾN VỚI BLOG TIỆN LỢI</h2>
-                <p class="text-lg md:text-xl max-w-2xl mx-auto">Cập nhật tin tức khuyến mãi, sản phẩm mới và các chương trình ưu đãi từ hệ thống cửa hàng tiện lợi của chúng tôi</p>
+                <h2 class="text-3xl md:text 4xl font-bold mb-4">CHÀO MỪNG ĐẾN VỚI BLOG TIỆN LỢI CONVENMA</h2>
+                <p class="text-lg md:text-xl max-w-2xl mx-auto">Nơi trò chuyện, chia sẻ các vấn đề thường gặp. Các trải nghiệm khi bạn mua sắm ở chuỗi cửa hàng tiện lợi CONVENMA của chúng tôi</p>
                 <div class="mt-6">
                     <input type="text" placeholder="Tìm kiếm bài viết..." class="px-4 py-2 rounded-l-lg w-64 text-gray-800 focus:outline-none">
                     <button class="bg-yellow-400 text-gray-800 px-4 py-2 rounded-r-lg font-medium hover:bg-yellow-500 transition">
@@ -100,6 +100,10 @@
                             <p class="mt-4 text-gray-600">
                                 <c:out value="${fn:substring(featuredPost.content, 0, 180)}"/>...
                             </p>
+                            <div class="mt-2 text-sm text-gray-600 flex items-center gap-2">
+                                <i class="fas fa-heart text-red-500"></i>
+                                <span>${featuredPost.likes} lượt thích</span>
+                            </div>
                             <div class="mt-6">
                                 <a href="${pageContext.request.contextPath}/post-detail?id=${featuredPost.id}" class="read-more inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded">
                                     Đọc tiếp <i class="fas fa-chevron-right ml-1"></i>
@@ -125,17 +129,17 @@
 
                     <article class="post-card mb-8 bg-white rounded-lg shadow-sm overflow-hidden transition duration-300">
                         <c:choose>
-                                <c:when test="${not empty featuredImage}">
-                                    <img class="w-full h-48 object-cover"
-                                         src="${pageContext.request.contextPath}/assets/img/blog/${image}"
-                                         alt="Ảnh nổi bật">
-                                </c:when>
-                                <c:otherwise>
-                                    <img class="w-full h-48 object-cover"
-                                         src="${pageContext.request.contextPath}/assets/img/blog/no-image.png"
-                                         alt="Ảnh mặc định">
-                                </c:otherwise>
-                            </c:choose>
+                            <c:when test="${not empty image}">
+                                <img class="w-full h-48 object-cover"
+                                     src="${pageContext.request.contextPath}/assets/img/blog/${image}"
+                                     alt="Ảnh nổi bật">
+                            </c:when>
+                            <c:otherwise>
+                                <img class="w-full h-48 object-cover"
+                                     src="${pageContext.request.contextPath}/assets/img/blog/no-image.png"
+                                     alt="Ảnh mặc định">
+                            </c:otherwise>
+                        </c:choose>
                         <div class="p-6">
                             <div class="flex items-center text-sm mb-2">
                                 <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">
@@ -151,7 +155,6 @@
                                 <c:out value="${fn:substring(post.content, 0, 180)}"/>...
                             </p>
                             <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-600">#${post.id}</span>
                                 <a href="${pageContext.request.contextPath}/post-detail?id=${post.id}" class="read-more text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
                                     Đọc tiếp <i class="fas fa-chevron-right ml-1"></i>
                                 </a>
@@ -181,10 +184,30 @@
             <aside class="w-full md:w-1/3 mt-8 md:mt-0">
                 <!-- Create New Post -->
                 <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Đăng bài mới</h3>
-                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg">
+                    <a href="${pageContext.request.contextPath}/customer-create-post" 
+                       class="w-full block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-center">
                         <i class="fas fa-plus mr-2"></i> Tạo bài viết mới
-                    </button>
+                    </a>
+                    <br/>
+                    <a href="${pageContext.request.contextPath}/my-posts" 
+                       class="w-full block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-center    ">
+                        <i class="fas fa-store mr-2"></i> Quản lý bài viết của bạn
+                    </a>
+                </div>
+
+                <!-- Categories -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Danh mục</h3>
+                    <ul class="space-y-2">
+                        <c:forEach var="tag" items="${tags}">
+                            <li>
+                                <a href="posts-by-tag?id=${tag.id}" class="flex justify-between items-center py-2 text-gray-700 hover:text-green-600">
+                                    <span>${tag.name}</span>
+                                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">${tag.postCount}</span>
+                                </a>
+                            </li>
+                        </c:forEach>
+                    </ul>
                 </div>
 
                 <!-- Popular Posts -->
@@ -240,38 +263,7 @@
                             </a>
                         </li>
                     </ul>
-                </div>
-
-                <!-- Categories -->
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Danh mục</h3>
-                    <ul class="space-y-2">
-                        <li>
-                            <a href="#" class="flex justify-between items-center py-2 text-gray-700 hover:text-green-600">
-                                <span>Khuyến mãi</span>
-                                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">12</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex justify-between items-center py-2 text-gray-700 hover:text-green-600">
-                                <span>Sản phẩm mới</span>
-                                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">8</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex justify-between items-center py-2 text-gray-700 hover:text-green-600">
-                                <span>Thông báo</span>
-                                <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2 py-1 rounded-full">5</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex justify-between items-center py-2 text-gray-700 hover:text-green-600">
-                                <span>Hướng dẫn</span>
-                                <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-1 rounded-full">3</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                </div
 
                 <!-- Store Locations -->
                 <div class="bg-white rounded-lg shadow-sm p-6 mb-6">

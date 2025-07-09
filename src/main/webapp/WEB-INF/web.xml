@@ -132,6 +132,22 @@
         <servlet-name>PostDetailServlet</servlet-name>
         <servlet-class>controller.PostDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PostByTagServlet</servlet-name>
+        <servlet-class>controller.PostByTagServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LikePostServlet</servlet-name>
+        <servlet-class>controller.LikePostServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerCreatePostServlet</servlet-name>
+        <servlet-class>controller.CustomerCreatePostServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ImageServlet</servlet-name>
+        <servlet-class>controller.ImageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShiftDetailServlet</servlet-name>
         <url-pattern>/ShiftDetailServlet</url-pattern>
@@ -223,6 +239,22 @@
     <servlet-mapping>
         <servlet-name>PostDetailServlet</servlet-name>
         <url-pattern>/post-detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostByTagServlet</servlet-name>
+        <url-pattern>/posts-by-tag</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LikePostServlet</servlet-name>
+        <url-pattern>/like-post</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerCreatePostServlet</servlet-name>
+        <url-pattern>/customer-create-post</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImageServlet</servlet-name>
+        <url-pattern>/image</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>

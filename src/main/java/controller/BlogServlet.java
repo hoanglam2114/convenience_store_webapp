@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 
 package controller;
 
@@ -53,6 +49,7 @@ public class BlogServlet extends HttpServlet {
         // Danh sách bài viết mới
         List<Post> latestPosts = postDAO.getLatestPosts(6);
         List<Map<String, Object>> postData = new ArrayList<>();
+        List<Map<String, Object>> tags = postDAO.getPopularTags();
 
         for (Post post : latestPosts) {
             Map<String, Object> item = new HashMap<>();
@@ -63,6 +60,7 @@ public class BlogServlet extends HttpServlet {
         }
 
         request.setAttribute("latestPosts", postData);
+        request.setAttribute("tags", tags);
 
         // Forward sang JSP
         RequestDispatcher dispatcher = request.getRequestDispatcher("view/customer-blog.jsp");

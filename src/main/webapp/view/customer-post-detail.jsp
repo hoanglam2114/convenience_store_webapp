@@ -81,7 +81,7 @@
                     <div>
                         <p class="font-medium">${post.userName}</p>
                         <p class="text-gray-500 text-sm">
-                        Ngày đăng: <fmt:formatDate value="${post.createdAt}" pattern="dd-MM-yyyy" />
+                            Ngày đăng: <fmt:formatDate value="${post.createdAt}" pattern="dd-MM-yyyy" />
                         </p>
                     </div>
                 </div>
@@ -127,6 +127,18 @@
                 </div>
             </div>
 
+            <!-- Like Button -->
+            <div class="mb-6">
+                <form action="${pageContext.request.contextPath}/like-post" method="post" class="inline">
+                    <input type="hidden" name="post_id" value="${post.id}">
+                    <button type="submit" class="like-btn flex items-center space-x-2 text-red-500 hover:text-red-600 transition">
+                        <i class="fa${hasLiked ? 's' : 'r'} fa-heart text-xl"></i>
+                        <span>${likeCount}</span>
+                    </button>
+                </form>
+            </div>
+
+
             <!-- Comments Section -->
             <div class="mb-12">
                 <h3 class="text-xl font-bold mb-6">Comments (28)</h3>
@@ -134,7 +146,7 @@
                 <div class="mb-6">
                     <textarea class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" rows="3" placeholder="Add a comment..."></textarea>
                     <div class="flex justify-end mt-2">
-                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">Post Comment</button>
+                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">Send</button>
                     </div>
                 </div>
 
@@ -153,28 +165,6 @@
                                 <div class="flex items-center mt-3 text-sm text-gray-500">
                                     <button class="flex items-center mr-4 hover:text-indigo-600">
                                         <i class="far fa-thumbs-up mr-1"></i> 5
-                                    </button>
-                                    <button class="flex items-center hover:text-indigo-600">
-                                        <i class="far fa-comment mr-1"></i> Reply
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Comment 2 -->
-                    <div class="flex">
-                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="User" class="w-10 h-10 rounded-full mr-4">
-                        <div class="flex-1">
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <div class="flex justify-between mb-2">
-                                    <span class="font-medium">Michael Chen</span>
-                                    <span class="text-gray-500 text-sm">1 week ago</span>
-                                </div>
-                                <p class="text-gray-700">I'd love to see more examples of WebAssembly in production. Are there any open-source projects you'd recommend checking out?</p>
-                                <div class="flex items-center mt-3 text-sm text-gray-500">
-                                    <button class="flex items-center mr-4 hover:text-indigo-600">
-                                        <i class="far fa-thumbs-up mr-1"></i> 3
                                     </button>
                                     <button class="flex items-center hover:text-indigo-600">
                                         <i class="far fa-comment mr-1"></i> Reply
@@ -241,18 +231,6 @@
             </div>
         </main>
 
-        <!-- Newsletter -->
-        <section class="bg-indigo-50 py-12">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-2xl font-bold mb-4">Subscribe to our newsletter</h2>
-                <p class="text-gray-600 mb-6 max-w-2xl mx-auto">Get the latest articles, tutorials, and resources delivered straight to your inbox.</p>
-                <div class="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
-                    <input type="email" placeholder="Your email address" class="flex-grow px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                    <button class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition">Subscribe</button>
-                </div>
-            </div>
-        </section>
-
         <!-- Footer -->
         <footer class="bg-white py-8">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -296,24 +274,6 @@
         </footer>
 
         <script>
-            // Like button functionality
-            const likeBtn = document.getElementById('likeBtn');
-            const likeCount = document.getElementById('likeCount');
-            let liked = false;
-            let count = parseInt(likeCount.textContent);
-
-            likeBtn.addEventListener('click', () => {
-                liked = !liked;
-                if (liked) {
-                    count++;
-                    likeBtn.innerHTML = '<i class="fas fa-heart text-xl text-red-500"></i><span>' + count + '</span>';
-                } else {
-                    count--;
-                    likeBtn.innerHTML = '<i class="far fa-heart text-xl"></i><span>' + count + '</span>';
-                }
-                likeCount.textContent = count;
-            });
-
             // Smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {

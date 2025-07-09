@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.Customers;
 import model.Post;
 import model.PostSection;
 
@@ -51,17 +52,27 @@ public class PostDetailServlet extends HttpServlet {
 
         try {
             int postId = Integer.parseInt(idParam);
+            int likeCount = postDAO.countLikes(postId);
+            boolean hasLiked = false;
 
             Post post = postDAO.getPostById(postId);
-            if (post == null) {
+            if (post == null || !"approved".equalsIgnoreCase(post.getStatus())) {
                 response.sendRedirect("blog"); // Không tìm thấy post
                 return;
+            }
+
+            Customers currentUser = (Customers) request.getSession().getAttribute("currentUser");
+            if (currentUser != null) {
+                hasLiked = postDAO.hasUserLiked(postId, currentUser.getId());
             }
 
             List<PostSection> sections = postSectionDAO.getSectionsByPostId(postId);
 
             request.setAttribute("post", post);
             request.setAttribute("sections", sections);
+            request.setAttribute("likeCount", likeCount);
+            request.setAttribute("hasLiked", hasLiked);
+            System.out.println("POST ID PARAM: " + request.getParameter("id"));
 
             request.getRequestDispatcher("view/customer-post-detail.jsp").forward(request, response);
 
