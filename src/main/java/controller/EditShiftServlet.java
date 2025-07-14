@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import model.Shift;
@@ -89,6 +90,22 @@ public class EditShiftServlet extends HttpServlet {
         String description = request.getParameter("description");
 
         List<String> workingDays = (daysArray != null) ? Arrays.asList(daysArray) : List.of();
+        
+        long duration = ChronoUnit.MINUTES.between(startTime, endTime);
+            if (duration <= 0) {
+                duration += 24 * 60; // xử lý ca đêm
+            }
+            if (duration > 12 * 60) {
+                request.setAttribute("error", "Thời lượng ca làm không được vượt quá 12 tiếng.");
+                request.getRequestDispatcher("view/shift-edit.jsp").forward(request, response);
+                return;
+            }
+
+            if (!name.matches("[\\p{L}\\d\\s]+")) {
+                request.setAttribute("error", "Tên ca không được chứa ký tự đặc biệt.");
+                request.getRequestDispatcher("view/shift-edit.jsp").forward(request, response);
+                return;
+            }
         
         Shift shift = new Shift(id, name, startTime, endTime, workingDays, description);
         ShiftDAO sdao = new ShiftDAO();

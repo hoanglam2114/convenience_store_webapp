@@ -123,6 +123,12 @@ public class AddShiftServlet extends HttpServlet {
                 return;
             }
 
+            if (shiftDAO.isOverlappingShift(shift)) {
+                request.setAttribute("error", "Ca làm bị trùng với ca đã có trong cùng ngày.");
+                request.getRequestDispatcher("view/shift-add.jsp").forward(request, response);
+                return;
+            }
+
             boolean success = shiftDAO.addShift(shift);
             if (success) {
                 request.setAttribute("success", "Tạo ca làm thành công!");

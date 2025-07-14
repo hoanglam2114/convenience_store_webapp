@@ -152,28 +152,32 @@
                                                         </c:forEach>
                                                     </td>
                                                     <td>
+                                                        <!-- Xem chi tiết: luôn cho phép -->
+                                                        <a href="ChangePassword?id=${account.account_id}" class="btn btn-sm btn-outline-info me-1" title="Xem chi tiết">
+                                                            <i class="bx bx-show"></i>
+                                                        </a>
+
+                                                        <!-- Cập nhật trạng thái: chỉ nếu KHÔNG phải admin -->
                                                         <c:choose>
                                                             <c:when test="${account.role_id == 1}">
-                                                                <button class="btn btn-sm btn-outline-secondary me-1" disabled title="Không khả dụng cho Admin">
-                                                                    <i class="bx bx-show"></i>
-                                                                </button>
-                                                                <button class="btn btn-sm btn-outline-secondary" disabled title="Không khả dụng cho Admin">
-                                                                    <i class="bx bx-trash"></i>
+                                                                <button class="btn btn-sm btn-outline-secondary me-1" disabled title="Không thể cập nhật trạng thái của Admin">
+                                                                    <i class="bx bx-edit-alt"></i>
                                                                 </button>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <a href="ChangePassword?id=${account.account_id}" class="btn btn-sm btn-outline-info me-1" title="Xem chi tiết">
-                                                                    <i class="bx bx-show"></i>
-                                                                </a>
                                                                 <a href="UpdateStatusServlet?id=${account.account_id}" class="btn btn-sm btn-outline-primary me-1" title="Cập nhật trạng thái">
                                                                     <i class="bx bx-edit-alt"></i>
                                                                 </a>
-                                                                <a href="DeleteAccountServlet?id=${account.account_id}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc muốn xóa không?');" title="Xóa">
-                                                                    <i class="bx bx-trash"></i>
-                                                                </a>
                                                             </c:otherwise>
                                                         </c:choose>
+
+                                                        <!-- Xóa: vẫn cho phép (hoặc thêm điều kiện khóa nếu muốn) -->
+                                                        <a href="DeleteAccountServlet?id=${account.account_id}" class="btn btn-sm btn-outline-danger"
+                                                           onclick="return confirm('Bạn có chắc muốn xóa không?');" title="Xóa">
+                                                            <i class="bx bx-trash"></i>
+                                                        </a>
                                                     </td>
+
                                                 </tr>
                                             </c:forEach>
 
