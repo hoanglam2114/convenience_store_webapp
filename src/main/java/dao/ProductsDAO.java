@@ -30,10 +30,7 @@ public class ProductsDAO extends DBContext {
                 + "       [product_price],\n"
                 + "       [weight_unit_id],\n"
                 + "       [supplier_id],\n"
-                + "       [product_image],\n"
-                + "       [manufacture_date],\n"
-                + "       [expiration_date],\n"
-                + "       [batch]\n"
+                + "       [product_image]\n"
                 + " from Products\n";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -51,9 +48,6 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
                 listProducts.add(p);
             }
         } catch (SQLException e) {
@@ -354,21 +348,6 @@ public class ProductsDAO extends DBContext {
         }
     }
 
-    public int getLatestBatchByName(String name) {
-        String query = "SELECT MAX(batch) FROM Products WHERE product_name = ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, name);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 1;
-    }
-
     public void insertHisPrice(HistoryPrice h) {
         String sql = "INSERT INTO HistoryPrice VALUES (?, ?, ?, ?, ?)";
         try {
@@ -437,39 +416,6 @@ public class ProductsDAO extends DBContext {
                 + "    FROM Inventory i\n"
                 + "    WHERE p.product_id = i.product_id\n"
                 + ");";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                Products p = new Products();
-                p.setId(rs.getInt("product_id"));
-                p.setBarcode(rs.getString("barcode"));
-                p.setName(rs.getString("product_name"));
-                p.setPrice(rs.getFloat("product_price"));
-                p.setImage(rs.getString("product_image"));
-                ProductCategories pc = getCategoryById(rs.getInt("category_id"));
-                p.setProductCategories(pc);
-                WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
-                p.setWeightUnit(wu);
-                Suppliers sup = getSupById(rs.getInt("supplier_id"));
-                p.setSuppliers(sup);
-
-                list.add(p);
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return list;
-    }
-
-    public List<Products> getAllProductExpired() {
-        List<Products> list = new ArrayList<>();
-
-        String sql = "SELECT * \n"
-                + "FROM Products \n"
-                + "WHERE expiration_date > GETDATE() \n"
-                + "     AND expiration_date <= DATEADD(day, 10, GETDATE())";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();

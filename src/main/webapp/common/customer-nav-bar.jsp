@@ -73,14 +73,13 @@
                 </li>
 
                 <!-- Login/Profile Section -->
-                <!-- Demo: Not logged in state -->
                 <li class="nav-item d-none" id="loginSection">
                     <a class="nav-link btn btn-outline-primary ms-2" href="customer-login">
                         <i class="bi bi-person me-1"></i>Đăng nhập
                     </a>
                 </li>
 
-                <!-- Demo: Logged in state -->
+                <!-- Logged in state -->
                 <li class="nav-item dropdown" id="userSection">
                     <c:choose>
                         <c:when test="${not empty sessionScope.customer}">

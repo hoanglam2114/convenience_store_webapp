@@ -18,27 +18,32 @@ import model.Shop;
 public class ShopDAO extends DBContext {
     public List<Shop> getAll() {
         List<Shop> list = new ArrayList<>();
-        String sql = "select * from ShopDetails";
+        String sql = "SELECT * FROM ShopDetails";
         try {
-                PreparedStatement statement = connection.prepareStatement(sql);
-                ResultSet rs = statement.executeQuery();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Shop shop = new Shop(rs.getInt("shop_id"), 
-                        rs.getString("shop_name"), 
+                Shop shop = new Shop(
+                        rs.getInt("shop_id"),
+                        rs.getString("shop_name"),
                         rs.getString("shop_address"),
-                        rs.getString("shop_phone"), 
-                        rs.getString("shop_email"), 
+                        rs.getString("shop_phone"),
+                        rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
-                        rs.getString("shop_logo")
-                        );
+                        rs.getString("shop_logo"),
+                        rs.getString("location_map"),
+                        rs.getBigDecimal("latitude"),
+                        rs.getBigDecimal("longitude")
+                );
                 list.add(shop);
             }
         } catch (SQLException e) {
-            System.out.println("Error fetching movies: " + e.getMessage());
+            System.out.println("Error fetching shops: " + e.getMessage());
         }
         return list;
     }
-    
+
+
     public Shop getShopId(int shopId) {
         Shop shop = null;
         String sql = "SELECT * FROM ShopDetails WHERE shop_id = ?";
@@ -53,7 +58,10 @@ public class ShopDAO extends DBContext {
                         rs.getString("shop_phone"), 
                         rs.getString("shop_email"), 
                         rs.getString("shop_opening_hours"),
-                        rs.getString("shop_logo")
+                        rs.getString("shop_logo"),
+                        rs.getString("location_map"),
+                        rs.getBigDecimal("latitude"),
+                        rs.getBigDecimal("longitude")
                         );
             }
         } catch (SQLException e) {
@@ -163,7 +171,10 @@ public class ShopDAO extends DBContext {
                         rs.getString("shop_phone"),
                         rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
-                        rs.getString("shop_logo"));
+                        rs.getString("shop_logo"),
+                        rs.getString("location_map"),
+                        rs.getBigDecimal("latitude"),
+                        rs.getBigDecimal("longitude"));
                 list.add(shop);
             }
         } catch (SQLException e) {
@@ -188,7 +199,10 @@ public class ShopDAO extends DBContext {
                         rs.getString("shop_phone"),
                         rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
-                        rs.getString("shop_logo"));
+                        rs.getString("shop_logo"),
+                        rs.getString("location_map"),
+                        rs.getBigDecimal("latitude"),
+                        rs.getBigDecimal("longitude"));
                 list.add(shop);
              }
             

@@ -52,7 +52,7 @@ public class ListProductDiscountServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ProductsDAO pd = new ProductsDAO();
-        List<Products> productList = pd.getAllProductExpired();
+        List<Products> productList = pd.getAllProduct();
         DiscountProductDAO dpd = new DiscountProductDAO();
         List<DiscountProduct> discount_product_list = dpd.getAllProductDiscount();
         request.setAttribute("discountProductList", discount_product_list);

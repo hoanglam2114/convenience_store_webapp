@@ -26,7 +26,13 @@ public class Customers {
         this.gender = gender;
         this.avatarUrl = avatarUrl;
     }
-    
+    public Customers(String name, String phone, int point, int type_id) {
+        this.name = name;
+        this.phone = phone;
+        this.point = point;
+        this.type_id = type_id;
+    }
+
     public Customers(int id, String name, String phone, int point) {
         this.id = id;
         this.name = name;

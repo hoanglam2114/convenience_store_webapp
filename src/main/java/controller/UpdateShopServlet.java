@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.List;
 import model.Shop;
 
@@ -191,11 +192,19 @@ public class UpdateShopServlet extends HttpServlet {
         int id = Integer.parseInt(id_raw);
         Shop s1 = sd.getShopId(id);
         String img = (fileName != null && !fileName.isEmpty()) ? fileName : s1.getShopLogo();
-    
+        String locationMap = request.getParameter("location_map");
+        String latStr = request.getParameter("latitude");
+        String lngStr = request.getParameter("longitude");
 
-        Shop newShop = new Shop(id, name, address, phone,
-                email, openHours, img);
-        
+        BigDecimal latitude = latStr != null ? new BigDecimal(latStr) : null;
+        BigDecimal longitude = lngStr != null ? new BigDecimal(lngStr) : null;
+
+        Shop newShop = new Shop(
+                id, name, address, phone, email, openHours, img,
+                locationMap, latitude, longitude
+        );
+
+
         sd.updateShop(newShop);
         response.sendRedirect("ListShop");
     }

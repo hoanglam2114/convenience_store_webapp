@@ -11,9 +11,9 @@
     <div class="row">
       <div class="col-lg-4 col-md-6">
         <h4 class="footer-title">
-          <i class="bi bi-shop me-2"></i>Gian Hàng Online
+          <i class="bi bi-shop me-2"></i>Convema
         </h4>
-        <p>Cửa hàng trực tuyến uy tín với hàng nghìn sản phẩm chất lượng cao, giá cả phải chăng.</p>
+        <p>Cửa hàng uy tín với hàng nghìn sản phẩm chất lượng cao, giá cả phải chăng.</p>
         <div class="social-icons">
           <a href="https://www.facebook.com/hoanglam021104" class="social-icon"><i class="bi bi-facebook"></i></a>
           <a href="https://www.instagram.com/hoanglam.pj/" class="social-icon"><i class="bi bi-instagram"></i></a>

@@ -106,7 +106,7 @@ public class CustomerDAO extends DBContext {
         }
     }
 
-    public boolean editCustomerNameById(int customerId, String newName, String gender, String avatarPath) {
+    public boolean editCustomerById(int customerId, String newName, String gender, String avatarPath) {
         String sql = "UPDATE Customers SET customer_name = ?, gender = ?, avatar_url = ? WHERE customer_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -134,7 +134,9 @@ public class CustomerDAO extends DBContext {
                             .id(rs.getInt("customer_id"))
                             .name(rs.getString("customer_name"))
                             .phone(rs.getString("customer_phone"))
+                            .gender(rs.getString("gender"))
                             .point(rs.getInt("point"))
+                            .avatarUrl(rs.getString("avatar_url"))
                             .type_id(rs.getInt("customer_type_id"))
                             .build();
                 }

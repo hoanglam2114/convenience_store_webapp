@@ -40,18 +40,23 @@ public class EditCustomerProfile extends HttpServlet {
             Part filePart = request.getPart("avatar");
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-            String projectRoot = System.getProperty("user.dir");
-            String uploadDir = projectRoot + File.separator + "uploads" + File.separator + "avatars";
+            String avatarPath = null; // Mặc định là null
 
-            File uploadFolder = new File(uploadDir);
-            if (!uploadFolder.exists()) {
-                uploadFolder.mkdirs(); // tạo thư mục nếu chưa có
+            if (fileName != null && !fileName.trim().isEmpty()) {
+                String projectRoot = System.getProperty("user.dir");
+                String uploadDir = projectRoot + File.separator + "uploads" + File.separator + "avatars";
+
+                File uploadFolder = new File(uploadDir);
+                if (!uploadFolder.exists()) {
+                    uploadFolder.mkdirs();
+                }
+
+                String uniqueFileName = id + "_" + System.currentTimeMillis() + "_" + fileName;
+                filePart.write(uploadDir + File.separator + uniqueFileName);
+
+                avatarPath = "avatars/" + uniqueFileName; // Chỉ set nếu thực sự có ảnh
             }
 
-            String uniqueFileName = id + "_" + System.currentTimeMillis() + "_" + fileName;
-            filePart.write(uploadDir + File.separator + uniqueFileName);
-
-            String avatarPath = "avatars/" + uniqueFileName;
 
             // Validate name
             if (name == null || name.trim().isEmpty()) {
@@ -61,12 +66,12 @@ public class EditCustomerProfile extends HttpServlet {
             }
 
             // Cập nhật vào DB
-            boolean updated = customersDAO.editCustomerNameById(id, name, gender, avatarPath);
+            boolean updated = customersDAO.editCustomerById(id, name, gender, avatarPath);
 
             if (updated) {
                 // Cập nhật lại session
-                Customers c = customersDAO.getCustomerById(id);
-                request.getSession().setAttribute("customer", c);
+                Customers customer = customersDAO.getCustomerById(id);
+                request.getSession().setAttribute("customer", customer);
 
                 response.sendRedirect("customer-profile?updated=1");
             } else {

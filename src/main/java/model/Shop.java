@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author pqtru
@@ -16,11 +18,15 @@ public class Shop {
     private String shopEmail;
     private String shopOpeningHours;
     private String shopLogo;
+    private String locationMap;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
+
 
     public Shop() {
     }
 
-    public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo) {
+    public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo,String locationMap,BigDecimal latitude,BigDecimal longitude) {
         this.shopId = shopId;
         this.shopName = shopName;
         this.shopAddress = shopAddress;
@@ -28,6 +34,9 @@ public class Shop {
         this.shopEmail = shopEmail;
         this.shopOpeningHours = shopOpeningHours;
         this.shopLogo = shopLogo;
+        this.locationMap = locationMap;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public int getShopId() {
@@ -84,9 +93,28 @@ public class Shop {
     public void setShopLogo(String shopLogo) {
         this.shopLogo = shopLogo;
     }
+
+    public String getLocationMap() {
+        return locationMap;
+    }
+    public void setLocationMap(String locationMap) {
+        this.locationMap = locationMap;
+    }
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
      @Override
     public String toString() {
-        return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", shopAddress=" + shopAddress + ", shopPhone=" + shopPhone + ", shopEmail=" + shopEmail + ", shopOpeningHours=" + shopOpeningHours + ", shopLogo=" + shopLogo + '}';
+        return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", shopAddress=" + shopAddress + ", shopPhone=" + shopPhone + ", shopEmail=" + shopEmail + ", shopOpeningHours=" + shopOpeningHours + ", shopLogo=" + shopLogo + ", locationMap=" + locationMap + ", latitude=" + latitude + ", longitude=" + longitude + '}';
     }
 
 }
