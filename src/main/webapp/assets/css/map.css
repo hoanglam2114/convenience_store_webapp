@@ -1,0 +1,111 @@
+/* Enhanced CSS for better branch display */
+#map {
+    height: 500px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.branch-card {
+    transition: all 0.3s ease;
+    border: 1px solid #dee2e6 !important;
+    background: white !important;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.branch-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+.branch-card .card-body {
+    padding: 1rem;
+}
+
+.branch-card .card-title {
+    color: #0d6efd !important;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.branch-card .card-text {
+    color: #6c757d !important;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-bottom: 0.25rem;
+}
+
+.branch-card .card-text i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Custom popup styling */
+.custom-popup .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.custom-popup .leaflet-popup-content {
+    margin: 0;
+    padding: 0;
+}
+
+/* Statistics card styling */
+.card-header {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.card-header .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Branch list container */
+#branchList {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+#branchList::-webkit-scrollbar {
+    width: 6px;
+}
+
+#branchList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+#branchList::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+#branchList::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .branch-info h1 {
+        font-size: 2rem;
+    }
+
+    .branch-info p {
+        font-size: 1rem;
+    }
+
+    #map {
+        height: 350px;
+    }
+
+    .branch-card .card-body {
+        padding: 0.75rem;
+    }
+}

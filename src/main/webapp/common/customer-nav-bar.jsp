@@ -86,8 +86,16 @@
                         <c:when test="${not empty sessionScope.customer}">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div class="user-info">
-                                    <img src="https://via.placeholder.com/32x32/007bff/ffffff?text=${fn:substring(sessionScope.customer.name, 0, 1)}"
-                                         alt="Avatar" class="user-avatar">
+                                    <div class="user-avatar">
+                                        <c:choose>
+                                            <c:when test="${customer.avatarUrl != null}">
+                                                <img src="uploads/${customer.avatarUrl}" alt="Avatar">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="bi bi-person-fill"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
                                     <span class="d-none d-md-inline">${sessionScope.customer.name}</span>
                                 </div>
                             </a>

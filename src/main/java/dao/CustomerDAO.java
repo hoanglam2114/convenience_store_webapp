@@ -20,6 +20,8 @@ public class CustomerDAO extends DBContext {
                 customer.setPhone(rs.getString(3));
                 customer.setPoint(rs.getInt(4));
                 customer.setType_id(rs.getInt(5));
+                customer.setGender(rs.getString(6));
+                customer.setAvatarUrl(rs.getString(7));
 
                 customerList.add(customer);
             }
@@ -67,7 +69,9 @@ public class CustomerDAO extends DBContext {
                         rs.getString("customer_name"),
                         rs.getString("customer_phone"),
                         rs.getInt("point"),
-                        rs.getInt("customer_type_id")
+                        rs.getInt("customer_type_id"),
+                        rs.getString("gender"),
+                        rs.getString("avatar_url")
                 );
                 customers.add(customer);
             }
@@ -102,12 +106,15 @@ public class CustomerDAO extends DBContext {
         }
     }
 
-    public boolean editCustomerNameById(int customerId, String newName) {
-        String sql = "UPDATE Customers SET customer_name = ? WHERE customer_id = ?";
+    public boolean editCustomerNameById(int customerId, String newName, String gender, String avatarPath) {
+        String sql = "UPDATE Customers SET customer_name = ?, gender = ?, avatar_url = ? WHERE customer_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, newName);
-            ps.setInt(2, customerId);
+            ps.setString(2, gender);
+            ps.setString(3, avatarPath);
+
+            ps.setInt(4, customerId);
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -194,7 +201,9 @@ public class CustomerDAO extends DBContext {
                         rs.getString("customer_name"),
                         rs.getString("customer_phone"),
                         rs.getInt("point"),
-                        rs.getInt("customer_type_id")
+                        rs.getInt("customer_type_id"),
+                        rs.getString("gender"),
+                        rs.getString("avatar_url")
                 );
             }
         }

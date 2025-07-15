@@ -42,6 +42,7 @@
 
   <!-- Page CSS -->
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/customer-page.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/map.css">
   <!-- leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
