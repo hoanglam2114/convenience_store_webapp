@@ -157,7 +157,7 @@ public class ImportProductServlet extends HttpServlet {
 
             float price = Float.parseFloat(price_raw);
 
-            Products pNew = new Products(name, price, img, barcode, ci, si, ui, manufactureDate, expirationDate, newBatch);
+            Products pNew = new Products(name, price, img, barcode, ci, si, ui);
             pd.insertPro(pNew);
             response.sendRedirect("import-to-inventory");
         }

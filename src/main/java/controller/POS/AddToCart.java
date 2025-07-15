@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-
 package controller.POS;
 
-import dao.ProductsDAO;
+import dao.StoreStockDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,66 +9,91 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Cart;
-import model.Products;
+import model.CartItem;
+import model.StoreStock;
 
-/**
- *
- * @author Admin
- */
 public class AddToCart extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddToCart</title>");  
+            out.println("<title>Servlet AddToCart</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddToCart at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet AddToCart at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        HttpSession session = request.getSession();
+            throws ServletException, IOException {
+        // Lấy và kiểm tra tham số
+        String storeStockIdStr = request.getParameter("storeStockId");
+        String quantityStr = request.getParameter("quantity");
 
+        if (storeStockIdStr == null || quantityStr == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Thiếu storeStockId hoặc quantity");
+            return;
+        }
+
+        int storeStockId;
+        int quantity;
+
+        try {
+            storeStockId = Integer.parseInt(storeStockIdStr);
+            quantity = Integer.parseInt(quantityStr);
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "storeStockId hoặc quantity không hợp lệ");
+            return;
+        }
+
+        // Lấy cart từ session (nếu chưa có thì tạo mới)
+        HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null) {
             cart = new Cart();
+            session.setAttribute("cart", cart); // thiếu dòng này gây mất cart
         }
 
         try {
-            ProductsDAO productDAO = new ProductsDAO();
-            Products product = productDAO.getProductById(productId);
-            if (product != null) {
-                cart.addItem(product);
+            // Lấy StoreStock từ DB
+            StoreStockDAO stockDAO = new StoreStockDAO();
+            StoreStock storeStock = stockDAO.getStoreStockById(storeStockId);
+
+            if (storeStock != null && quantity > 0) {
+                // Tính giá: dùng giá giảm nếu có, không thì giá gốc
+                double price = (storeStock.getDiscount() != null)
+                        ? storeStock.getDiscount().getPriceSell()
+                        : storeStock.getInventory().getProduct().getPrice();
+
+                CartItem item = new CartItem(storeStock, quantity, price);
+                cart.addItem(item);
             }
+            System.out.println("StoreStock ID: " + storeStockId);
+            System.out.println("Tên sản phẩm: " + storeStock.getInventory().getProduct().getName());
+            System.out.println("Cart size: " + cart.getItems().size());
+
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Có thể log lỗi ở đây
         }
 
-        session.setAttribute("cart", cart);
+        // preserve customer info if any
+        String phone = (String) session.getAttribute("phone");
+        String name = (String) session.getAttribute("name");
+
         response.sendRedirect("loadProducts");
     }
 

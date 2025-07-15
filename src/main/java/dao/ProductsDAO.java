@@ -7,8 +7,10 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import model.HistoryPrice;
 import model.ProductCategories;
 import model.Products;
 import model.Suppliers;
@@ -19,7 +21,6 @@ import model.WeightUnit;
  * @author admin
  */
 public class ProductsDAO extends DBContext {
-
     public List<Products> getAllProduct() {
         List<Products> listProducts = new ArrayList<>();
         String sql = "Select [product_id],\n"
@@ -155,9 +156,7 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
+
                 return p;
             }
         } catch (SQLException e) {
@@ -175,14 +174,10 @@ public class ProductsDAO extends DBContext {
                 + "       [product_price],\n"
                 + "       [weight_unit_id],\n"
                 + "       [supplier_id],\n"
-                + "       [product_image],\n"
-                + "       [manufacture_date],\n"
-                + "       [expiration_date],\n"
-                + "       [batch]\n"
+                + "       [product_image]\n"
                 + "from Products\n"
                 + "order by product_id\n"
                 + "offset ?  rows fetch next 5 rows only";
-
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, (index - 1) * 5);
@@ -200,11 +195,9 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
                 list.add(p);
             }
+
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -232,9 +225,7 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
+
                 list.add(p);
             }
         } catch (SQLException e) {
@@ -263,9 +254,7 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
+
                 return p;
             }
         } catch (SQLException e) {
@@ -275,7 +264,7 @@ public class ProductsDAO extends DBContext {
     }
 
     public void insertPro(Products p) {
-        String sql = "INSERT INTO Products VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Products VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, p.getProductCategories().getId());
@@ -285,9 +274,7 @@ public class ProductsDAO extends DBContext {
             st.setInt(5, p.getWeightUnit().getId());
             st.setInt(6, p.getSuppliers().getId());
             st.setString(7, p.getImage());
-            st.setDate(8, java.sql.Date.valueOf(p.getManufactureDate()));
-            st.setDate(9, java.sql.Date.valueOf(p.getExpirationDate()));
-            st.setInt(10, p.getBatch());
+
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -303,9 +290,6 @@ public class ProductsDAO extends DBContext {
                 + "      ,[weight_unit_id] = ?\n"
                 + "      ,[supplier_id] = ?\n"
                 + "      ,[product_image] = ?\n"
-                + "      ,[manufacture_date] = ?\n"
-                + "      ,[expiration_date] = ?\n"
-                + "      ,[batch] = ?\n"
                 + " WHERE product_id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -316,10 +300,7 @@ public class ProductsDAO extends DBContext {
             st.setInt(5, p.getWeightUnit().getId());
             st.setInt(6, p.getSuppliers().getId());
             st.setString(7, p.getImage());
-            st.setDate(8, java.sql.Date.valueOf(p.getManufactureDate()));
-            st.setDate(9, java.sql.Date.valueOf(p.getExpirationDate()));
-            st.setInt(10, p.getBatch());
-            st.setInt(11, p.getId());
+            st.setInt(8, p.getId());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -353,9 +334,7 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
+
                 return p;
             }
         } catch (SQLException e) {
@@ -390,6 +369,58 @@ public class ProductsDAO extends DBContext {
         return 1;
     }
 
+    public void insertHisPrice(HistoryPrice h) {
+        String sql = "INSERT INTO HistoryPrice VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, h.getProduct().getId());
+            st.setFloat(2, h.getPrice());
+            st.setFloat(3, h.getPriceBefore());
+            st.setTimestamp(4, Timestamp.valueOf(h.getUpdatedAt()));
+            st.setString(5, h.getStatus());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateProductPrice(int productId, float newPrice) {
+        String sql = "UPDATE Products SET product_price = ? WHERE product_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setFloat(1, newPrice); // Set giá mới
+            st.setInt(2, productId); // Set product_id
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public List<HistoryPrice> getHistoryById(int product_id) {
+        List<HistoryPrice> list = new ArrayList<>();
+
+        String sql = "select * from HistoryPrice where product_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, product_id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                HistoryPrice h = new HistoryPrice();
+                h.setHistoryId(rs.getInt("history_id"));
+                Products p = getProductById(rs.getInt("product_id"));
+                h.setProduct(p);
+                h.setPrice(rs.getFloat("price"));
+                h.setPriceBefore(rs.getFloat("price_before"));
+                h.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                h.setStatus(rs.getString("status"));
+                list.add(h);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
     /**
      * This method retrieves a list of products that are not present in the
      * inventory. It uses a SQL query to select products from the Products table
@@ -422,9 +453,7 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
+
                 list.add(p);
             }
 
@@ -434,47 +463,79 @@ public class ProductsDAO extends DBContext {
         return list;
     }
 
-    public List<Products> getProductsByCategory(int categoryId) throws SQLException {
+    public List<Products> getAllProductExpired() {
         List<Products> list = new ArrayList<>();
-        
-        String sql = "SELECT * FROM Products WHERE category_id = ?";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, categoryId);
-        ResultSet rs = ps.executeQuery();
-        
-        while (rs.next()) {
-            Products p = new Products();
-            p.setId(rs.getInt("product_id"));
-            p.setBarcode(rs.getString("barcode"));
-            p.setName(rs.getString("product_name"));
-            p.setPrice(rs.getFloat("product_price"));
-            p.setImage(rs.getString("product_image"));
-            ProductCategories pc = getCategoryById(rs.getInt("category_id"));
-            p.setProductCategories(pc);
-            WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
-            p.setWeightUnit(wu);
-            Suppliers sup = getSupById(rs.getInt("supplier_id"));
-            p.setSuppliers(sup);
-            p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-            p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-            p.setBatch(rs.getInt("batch"));
-            list.add(p);
+
+        String sql = "SELECT * \n"
+                + "FROM Products \n"
+                + "WHERE expiration_date > GETDATE() \n"
+                + "     AND expiration_date <= DATEADD(day, 10, GETDATE())";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Products p = new Products();
+                p.setId(rs.getInt("product_id"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setName(rs.getString("product_name"));
+                p.setPrice(rs.getFloat("product_price"));
+                p.setImage(rs.getString("product_image"));
+                ProductCategories pc = getCategoryById(rs.getInt("category_id"));
+                p.setProductCategories(pc);
+                WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
+                p.setWeightUnit(wu);
+                Suppliers sup = getSupById(rs.getInt("supplier_id"));
+                p.setSuppliers(sup);
+
+                list.add(p);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
         }
         return list;
     }
 
-    public static void main(String[] args) {
+    public void deleteHis(int id) {
+        String sql = "DELETE FROM HistoryPrice where history_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 
+    public boolean isBarcodeExists(String barcode) {
+        boolean exists = false;
+        String sql = "SELECT 1 FROM Products WHERE barcode = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setString(1, barcode);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    exists = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exists;
+    }
+
+    public static void main(String[] args) {
+        ProductsDAO dao = new ProductsDAO();
 //        int count = dao.getTotalProduct();
 //        System.out.println(count);
-        ProductsDAO dao = new ProductsDAO();
+//        ProductsDAO dao = new ProductsDAO();
+//
+        List<Products> list = dao.pagingProducts(1);
+        for (Products o : list) {
+            System.out.println(o);
+        }
 
-//          List<Products>list = dao.searchProductByName("c2");
-//          for (Products o : list){
-//              System.out.println(o);
-//          }
-        List<Products> p = dao.getAllProduct();
-        System.out.println(p.toString());
     }
 
 }

@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
 import dao.ProductCategoriesDAO;
@@ -20,7 +19,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
-import java.time.LocalDate;
 import java.util.List;
 import model.ProductCategories;
 import model.Products;
@@ -38,37 +36,38 @@ import model.WeightUnit;
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 
-
-
 public class UpdateProductsServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateProductsServlet</title>");  
+            out.println("<title>Servlet UpdateProductsServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateProductsServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet UpdateProductsServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -76,7 +75,7 @@ public class UpdateProductsServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         String id_raw = request.getParameter("product_id");
         int id;
@@ -84,31 +83,30 @@ public class UpdateProductsServlet extends HttpServlet {
         ProductCategoriesDAO pcd = new ProductCategoriesDAO();
         SuppliersDAO sd = new SuppliersDAO();
         WeightUnitDAO wud = new WeightUnitDAO();
-        
-        try{
+
+        try {
             id = Integer.parseInt(id_raw);
             Products p = pd.getProductById(id);
             session.setAttribute("product", p);
-            
-            List<ProductCategories>cate = pcd.getAll();
+
+            List<ProductCategories> cate = pcd.getAll();
             session.setAttribute("cate", cate);
-            
-            List<Suppliers>supp = sd.getAll();
+
+            List<Suppliers> supp = sd.getAll();
             session.setAttribute("supp", supp);
-            
-            List<WeightUnit>wu = wud.getAll();
+
+            List<WeightUnit> wu = wud.getAll();
             session.setAttribute("wu", wu);
-            
+
             request.getRequestDispatcher("/view/UpdateProduct.jsp").
-                    forward(request, response);  
-        }catch(NumberFormatException e){
+                    forward(request, response);
+        } catch (NumberFormatException e) {
             System.out.println(e);
         }
 
     }
-    
-    
-      private String extractFileName(Part part) {
+
+    private String extractFileName(Part part) {
         String contentDisposition = part.getHeader("content-disposition");
         String[] items = contentDisposition.split(";");
         for (String s : items) {
@@ -119,11 +117,10 @@ public class UpdateProductsServlet extends HttpServlet {
         return null;
     }
 
-  
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-           String appPath = request.getServletContext().getRealPath("");
+            throws ServletException, IOException {
+        String appPath = request.getServletContext().getRealPath("");
 //        File projectRoot = new File(appPath).getParentFile().getParentFile();
 //        String savePath = projectRoot.getAbsolutePath() + File.separator + "web" + File.separator + "assets" + File.separator + "images" + File.separator + "product";
 
@@ -141,65 +138,67 @@ public class UpdateProductsServlet extends HttpServlet {
                     part.write(savePath + File.separator + fileName);
                     request.setAttribute("message", savePath + File.separator + fileName);
                 }
-            }}
+            }
+        }
 
-            System.out.println("Uploaded file name: " + fileName);
+        System.out.println("Uploaded file name: " + fileName);
 
-            ProductsDAO pd = new ProductsDAO();
-            WeightUnitDAO wud = new WeightUnitDAO();
-            ProductCategoriesDAO pcd = new ProductCategoriesDAO();
-            SuppliersDAO sd = new SuppliersDAO();
-            
-            String id_raw = request.getParameter("nameID");
-            String name = request.getParameter("namePro");
-            String cate_raw = request.getParameter("catePro");
-            String supp_raw = request.getParameter("supPro");
-            String unit_raw = request.getParameter("unitPro");
-            String price_raw = request.getParameter("pricePro");
-            String barcode = request.getParameter("barcode");
-            String manufactureDateStr = request.getParameter("ManufactureDate");
-            String ExpirationDateStr = request.getParameter("ExpirationDate");
-            String batch_raw = request.getParameter("batch");
-            
-            
-            int id = Integer.parseInt(id_raw);
-            Products p1 = pd.getProductById(id);
-            String img = (fileName != null && !fileName.isEmpty()) ? fileName : p1.getImage();
-            
-            int cate = Integer.parseInt(cate_raw);
-            ProductCategories pc = pcd.getCategoryById(cate);
-            
-            int supp = Integer.parseInt(supp_raw);
-            Suppliers s = sd.getSupById(supp);
-            
-            int unit = Integer.parseInt(unit_raw);
-            WeightUnit wu = wud.getUnitById(unit);
-            
-            float price = Float.parseFloat(price_raw);
-            LocalDate manufactureDate = LocalDate.parse(manufactureDateStr);
-            LocalDate expirationDate = LocalDate.parse( ExpirationDateStr);
-            
-            int batch = Integer.parseInt(batch_raw);
-            
-            Products pNew = new Products(id, name, price, img, barcode, 
-             pc, s, wu, manufactureDate, expirationDate , batch);
-            
-            
-            pd.updateProduct(pNew);
-            response.sendRedirect("ListProduct");
-            
-            
-            
-        
-        
+        ProductsDAO pd = new ProductsDAO();
+        WeightUnitDAO wud = new WeightUnitDAO();
+        ProductCategoriesDAO pcd = new ProductCategoriesDAO();
+        SuppliersDAO sd = new SuppliersDAO();
+
+        String id_raw = request.getParameter("nameID");
+        String name = request.getParameter("namePro");
+        String cate_raw = request.getParameter("catePro");
+        String supp_raw = request.getParameter("supPro");
+        String unit_raw = request.getParameter("unitPro");
+        String price_raw = request.getParameter("pricePro");
+        String barcode = request.getParameter("barcode");
+
+        float price = Float.parseFloat(price_raw);
+
+        boolean hasError = false;
+
+        // Validate barcode
+        if (!barcode.matches("\\d+")) {
+            request.setAttribute("errorbarcode", "Mã vạch chỉ được chứa chữ số.");
+            hasError = true;
+        }
+
+        // Validate tên sản phẩm
+        if (name.startsWith(" ") || name.length() > 40 || !name.matches("^[\\p{L}0-9 ]+$")) {
+            request.setAttribute("errornamePro", "Tên sản phẩm không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
+            hasError = true;
+        }
+
+        // Validate giá tiền
+        // Trả về nếu có lỗi
+        if (hasError) {
+            request.getRequestDispatcher("/view/UpdateProduct.jsp").forward(request, response);
+            return;
+        }
+
+        int id = Integer.parseInt(id_raw);
+        Products p1 = pd.getProductById(id);
+        String img = (fileName != null && !fileName.isEmpty()) ? fileName : p1.getImage();
+
+        int cate = Integer.parseInt(cate_raw);
+        ProductCategories pc = pcd.getCategoryById(cate);
+
+        int supp = Integer.parseInt(supp_raw);
+        Suppliers s = sd.getSupById(supp);
+
+        int unit = Integer.parseInt(unit_raw);
+        WeightUnit wu = wud.getUnitById(unit);
+
+        Products pNew = new Products(id, name, price, img, barcode,
+                pc, s, wu);
+
+        pd.updateProduct(pNew);
+        response.sendRedirect("ListProduct");
     }
 
-    
-    
-    
-    
-    
-    
     @Override
     public String getServletInfo() {
         return "Short description";

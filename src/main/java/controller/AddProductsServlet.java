@@ -110,12 +110,9 @@ public class AddProductsServlet extends HttpServlet {
             }
         }
 
-        String manufactureDateStr = request.getParameter("manufactureDate");
-        String expirationDateStr = request.getParameter("expirationDate");
 
-        LocalDate manufactureDate = LocalDate.parse(manufactureDateStr);
-        LocalDate expirationDate = LocalDate.parse(expirationDateStr);
-        LocalDate currentDate = LocalDate.now();
+
+       
 
         String catePro = request.getParameter("catePro");
         String barcode = request.getParameter("barcode");
@@ -124,6 +121,7 @@ public class AddProductsServlet extends HttpServlet {
         String pricePro = request.getParameter("pricePro");
         String suppPro = request.getParameter("suppPro");
 
+        
         String img = (fileName != null && !fileName.isEmpty()) ? fileName : null;
 
         ProductsDAO pd = new ProductsDAO();
@@ -131,47 +129,82 @@ public class AddProductsServlet extends HttpServlet {
         WeightUnitDAO wud = new WeightUnitDAO();
         ProductCategoriesDAO pcd = new ProductCategoriesDAO();
 
-        if (expirationDate.isBefore(manufactureDate)) {
-            request.setAttribute("errorMessage", "The expiration date must be after the date of manufacture.");
-            request.getRequestDispatcher("/view/AddProduct.jsp").forward(request, response);
-        } else if (expirationDate.isBefore(currentDate)) {
-            request.setAttribute("errorMessage", "Expiration date must be after current date.");
-            request.getRequestDispatcher("/view/AddProduct.jsp").forward(request, response);
-        } else {
-            Products s = pd.getProductByName(namePro);
-          if(s == null){
-              int cate = Integer.parseInt( catePro);
-              ProductCategories ci = pcd.getCategoryById(cate);
-              int unit = Integer.parseInt(unitPro);
-              WeightUnit wu = wud.getUnitById(unit);
-              int supp = Integer.parseInt(suppPro);
-              Suppliers su = sd.getSupById(supp);
-              int price = Integer.parseInt(pricePro);
-              int batch = 1;
-              Products pNew = new Products(namePro, price, img, barcode,
-              ci, su, wu, manufactureDate, expirationDate, batch);
-              pd.insertPro(pNew);
-              response.sendRedirect("ListProduct");
-          }else{
-              int latest_batch = pd.getLatestBatchByName(namePro);
-              int new_batch = latest_batch + 1;
-              
-               int cate = Integer.parseInt( catePro);
-              ProductCategories ci = pcd.getCategoryById(cate);
-              int unit = Integer.parseInt(unitPro);
-              WeightUnit wu = wud.getUnitById(unit);
-              int supp = Integer.parseInt(suppPro);
-              Suppliers su = sd.getSupById(supp);
-              int price = Integer.parseInt(pricePro);
-              Products pNew = new Products(namePro, price, img, barcode,
-              ci, su, wu, manufactureDate, expirationDate, new_batch);
-              pd.insertPro(pNew);
-              response.sendRedirect("ListProduct");
-              
-          }
+        boolean hasError = false;
+
+        if (pd.isBarcodeExists(barcode)) {
+            request.setAttribute("errorbarcode", "Mã vạch đã tồn tại trong hệ thống.");
+            hasError = true;
         }
 
-    }
+        // Validate barcode
+        if (!barcode.matches("\\d+")) {
+            request.setAttribute("errorbarcode", "Mã vạch chỉ được chứa chữ số.");
+            hasError = true;
+        }
+
+        // Validate tên sản phẩm
+        if (namePro.startsWith(" ") || namePro.length() > 40 || !namePro.matches("^[\\p{L}0-9 ]+$")) {
+            request.setAttribute("errornamePro", "Tên sản phẩm không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
+            hasError = true;
+        }
+
+        // Validate giá tiền
+        try {
+           int price = Integer.parseInt(pricePro);
+            if (price < 0) {
+                request.setAttribute("errorpricePro", "Giá tiền không được âm.");
+                hasError = true;
+            } else if (price > 100000000) {
+                request.setAttribute("errorpricePro", "Giá tiền không được vượt quá 100 triệu.");
+                hasError = true;
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorpricePro", "Giá tiền phải là số nguyên.");
+            hasError = true;
+        }
+
+        // Trả về nếu có lỗi
+        if (hasError) {
+            request.getRequestDispatcher("/view/AddProduct.jsp").forward(request, response);
+            return;
+        }
+
+       
+            Products s = pd.getProductByName(namePro);
+          
+                int cate = Integer.parseInt(catePro);
+                ProductCategories ci = pcd.getCategoryById(cate);
+                int unit = Integer.parseInt(unitPro);
+                WeightUnit wu = wud.getUnitById(unit);
+                int supp = Integer.parseInt(suppPro);
+                Suppliers su = sd.getSupById(supp);
+                int price = Integer.parseInt(pricePro);
+                
+                Products pNew = new Products(namePro, price, img, barcode,
+                        ci, su, wu);
+                pd.insertPro(pNew);
+                response.sendRedirect("ListProduct");
+//            } else {
+//                int latest_batch = pd.getLatestBatchByName(namePro);
+//                int new_batch = latest_batch + 1;
+//                int price = Integer.parseInt(pricePro);
+//                int cate = Integer.parseInt(catePro);
+//                ProductCategories ci = pcd.getCategoryById(cate);
+//                int unit = Integer.parseInt(unitPro);
+//                WeightUnit wu = wud.getUnitById(unit);
+//                int supp = Integer.parseInt(suppPro);
+//                Suppliers su = sd.getSupById(supp);
+//
+//                Products pNew = new Products(namePro, price, img, barcode,
+//                        ci, su, wu);
+//                pd.insertPro(pNew);
+//                response.sendRedirect("ListProduct");
+
+            
+        }
+
+
+    
 
     @Override
     public String getServletInfo() {
