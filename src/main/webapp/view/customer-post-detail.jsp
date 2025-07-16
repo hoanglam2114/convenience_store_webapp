@@ -110,23 +110,6 @@
                 </c:forEach>
             </article>
 
-            <!-- Author Bio -->
-            <div class="bg-gray-50 rounded-xl p-6 mb-12">
-                <div class="flex items-center mb-4">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Author" class="w-16 h-16 rounded-full mr-4">
-                    <div>
-                        <h3 class="font-bold text-lg">John Doe</h3>
-                        <p class="text-gray-600">Senior Web Developer & Tech Writer</p>
-                    </div>
-                </div>
-                <p class="text-gray-700">John has been building web applications for over 10 years. He specializes in JavaScript frameworks and architecture design. When not coding, he enjoys writing about technology trends and mentoring junior developers.</p>
-                <div class="flex space-x-4 mt-4">
-                    <a href="#" class="text-indigo-600 hover:text-indigo-800"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-indigo-600 hover:text-indigo-800"><i class="fab fa-github"></i></a>
-                    <a href="#" class="text-indigo-600 hover:text-indigo-800"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-
             <!-- Like Button -->
             <div class="mb-6">
                 <form action="${pageContext.request.contextPath}/like-post" method="post" class="inline">
@@ -170,60 +153,6 @@
                                         <i class="far fa-comment mr-1"></i> Reply
                                     </button>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Related Posts -->
-            <div>
-                <h3 class="text-xl font-bold mb-6">You Might Also Like</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Related Post 1 -->
-                    <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
-                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=765&q=80" 
-                             alt="Related post" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <span class="text-sm text-indigo-600 font-medium">Technology</span>
-                            <h4 class="font-bold mt-1 mb-2">Understanding React Server Components</h4>
-                            <p class="text-gray-600 text-sm">A deep dive into the new paradigm for React applications.</p>
-                            <div class="flex items-center mt-3 text-sm text-gray-500">
-                                <span>May 5, 2023</span>
-                                <span class="mx-2">•</span>
-                                <span>5 min read</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Related Post 2 -->
-                    <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
-                             alt="Related post" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <span class="text-sm text-green-600 font-medium">Productivity</span>
-                            <h4 class="font-bold mt-1 mb-2">Developer Tools That Will Save You Hours</h4>
-                            <p class="text-gray-600 text-sm">Essential tools every developer should have in their toolkit.</p>
-                            <div class="flex items-center mt-3 text-sm text-gray-500">
-                                <span>April 28, 2023</span>
-                                <span class="mx-2">•</span>
-                                <span>7 min read</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Related Post 3 -->
-                    <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
-                        <img src="https://images.unsplash.com/photo-1624953587687-daf255b6b80a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" 
-                             alt="Related post" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <span class="text-sm text-purple-600 font-medium">Design</span>
-                            <h4 class="font-bold mt-1 mb-2">CSS Trends for Modern Web Applications</h4>
-                            <p class="text-gray-600 text-sm">Exploring the latest CSS techniques that are changing how we style the web.</p>
-                            <div class="flex items-center mt-3 text-sm text-gray-500">
-                                <span>April 15, 2023</span>
-                                <span class="mx-2">•</span>
-                                <span>6 min read</span>
                             </div>
                         </div>
                     </div>

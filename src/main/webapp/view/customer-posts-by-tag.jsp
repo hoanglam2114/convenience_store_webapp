@@ -27,18 +27,33 @@
         </style>
     </head>
     <body class="bg-gray-50 font-sans">
-        <!-- Header -->
-        <header class="bg-white shadow-sm">
-            <div class="container max-w-6xl mx-auto px-4 py-6">
-                <div class="flex justify-between items-center">
-                    <h1 class="text-3xl font-bold text-blue-600">My Blog</h1>
-                    <nav class="hidden md:flex space-x-6">
-                        <a href="#" class="text-gray-700 hover:text-blue-600">Trang chủ</a>
-                        <a href="#" class="text-gray-700 hover:text-blue-600">Giới thiệu</a>
-                        <a href="#" class="text-gray-700 hover:text-blue-600">Liên hệ</a>
-                    </nav>
-                    <button class="md:hidden text-gray-700">
-                        <i class="fas fa-bars text-2xl"></i>
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="container mx-auto px-4 max-w-screen-lg py-4 flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="bg-blue-600 text-white p-2 rounded-lg mr-3">
+                        <i class="fas fa-store text-xl"></i>
+                    </div>
+                    <a href="${pageContext.request.contextPath}/blog">
+                        <h1 class="text-2xl font-bold text-gray-800 cursor-pointer hover:opacity-80 transition">
+                            CONVENMA <span class="text-green-600">BLOG</span>
+                        </h1>
+                    </a>
+                </div>
+                <nav class="hidden md:block">
+                    <ul class="flex space-x-8">
+                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Trang chủ</a></li>
+                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Khuyến mãi</a></li>
+                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Sản phẩm mới</a></li>
+                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Tin tức</a></li>
+                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Liên hệ</a></li>
+                    </ul>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-plus mr-1"></i> Đăng bài
+                    </a>
+                    <button class="md:hidden text-gray-800">
+                        <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
             </div>

@@ -148,6 +148,18 @@
         <servlet-name>ImageServlet</servlet-name>
         <servlet-class>controller.ImageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminPostManagementServlet</servlet-name>
+        <servlet-class>controller.AdminPostManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminPostActionServlet</servlet-name>
+        <servlet-class>controller.AdminPostActionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetPostDetailServlet</servlet-name>
+        <servlet-class>controller.GetPostDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ShiftDetailServlet</servlet-name>
         <url-pattern>/ShiftDetailServlet</url-pattern>
@@ -255,6 +267,18 @@
     <servlet-mapping>
         <servlet-name>ImageServlet</servlet-name>
         <url-pattern>/image</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminPostManagementServlet</servlet-name>
+        <url-pattern>/admin-post-manage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminPostActionServlet</servlet-name>
+        <url-pattern>/admin-post-action</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetPostDetailServlet</servlet-name>
+        <url-pattern>/get-post-detail</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>

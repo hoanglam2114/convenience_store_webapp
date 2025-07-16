@@ -14,10 +14,6 @@ import model.Cart;
 import model.ProductCategories;
 import model.StoreStock;
 
-/**
- *
- * @author Admin
- */
 public class LoadProducts extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
