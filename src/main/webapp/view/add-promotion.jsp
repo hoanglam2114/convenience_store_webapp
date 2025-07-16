@@ -85,34 +85,62 @@
                             <form action="AddPromotion" method="post" class="row g-4">
                                 <div class="col-md-6">
                                     <label for="code" class="form-label">Mã</label>
-                                    <input type="text" class="form-control" name="code" placeholder="Enter code">
+                                    <input type="text" name="code" placeholder="Enter code"
+                                           class="form-control ${not empty errorCode ? 'is-invalid' : ''}"                                        
+                                           value="${param.code != null ? param.code : ''}"
+                                           required/>
+                                    <c:if test="${not empty errorCode}">
+                                        <div class="invalid-feedback">
+                                            ${errorCode}
+                                        </div>
+                                    </c:if>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="description" class="form-label">Mô tả</label>
-                                    <input type="text" class="form-control" name="description" placeholder="Enter description">
+                                    <input type="text" name="description" placeholder="Enter description"
+                                           class="form-control ${not empty errorDes ? 'is-invalid' : ''}"                                        
+                                           value="${param.description != null ? param.description : ''}"
+                                           required/>
+                                    <c:if test="${not empty errorDes}">
+                                        <div class="invalid-feedback">
+                                            ${errorDes}
+                                        </div>
+                                    </c:if>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="startDate" class="form-label">Ngày bắt đầu</label>
-                                    <input type="date" class="form-control" name="startDate">
+                                    <input type="date" class="form-control" name="startDate" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="endDate" class="form-label">Ngày kết thúc</label>
-                                    <input type="date" class="form-control" name="endDate">
+                                    <input type="date" class="form-control" name="endDate" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="discount" class="form-label">Phần trăm khuyến mãi(%)</label>
-                                    <input type="number" class="form-control" name="discountPercentage" placeholder="Enter discount %">
+                                    <input type="number" class="form-control" name="discountPercentage" 
+                                           placeholder="Enter discount %" min="0" max="100" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="status" class="form-label">Trạng thái</label>
                                     <select class="form-select" name="status">
                                         <c:forEach items="${statuses}" var="status">
                                             <option>${status}</option>
-                                       </c:forEach>
+                                        </c:forEach>
                                     </select>
                                 </div>
-                                <div class="col-12">
+
+                                <c:if test="${not empty errorMessage}">
+                                    <div class="alert alert-danger">
+                                        ${errorMessage}
+                                    </div>
+                                </c:if>
+
+                                <div class="col-12 d-flex gap-2">
+                                    <!-- Nút Thêm -->
                                     <button type="submit" class="btn btn-confirm">Thêm</button>
+
+                                    <!-- Nút Làm mới -->
+                                    <a href="AddPromotion" type="reset" class="btn btn-secondary">Làm mới</a>
                                 </div>
                             </form>
                         </div>

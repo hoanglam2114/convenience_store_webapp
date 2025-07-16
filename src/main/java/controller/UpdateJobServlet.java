@@ -89,13 +89,13 @@ public class UpdateJobServlet extends HttpServlet {
         JobDAO jd = new JobDAO();
         String jobid_raw = request.getParameter("jobID");
         String jobtype_raw = request.getParameter("jobtype");
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
+        String title = request.getParameter("title").trim();
+        String description = request.getParameter("description").trim();
         String location_raw = request.getParameter("location");
         String jobcate_raw = request.getParameter("jobcate");
         String deadline_raw = request.getParameter("deadline");
         String status = request.getParameter("status");
-        
+
         int jobid = Integer.parseInt(jobid_raw);
         int jobtype = Integer.parseInt(jobtype_raw);
         JobTypes jt = jd.getTypesById(jobtype);
@@ -103,23 +103,52 @@ public class UpdateJobServlet extends HttpServlet {
         JobLocation jl = jd.getJobLocationById(location);
         int jobcate = Integer.parseInt(jobcate_raw);
         JobCategories jc = jd.getJobCategoriesById(jobcate);
-        
+
         LocalDate deadline = LocalDate.parse(deadline_raw);
         LocalDateTime createdAt = LocalDateTime.now();
-        
-        Job p = new Job(jobid, title, jt, jl, deadline, createdAt, jc, description, status);
-        jd.updateJob(p);
-        response.sendRedirect("ListJob");
+
+        LocalDate currentDate = LocalDate.now();
+
+        boolean hasError = false;
+
+        // Validate mã khuyến mãi
+        if (title.startsWith(" ") || title.length() > 40 || !title.matches("^[\\p{L}0-9 ]+$")) {
+            request.setAttribute("errorTitle", "Tên công việc không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
+            hasError = true;
+        }
+
+        if (description.startsWith(" ") || description.length() > 300) {
+            request.setAttribute("errorDes", "Miêu tả không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự");
+            hasError = true;
+        }
+
+        // Trả về nếu có lỗi
+        if (hasError) {
+            request.getRequestDispatcher("/view/update-job.jsp").forward(request, response);
+            return;
+        }
+
+        if (deadline.isBefore(currentDate)) {
+            request.setAttribute("errorMessage", "Ngày ứng tuyển nộp hồ sơ phải sau ngày hiện tại.");
+            request.getRequestDispatcher("/view/update-job.jsp").forward(request, response);
+        } else {
+
+            Job p = new Job(jobid, title, jt, jl, deadline, createdAt, jc, description, status);
+            jd.updateJob(p);
+            response.sendRedirect("ListJob");
+        }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
+        /**
+         * Returns a short description of the servlet.
+         *
+         * @return a String containing servlet description
+         */
+        @Override
+        public String getServletInfo
+        
+            () {
         return "Short description";
-    }// </editor-fold>
+        }// </editor-fold>
 
-}
+    }

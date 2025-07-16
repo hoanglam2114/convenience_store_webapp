@@ -68,7 +68,7 @@ public class AddJobCustomerServlet extends HttpServlet {
             String[] contentList = jobDetail.getTextcontent().split("\\.");
             jobDetail.setContentList(contentList);
         }
-        session.setAttribute("jobtext", jobtext_detail); // Không set "content" nữa
+        session.setAttribute("jobtext", jobtext_detail); 
 
         List<Gender> gender = jd.getAllGenders();
         session.setAttribute("gender", gender);

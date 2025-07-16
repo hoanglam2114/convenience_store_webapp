@@ -7,12 +7,12 @@
         <title>Quản lý tuyển dụng</title>
 
 
-        <link rel="stylesheet" href="../assets/vendor/css/core.css" />
-        <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" />
-        <link rel="stylesheet" href="../assets/css/demo.css" />
+        <link rel="stylesheet" href="assets/vendor/css/core.css" />
+        <link rel="stylesheet" href="assets/vendor/css/theme-default.css" />
+        <link rel="stylesheet" href="assets/css/demo.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
         <!-- Favicon -->
-        <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
     </head>
     <body>
         <!-- Layout wrapper -->
@@ -34,33 +34,17 @@
                                 <h4 class="fw-bold">Quản lý tuyển dụng</h4>
                                 <span class="text-muted">Quản lý danh sách các vị trí tuyển dụng</span>
                             </div>
-                            <a href="add-recruitment.jsp" class="btn btn-primary">
-                                <i class='bx bx-plus'></i> Thêm tin tuyển dụng
-                            </a>
+                          
                         </div>
 
                         <div class="card p-4">
                             <div class="row g-3 mb-3">
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" placeholder="Tìm kiếm theo tên vị trí...">
-                                </div>
-                                <div class="col-md-3">
-                                    <select class="form-select">
-                                        <option selected>Trạng thái</option>
-                                        <option>Đang tuyển</option>
-                                        <option>Đã đóng</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <select class="form-select">
-                                        <option selected>Phòng ban</option>
-                                        <option>CNTT</option>
-                                        <option>Kế toán</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2 d-flex justify-content-end">
-                                    <button class="btn btn-outline-secondary me-2">Làm mới</button>
-                                    <button class="btn btn-outline-success">Xuất Excel</button>
+                                <div class="d-flex  align-items-center gap-2 mb-2">
+                                    <input style="width: 300px" type="text" class="form-control" name="namePro" placeholder="Tìm kiếm theo tên" />
+                                    <button style="width: 120px"  type="submit" class="btn btn-primary me-2"><i ></i> Tìm kiếm</button>
+                                    <a style="width: 120px" href="ListProduct" class="btn btn-primary ">
+                                        <i ></i> Làm mới
+                                    </a>
                                 </div>
                             </div>
 
@@ -68,40 +52,54 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th><input type="checkbox"/></th>
-                                            <th>ID</th>
-                                            <th>Vị trí tuyển dụng</th>
-                                            <th>Phòng ban</th>
-                                            <th>Số lượng</th>
-                                            <th>Ngày đăng</th>
-                                            <th>Hạn nộp</th>
-                                            <th>Trạng thái</th>
-                                            <th>Thao tác</th>
+
+                                            <th>STT</th>
+                                            <th>Tên đầy đủ</th>
+                                            <th>Email</th>
+                                            <th>SĐT</th>
+                                            <th>Ngày sinh</th>
+                                            <th>giới tính</th>
+                                            <th>Địa chỉ hiện tại</th>
+                                            <th>Địa chỉ cửa hàng ứng tuyển</th>
+                                            <th>Ngày phỏng vấn</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><input type="checkbox"/></td>
-                                            <td>#001</td>
-                                            <td>
-                                                <strong>Senior Frontend Developer</strong><br/>
-                                                <small class="text-muted">Phát triển giao diện người dùng với React, Vue.js</small>
-                                            </td>
-                                            <td>Công nghệ thông tin</td>
-                                            <td>2 người</td>
-                                            <td>15/01/2025</td>
-                                            <td>28/02/2025</td>
-                                            <td><span class="badge bg-label-success">Đang tuyển</span></td>
-                                            <td>
-                                                <a href="view.jsp?id=001" class="text-primary me-2"><i class="bx bx-show"></i></a>
-                                                <a href="edit.jsp?id=001" class="text-warning me-2"><i class="bx bx-edit"></i></a>
-                                                <a href="delete?id=001" class="text-danger"><i class="bx bx-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <!-- Có thể lặp bằng JSTL với danh sách từ server -->
+                                        <c:forEach items="${job}" var="j">
+                                            <tr>
+                                                <td>${j.getId()}</td>
+                                                <td>${j.getName()}</td>
+                                                <td>${j.getEmail()}</td>
+                                                <td>${j.getPhone()}</td>
+                                                <td>${j.getDateofbirth()}</td>
+                                                <td>${j.getGender().getName()}</td>
+                                                <td>${j.getCurrent_address()}</td>
+                                                <td>${j.getDistrict_apply().getName()}</td>
+                                                <td>${j.getInterview_date()}</td>
+                                            </tr>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
+                            <!-- Footer -->
+                            <footer class="content-footer footer bg-footer-theme">
+                                <div class="container-xxl d-flex justify-content-center py-3">
+                                    <div class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                        <a class="page-link" href="ListJobApplication?index=${currentPage - 1}">Previous</a>
+                                    </div>
+
+                                    <c:forEach begin="1" end="${endPage}" var="i">
+                                        <div class="page-item ${i == currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="ListJobApplication?index=${i}">${i}</a>
+                                        </div>
+                                    </c:forEach>
+
+                                    <div class="page-item ${currentPage == endPage ? 'disabled' : ''}">
+                                        <a class="page-link" href="ListJobApplication?index=${currentPage + 1}">Next</a>
+                                    </div>
+                                </div>
+
+                            </footer>
                         </div>
                     </div>
                 </div>
@@ -112,13 +110,13 @@
         </div>
         <!-- /Layout wrapper -->  
 
-        <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- Sneat JS -->
-        <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="../assets/vendor/js/bootstrap.js"></script>
-        <script src="../assets/vendor/js/menu.js"></script>
-        <script src="../assets/vendor/js/helpers.js"></script>
-        <script src="../assets/js/config.js"></script>
-        <script src="../assets/js/main.js"></script> <!-- Quan trọng -->
+        <script src="assets/vendor/libs/jquery/jquery.js"></script>
+        <script src="assets/vendor/js/bootstrap.js"></script>
+        <script src="assets/vendor/js/menu.js"></script>
+        <script src="assets/vendor/js/helpers.js"></script>
+        <script src="assets/js/config.js"></script>
+        <script src="assets/js/main.js"></script> <!-- Quan trọng -->
     </body>
 </html>

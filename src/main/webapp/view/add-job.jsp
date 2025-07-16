@@ -57,7 +57,7 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Hình thức công việc<span class="text-danger">*</span></label>
-                                            <select class="form-select" name="jobtype">
+                                            <select class="form-select" name="jobtype" required>
                                                 <c:forEach items="${jobtypes}" var="jobtypes">
                                                     <option value="${jobtypes.getId()}">${jobtypes.getName()}</option>
                                                 </c:forEach>
@@ -66,19 +66,36 @@
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Tên công việc<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="title" placeholder="Enter title" required>
+                                            <input type="text" name="title" 
+                                                   placeholder="Enter title" 
+                                                   class="form-control ${not empty errorTitle ? 'is-invalid' : ''}"                                        
+                                                   value="${param.title != null ? param.title : ''}"
+                                                   required/>
+                                            <c:if test="${not empty errorTitle}">
+                                                <div class="invalid-feedback">
+                                                    ${errorTitle}
+                                                </div>
+                                            </c:if>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Mô tả<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="description" placeholder="Enter description">
+                                            <input type="text" name="description" 
+                                                   placeholder="Enter description" 
+                                                   class="form-control ${not empty errorDes ? 'is-invalid' : ''}"                                        
+                                                   value="${param.description != null ? param.description : ''}"
+                                                   required/>
+                                            <c:if test="${not empty errorDes}">
+                                                <div class="invalid-feedback">
+                                                    ${errorDes}
+                                                </div>
+                                            </c:if>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Địa điểm làm việc<span class="text-danger">*</span></label>
-                                            <select class="form-select" name="location" required>
+                                            <select class="form-select" name="location" required >
                                                 <c:forEach items="${joblocation}" var="joblocation">
                                                     <option value="${joblocation.getId()}">${joblocation.getName()}</option>
                                                 </c:forEach>
-
                                             </select>
                                         </div>
 
@@ -93,7 +110,7 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Ngày hết hạn ứng tuyển</label>
-                                            <input type="date" class="form-control" name="deadline">
+                                            <input type="date" class="form-control" name="deadline" required>
                                         </div>
 
                                         <div class="col-md-6 mb-3">
@@ -106,10 +123,14 @@
                                             </select>
                                         </div>
 
-
+                                        <c:if test="${not empty errorMessage}">
+                                            <div class="alert alert-danger">
+                                                ${errorMessage}
+                                            </div>
+                                        </c:if>
                                         <div class="col-12 d-flex gap-2">
                                             <button type="submit" class="btn btn-primary-custom">Thêm công việc mới</button>
-                                            <button type="reset" class="btn btn-reset-custom">Làm mới</button>
+                                            <a href="AddJob" type="reset" class="btn btn-reset-custom">Làm mới</a>
                                         </div>
                                     </div>
                                 </form>

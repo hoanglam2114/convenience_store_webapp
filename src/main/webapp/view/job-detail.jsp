@@ -79,21 +79,14 @@
                                 </div>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <button class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center">
-                                    <i class="fas fa-paper-plane mr-2"></i> Ứng tuyển ngay
-                                </button>
+                                
                                 <button class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-md hover:bg-gray-100">
                                     <i class="far fa-heart text-gray-500"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap gap-2 mt-4">
-                            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">Full-time</span>
-                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Lương: $1000 - $1500</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Kinh nghiệm: 2+ năm</span>
-                            <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">Remote</span>
-                        </div>
+                        
                     </div>
 
                     <!-- Job Description -->
@@ -197,12 +190,7 @@
                             </div>
 
 
-                            <!--                            <div class="mb-6">
-                                                            <label for="message" class="block text-gray-700 font-medium mb-2">Thư giới thiệu</label>
-                                                            <textarea id="message" name="message" rows="4" 
-                                                                      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                                                                      placeholder="Giới thiệu ngắn gọn về bản thân và lý do ứng tuyển..."></textarea>
-                                                        </div>-->
+   
 
                             <div class="flex items-center mb-4">
                                 <input id="agree-terms" type="checkbox" required 

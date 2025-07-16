@@ -21,7 +21,13 @@
         <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
 
 
-
+        <script type="text/javascript">
+            function doDelete(id) {
+                if (confirm("Bạn có muốn xóa khuyến mãi có mã là " + id + " không ?")) {
+                    window.location = "DeletePromotion?promotion_id=" + id;
+                }
+            }
+        </script>
 
 
 
@@ -110,9 +116,9 @@
                                                 <form method="post" action="PromotionManage" class="row">
                                                     <div class="col-md-2">
                                                         <input  type="text" class="form-control"
-                                                               value="${promotionCode}"
-                                                               name="promotionCode"
-                                                               placeholder="Tìm theo mã">
+                                                                value="${promotionCode}"
+                                                                name="promotionCode"
+                                                                placeholder="Tìm theo mã">
                                                     </div>
                                                     <div class="col-md-2">
                                                         <input type="text" class="form-control" 
@@ -178,8 +184,9 @@
                                                     </td>
                                                     <td>
                                                         <a class="btn btn-sm btn-info btn-action"
-                                                             href="UpdatePromotion?id=${promotion.promotion_id}"><i class="fas fa-edit"></i></a>
-                                                        <button class="btn btn-sm btn-danger btn-action"><i class="fas fa-trash-alt"></i></button>
+                                                           href="UpdatePromotion?id=${promotion.promotion_id}"><i class="fas fa-edit"></i></a>
+                                                        <a class="btn btn-sm btn-danger btn-action"
+                                                           onclick="doDelete(${promotion.getPromotion_id()})" ><i class="fas fa-trash-alt"></i></a>
                                                     </td>
                                                 </tr>
 

@@ -6,7 +6,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Danh sách sản phẩm</title>
+        <title>Danh sách việc làm</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <!-- Sneat CSS -->
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
@@ -61,13 +61,13 @@
                                     <div class="col-md-3">
                                         <input type="text" class="form-control" name="title" placeholder="Job Title">
                                     </div>
-                
-                                   
+
+
                                     <div class="col-md-2">
                                         <input type="date" class="form-control" name="deadline" placeholder="Deadline">
                                     </div>
 
-                                    
+
                                     <div class="col-md-2">
                                         <select class="form-select" name="jobstatus">
                                             <option value="All Status" ${"All Status".equals(jobstatus) ? "selected" : ""}>All Status</option>
@@ -76,8 +76,11 @@
                                             </c:forEach>
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
-                                        <button type="submit" class="btn btn-primary">Search</button>
+                                    <div class="col-md-4 d-flex align-items-start gap-2">
+                                        <!-- Nút Tìm kiếm -->
+                                        <button type="submit" class="btn btn-primary ">Tìm kiếm</button>
+
+                                        <!-- Nút Làm mới -->
                                         <a href="ListJob" class="btn btn-outline-secondary ">Làm mới</a>
                                     </div>
                                 </form>

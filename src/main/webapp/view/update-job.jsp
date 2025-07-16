@@ -62,7 +62,7 @@
                                             <select class="form-select" name="jobtype">
                                                 <c:forEach items="${jobtypes}" var="jobtypes">
                                                     <option value="${jobtypes.getId()}"
-                                                         <c:if test="${jobtypes.getId() == j.jobTypes.getId()}">selected</c:if>    
+                                                            <c:if test="${jobtypes.getId() == j.jobTypes.getId()}">selected</c:if>    
                                                             >${jobtypes.getName()}</option>
                                                 </c:forEach>
 
@@ -70,20 +70,36 @@
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Tên công việc</label>
-                                            <input type="text" class="form-control" value="${j.getTitle()}"
-                                                   name="title" placeholder="Enter title" >
+                                            <input type="text" value="${j.getTitle()}"
+                                                   name="title" placeholder="Enter title" 
+                                                   class="form-control ${not empty errorTitle ? 'is-invalid' : ''}"                                        
+                                                   value="${param.title != null ? param.title : ''}"
+                                                   required/>
+                                            <c:if test="${not empty errorTitle}">
+                                                <div class="invalid-feedback">
+                                                    ${errorTitle}
+                                                </div>
+                                            </c:if>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Mô tả</label>
-                                            <input type="text" class="form-control" value="${j.getDescription()}"
-                                                   name="description" placeholder="Enter description">
+                                            <input type="text" value="${j.getDescription()}"
+                                                   name="description" placeholder="Enter description"
+                                                   class="form-control ${not empty errorDes ? 'is-invalid' : ''}"                                        
+                                                   value="${param.description != null ? param.description : ''}"
+                                                   required/>
+                                            <c:if test="${not empty errorDes}">
+                                                <div class="invalid-feedback">
+                                                    ${errorDes}
+                                                </div>
+                                            </c:if>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Địa điểm làm việc</label>
                                             <select class="form-select" name="location">
                                                 <c:forEach items="${joblocation}" var="joblocation">
                                                     <option value="${joblocation.getId()}"
-                                                        <c:if test="${joblocation.getId() == j.jobLocation.getId()}">selected</c:if>    
+                                                            <c:if test="${joblocation.getId() == j.jobLocation.getId()}">selected</c:if>    
                                                             >${joblocation.getName()}</option>
                                                 </c:forEach>
 
@@ -95,8 +111,8 @@
                                             <select class="form-select" name="jobcate" >
                                                 <c:forEach items="${jobcate}" var="jobcate">
                                                     <option value="${jobcate.getId()}"
-                                                        <c:if test="${jobcate.getId() == j.jobCategories.getId()}">selected</c:if>  
-                                                        >${jobcate.getName()}</option>
+                                                            <c:if test="${jobcate.getId() == j.jobCategories.getId()}">selected</c:if>  
+                                                            >${jobcate.getName()}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -115,7 +131,11 @@
                                                 </c:forEach>
                                             </select>
                                         </div>
-
+                                        <c:if test="${not empty errorMessage}">
+                                            <div class="alert alert-danger">
+                                                ${errorMessage}
+                                            </div>
+                                        </c:if>
 
                                         <div class="col-12 d-flex gap-2">
                                             <button type="submit" class="btn btn-primary-custom">Cập nhật công việc mới</button> 

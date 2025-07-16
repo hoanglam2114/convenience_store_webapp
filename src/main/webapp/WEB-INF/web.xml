@@ -128,6 +128,14 @@
         <servlet-name>AddJobCustomerServlet</servlet-name>
         <servlet-class>controller.AddJobCustomerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeletePromotionServlet</servlet-name>
+        <servlet-class>controller.DeletePromotionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListJobApplicationServlet</servlet-name>
+        <servlet-class>controller.ListJobApplicationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListAccountServlet</servlet-name>
         <url-pattern>/ListAccountServlet</url-pattern>
@@ -219,6 +227,14 @@
     <servlet-mapping>
         <servlet-name>AddJobCustomerServlet</servlet-name>
         <url-pattern>/AddJobCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeletePromotionServlet</servlet-name>
+        <url-pattern>/DeletePromotion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListJobApplicationServlet</servlet-name>
+        <url-pattern>/ListJobApplication</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>

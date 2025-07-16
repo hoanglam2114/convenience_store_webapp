@@ -76,7 +76,7 @@ public class AddNewJobServlet extends HttpServlet {
         session.setAttribute("joblocation", jl);
         
         List<String>status = jd.getStatuses();
-        request.setAttribute("statuses", status);
+        session.setAttribute("statuses", status);
 
         request.getRequestDispatcher("/view/add-job.jsp").forward(request, response);
     }
@@ -86,12 +86,14 @@ public class AddNewJobServlet extends HttpServlet {
             throws ServletException, IOException {
         JobDAO jd = new JobDAO();
         String jobtype_raw = request.getParameter("jobtype");
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
+        String title = request.getParameter("title").trim();
+        String description = request.getParameter("description").trim();
         String location_raw = request.getParameter("location");
         String jobcate_raw = request.getParameter("jobcate");
         String deadline_raw = request.getParameter("deadline");
         String status = request.getParameter("status");
+        
+        
         
         
         int jobtype = Integer.parseInt(jobtype_raw);
@@ -103,11 +105,37 @@ public class AddNewJobServlet extends HttpServlet {
         
         LocalDate deadline = LocalDate.parse(deadline_raw);
         LocalDateTime createdAt = LocalDateTime.now();
+        
+         LocalDate currentDate = LocalDate.now();
+        
+        boolean hasError = false;
+
+        // Validate mã khuyến mãi
+        if (title.startsWith(" ") || title.length() > 40 || !title.matches("^[\\p{L}0-9 ]+$")) {
+            request.setAttribute("errorTitle", "Tên công việc không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
+            hasError = true;
+        }
+
+        if ((description.startsWith(" ") || description.length() > 300)) {
+            request.setAttribute("errorDes", "Miêu tả không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
+            hasError = true;
+        }
+
+         // Trả về nếu có lỗi
+        if (hasError) {
+            request.getRequestDispatcher("/view/add-job.jsp").forward(request, response);
+            return;
+        }
+        
+        if (deadline.isBefore(currentDate)) {
+            request.setAttribute("errorMessage", "Ngày ứng tuyển nộp hồ sơ phải sau ngày hiện tại.");
+            request.getRequestDispatcher("/view/add-job.jsp").forward(request, response);
+        }else{
         Job job = new Job(title, jt, jl, deadline,
                 createdAt, jc, description, status);
         jd.insertJob(job);
         response.sendRedirect("ListJob");
-        
+        }
         
     }
 
