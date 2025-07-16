@@ -170,7 +170,7 @@ public class AddProductsServlet extends HttpServlet {
         }
 
        
-            Products s = pd.getProductByName(namePro);
+//            Products s = pd.getProductByName(namePro);
           
                 int cate = Integer.parseInt(catePro);
                 ProductCategories ci = pcd.getCategoryById(cate);

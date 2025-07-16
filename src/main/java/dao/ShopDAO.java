@@ -62,6 +62,33 @@ public class ShopDAO extends DBContext {
         return shop;
     }
     
+        public Shop getShopId2(int shopId) {
+        Shop shop = null;
+        String sql = "SELECT * FROM ShopDetails WHERE shop_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, shopId);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                shop = new Shop(rs.getInt("shop_id"), 
+                        rs.getString("shop_name"), 
+                        rs.getString("shop_address"),
+                        rs.getString("shop_phone"), 
+                        rs.getString("shop_email"), 
+                        rs.getString("shop_opening_hours"),
+                        rs.getString("shop_logo"),
+                        rs.getString("location_map")
+                        );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching employee: " + e.getMessage());
+        }
+        return shop;
+    }
+    
+    
+    
+    
     public void updateShop(Shop shop) {
         String sql = "UPDATE ShopDetails SET shop_name = ?, shop_address = ?, shop_phone = ?,  shop_email = ?, shop_opening_hours = ?, shop_logo = ? WHERE shop_id = ?";
         try {
@@ -91,7 +118,7 @@ public class ShopDAO extends DBContext {
     }
     
     public void insertShop(String shopName, String shopPhone, String shopAddress, String shopEmail, String shopOpeningHours, String shopLogo){
-        String sql = "insert into ShopDetails values(?, ?, ?, ?, ?, ?);";
+        String sql = "insert into ShopDetails (shop_name, shop_phone, shop_address, shop_email, shop_opening_hours, shop_logo) values(?, ?, ?, ?, ?, ?);";
         try{
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, shopName);
@@ -200,9 +227,7 @@ public class ShopDAO extends DBContext {
    
     public static void main(String[] args) {
         ShopDAO s = new ShopDAO();
-        List<Shop> list = s.getAll();
-        for (Shop shop : list) {
-            System.out.println(shop);
+       
+        System.out.println( s.getShopId2(1));
         }
     }
-}

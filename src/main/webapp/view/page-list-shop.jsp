@@ -129,7 +129,8 @@
                                                 </td>
                                                 <td>
                                                     <a href="UpdateShop?shop_id=${s.getShopId()}" class="btn btn-sm btn-info mb-1">Sửa</a><br />
-                                                    <a href="#" onclick="doDelete(${s.getShopId()})" class="btn btn-sm btn-danger">Xóa</a>
+                                                    <a href="#" onclick="doDelete(${s.getShopId()})" class="btn btn-sm btn-danger">Xóa</a><br />
+                                                    <a href="ShopDetail?shop_id=${s.getShopId()}" class="btn btn-sm btn-info mb-1">Chi tiết</a>
                                                 </td>
                                             </tr>
                                         </c:forEach>

@@ -18,6 +18,8 @@ public class ShopAssignment {
     private String employeePhone;
     private String employeeAddress;
     private String shopName;
+
+   
     private String shopAddress;
     private String shopPhone;
     private String shopEmail;
@@ -173,5 +175,9 @@ public class ShopAssignment {
     
     public void setShopOpeningHours(String shopOpeningHours) {
         this.shopOpeningHours = shopOpeningHours;
+    }
+     @Override
+    public String toString() {
+        return "ShopAssignment{" + "assignmentId=" + assignmentId + ", employeeId=" + employeeId + ", shopId=" + shopId + ", assignmentRole=" + assignmentRole + ", startDate=" + startDate + ", endDate=" + endDate + ", isActive=" + isActive + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", employeeName=" + employeeName + ", employeePhone=" + employeePhone + ", employeeAddress=" + employeeAddress + ", shopName=" + shopName + ", shopAddress=" + shopAddress + ", shopPhone=" + shopPhone + ", shopEmail=" + shopEmail + ", shopOpeningHours=" + shopOpeningHours + '}';
     }
 }
