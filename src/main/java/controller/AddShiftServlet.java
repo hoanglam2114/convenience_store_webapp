@@ -113,12 +113,33 @@ public class AddShiftServlet extends HttpServlet {
             }
             if (duration > 12 * 60) {
                 request.setAttribute("error", "Thời lượng ca làm không được vượt quá 12 tiếng.");
+                request.setAttribute("shiftName", name);
+                request.setAttribute("startTime", request.getParameter("startTime"));
+                request.setAttribute("endTime", request.getParameter("endTime"));
+                request.setAttribute("selectedDays", workingDays);
+                request.setAttribute("description", description);
                 request.getRequestDispatcher("view/shift-add.jsp").forward(request, response);
                 return;
             }
 
             if (!name.matches("[\\p{L}\\d\\s]+")) {
                 request.setAttribute("error", "Tên ca không được chứa ký tự đặc biệt.");
+                request.setAttribute("shiftName", name);
+                request.setAttribute("startTime", request.getParameter("startTime"));
+                request.setAttribute("endTime", request.getParameter("endTime"));
+                request.setAttribute("selectedDays", workingDays);
+                request.setAttribute("description", description);
+                request.getRequestDispatcher("view/shift-add.jsp").forward(request, response);
+                return;
+            }
+
+            if (shiftDAO.isOverlappingShift(shift)) {
+                request.setAttribute("error", "Ca làm bị trùng với ca đã có trong cùng ngày.");
+                request.setAttribute("shiftName", name);
+                request.setAttribute("startTime", request.getParameter("startTime"));
+                request.setAttribute("endTime", request.getParameter("endTime"));
+                request.setAttribute("selectedDays", workingDays);
+                request.setAttribute("description", description);
                 request.getRequestDispatcher("view/shift-add.jsp").forward(request, response);
                 return;
             }

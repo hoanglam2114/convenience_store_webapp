@@ -4,19 +4,23 @@
  */
 package controller;
 
+import dao.CouponDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.sql.Date;
+import java.util.List;
 
 /**
  *
  * @author nguye
  */
-public class VerifyMailServlet extends HttpServlet {
+@WebServlet(name = "CouponAddServlet", urlPatterns = {"/couponAdd"})
+public class CouponAddServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +39,10 @@ public class VerifyMailServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet VerifyMailServlet</title>");
+            out.println("<title>Servlet CouponAddServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet VerifyMailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CouponAddServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,7 +60,10 @@ public class VerifyMailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("view/auth-verify-mail.jsp").forward(request, response);
+        CouponDAO couponDAO = new CouponDAO();
+        List<String> statuses = couponDAO.getStatuses();
+        request.setAttribute("statuses", statuses);
+        request.getRequestDispatcher("view/coupon-add.jsp").forward(request, response);
     }
 
     /**
@@ -70,28 +77,29 @@ public class VerifyMailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String authcode = (String) session.getAttribute("authcode");
-        String path = (String) session.getAttribute("destination");
-        String code = request.getParameter("activatecode");
+        String code = request.getParameter("code");
+        Double discount = Double.valueOf(request.getParameter("discountPercentage"));
+        Date startDate = Date.valueOf(request.getParameter("startDate"));
+        Date endDate = Date.valueOf(request.getParameter("endDate"));
+        String status = request.getParameter("status");
+        CouponDAO couponDAO = new CouponDAO();
+        if (couponDAO.isCouponCodeExist(code)) {
+            List<String> statuses = couponDAO.getStatuses();
+            request.setAttribute("statuses", statuses);
 
-        if (path.trim().equalsIgnoreCase("register")) {
+            // GIỮ LẠI DỮ LIỆU ĐÃ NHẬP
+            request.setAttribute("input_code", code);
+            request.setAttribute("input_discount", discount);
+            request.setAttribute("input_startDate", startDate.toString());
+            request.setAttribute("input_endDate", endDate.toString());
+            request.setAttribute("input_status", status);
 
-            if (code.trim().equals(authcode)) {
-                response.sendRedirect("changePassword");
-            } else {
-                request.setAttribute("error", "ErrorCode, please re-enter the activate code!");
-                request.getRequestDispatcher("view/auth-verify-mail.jsp").forward(request, response);
-            }
-        } else if (path.trim().equalsIgnoreCase("forgotpass")) {
-            if (code.trim().equals(authcode)) {
-                response.sendRedirect("ResetPassword");
-            } else {
-                request.setAttribute("error", "ErrorCode, please re-enter the activate code!");
-                request.getRequestDispatcher("view/auth-verify-mail.jsp").forward(request, response);
-            }
+            request.setAttribute("error", "Mã coupon đã tồn tại!");
+            request.getRequestDispatcher("view/coupon-add.jsp").forward(request, response);
+            return;
         }
-
+        couponDAO.createCoupon(code, discount, startDate, endDate, status);
+        response.sendRedirect("couponManage");
     }
 
     /**

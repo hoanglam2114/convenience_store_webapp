@@ -115,6 +115,16 @@
                     </a>
                 </li>
                 <li class="menu-item">
+                    <a href="shift-assignment" class="menu-link">
+                        <div data-i18n="Assignment Management">Shift Assignment</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="employee-schedule" class="menu-link">
+                        <div data-i18n="Assignment Management">Employee Schedule</div>
+                    </a>
+                </li>
+                <li class="menu-item">
                     <a href="ListShift" class="menu-link">
                         <div data-i18n="Shift Management">Shift Management</div>
                     </a>
@@ -191,6 +201,7 @@
                 </li>
             </ul>
         </li>
+                        
         <!-- Notification -->
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">

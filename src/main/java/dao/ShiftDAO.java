@@ -159,6 +159,43 @@ public class ShiftDAO extends DBContext {
     }
     return 0;
 }
+    
+    public boolean isOverlappingShift(Shift newShift) {
+    String sql = "SELECT * FROM Shifts";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            LocalTime existingStart = rs.getTime("start_time").toLocalTime();
+            LocalTime existingEnd = rs.getTime("end_time").toLocalTime();
+            String days = rs.getString("working_days");
+
+            List<String> existingDays = (days != null && !days.isBlank())
+                    ? Arrays.asList(days.split(","))
+                    : List.of();
+
+            // Kiểm tra trùng ngày
+            for (String day : newShift.getWorkingDays()) {
+                if (existingDays.contains(day)) {
+                    // Kiểm tra giao nhau thời gian
+                    if (isTimeOverlap(newShift.getStartTime(), newShift.getEndTime(), existingStart, existingEnd)) {
+                        return true;
+                    }
+                }
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+private boolean isTimeOverlap(LocalTime start1, LocalTime end1, LocalTime start2, LocalTime end2) {
+    // Xử lý nếu có ca đêm (qua 0h)
+    if (end1.isBefore(start1)) end1 = end1.plusHours(24);
+    if (end2.isBefore(start2)) end2 = end2.plusHours(24);
+
+    return !start1.isAfter(end2) && !start2.isAfter(end1);
+}
 
 
 }

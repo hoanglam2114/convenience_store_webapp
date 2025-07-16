@@ -95,14 +95,17 @@ public class LoginServlet extends HttpServlet {
         
         if (!EmailValidator.isValidEmail(email)) {
             request.setAttribute("error", "Email không hợp lệ!");
+            request.setAttribute("enteredEmail", email);
             request.getRequestDispatcher("view/auth-sign-in.jsp").forward(request, response);
             return;
         }      
         if (account == null) {
             request.setAttribute("mess", "Sai tên đăng nhập hoặc mật khẩu!");
+            request.setAttribute("enteredEmail", email);
             request.getRequestDispatcher("view/auth-sign-in.jsp").forward(request, response);
         } else if (account != null && account.getStatus_id() == 2) {
             request.setAttribute("mess", "Tài khoản của bạn đã bị vô hiệu hóa!");
+            request.setAttribute("enteredEmail", email);
             request.getRequestDispatcher("view/auth-sign-in.jsp").forward(request, response);
         } else if (account != null && account.getStatus_id() == 1) {
             HttpSession session = request.getSession();

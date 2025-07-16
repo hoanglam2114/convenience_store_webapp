@@ -5,7 +5,7 @@
 
 package controller;
 
-import dao.AccountDAO;
+import dao.CouponDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,13 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Date;
+import java.util.List;
+import model.Coupons;
 
 /**
  *
  * @author nguye
  */
-@WebServlet(name="DeleteAccountServlet", urlPatterns={"/DeleteAccountServlet"})
-public class DeleteAccountServlet extends HttpServlet {
+@WebServlet(name="CouponUpdateServlet", urlPatterns={"/couponUpdate"})
+public class CouponUpdateServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +39,10 @@ public class DeleteAccountServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteAccountServlet</title>");  
+            out.println("<title>Servlet CouponUpdateServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteAccountServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CouponUpdateServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,11 +59,13 @@ public class DeleteAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String id = request.getParameter("id");
-        int deleteId = Integer.parseInt(id);
-        AccountDAO dao  = new AccountDAO();
-        dao.deleteAccount(deleteId);
-        response.sendRedirect("ListAccountServlet");
+        CouponDAO couponDAO = new CouponDAO();
+        int id = Integer.parseInt(request.getParameter("id"));
+        Coupons c = couponDAO.getCouponById(id);
+        List<String> statuses = couponDAO.getStatuses();
+        request.setAttribute("coupon", c);
+        request.setAttribute("statuses", statuses);
+        request.getRequestDispatcher("view/coupon-update.jsp").forward(request, response);
     } 
 
     /** 
@@ -73,7 +78,33 @@ public class DeleteAccountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+       int id = Integer.parseInt(request.getParameter("couponId"));
+        String code = request.getParameter("code");
+        Double discount = Double.valueOf(request.getParameter("discountPercentage"));
+        Date startDate = Date.valueOf(request.getParameter("startDate"));
+        Date endDate = Date.valueOf(request.getParameter("endDate"));
+        String status = request.getParameter("status");
+        CouponDAO couponDAO = new CouponDAO();
+        if (couponDAO.isCouponCodeExistForUpdate(code, id)) {
+        List<String> statuses = couponDAO.getStatuses();
+
+        // GIỮ LẠI DỮ LIỆU ĐÃ NHẬP
+        request.setAttribute("input_id", id);
+        request.setAttribute("input_code", code);
+        request.setAttribute("input_discount", discount);
+        request.setAttribute("input_startDate", startDate.toString());
+        request.setAttribute("input_endDate", endDate.toString());
+        request.setAttribute("input_status", status);
+
+        request.setAttribute("statuses", statuses);
+        request.setAttribute("error", "Mã coupon đã tồn tại!");
+
+        // forward lại trang update, giữ dữ liệu đã nhập
+        request.getRequestDispatcher("view/coupon-update.jsp").forward(request, response);
+        return;
+    }
+        couponDAO.updateCoupon(code, discount, startDate, endDate, status, id);
+        response.sendRedirect("couponManage");
     }
 
     /** 
