@@ -31,9 +31,6 @@ public class ProductsDAO extends DBContext {
                 + "       [weight_unit_id],\n"
                 + "       [supplier_id],\n"
                 + "       [product_image],\n"
-                + "       [manufacture_date],\n"
-                + "       [expiration_date],\n"
-                + "       [batch]\n"
                 + " from Products\n";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -51,9 +48,6 @@ public class ProductsDAO extends DBContext {
                 p.setWeightUnit(wu);
                 Suppliers sup = getSupById(rs.getInt("supplier_id"));
                 p.setSuppliers(sup);
-                p.setManufactureDate(rs.getDate("manufacture_date").toLocalDate());
-                p.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                p.setBatch(rs.getInt("batch"));
                 listProducts.add(p);
             }
         } catch (SQLException e) {
@@ -531,10 +525,7 @@ public class ProductsDAO extends DBContext {
 //        System.out.println(count);
 //        ProductsDAO dao = new ProductsDAO();
 //
-        List<Products> list = dao.pagingProducts(1);
-        for (Products o : list) {
-            System.out.println(o);
-        }
+        System.out.println(dao.getAllProduct());
 
     }
 

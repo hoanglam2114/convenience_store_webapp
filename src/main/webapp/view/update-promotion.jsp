@@ -81,41 +81,62 @@
                                 <h5 class="title-header">Cập nhật khuyến mãi</h5>
                                 <a href="PromotionManage"  class="btn btn-info"><i class="bx bx-arrow-back me-1"></i>Trở về danh sách sản phẩm</a>
                             </div>
-
+                            <c:set var="p"   value="${promotion}" />
                             <form action="UpdatePromotion" method="post" class="row g-4">
-                                <input type="hidden" name="promotionId" value="${promotion.promotion_id}" />
+                                <input type="hidden" name="promotionId" value="${p.promotion_id}" />
                                 <div class="col-md-6">
                                     <label for="code" class="form-label">Mã</label>
-                                    <input type="text" class="form-control" name="code" value="${promotion.promotion_name}"
-                                           placeholder="Enter code">
+                                    <input type="text"  class="form-control ${not empty errorCode ? 'is-invalid' : ''}"  
+                                           name="code" value="${p.promotion_name}"
+                                           placeholder="Enter code"
+                                           value="${param.code != null ? param.code : ''}"
+                                           />
+                                    <c:if test="${not empty errorCode}">
+                                        <div class="invalid-feedback">
+                                            ${errorCode}
+                                        </div>
+                                    </c:if>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="description" class="form-label">Mô tả</label>
-                                    <input type="text" class="form-control" name="description" value="${promotion.description}"
-                                           placeholder="Enter description">
+                                    <input type="text" class="form-control ${not empty errorDes ? 'is-invalid' : ''}"   
+                                           name="description" value="${p.description}"
+                                           value="${param.description != null ? param.description : ''}"
+                                           />
+                                    <c:if test="${not empty errorDes}">
+                                        <div class="invalid-feedback">
+                                            ${errorDes}
+                                        </div>
+                                    </c:if>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="startDate" class="form-label">Ngày bắt đầu</label>
-                                    <input type="date" class="form-control" name="startDate" value="${promotion.start_date}">
+                                    <input type="date" class="form-control" name="startDate" value="${p.start_date}">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="endDate" class="form-label">Ngày kết thúc</label>
-                                    <input type="date" class="form-control" name="endDate" value="${promotion.end_date}">
+                                    <input type="date" class="form-control" name="endDate" value="${p.end_date}">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="discount" class="form-label">Phần trăm khuyến mãi(%)</label>
-                                    <input type="number" class="form-control" name="discountPercentage" value="${promotion.discount_value}"
-                                           placeholder="Enter discount %">
+                                    <input type="number" class="form-control" name="discountPercentage" value="${p.discount_value}"
+                                           placeholder="Enter discount %" min="0" max="100" >
                                 </div>
                                 <div class="col-md-6">
                                     <label for="status" class="form-label">Trạng thái</label>
                                     <select class="form-select" name="status">
                                         <c:forEach items="${statuses}" var="status">
-                                                <option value="${status}" ${status.equalsIgnoreCase(promotion.status) ? 'selected' : ''}>${status}</option>
+                                            <option value="${status}" ${status.equalsIgnoreCase(p.status) ? 'selected' : ''}>${status}</option>
 
                                         </c:forEach>
                                     </select>
                                 </div>
+
+                                <c:if test="${not empty errorMessage}">
+                                    <div class="alert alert-danger">
+                                        ${errorMessage}
+                                    </div>
+                                </c:if>
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-confirm">Cập Nhật</button>
                                 </div>

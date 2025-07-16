@@ -170,7 +170,7 @@ public class AddProductsServlet extends HttpServlet {
         }
 
        
-            Products s = pd.getProductByName(namePro);
+//            Products s = pd.getProductByName(namePro);
           
                 int cate = Integer.parseInt(catePro);
                 ProductCategories ci = pcd.getCategoryById(cate);
@@ -184,21 +184,7 @@ public class AddProductsServlet extends HttpServlet {
                         ci, su, wu);
                 pd.insertPro(pNew);
                 response.sendRedirect("ListProduct");
-//            } else {
-//                int latest_batch = pd.getLatestBatchByName(namePro);
-//                int new_batch = latest_batch + 1;
-//                int price = Integer.parseInt(pricePro);
-//                int cate = Integer.parseInt(catePro);
-//                ProductCategories ci = pcd.getCategoryById(cate);
-//                int unit = Integer.parseInt(unitPro);
-//                WeightUnit wu = wud.getUnitById(unit);
-//                int supp = Integer.parseInt(suppPro);
-//                Suppliers su = sd.getSupById(supp);
-//
-//                Products pNew = new Products(namePro, price, img, barcode,
-//                        ci, su, wu);
-//                pd.insertPro(pNew);
-//                response.sendRedirect("ListProduct");
+
 
             
         }

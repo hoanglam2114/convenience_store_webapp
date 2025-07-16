@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.PromotionDAO;
+import dao.JobDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,16 +12,19 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import model.Promotion;
+import model.Job;
+import model.JobCategories;
+import model.JobLocation;
+import model.JobTypes;
 
 /**
  *
  * @author admin
  */
-public class UpdatePromotionServlet extends HttpServlet {
+public class AddNewJobServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +43,10 @@ public class UpdatePromotionServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdatePromotionServlet</title>");
+            out.println("<title>Servlet AddNewJobServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdatePromotionServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddNewJobServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,67 +65,80 @@ public class UpdatePromotionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        PromotionDAO promotionDAO = new PromotionDAO();
-        int id = Integer.parseInt(request.getParameter("id"));
-        Promotion c = promotionDAO.getPromotionById(id);
-        List<String> statuses = promotionDAO.getStatuses();
-        session.setAttribute("promotion", c);
-        session.setAttribute("statuses", statuses);
-        request.getRequestDispatcher("/view/update-promotion.jsp").forward(request, response);
+        JobDAO jd = new JobDAO();
+        List<JobTypes> jt = jd.getAllTypes();
+        session.setAttribute("jobtypes", jt);
+
+        List<JobCategories> jc = jd.getAllJobCategories();
+        session.setAttribute("jobcate", jc);
+
+        List<JobLocation> jl = jd.getAllJobLocation();
+        session.setAttribute("joblocation", jl);
+        
+        List<String>status = jd.getStatuses();
+        session.setAttribute("statuses", status);
+
+        request.getRequestDispatcher("/view/add-job.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         int id = Integer.parseInt(request.getParameter("promotionId"));
-        String code = request.getParameter("code").trim();
+        JobDAO jd = new JobDAO();
+        String jobtype_raw = request.getParameter("jobtype");
+        String title = request.getParameter("title").trim();
         String description = request.getParameter("description").trim();
-        Double discount = Double.valueOf(request.getParameter("discountPercentage"));
-        Date startDate = Date.valueOf(request.getParameter("startDate"));
-        Date endDate = Date.valueOf(request.getParameter("endDate"));
+        String location_raw = request.getParameter("location");
+        String jobcate_raw = request.getParameter("jobcate");
+        String deadline_raw = request.getParameter("deadline");
         String status = request.getParameter("status");
-        PromotionDAO promotionDAO = new PromotionDAO();
-  
         
-        LocalDate currentDate = LocalDate.now();
-
+        
+        
+        
+        int jobtype = Integer.parseInt(jobtype_raw);
+        JobTypes jt = jd.getTypesById(jobtype);
+        int location = Integer.parseInt(location_raw);
+        JobLocation jl = jd.getJobLocationById(location);
+        int jobcate = Integer.parseInt(jobcate_raw);
+        JobCategories jc = jd.getJobCategoriesById(jobcate);
+        
+        LocalDate deadline = LocalDate.parse(deadline_raw);
+        LocalDateTime createdAt = LocalDateTime.now();
+        
+         LocalDate currentDate = LocalDate.now();
+        
         boolean hasError = false;
 
         // Validate mã khuyến mãi
-        if (code.startsWith(" ") || code.length() > 40 || !code.matches("^[\\p{L}0-9 ]+$")) {
-            request.setAttribute("errorCode", "Mã khuyển mãi không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
+        if (title.startsWith(" ") || title.length() > 40 || !title.matches("^[\\p{L}0-9 ]+$")) {
+            request.setAttribute("errorTitle", "Tên công việc không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
             hasError = true;
         }
 
-        if (description.startsWith(" ") || description.length() > 70 || !description.matches("^[\\p{L}0-9 ]+$")) {
+        if ((description.startsWith(" ") || description.length() > 300)) {
             request.setAttribute("errorDes", "Miêu tả không hợp lệ. Không bắt đầu bằng dấu cách, không vượt quá 40 ký tự và không chứa ký tự đặc biệt.");
             hasError = true;
         }
 
-        // Trả về nếu có lỗi
+         // Trả về nếu có lỗi
         if (hasError) {
-            request.getRequestDispatcher("/view/update-promotion.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/add-job.jsp").forward(request, response);
             return;
         }
-
-        if (endDate.before(startDate)) {
-            request.setAttribute("errorMessage", "Ngày kết thúc phải sau ngày bắt đầu.");
-            request.getRequestDispatcher("/view/update-promotion.jsp").forward(request, response);
-        } else if (endDate.before(Date.valueOf(currentDate))) {
-            request.setAttribute("errorMessage", "Ngày kết thúc phải sau ngày hiện tại.");
-            request.getRequestDispatcher("/view/update-promotion.jsp").forward(request, response);
-        } else {
         
-        promotionDAO.updatePromotion(code, description, startDate, endDate, discount, status, id);
-        response.sendRedirect("PromotionManage");
+        if (deadline.isBefore(currentDate)) {
+            request.setAttribute("errorMessage", "Ngày ứng tuyển nộp hồ sơ phải sau ngày hiện tại.");
+            request.getRequestDispatcher("/view/add-job.jsp").forward(request, response);
+        }else{
+        Job job = new Job(title, jt, jl, deadline,
+                createdAt, jc, description, status);
+        jd.insertJob(job);
+        response.sendRedirect("ListJob");
         }
+        
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

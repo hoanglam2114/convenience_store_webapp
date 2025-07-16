@@ -17,6 +17,8 @@ public class Shop {
     private String shopOpeningHours;
     private String shopLogo;
 
+  
+    private String map;
     public Shop() {
     }
 
@@ -28,6 +30,16 @@ public class Shop {
         this.shopEmail = shopEmail;
         this.shopOpeningHours = shopOpeningHours;
         this.shopLogo = shopLogo;
+    }
+    public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo, String map) {
+        this.shopId = shopId;
+        this.shopName = shopName;
+        this.shopAddress = shopAddress;
+        this.shopPhone = shopPhone;
+        this.shopEmail = shopEmail;
+        this.shopOpeningHours = shopOpeningHours;
+        this.shopLogo = shopLogo;
+        this.map = map;
     }
 
     public int getShopId() {
@@ -84,9 +96,17 @@ public class Shop {
     public void setShopLogo(String shopLogo) {
         this.shopLogo = shopLogo;
     }
+    
+      public void setMap(String map) {
+        this.map = map;
+    }
+
+    public String getMap() {
+        return map;
+    }
      @Override
     public String toString() {
-        return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", shopAddress=" + shopAddress + ", shopPhone=" + shopPhone + ", shopEmail=" + shopEmail + ", shopOpeningHours=" + shopOpeningHours + ", shopLogo=" + shopLogo + '}';
+        return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", shopAddress=" + shopAddress + ", shopPhone=" + shopPhone + ", shopEmail=" + shopEmail + ", shopOpeningHours=" + shopOpeningHours + ", shopLogo=" + shopLogo + ", map=" + map + '}';
     }
 
 }

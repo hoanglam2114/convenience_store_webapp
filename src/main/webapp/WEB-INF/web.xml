@@ -100,6 +100,42 @@
         <servlet-name>EditOrderServlet</servlet-name>
         <servlet-class>controller.EditOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewShopDetailServlet</servlet-name>
+        <servlet-class>controller.ViewShopDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListJobServlet</servlet-name>
+        <servlet-class>controller.ListJobServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddNewJobServlet</servlet-name>
+        <servlet-class>controller.AddNewJobServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListJobForCustomerServlet</servlet-name>
+        <servlet-class>controller.ListJobForCustomerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FindJobServlet</servlet-name>
+        <servlet-class>controller.FindJobServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateJobServlet</servlet-name>
+        <servlet-class>controller.UpdateJobServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddJobCustomerServlet</servlet-name>
+        <servlet-class>controller.AddJobCustomerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeletePromotionServlet</servlet-name>
+        <servlet-class>controller.DeletePromotionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListJobApplicationServlet</servlet-name>
+        <servlet-class>controller.ListJobApplicationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListAccountServlet</servlet-name>
         <url-pattern>/ListAccountServlet</url-pattern>
@@ -163,6 +199,42 @@
     <servlet-mapping>
         <servlet-name>EditOrderServlet</servlet-name>
         <url-pattern>/editOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewShopDetailServlet</servlet-name>
+        <url-pattern>/ShopDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListJobServlet</servlet-name>
+        <url-pattern>/ListJob</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewJobServlet</servlet-name>
+        <url-pattern>/AddJob</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListJobForCustomerServlet</servlet-name>
+        <url-pattern>/ListJobCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FindJobServlet</servlet-name>
+        <url-pattern>/FindJob</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateJobServlet</servlet-name>
+        <url-pattern>/UpdateJob</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddJobCustomerServlet</servlet-name>
+        <url-pattern>/AddJobCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeletePromotionServlet</servlet-name>
+        <url-pattern>/DeletePromotion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListJobApplicationServlet</servlet-name>
+        <url-pattern>/ListJobApplication</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>

@@ -338,4 +338,12 @@ public class ShopAssignmentDAO extends DBContext {
             return false;
         }
     }
+    
+    
+    public static void main(String[] args) {
+        ShopAssignmentDAO sad = new ShopAssignmentDAO();
+        System.out.println(sad.getAssignmentsByShopId(1));
+    }
+    
+    
 }
