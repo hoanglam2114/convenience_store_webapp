@@ -31,9 +31,6 @@ public class ProductsDAO extends DBContext {
                 + "       [weight_unit_id],\n"
                 + "       [supplier_id],\n"
                 + "       [product_image],\n"
-                + "       [manufacture_date],\n"
-                + "       [expiration_date],\n"
-                + "       [batch]\n"
                 + " from Products\n";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
