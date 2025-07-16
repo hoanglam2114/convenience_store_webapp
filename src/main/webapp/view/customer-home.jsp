@@ -156,9 +156,9 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
-                                        <button class="btn btn-add-cart">
-                                            <i class="bi bi-cart-plus me-2"></i>Xem chi tiết
-                                        </button>
+                                        <a href="customer-product-detail?id=${p.id}" class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-eye me-1"></i> Xem chi tiết
+                                        </a>
                                     </div>
                                 </div>
                             </div>
