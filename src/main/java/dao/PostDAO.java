@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import model.Post;
+import model.PostSection;
+import model.Tag;
 
 public class PostDAO extends DBContext {
 
@@ -38,12 +40,12 @@ public class PostDAO extends DBContext {
     public Post getPostById(int id) {
         Post post = null;
         String sql = """
-            SELECT p.*, c.customer_name as customer_name, pi.image_url
-            FROM Posts p
-            JOIN Customers c ON p.user_id = c.customer_id
-            LEFT JOIN PostImages pi on p.id = pi.post_id
-            WHERE p.id = ? AND p.status = 'approved'
-        """;
+        SELECT p.*, c.customer_name as customer_name, pi.image_url
+        FROM Posts p
+        JOIN Customers c ON p.user_id = c.customer_id
+        LEFT JOIN PostImages pi on p.id = pi.post_id
+        WHERE p.id = ?
+    """;
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
@@ -397,4 +399,183 @@ public class PostDAO extends DBContext {
             e.printStackTrace();
         }
     }
+
+    public List<Tag> getAllTags() {
+        List<Tag> tags = new ArrayList<>();
+        String sql = "SELECT id, name FROM Tags";
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                tags.add(new Tag(rs.getInt("id"), rs.getString("name")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tags;
+    }
+
+    public void linkPostWithTag(int postId, int tagId) {
+        String sql = "INSERT INTO PostTags (post_id, tag_id) VALUES (?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, postId);
+            ps.setInt(2, tagId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Post> searchPosts(String keyword, String status, Date startDate, Date endDate, int offset, int limit) {
+        List<Post> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+                "SELECT p.*, c.customer_name AS customerName FROM Posts p "
+                + "JOIN Customers c ON p.user_id = c.customer_id WHERE 1=1"
+        );
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            sql.append(" AND p.title COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?");
+        }
+        if (status != null && !status.equalsIgnoreCase("all")) {
+            sql.append(" AND p.status = ?");
+        }
+        if (startDate != null) {
+            sql.append(" AND p.created_at >= ?");
+        }
+        if (endDate != null) {
+            sql.append(" AND p.created_at <= ?");
+        }
+
+        sql.append(" ORDER BY p.created_at DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
+        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            int i = 1;
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                ps.setString(i++, "%" + keyword + "%");
+            }
+            if (status != null && !status.equalsIgnoreCase("all")) {
+                ps.setString(i++, status);
+            }
+            if (startDate != null) {
+                ps.setDate(i++, new java.sql.Date(startDate.getTime()));
+            }
+            if (endDate != null) {
+                ps.setDate(i++, new java.sql.Date(endDate.getTime()));
+            }
+
+            ps.setInt(i++, offset);
+            ps.setInt(i, limit);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post();
+                post.setId(rs.getInt("id"));
+                post.setTitle(rs.getString("title"));
+                post.setStatus(rs.getString("status"));
+                post.setCreatedAt(rs.getTimestamp("created_at"));
+                post.setUserId(rs.getInt("user_id"));
+                post.setUserName(rs.getString("customerName"));
+                list.add(post);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int countFilteredPosts(String keyword, String status, Date startDate, Date endDate) {
+        int total = 0;
+        StringBuilder sql = new StringBuilder(
+                "SELECT COUNT(*) FROM Posts p JOIN Customers c ON p.user_id = c.customer_id WHERE 1=1"
+        );
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            sql.append(" AND p.title COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?");
+        }
+        if (status != null && !status.equalsIgnoreCase("all")) {
+            sql.append(" AND p.status = ?");
+        }
+        if (startDate != null) {
+            sql.append(" AND p.created_at >= ?");
+        }
+        if (endDate != null) {
+            sql.append(" AND p.created_at <= ?");
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            int i = 1;
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                ps.setString(i++, "%" + keyword + "%");
+            }
+            if (status != null && !status.equalsIgnoreCase("all")) {
+                ps.setString(i++, status);
+            }
+            if (startDate != null) {
+                ps.setDate(i++, new java.sql.Date(startDate.getTime()));
+            }
+            if (endDate != null) {
+                ps.setDate(i++, new java.sql.Date(endDate.getTime()));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    public void updatePostStatus(int postId, String status) {
+        String sql = "UPDATE Posts SET status = ? WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ps.setInt(2, postId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Post> getAllPendingPosts() {
+        List<Post> list = new ArrayList<>();
+        String sql = "SELECT p.*, c.customer_name AS userName FROM Posts p JOIN Customers c ON p.user_id = c.customer_id WHERE p.status = 'pending' ORDER BY p.created_at DESC";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Post post = new Post();
+                post.setId(rs.getInt("id"));
+                post.setTitle(rs.getString("title"));
+                post.setCreatedAt(rs.getTimestamp("created_at"));
+                post.setStatus(rs.getString("status"));
+                post.setUserId(rs.getInt("user_id"));
+                post.setUserName(rs.getString("userName"));
+                list.add(post);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public void insertPostSection(PostSection section) {
+        String sql = "INSERT INTO PostSection (post_id, section_title, section_content, section_image_url, sort_order) "
+                + "VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, section.getPostId());
+            ps.setString(2, section.getSectionTitle());
+            ps.setString(3, section.getSectionContent());
+            ps.setString(4, section.getSectionImageUrl()); // Có thể null nếu không có ảnh
+            ps.setInt(5, section.getSortOrder());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

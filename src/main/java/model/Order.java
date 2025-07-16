@@ -84,7 +84,7 @@ public class Order {
         return orderTotalAmount;
     }
 
-    public void setOrderTotalAmount(int orderTotalAmount) {
+    public void setOrderTotalAmount(double orderTotalAmount) {
         this.orderTotalAmount = orderTotalAmount;
     }
 

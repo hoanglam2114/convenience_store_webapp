@@ -34,7 +34,11 @@
                     <div class="bg-blue-600 text-white p-2 rounded-lg mr-3">
                         <i class="fas fa-store text-xl"></i>
                     </div>
-                    <h1 class="text-2xl font-bold text-gray-800">CONVENMA <span class="text-green-600">BLOG</span></h1>
+                    <a href="${pageContext.request.contextPath}/blog">
+                        <h1 class="text-2xl font-bold text-gray-800 cursor-pointer hover:opacity-80 transition">
+                            <span class="text-blue-600">BLOG</span>
+                        </h1>
+                    </a>
                 </div>
                 <nav class="hidden md:block">
                     <ul class="flex space-x-8">
