@@ -136,6 +136,10 @@
         <servlet-name>ListJobApplicationServlet</servlet-name>
         <servlet-class>controller.ListJobApplicationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FindJobApplicationServlet</servlet-name>
+        <servlet-class>controller.FindJobApplicationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListAccountServlet</servlet-name>
         <url-pattern>/ListAccountServlet</url-pattern>
@@ -235,6 +239,10 @@
     <servlet-mapping>
         <servlet-name>ListJobApplicationServlet</servlet-name>
         <url-pattern>/ListJobApplication</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FindJobApplicationServlet</servlet-name>
+        <url-pattern>/FindJobApplication</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>
