@@ -193,6 +193,10 @@
         <servlet-name>ShiftDetailServlet</servlet-name>
         <url-pattern>/ShiftDetailServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>FindJobApplicationServlet</servlet-name>
+        <servlet-class>controller.FindJobApplicationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListAccountServlet</servlet-name>
         <url-pattern>/ListAccountServlet</url-pattern>
@@ -344,6 +348,10 @@
     <servlet-mapping>
         <servlet-name>GetPostDetailServlet</servlet-name>
         <url-pattern>/get-post-detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FindJobApplicationServlet</servlet-name>
+        <url-pattern>/FindJobApplication</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>

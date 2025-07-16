@@ -108,14 +108,14 @@ public class AddJobCustomerServlet extends HttpServlet {
 
         LocalDate dateofbirth = LocalDate.parse(dateofbirth_raw);
         LocalDate interviewdate = LocalDate.parse(interviewdate_raw);
-
+  
         JobApplications ja = new JobApplications(name, email, phone, dateofbirth,
                 gd, address, da, interviewdate, sa);
 
         jad.insertJobApplication(ja);
 
         response.sendRedirect("ListJobCustomer");
-
+        
     }
 
     @Override

@@ -31,21 +31,23 @@
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div>
-                                <h4 class="fw-bold">Quản lý tuyển dụng</h4>
-                                <span class="text-muted">Quản lý danh sách các vị trí tuyển dụng</span>
+                                <h4 class="fw-bold">Danh sách người ứng tuyển</h4>
+                                <span class="text-muted">Màn hình hiển thị danh sách thông tin người ứng tuyển</span>
                             </div>
                           
                         </div>
 
                         <div class="card p-4">
                             <div class="row g-3 mb-3">
+                                <form action="FindJobApplication"  method="get">
                                 <div class="d-flex  align-items-center gap-2 mb-2">
-                                    <input style="width: 300px" type="text" class="form-control" name="namePro" placeholder="Tìm kiếm theo tên" />
+                                    <input style="width: 300px" type="text" class="form-control" name="name" placeholder="Tìm kiếm theo tên" />
                                     <button style="width: 120px"  type="submit" class="btn btn-primary me-2"><i ></i> Tìm kiếm</button>
-                                    <a style="width: 120px" href="ListProduct" class="btn btn-primary ">
+                                    <a style="width: 120px" href="ListJobApplication" class="btn btn-primary ">
                                         <i ></i> Làm mới
                                     </a>
                                 </div>
+                                </form>
                             </div>
 
                             <div class="table-responsive">
