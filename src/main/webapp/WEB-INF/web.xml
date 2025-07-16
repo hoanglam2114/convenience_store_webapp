@@ -140,10 +140,6 @@
         <servlet-name>ImageServlet</servlet-name>
         <servlet-class>controller.ImageServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>ShiftDetailServlet</servlet-name>
-        <url-pattern>/ShiftDetailServlet</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>ViewShopDetailServlet</servlet-name>
         <servlet-class>controller.ViewShopDetailServlet</servlet-class>
