@@ -399,7 +399,7 @@ public class InventoryDAO extends DBContext {
         Inventory inventory = null;
         String sql = """
         SELECT i.inventory_id, i.current_stock, i.inventory_status, i.last_restock_date, i.alert,
-               p.product_id, p.product_name, p.product_image, p.product_price
+               p.product_id, p.product_name, p.product_image, p.product_price, p.barcode 
         FROM Inventory i
         JOIN Products p ON i.product_id = p.product_id
         WHERE i.inventory_id = ?
@@ -425,6 +425,7 @@ public class InventoryDAO extends DBContext {
                 product.setName(rs.getString("product_name"));
                 product.setImage(rs.getString("product_image"));
                 product.setPrice(rs.getFloat("product_price"));
+                product.setBarcode(rs.getString("barcode"));
 
                 inventory.setProduct(product);
             }

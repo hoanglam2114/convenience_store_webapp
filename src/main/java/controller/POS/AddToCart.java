@@ -60,7 +60,7 @@ public class AddToCart extends HttpServlet {
             return;
         }
 
-        // Lấy cart từ session (nếu chưa có thì tạo mới)
+        // Lấy cart từ session 
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null) {
@@ -87,7 +87,7 @@ public class AddToCart extends HttpServlet {
             System.out.println("Cart size: " + cart.getItems().size());
 
         } catch (Exception e) {
-            e.printStackTrace(); // Có thể log lỗi ở đây
+            e.printStackTrace();
         }
 
         // preserve customer info if any

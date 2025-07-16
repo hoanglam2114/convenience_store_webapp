@@ -6,22 +6,21 @@ package model;
 
 /**
  *
- * @author pqtru
+ * @author admin
  */
 public class Shop {
-    private int shopId;
+     private int shopId;
     private String shopName;
     private String shopAddress;
     private String shopPhone;
     private String shopEmail;
     private String shopOpeningHours;
     private String shopLogo;
-
-  
     private String map;
+    
     public Shop() {
     }
-
+    
     public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo) {
         this.shopId = shopId;
         this.shopName = shopName;
@@ -31,6 +30,7 @@ public class Shop {
         this.shopOpeningHours = shopOpeningHours;
         this.shopLogo = shopLogo;
     }
+
     public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo, String map) {
         this.shopId = shopId;
         this.shopName = shopName;
@@ -96,17 +96,18 @@ public class Shop {
     public void setShopLogo(String shopLogo) {
         this.shopLogo = shopLogo;
     }
-    
-      public void setMap(String map) {
-        this.map = map;
-    }
 
     public String getMap() {
         return map;
     }
+
+    public void setMap(String map) {
+        this.map = map;
+    }
+    
      @Override
     public String toString() {
-        return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", shopAddress=" + shopAddress + ", shopPhone=" + shopPhone + ", shopEmail=" + shopEmail + ", shopOpeningHours=" + shopOpeningHours + ", shopLogo=" + shopLogo + ", map=" + map + '}';
+        return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", shopAddress=" + shopAddress + ", shopPhone=" + shopPhone + ", shopEmail=" + shopEmail + ", shopOpeningHours=" + shopOpeningHours + ", shopLogo=" + shopLogo + '}';
     }
 
 }

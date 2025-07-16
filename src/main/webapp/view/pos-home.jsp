@@ -70,7 +70,10 @@
                         <!-- Danh mục -->
                         <div class="flex space-x-2 mb-4 overflow-x-auto pb-2">
                             <c:forEach var="cat" items="${listCategories}">
-                                <a href="loadProducts?categoryId=${cat.id}" class="px-4 py-2 rounded-lg whitespace-nowrap ${param.categoryId == cat.id ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'}">${cat.name}</a>                             
+                                <a href="loadProducts?categoryId=${cat.id}" 
+                                   class="px-4 py-2 rounded-lg whitespace-nowrap transition duration-200 transform hover:scale-105 hover:bg-blue-100 ${param.categoryId == cat.id ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'}">
+                                    ${cat.name}
+                                </a>                             
                             </c:forEach>                               
                         </div>
 
@@ -82,7 +85,7 @@
                                     <input type="hidden" name="storeStockId" value="${stock.storeStockId}" />
                                     <input type="hidden" name="quantity" value="1" />
                                     <button type="submit" class="w-full text-left">
-                                        <div class="bg-white border rounded-lg p-3 hover:shadow-md transition cursor-pointer">
+                                        <div class="bg-white border rounded-lg p-3 transition-transform duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer">
                                             <div class="h-32 bg-gray-100 rounded mb-2 flex items-center justify-center overflow-hidden">
                                                 <img src="${pageContext.request.contextPath}/assets/img/product/${product.image}" class="w-[100px] h-[100px] object-contain" />
                                             </div>
@@ -91,6 +94,15 @@
                                                 <fmt:formatNumber value="${stock.discount != null ? stock.discount.priceSell : product.price}" type="number" groupingUsed="true" /> đ
                                             </p>
                                             <p class="text-sm text-gray-500 mt-1">Còn lại: ${stock.stock}</p>
+
+                                            <!-- Barcode -->
+                                            <c:if test="${not empty product.barcode}">
+                                                <div class="mt-1 flex justify-center">
+                                                    <img src="${pageContext.request.contextPath}/barcode-image?code=${product.barcode}"
+                                                         class="h-12 w-full object-contain"
+                                                         alt="Barcode: ${product.barcode}" />
+                                                </div>
+                                            </c:if>
                                         </div>
                                     </button>
                                 </form>
@@ -165,26 +177,45 @@
 
                         <!-- Giỏ hàng -->
                         <label class="block text-sm font-medium text-gray-700 mb-1">Sản Phẩm</label>
-                        <div class="border rounded-lg mb-4 max-h-64 overflow-y-auto">
+                        <div class="border rounded-lg mb-4 max-h-64 overflow-y-auto px-2 py-2">
                             <c:if test="${not empty sessionScope.cart and not empty sessionScope.cart.items}">
                                 <c:forEach var="item" items="${sessionScope.cart.items}">
-                                    <div class="p-3 border-b flex justify-between">
-                                        <div>
-                                            <p class="font-medium">${item.product.name}</p>
+                                    <div class="flex items-center justify-between bg-white rounded-md shadow-sm px-3 py-2 mb-2 hover:shadow-md transition">
+
+                                        <!-- Trái: Tên và đơn giá -->
+                                        <div class="w-1/3">
+                                            <p class="font-medium text-gray-800 truncate">${item.product.name}</p>
                                             <p class="text-sm text-gray-500">
-                                                <fmt:formatNumber value="${item.price}" type="number" groupingUsed="true"/> đ × ${item.quantity}
+                                                <fmt:formatNumber value="${item.price}" type="number" groupingUsed="true" /> đ
                                             </p>
                                         </div>
-                                        <div class="flex items-center">
-                                            <span class="font-bold">
-                                                <fmt:formatNumber value="${item.subTotal}" type="number" groupingUsed="true"/> đ
-                                            </span>
+
+                                        <!-- Giữa: Số lượng -->
+                                        <form action="update-cart" method="post" class="flex items-center gap-1 w-1/3 justify-center">
+                                            <input type="hidden" name="storeStockId" value="${item.storeStock.storeStockId}" />
+                                            <button name="action" value="decrease" class="w-7 h-7 bg-gray-200 hover:bg-gray-300 rounded-md text-sm font-bold">-</button>
+                                            <span class="w-6 text-center text-sm">${item.quantity}</span>
+                                            <button name="action" value="increase" class="w-7 h-7 bg-gray-200 hover:bg-gray-300 rounded-md text-sm font-bold">+</button>
+                                        </form>
+
+                                        <!-- Phải: Thành tiền + Xoá -->
+                                        <div class="flex items-center justify-end w-1/3 gap-3">
+                                            <p class="text-sm font-bold text-blue-600 whitespace-nowrap">
+                                                <fmt:formatNumber value="${item.subTotal}" type="number" groupingUsed="true" /> đ
+                                            </p>
+                                            <form action="update-cart" method="post">
+                                                <input type="hidden" name="storeStockId" value="${item.storeStock.storeStockId}" />
+                                                <button name="action" value="remove"
+                                                        class="text-gray-500 hover:text-red-600 text-lg" title="Xoá">
+                                                    <i class="fas fa-trash-alt"></i> 
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </c:forEach>
                             </c:if>
                             <c:if test="${empty sessionScope.cart or empty sessionScope.cart.items}">
-                                <p class="text-center text-gray-500">Chưa có sản phẩm trong giỏ hàng</p>
+                                <p class="text-center text-gray-500 py-4">Chưa có sản phẩm trong giỏ hàng</p>
                             </c:if>
                         </div>
 
@@ -224,12 +255,20 @@
                                 </form>
                             </div>
                         </c:if>
+
+                        <!-- FORM nhận barcode từ điện thoại hoặc máy quét -->
+                        <form id="barcodeForm" action="scan-barcode" method="post">
+                            <input type="text" id="barcodeInput" name="barcode"
+                                   autocomplete="off"
+                                   style="position: absolute; left: -9999px;" />
+                        </form>
+
                     </div>
                 </div>
             </div>
         </main>
 
-        <script>
+        <script>            
             function allowManualName() {
                 const nameInput = document.getElementById("customerNameInput");
                 nameInput.removeAttribute("readonly");
@@ -312,6 +351,34 @@
                 return true;
             }
 
+            //Giữ focus barcode nhưng không gây mất focus khi nhập thông tin khách hàng
+            window.onload = function () {
+                const barcodeInput = document.getElementById("barcodeInput");
+                barcodeInput.focus();
+
+                barcodeInput.addEventListener("input", function () {
+                    const value = barcodeInput.value.trim();
+
+                    // Nếu đủ 13 số → submit và clear
+                    if (/^\d{13}$/.test(value)) {
+                        console.log("Submitting barcode:", value);
+                        document.getElementById("barcodeForm").submit();
+                        barcodeInput.value = ""; // reset để đón barcode tiếp theo
+                    }
+                });
+
+                // Đảm bảo input luôn được focus nếu không đang nhập ở ô khác
+                document.addEventListener("click", function (event) {
+                    const tag = event.target.tagName;
+                    if (tag !== "INPUT" && tag !== "TEXTAREA") {
+                        barcodeInput.focus();
+                    }
+                });
+            };
+
         </script>
     </body>
+    
+    <jsp:include page="/common/faq_chatbox_iframe.jsp" />
+    
 </html>
