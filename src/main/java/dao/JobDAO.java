@@ -199,7 +199,7 @@ public class JobDAO extends DBContext {
                 + "      ,[jobCategory_ID]\n"
                 + "      ,[description]\n"
                 + "      ,[status]\n"
-                + "  FROM [SWP_PROJECT_1].[dbo].[JobPostings]\n"
+                + "  FROM [dbo].[JobPostings]\n"
                 + "  ORDER BY jobID offset ? rows fetch next 5 rows only";
         try {
             PreparedStatement st = connection.prepareStatement(sql);

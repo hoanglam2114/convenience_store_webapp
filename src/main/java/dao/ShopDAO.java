@@ -30,8 +30,7 @@ public class ShopDAO extends DBContext {
                         rs.getString("shop_phone"),
                         rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
-                        rs.getString("shop_logo"),
-                        rs.getString("map")
+                        rs.getString("shop_logo")
                 );
                 list.add(shop);
             }
@@ -218,8 +217,7 @@ public class ShopDAO extends DBContext {
                         rs.getString("shop_phone"),
                         rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
-                        rs.getString("shop_logo"),
-                        rs.getString("map"));
+                        rs.getString("shop_logo"));
                 list.add(shop);
             }
 
@@ -231,7 +229,7 @@ public class ShopDAO extends DBContext {
 
     public static void main(String[] args) {
         ShopDAO s = new ShopDAO();
-        List<Shop> list = s.pagingShop(1);
+        List<Shop> list = s.getAll();
         for (Shop shop : list) {
             System.out.println(shop);
         }

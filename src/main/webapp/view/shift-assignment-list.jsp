@@ -96,7 +96,7 @@
                                                 <form action="shift-assignment" method="POST">
                                                     <input type="hidden" name="action" value="add">
                                                     <input type="hidden" name="locationType" value="${selectedLocationType}">
-                                                    <input type="hidden" name="locationId" value="${selectedLocationType == 'shop' ? selectedShopId : selectedWarehouseId}">
+                                                    <input type="hidden" name="locationId" value="${selectedLocationType == 'shop' ? selectedShopId : selectedWarehouseID}">
                                                     <input type="hidden" name="workDate" value="${selectedDate}">
 
                                                     <div class="mb-3">
@@ -159,7 +159,7 @@
                                                                             <input type="hidden" name="action" value="delete">
                                                                             <input type="hidden" name="scheduleId" value="${schedule.scheduleId}">
                                                                             <input type="hidden" name="locationType" value="${selectedLocationType}">
-                                                                            <input type="hidden" name="locationId" value="${selectedLocationType == 'shop' ? selectedShopId : selectedWarehouseId}">
+                                                                            <input type="hidden" name="locationId" value="${selectedLocationType == 'shop' ? selectedShopId : selectedWarehouseID}">
                                                                             <input type="hidden" name="workDate" value="${selectedDate}">
                                                                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                                                         </form>
@@ -209,7 +209,7 @@
 
                 const warehouses = [];
             <c:forEach var="w" items="${warehouses}">
-            warehouses.push({id: "${w.warehouseId}", name: "${w.name}"});
+            warehouses.push({id: "${w.warehouseID}", name: "${w.name}"});
             </c:forEach>
 
                 function populateLocations() {
@@ -233,7 +233,7 @@
 
                 // Initial population and selection
                 populateLocations();
-                const selectedId = "${selectedLocationType == 'shop' ? selectedShopId : selectedWarehouseId}";
+                const selectedId = "${selectedLocationType == 'shop' ? selectedShopId : selectedWarehouseID}";
                 if (selectedId) {
                     locationIdSelect.value = selectedId;
                 }

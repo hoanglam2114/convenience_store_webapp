@@ -28,7 +28,7 @@ public class WarehouseDAO extends DBContext {
                 .workingHours(rs.getString("working_hours"))
                 .status(WarehouseStatus.valueOf(rs.getString("status").toUpperCase()))
                 .note(rs.getString("note") == null ? "N/A" : rs.getString("note"))
-                .managerID(rs.getObject("employee_id", Integer.class))
+                .managerID(rs.getObject("manager_id", Integer.class))
                 .storeLinkedID(rs.getObject("store_linked_id", Integer.class))
                 .storeName(rs.getObject("shop_name", String.class))
                 .managerName(rs.getObject("manager_name", String.class))
@@ -348,8 +348,7 @@ public class WarehouseDAO extends DBContext {
 
     public static void main(String[] args) {
         WarehouseDAO dao = new WarehouseDAO();
-
-        Warehouse warehouse = dao.getWarehouseByID(1);
-        System.out.println(warehouse);
+        List<Warehouse> w = dao.getAllWarehouses();
+        System.out.println(w);
     }
 }

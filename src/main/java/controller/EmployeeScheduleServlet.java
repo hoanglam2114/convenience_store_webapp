@@ -99,7 +99,7 @@ public class EmployeeScheduleServlet extends HttpServlet {
         
         Map<Integer, Warehouse> warehouseMap = new HashMap<>();
         for (Warehouse warehouse : warehouses) {
-            warehouseMap.put(warehouse.getWarehouseId(), warehouse);
+            warehouseMap.put(warehouse.getWarehouseID(), warehouse);
         }
         
         // Tạo lịch tuần
