@@ -11,6 +11,7 @@ package model;
 public class ProductCategories {
     private int id;
     private String name;
+    private int groupId;
 
     public ProductCategories() {
     }
@@ -18,6 +19,11 @@ public class ProductCategories {
     public ProductCategories(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+    public ProductCategories(int id, String name, int groupId) {
+        this.id = id;
+        this.name = name;
+        this.groupId = groupId;
     }
     
     public ProductCategories(String name) {
@@ -39,10 +45,16 @@ public class ProductCategories {
     public void setName(String name) {
         this.name = name;
     }
+    public int getGroupId() {
+        return groupId;
+    }
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
 
     @Override
     public String toString() {
-        return "ProductCategories{" + "id=" + id + ", name=" + name + '}';
+        return "ProductCategories{" + "id=" + id + ", name=" + name +  ", groupId=" + groupId + '}';
     }
     
 }

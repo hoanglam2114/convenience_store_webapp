@@ -53,7 +53,8 @@ public class AddCustomerServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String pointRaw = request.getParameter("point");
         String typeIdRaw = request.getParameter("typeId");
-
+        String gender = "";
+        String avatarUrl = "";
         List<String> errors = new ArrayList<>();
 
         int typeId = -1;
@@ -112,7 +113,7 @@ public class AddCustomerServlet extends HttpServlet {
         notiDAO.insert(new Notification(message, "Admin", "thêm"));
         
         CustomerDAO dao = new CustomerDAO();
-        Customers customer = new Customers(name, phone, point, typeId);
+        Customers customer = new Customers(name, phone, point, typeId, gender, avatarUrl);
         dao.addCustomer(customer);
         response.sendRedirect("listCustomer");
     }

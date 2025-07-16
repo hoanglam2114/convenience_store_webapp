@@ -4,12 +4,14 @@
  */
 package model;
 
+import java.math.BigDecimal;
+
 /**
  *
- * @author admin
+ * @author pqtru
  */
 public class Shop {
-     private int shopId;
+    private int shopId;
     private String shopName;
     private String shopAddress;
     private String shopPhone;
@@ -17,11 +19,16 @@ public class Shop {
     private String shopOpeningHours;
     private String shopLogo;
     private String map;
-    
+    private BigDecimal latitude;
+    private BigDecimal longitude;
+
+
     public Shop() {
     }
-    
+
     public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo) {
+
+    public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo,String locationMap,BigDecimal latitude,BigDecimal longitude) {
         this.shopId = shopId;
         this.shopName = shopName;
         this.shopAddress = shopAddress;
@@ -29,6 +36,9 @@ public class Shop {
         this.shopEmail = shopEmail;
         this.shopOpeningHours = shopOpeningHours;
         this.shopLogo = shopLogo;
+        this.locationMap = locationMap;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo, String map) {
@@ -97,6 +107,25 @@ public class Shop {
         this.shopLogo = shopLogo;
     }
 
+    public String getLocationMap() {
+        return locationMap;
+    }
+    public void setLocationMap(String locationMap) {
+        this.locationMap = locationMap;
+    }
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
+
     public String getMap() {
         return map;
     }
@@ -104,7 +133,7 @@ public class Shop {
     public void setMap(String map) {
         this.map = map;
     }
-    
+
      @Override
     public String toString() {
         return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", shopAddress=" + shopAddress + ", shopPhone=" + shopPhone + ", shopEmail=" + shopEmail + ", shopOpeningHours=" + shopOpeningHours + ", shopLogo=" + shopLogo + '}';

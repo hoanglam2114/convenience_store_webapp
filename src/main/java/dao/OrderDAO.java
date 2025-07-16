@@ -696,4 +696,56 @@ public class OrderDAO extends DBContext {
         // order.setCustomerName(rs.getString("customer_name"));
         return order;
     }
+
+    public List<Order> getOrdersByCustomerId(int customerId, int offset, int limit) {
+        List<Order> orders = new ArrayList<>();
+
+        String sql = "SELECT o.order_id, o.order_date, o.order_total_amount, o.order_status,\n" +
+                "       o.customer_coupon_id, o.employee_id, e.employee_name AS employee_name\n" +
+                "FROM Orders o\n" +
+                "LEFT JOIN Employees e ON o.employee_id = e.employee_id\n" +
+                "WHERE o.customer_id = ?\n" +
+                "ORDER BY o.order_date DESC\n" +
+                "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY\n";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, customerId);
+            ps.setInt(2, offset);
+            ps.setInt(3, limit);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Order order = new Order();
+                    order.setOrderId(rs.getInt("order_id"));
+                    order.setOrderDate(rs.getTimestamp("order_date"));
+                    order.setOrderTotalAmount(rs.getInt("order_total_amount"));
+                    order.setOrderStatus(rs.getString("order_status"));
+                    order.setCustomerCouponId(rs.getInt("customer_coupon_id"));
+                    order.setEmployeeId(rs.getInt("employee_id"));
+                    order.setEmployeeName(rs.getString("employee_name"));
+
+                    orders.add(order);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
+    public int countOrdersByCustomerId(int customerId) {
+        String sql = "SELECT COUNT(*) FROM Orders WHERE customer_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, customerId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

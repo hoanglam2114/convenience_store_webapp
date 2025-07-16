@@ -235,7 +235,6 @@
                                         <option value="MAINTENANCE">Bảo trì</option>
                                         <option value="CLOSED">Đóng cửa</option>
                                     </select>
-
                                 </div>
                                 <div class="col-md-2">
                                     <button type="button" class="btn btn-primary me-2"
@@ -452,7 +451,8 @@
                                     <!-- Previous Button -->
                                     <c:if test="${currentPage > 1}">
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=${currentPage - 1}&search=${param.search}&status=${param.status}">
+                                            <a class="page-link"
+                                               href="?page=${currentPage - 1}&search=${param.search}&status=${param.status}">
                                                 <i class="bi bi-chevron-left"></i>
                                             </a>
                                         </li>
@@ -464,7 +464,8 @@
                                             <!-- Show all pages if total is 7 or less -->
                                             <c:forEach begin="1" end="${totalPages}" var="i">
                                                 <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                    <a class="page-link" href="?page=${i}&search=${param.search}&status=${param.status}">
+                                                    <a class="page-link"
+                                                       href="?page=${i}&search=${param.search}&status=${param.status}">
                                                             ${i}
                                                     </a>
                                                 </li>
@@ -477,7 +478,8 @@
                                                     <!-- Show first 5 pages + ellipsis + last page -->
                                                     <c:forEach begin="1" end="5" var="i">
                                                         <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                            <a class="page-link" href="?page=${i}&search=${param.search}&status=${param.status}">
+                                                            <a class="page-link"
+                                                               href="?page=${i}&search=${param.search}&status=${param.status}">
                                                                     ${i}
                                                             </a>
                                                         </li>
@@ -486,7 +488,8 @@
                                                         <span class="page-link">...</span>
                                                     </li>
                                                     <li class="page-item">
-                                                        <a class="page-link" href="?page=${totalPages}&search=${param.search}&status=${param.status}">
+                                                        <a class="page-link"
+                                                           href="?page=${totalPages}&search=${param.search}&status=${param.status}">
                                                                 ${totalPages}
                                                         </a>
                                                     </li>
@@ -494,7 +497,8 @@
                                                 <c:when test="${currentPage >= totalPages - 3}">
                                                     <!-- Show first page + ellipsis + last 5 pages -->
                                                     <li class="page-item">
-                                                        <a class="page-link" href="?page=1&search=${param.search}&status=${param.status}">
+                                                        <a class="page-link"
+                                                           href="?page=1&search=${param.search}&status=${param.status}">
                                                             1
                                                         </a>
                                                     </li>
@@ -503,7 +507,8 @@
                                                     </li>
                                                     <c:forEach begin="${totalPages - 4}" end="${totalPages}" var="i">
                                                         <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                            <a class="page-link" href="?page=${i}&search=${param.search}&status=${param.status}">
+                                                            <a class="page-link"
+                                                               href="?page=${i}&search=${param.search}&status=${param.status}">
                                                                     ${i}
                                                             </a>
                                                         </li>
@@ -512,16 +517,19 @@
                                                 <c:otherwise>
                                                     <!-- Show first page + ellipsis + current-1, current, current+1 + ellipsis + last page -->
                                                     <li class="page-item">
-                                                        <a class="page-link" href="?page=1&search=${param.search}&status=${param.status}">
+                                                        <a class="page-link"
+                                                           href="?page=1&search=${param.search}&status=${param.status}">
                                                             1
                                                         </a>
                                                     </li>
                                                     <li class="page-item disabled">
                                                         <span class="page-link">...</span>
                                                     </li>
-                                                    <c:forEach begin="${currentPage - 1}" end="${currentPage + 1}" var="i">
+                                                    <c:forEach begin="${currentPage - 1}" end="${currentPage + 1}"
+                                                               var="i">
                                                         <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                                            <a class="page-link" href="?page=${i}&search=${param.search}&status=${param.status}">
+                                                            <a class="page-link"
+                                                               href="?page=${i}&search=${param.search}&status=${param.status}">
                                                                     ${i}
                                                             </a>
                                                         </li>
@@ -530,7 +538,8 @@
                                                         <span class="page-link">...</span>
                                                     </li>
                                                     <li class="page-item">
-                                                        <a class="page-link" href="?page=${totalPages}&search=${param.search}&status=${param.status}">
+                                                        <a class="page-link"
+                                                           href="?page=${totalPages}&search=${param.search}&status=${param.status}">
                                                                 ${totalPages}
                                                         </a>
                                                     </li>
@@ -542,7 +551,8 @@
                                     <!-- Next Button -->
                                     <c:if test="${currentPage < totalPages}">
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=${currentPage + 1}&search=${param.search}&status=${param.status}">
+                                            <a class="page-link"
+                                               href="?page=${currentPage + 1}&search=${param.search}&status=${param.status}">
                                                 <i class="bi bi-chevron-right"></i>
                                             </a>
                                         </li>
