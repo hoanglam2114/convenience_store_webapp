@@ -37,6 +37,9 @@ public class AddEmployee extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int employeeID = (int) session.getAttribute("empId");
+        request.setAttribute("employeeID", employeeID);
         request.getRequestDispatcher("view/employee-add.jsp").forward(request, response);
     }
 

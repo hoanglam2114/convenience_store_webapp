@@ -170,11 +170,24 @@ public class EmailTemplateServlet extends HttpServlet {
     }
 
     private void createTemplate(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
+            throws SQLException, IOException, ServletException {
         String templateName = request.getParameter("templateName");
         String subject = request.getParameter("subject");
         String content = request.getParameter("content");
         String variables = request.getParameter("variables");
+
+        // Kiểm tra trùng tên mẫu
+        if (templateDAO.isTemplateNameExist(templateName)) {
+            request.setAttribute("error", "Tên mẫu email đã tồn tại!");
+            // Giữ lại dữ liệu nhập
+            request.setAttribute("input_templateName", templateName);
+            request.setAttribute("input_subject", subject);
+            request.setAttribute("input_content", content);
+            request.setAttribute("input_variables", variables);
+
+            request.getRequestDispatcher("view/emailTemplateForm.jsp").forward(request, response);
+            return;
+        }
 
         EmailTemplate newTemplate = new EmailTemplate();
         newTemplate.setTemplateName(templateName);
@@ -187,12 +200,26 @@ public class EmailTemplateServlet extends HttpServlet {
     }
 
     private void updateTemplate(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
+            throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         String templateName = request.getParameter("templateName");
         String subject = request.getParameter("subject");
         String content = request.getParameter("content");
         String variables = request.getParameter("variables");
+
+        // Kiểm tra trùng tên mẫu (trừ chính nó)
+        if (templateDAO.isTemplateNameExistForUpdate(templateName, id)) {
+            request.setAttribute("error", "Tên mẫu email đã tồn tại!");
+            // Giữ lại dữ liệu nhập
+            request.setAttribute("input_id", id);
+            request.setAttribute("input_templateName", templateName);
+            request.setAttribute("input_subject", subject);
+            request.setAttribute("input_content", content);
+            request.setAttribute("input_variables", variables);
+
+            request.getRequestDispatcher("view/emailTemplateForm.jsp").forward(request, response);
+            return;
+        }
 
         EmailTemplate template = new EmailTemplate();
         template.setTemplateId(id);

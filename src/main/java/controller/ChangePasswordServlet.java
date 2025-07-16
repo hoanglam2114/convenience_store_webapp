@@ -61,7 +61,7 @@ public class ChangePasswordServlet extends HttpServlet {
         String password = BCrypt.hashpw(rawPassword, BCrypt.gensalt(10));
         AccountDAO accountDAO = new AccountDAO();
         accountDAO.createAccount(email, password, 2);
-        
+        session.setAttribute("empId", accountDAO.getAccountId(email));
         session.removeAttribute("authcode");
         response.sendRedirect("addEmployee");
         

@@ -78,6 +78,8 @@ public class EditShiftServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private final ShiftDAO shiftDAO = new ShiftDAO();
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -97,16 +99,26 @@ public class EditShiftServlet extends HttpServlet {
             }
             if (duration > 12 * 60) {
                 request.setAttribute("error", "Thời lượng ca làm không được vượt quá 12 tiếng.");
+                request.setAttribute("shiftName", name);
+                request.setAttribute("startTime", request.getParameter("startTime"));
+                request.setAttribute("endTime", request.getParameter("endTime"));
+                request.setAttribute("selectedDays", workingDays);
+                request.setAttribute("description", description);
                 request.getRequestDispatcher("view/shift-edit.jsp").forward(request, response);
                 return;
             }
 
             if (!name.matches("[\\p{L}\\d\\s]+")) {
                 request.setAttribute("error", "Tên ca không được chứa ký tự đặc biệt.");
+                request.setAttribute("shiftName", name);
+                request.setAttribute("startTime", request.getParameter("startTime"));
+                request.setAttribute("endTime", request.getParameter("endTime"));
+                request.setAttribute("selectedDays", workingDays);
+                request.setAttribute("description", description);
                 request.getRequestDispatcher("view/shift-edit.jsp").forward(request, response);
                 return;
             }
-        
+            
         Shift shift = new Shift(id, name, startTime, endTime, workingDays, description);
         ShiftDAO sdao = new ShiftDAO();
         boolean updated = sdao.updateShift(shift);

@@ -8,11 +8,13 @@ import model.EmailTemplate;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  *
  * @author nguye
  */
 public class EmailTemplateDAO extends DBContext {
+
     public List<EmailTemplate> getAllTemplates() throws SQLException {
         List<EmailTemplate> templates = new ArrayList<>();
         String sql = "SELECT * FROM EmailTemplates";
@@ -172,4 +174,33 @@ public class EmailTemplateDAO extends DBContext {
         }
         return 0;
     }
+
+    public boolean isTemplateNameExist(String templateName) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM EmailTemplates WHERE template_name = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, templateName);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isTemplateNameExistForUpdate(String templateName, int templateId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM EmailTemplates WHERE template_name = ? AND template_id <> ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, templateName);
+            stmt.setInt(2, templateId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
+
+    
 }

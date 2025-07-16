@@ -265,6 +265,38 @@ public class CouponDAO extends DBContext {
         return false;
     }
 
+    // Thêm vào cuối file CouponDAO.java
+    public boolean isCouponCodeExist(String couponCode) {
+        String sql = "SELECT COUNT(*) FROM Coupons WHERE coupon_code = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, couponCode);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public boolean isCouponCodeExistForUpdate(String couponCode, int couponId) {
+        String sql = "SELECT COUNT(*) FROM Coupons WHERE coupon_code = ? AND coupon_id <> ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, couponCode);
+            ps.setInt(2, couponId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         CouponDAO c = new CouponDAO();
         List<Coupons> lst = c.getFilteredCoupons("C", "10", null, null, null);

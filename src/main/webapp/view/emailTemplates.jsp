@@ -193,6 +193,7 @@
 </div>
 
 <!-- Scripts -->
+<!-- Sneat JS -->
 <script src="assets/vendor/libs/jquery/jquery.js"></script>
 <script src="assets/vendor/js/bootstrap.js"></script>
 <script src="assets/vendor/js/menu.js"></script>
@@ -204,6 +205,7 @@
         document.querySelector('input[name="search"]').value = '';
         document.querySelector('form').submit();
     }
+    
 </script>
 </body>
 </html>

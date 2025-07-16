@@ -85,6 +85,24 @@ public class CouponUpdateServlet extends HttpServlet {
         Date endDate = Date.valueOf(request.getParameter("endDate"));
         String status = request.getParameter("status");
         CouponDAO couponDAO = new CouponDAO();
+        if (couponDAO.isCouponCodeExistForUpdate(code, id)) {
+        List<String> statuses = couponDAO.getStatuses();
+
+        // GIỮ LẠI DỮ LIỆU ĐÃ NHẬP
+        request.setAttribute("input_id", id);
+        request.setAttribute("input_code", code);
+        request.setAttribute("input_discount", discount);
+        request.setAttribute("input_startDate", startDate.toString());
+        request.setAttribute("input_endDate", endDate.toString());
+        request.setAttribute("input_status", status);
+
+        request.setAttribute("statuses", statuses);
+        request.setAttribute("error", "Mã coupon đã tồn tại!");
+
+        // forward lại trang update, giữ dữ liệu đã nhập
+        request.getRequestDispatcher("view/coupon-update.jsp").forward(request, response);
+        return;
+    }
         couponDAO.updateCoupon(code, discount, startDate, endDate, status, id);
         response.sendRedirect("couponManage");
     }

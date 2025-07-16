@@ -80,15 +80,15 @@ public class VerifyMailServlet extends HttpServlet {
             if (code.trim().equals(authcode)) {
                 response.sendRedirect("changePassword");
             } else {
-                request.setAttribute("error", "ErrorCode, please re-register!");
-                request.getRequestDispatcher("view/auth-register.jsp").forward(request, response);
+                request.setAttribute("error", "ErrorCode, please re-enter the activate code!");
+                request.getRequestDispatcher("view/auth-verify-mail.jsp").forward(request, response);
             }
         } else if (path.trim().equalsIgnoreCase("forgotpass")) {
             if (code.trim().equals(authcode)) {
                 response.sendRedirect("ResetPassword");
             } else {
-                request.setAttribute("error", "ErrorCode, please re-forgot password!");
-                request.getRequestDispatcher("view/auth-forgot-password.jsp").forward(request, response);
+                request.setAttribute("error", "ErrorCode, please re-enter the activate code!");
+                request.getRequestDispatcher("view/auth-verify-mail.jsp").forward(request, response);
             }
         }
 

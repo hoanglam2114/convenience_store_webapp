@@ -85,7 +85,7 @@ public class ForgotPasswordServlet extends HttpServlet {
         }
         
         
-        if (!checkDuplicate(email)) {
+        if (checkDuplicate(email)) {
             RandomCode rd = new RandomCode();
             String code = rd.activateCode();
             
@@ -118,11 +118,11 @@ public class ForgotPasswordServlet extends HttpServlet {
                 }
 
             } catch (Exception e) {
-                request.setAttribute("error", "Lỗi hệ thống: Không thể gửi email xác nhận.");
+                request.setAttribute("error", "Lỗi hệ thống: Không thể gửi email đặt lại mật khẩu.");
                 request.getRequestDispatcher("view/auth-forgot-password.jsp").forward(request, response);
             }
         }else {
-            request.setAttribute("error", "Email đã tồn tại!");
+            request.setAttribute("error", "Email không tồn tại trong hệ thống!");
             request.getRequestDispatcher("view/auth-forgot-password.jsp").forward(request, response);
         }
     }

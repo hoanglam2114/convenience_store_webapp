@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr"
       data-theme="theme-default"
@@ -8,7 +9,6 @@
     <head>
         <meta charset="UTF-8">
         <title>Thêm Ca Làm</title>
-
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
         <link rel="stylesheet" href="assets/vendor/css/theme-default.css" />
         <link rel="stylesheet" href="assets/css/demo.css" />
@@ -48,27 +48,32 @@
                                 <!-- Shift Name -->
                                 <div class="mb-3">
                                     <label for="shiftName" class="form-label">Tên ca *</label>
-                                    <input type="text" class="form-control" id="shiftName" name="shiftName" required />
+                                    <input type="text" class="form-control" id="shiftName" name="shiftName"
+                                           required value="${shiftName != null ? shiftName : ''}" />
                                 </div>
 
                                 <!-- Start Time -->
                                 <div class="mb-3">
                                     <label for="startTime" class="form-label">Giờ bắt đầu *</label>
-                                    <input type="time" class="form-control" id="startTime" name="startTime" required />
+                                    <input type="time" class="form-control" id="startTime" name="startTime"
+                                           required value="${startTime != null ? startTime : ''}" />
                                 </div>
 
                                 <!-- End Time -->
                                 <div class="mb-3">
                                     <label for="endTime" class="form-label">Giờ kết thúc *</label>
-                                    <input type="time" class="form-control" id="endTime" name="endTime" required />
+                                    <input type="time" class="form-control" id="endTime" name="endTime"
+                                           required value="${endTime != null ? endTime : ''}" />
                                 </div>
 
                                 <!-- Working Days -->
                                 <div class="mb-3">
                                     <label class="form-label d-block">Các ngày làm việc:</label>
+                                    <c:set var="selectedList" value="${selectedDays != null ? selectedDays : []}" />
                                     <c:forEach var="day" items="${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']}">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" name="workingDays" value="${day}" id="${day}">
+                                            <input class="form-check-input" type="checkbox" name="workingDays" value="${day}" id="${day}"
+                                                   <c:if test="${fn:contains(selectedList, day)}">checked</c:if> />
                                             <label class="form-check-label" for="${day}">${day}</label>
                                         </div>
                                     </c:forEach>
@@ -77,7 +82,7 @@
                                 <!-- Description -->
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Ghi chú</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                    <textarea class="form-control" id="description" name="description" rows="3">${description != null ? description : ''}</textarea>
                                 </div>
 
                                 <!-- Submit -->
@@ -93,7 +98,6 @@
                                 </ul>
                             </div>
                         </div>
-
 
                         <script>
                             document.querySelector("form").addEventListener("submit", function (e) {
@@ -130,3 +134,9 @@
                                 }
                             });
                         </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

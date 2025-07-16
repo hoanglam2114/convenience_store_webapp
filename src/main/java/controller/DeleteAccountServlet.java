@@ -6,10 +6,10 @@
 package controller;
 
 import dao.AccountDAO;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author nguye
  */
+@WebServlet(name="DeleteAccountServlet", urlPatterns={"/DeleteAccountServlet"})
 public class DeleteAccountServlet extends HttpServlet {
    
     /** 
@@ -30,11 +31,18 @@ public class DeleteAccountServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String id = request.getParameter("id");
-        int deleteId = Integer.parseInt(id);
-        AccountDAO dao  = new AccountDAO();
-        dao.deleteAccount(deleteId);
-        response.sendRedirect("ListAccountServlet");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet DeleteAccountServlet</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet DeleteAccountServlet at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -48,7 +56,11 @@ public class DeleteAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String id = request.getParameter("id");
+        int deleteId = Integer.parseInt(id);
+        AccountDAO dao  = new AccountDAO();
+        dao.deleteAccount(deleteId);
+        response.sendRedirect("ListAccountServlet");
     } 
 
     /** 
