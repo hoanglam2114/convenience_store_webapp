@@ -27,8 +27,6 @@ public class Shop {
     }
 
     public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo) {
-
-    public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo,String locationMap,BigDecimal latitude,BigDecimal longitude) {
         this.shopId = shopId;
         this.shopName = shopName;
         this.shopAddress = shopAddress;
@@ -36,7 +34,16 @@ public class Shop {
         this.shopEmail = shopEmail;
         this.shopOpeningHours = shopOpeningHours;
         this.shopLogo = shopLogo;
-        this.locationMap = locationMap;
+    }
+    public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo,String map,BigDecimal latitude,BigDecimal longitude) {
+        this.shopId = shopId;
+        this.shopName = shopName;
+        this.shopAddress = shopAddress;
+        this.shopPhone = shopPhone;
+        this.shopEmail = shopEmail;
+        this.shopOpeningHours = shopOpeningHours;
+        this.shopLogo = shopLogo;
+        this.map = map;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -107,12 +114,6 @@ public class Shop {
         this.shopLogo = shopLogo;
     }
 
-    public String getLocationMap() {
-        return locationMap;
-    }
-    public void setLocationMap(String locationMap) {
-        this.locationMap = locationMap;
-    }
     public BigDecimal getLatitude() {
         return latitude;
     }

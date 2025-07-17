@@ -30,7 +30,7 @@ public class ProductsDAO extends DBContext {
                 + "       [product_price],\n"
                 + "       [weight_unit_id],\n"
                 + "       [supplier_id],\n"
-                + "       [product_image],\n"
+                + "       [product_image]\n"
                 + " from Products\n";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -514,11 +514,7 @@ public class ProductsDAO extends DBContext {
 
     public static void main(String[] args) {
         ProductsDAO dao = new ProductsDAO();
-//        int count = dao.getTotalProduct();
-//        System.out.println(count);
-//        ProductsDAO dao = new ProductsDAO();
-//
-        List<Products> list = dao.pagingProducts(1);
+        List<Products> list = dao.getAllProduct();
         for (Products o : list) {
             System.out.println(o);
         }

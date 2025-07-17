@@ -24,9 +24,6 @@ public class ShopDAO extends DBContext {
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Shop shop = new Shop(
-                        rs.getInt("shop_id"),
-                        rs.getString("shop_name"),
                 Shop shop = new Shop(rs.getInt("shop_id"),
                         rs.getString("shop_name"),
                         rs.getString("shop_address"),
@@ -36,10 +33,7 @@ public class ShopDAO extends DBContext {
                         rs.getString("shop_logo"),
                         rs.getString("location_map"),
                         rs.getBigDecimal("latitude"),
-                        rs.getBigDecimal("longitude")
-                );
-                        rs.getString("shop_logo")
-                );
+                        rs.getBigDecimal("longitude"));
                 list.add(shop);
             }
         } catch (SQLException e) {
@@ -64,8 +58,7 @@ public class ShopDAO extends DBContext {
                         rs.getString("shop_phone"),
                         rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
-                        rs.getString("shop_logo"),
-                        rs.getString("map")
+                        rs.getString("shop_logo")
                 );
             }
         } catch (SQLException e) {
@@ -90,10 +83,6 @@ public class ShopDAO extends DBContext {
                         rs.getString("shop_opening_hours"),
                         rs.getString("shop_logo"),
                         rs.getString("location_map")
-                        rs.getString("shop_logo"),
-                        rs.getString("location_map"),
-                        rs.getBigDecimal("latitude"),
-                        rs.getBigDecimal("longitude")
                         );
             }
         } catch (SQLException e) {
@@ -101,9 +90,6 @@ public class ShopDAO extends DBContext {
         }
         return shop;
     }
-
-
-
 
     public void updateShop(Shop shop) {
         String sql = "UPDATE ShopDetails SET shop_name = ?, shop_address = ?, shop_phone = ?,  shop_email = ?, shop_opening_hours = ?, shop_logo = ? WHERE shop_id = ?";
@@ -206,10 +192,6 @@ public class ShopDAO extends DBContext {
                         rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
                         rs.getString("shop_logo"),
-                        rs.getString("location_map"),
-                        rs.getBigDecimal("latitude"),
-                        rs.getBigDecimal("longitude"));
-                        rs.getString("shop_logo"),
                         rs.getString("map")
                 );
 
@@ -236,9 +218,7 @@ public class ShopDAO extends DBContext {
                         rs.getString("shop_email"),
                         rs.getString("shop_opening_hours"),
                         rs.getString("shop_logo"),
-                        rs.getString("location_map"),
-                        rs.getBigDecimal("latitude"),
-                        rs.getBigDecimal("longitude"));
+                        rs.getString("location_map"));
                 list.add(shop);
             }
 
