@@ -37,8 +37,8 @@
         <header class="bg-white shadow-sm">
             <div class="container mx-auto px-4 py-4 flex justify-between items-center">
                 <div class="flex items-center">
-                    <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-bold mr-3">JD</div>
-                    <h1 class="text-xl font-bold text-gray-800">JobDream</h1>
+
+                    <h1 class="text-xl font-bold text-gray-800">Convenma</h1>
                 </div>
                 <nav class="hidden md:flex space-x-8">
                     <a href="#" class="text-gray-600 hover:text-red-600">Trang chủ</a>
@@ -67,7 +67,7 @@
                     </a>
 
                     <!-- Job Header -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+<!--                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                             <div>
                                 <h1 class="text-2xl font-bold text-gray-800 mb-2">Lập Trình Viên Frontend (ReactJS)</h1>
@@ -87,7 +87,7 @@
                         </div>
 
                         
-                    </div>
+                    </div>-->
 
                     <!-- Job Description -->
                     <div class="bg-white rounded-xl shadow-sm p-6 mb-6 job-description">
@@ -218,8 +218,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
                         <div class="flex items-center mb-4">
-                            <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-bold mr-3">JD</div>
-                            <h3 class="text-xl font-bold">JobDream</h3>
+
+                            <h3 class="text-xl font-bold">Convenma</h3>
                         </div>
                         <p class="text-gray-400 mb-4">Nền tảng kết nối nhà tuyển dụng và ứng viên hàng đầu Việt Nam.</p>
                         <div class="flex space-x-4">
@@ -270,7 +270,7 @@
                 </div>
 
                 <div class="border-t border-gray-700 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-400 mb-4 md:mb-0">© 2023 JobDream. All rights reserved.</p>
+                    <p class="text-gray-400 mb-4 md:mb-0">© 2023 Convenma. All rights reserved.</p>
                     <div class="flex space-x-6">
                         <a href="#" class="text-gray-400 hover:text-white">Điều khoản</a>
                         <a href="#" class="text-gray-400 hover:text-white">Bảo mật</a>

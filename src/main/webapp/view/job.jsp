@@ -36,8 +36,8 @@
         <header class="bg-white shadow-md">
             <div class="container mx-auto px-4 py-4 flex justify-between items-center">
                 <div class="flex items-center">
-                    <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-2">CK</div>
-                    <h1 class="text-xl font-bold text-gray-800">Circle K Vietnam</h1>
+
+                    <h1 class="text-xl font-bold text-gray-800">Convenma</h1>
                 </div>
                 <nav class="hidden md:flex space-x-8">
                     <a href="#" class="text-gray-600 hover:text-red-600">Trang chủ</a>
@@ -55,7 +55,7 @@
         <section class="hero-bg text-white py-20 md:py-32">
             <div class="container mx-auto px-4 text-center">
                 <h1 class="text-4xl md:text-6xl font-bold mb-6">CƠ HỘI NGHỀ NGHIỆP</h1>
-                <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-8">Gia nhập đội ngũ năng động của Circle K Vietnam - Nơi bạn có thể phát triển bản thân và xây dựng sự nghiệp trong môi trường chuyên nghiệp</p>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-8">Gia nhập đội ngũ năng động của Convenma - Nơi bạn có thể phát triển bản thân và xây dựng sự nghiệp trong môi trường chuyên nghiệp</p>
                 <button onclick="scrollToJobs()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300">Xem vị trí tuyển dụng</button>
             </div>
         </section>
@@ -63,7 +63,7 @@
         <!-- Why Join Us -->
         <section class="py-16 bg-white">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Tại sao nên làm việc tại Circle K?</h2>
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Tại sao nên làm việc tại Convenma?</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="text-center p-6 rounded-lg hover:bg-red-50 transition duration-300">
                         <div class="bg-red-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
