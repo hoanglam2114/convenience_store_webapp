@@ -6,6 +6,7 @@
 package controller;
 
 import dao.AccountDAO;
+import dao.EmailTemplateDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Accounts;
+import model.EmailTemplate;
 import utils.EmailValidator;
 import verify.RandomCode;
 import verify.SendEmail;
@@ -88,33 +90,40 @@ public class ForgotPasswordServlet extends HttpServlet {
             String code = rd.activateCode();
             
 
-            String subject = "Yêu cầu đặt lại mật khẩu";
-            String content = "<html>  <head>  <meta charset=\"UTF-8\">  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">      "
-                    + "<style>          body {              font-family: Arial, sans-serif;              "
-                    + "line-height: 1.6;              color: #333;          }          .container {              width: 100%;              max-width: 600px;              margin: 0 auto;              padding: 20px;          }          .button {              display: inline-block;              padding: 10px 20px;              background-color: #4CAF50;              color: #ffffff;              text-decoration: none;              border-radius: 5px;          }      "
-                    + "</style>  </head>  <body>      <div class=\"container\">          <h2>Yêu cầu đặt lại mật khẩu</h2>                    "
-                    + "<p>Xin chào " + email + ",</p>                    <p>Chúng tôi đã nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. Để hoàn tất quá trình này, vui lòng sử dụng activate code sau để đổi mật khẩu mới:</p>     " + code + "              " 
-                    +  " <p>                        </p>                                 <p>Nếu bạn không thực hiện đăng ký này, vui lòng bỏ qua email này.</p>                    "
-                    + "<p>Trân trọng,<br>Đội ngũ hỗ trợ của chúng tôi</p>      </div>  </body>  </html>";
+            
                     
 
             try {
-                HttpSession session = request.getSession();
-                session.setAttribute("authcode", code);
-                session.setAttribute("authemail", email);
-                session.setAttribute("destination", path);
-                SendEmail se = new SendEmail();
-                se.send(email, subject, content);
-//                request.getRequestDispatcher("verifycode").forward(request, response);
-                response.sendRedirect("verifycode");
+                EmailTemplateDAO templateDAO = new EmailTemplateDAO();
+                EmailTemplate template = templateDAO.getTemplateByName("Password Reset Template");
+
+
+                if (template != null) {
+                    String content = template.getContent()
+                            .replace("{{email}}", email)
+                            .replace("{{code}}", code);
+
+                    HttpSession session = request.getSession();
+                    session.setAttribute("authcode", code);
+                    session.setAttribute("authemail", email);
+                    session.setAttribute("destination", path);
+                    SendEmail se = new SendEmail();
+
+                    se.send(email, template.getSubject(), content);
+                    response.sendRedirect("verifycode");
+
+                } else {
+                    request.setAttribute("error", "Lỗi hệ thống: Không tìm thấy mẫu email.");
+                    request.getRequestDispatcher("view/auth-forgot-password.jsp").forward(request, response);
+                }
 
             } catch (Exception e) {
-                request.setAttribute("error", "Lỗi hệ thống: Không thể gửi email xác nhận.");
-                request.getRequestDispatcher("view/auth-sign-in.jsp").forward(request, response);
+                request.setAttribute("error", "Lỗi hệ thống: Không thể gửi email đặt lại mật khẩu.");
+                request.getRequestDispatcher("view/auth-forgot-password.jsp").forward(request, response);
             }
         }else {
-            request.setAttribute("error", "Email đã tồn tại!");
-            request.getRequestDispatcher("view/auth-sign-in.jsp").forward(request, response);
+            request.setAttribute("error", "Email không tồn tại trong hệ thống!");
+            request.getRequestDispatcher("view/auth-forgot-password.jsp").forward(request, response);
         }
     }
 

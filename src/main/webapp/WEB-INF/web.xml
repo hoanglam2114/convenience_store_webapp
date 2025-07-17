@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+
     <servlet>
         <servlet-name>HomeAdmin</servlet-name>
         <servlet-class>controller.HomeAdmin</servlet-class>
@@ -99,6 +100,46 @@
     <servlet>
         <servlet-name>EditOrderServlet</servlet-name>
         <servlet-class>controller.EditOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ScanBarcodeServlet</servlet-name>
+        <servlet-class>controller.POS.ScanBarcodeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BarcodeImageServlet</servlet-name>
+        <servlet-class>controller.POS.BarcodeImageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCartServlet</servlet-name>
+        <servlet-class>controller.POS.UpdateCartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FaqServlet</servlet-name>
+        <servlet-class>controller.FaqServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogServlet</servlet-name>
+        <servlet-class>controller.BlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostDetailServlet</servlet-name>
+        <servlet-class>controller.PostDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostByTagServlet</servlet-name>
+        <servlet-class>controller.PostByTagServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LikePostServlet</servlet-name>
+        <servlet-class>controller.LikePostServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerCreatePostServlet</servlet-name>
+        <servlet-class>controller.CustomerCreatePostServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ImageServlet</servlet-name>
+        <servlet-class>controller.ImageServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ViewShopDetailServlet</servlet-name>
@@ -203,6 +244,46 @@
     <servlet-mapping>
         <servlet-name>EditOrderServlet</servlet-name>
         <url-pattern>/editOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScanBarcodeServlet</servlet-name>
+        <url-pattern>/scan-barcode</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BarcodeImageServlet</servlet-name>
+        <url-pattern>/barcode-image</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCartServlet</servlet-name>
+        <url-pattern>/update-cart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FaqServlet</servlet-name>
+        <url-pattern>/faq</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogServlet</servlet-name>
+        <url-pattern>/blog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostDetailServlet</servlet-name>
+        <url-pattern>/post-detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostByTagServlet</servlet-name>
+        <url-pattern>/posts-by-tag</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LikePostServlet</servlet-name>
+        <url-pattern>/like-post</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerCreatePostServlet</servlet-name>
+        <url-pattern>/customer-create-post</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImageServlet</servlet-name>
+        <url-pattern>/image</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ViewShopDetailServlet</servlet-name>

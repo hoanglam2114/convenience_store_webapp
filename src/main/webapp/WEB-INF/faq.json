@@ -1,0 +1,18 @@
+{
+  "Chương trình concert": [
+    {
+      "q": "Cách tích tem concert là gì?",
+      "a": "Mỗi hóa đơn từ 60K có ít nhất 1 sản phẩm..."
+    },
+    {
+      "q": "Tôi có thể đổi vé ở đâu?",
+      "a": "Bạn có thể đổi vé qua ứng dụng CK Club..."
+    }
+  ],
+  "Khuyến mãi & ưu đãi": [
+    {
+      "q": "Làm sao để nhận ưu đãi?",
+      "a": "Bạn cần đăng ký tài khoản và truy cập mục Ưu đãi..."
+    }
+  ]
+}

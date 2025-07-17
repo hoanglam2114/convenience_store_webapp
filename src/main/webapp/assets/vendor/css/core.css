@@ -77,6 +77,10 @@ body {
   -webkit-tap-highlight-color: rgba(67, 89, 113, 0);
 }
 
+body, .navbar-custom, .nav-link, .dropdown-menu {
+  font-family: 'Roboto', 'Arial', 'Open Sans', 'Segoe UI', sans-serif;
+}
+
 hr {
   margin: 1rem 0;
   color: #d9dee3;

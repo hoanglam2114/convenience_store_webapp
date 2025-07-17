@@ -20,6 +20,8 @@ public class CustomerDAO extends DBContext {
                 customer.setPhone(rs.getString(3));
                 customer.setPoint(rs.getInt(4));
                 customer.setType_id(rs.getInt(5));
+                customer.setGender(rs.getString(6));
+                customer.setAvatarUrl(rs.getString(7));
 
                 customerList.add(customer);
             }
@@ -67,7 +69,9 @@ public class CustomerDAO extends DBContext {
                         rs.getString("customer_name"),
                         rs.getString("customer_phone"),
                         rs.getInt("point"),
-                        rs.getInt("customer_type_id")
+                        rs.getInt("customer_type_id"),
+                        rs.getString("gender"),
+                        rs.getString("avatar_url")
                 );
                 customers.add(customer);
             }
@@ -102,12 +106,15 @@ public class CustomerDAO extends DBContext {
         }
     }
 
-    public boolean editCustomerNameById(int customerId, String newName) {
-        String sql = "UPDATE Customers SET customer_name = ? WHERE customer_id = ?";
+    public boolean editCustomerById(int customerId, String newName, String gender, String avatarPath) {
+        String sql = "UPDATE Customers SET customer_name = ?, gender = ?, avatar_url = ? WHERE customer_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, newName);
-            ps.setInt(2, customerId);
+            ps.setString(2, gender);
+            ps.setString(3, avatarPath);
+
+            ps.setInt(4, customerId);
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -127,7 +134,9 @@ public class CustomerDAO extends DBContext {
                             .id(rs.getInt("customer_id"))
                             .name(rs.getString("customer_name"))
                             .phone(rs.getString("customer_phone"))
+                            .gender(rs.getString("gender"))
                             .point(rs.getInt("point"))
+                            .avatarUrl(rs.getString("avatar_url"))
                             .type_id(rs.getInt("customer_type_id"))
                             .build();
                 }
@@ -184,44 +193,32 @@ public class CustomerDAO extends DBContext {
     }
 
     public Customers findByPhone(String phone) {
-        String sql = "SELECT * FROM Customers WHERE customer_phone = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, phone.trim());
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new Customers(
-                            rs.getInt("customer_id"),
-                            rs.getString("customer_name"),
-                            rs.getString("customer_phone"),
-                            rs.getInt("point"),
-                            rs.getInt("customer_type_id")
-                    );
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-    public int getCustomerIdByPhone(String phone) {
-    String sql = "SELECT customer_id FROM Customers WHERE phone = ?";
+    String sql = "SELECT * FROM Customers WHERE customer_phone = ?";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setString(1, phone);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt("customer_id");
+        ps.setString(1, phone.trim());
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return new Customers(
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name"),
+                        rs.getString("customer_phone"),
+                        rs.getInt("point"),
+                        rs.getInt("customer_type_id"),
+                        rs.getString("gender"),
+                        rs.getString("avatar_url")
+                );
+            }
         }
-    } catch (SQLException e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
-    return -1;
+    return null;
 }
+
 
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
         Customers c = dao.findByPhone("0886801877");
         System.out.println(c.toString());
     }
-
 }

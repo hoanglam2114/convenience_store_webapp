@@ -12,17 +12,27 @@ public class Customers {
     private String phone;
     private int point;
     private int type_id;
+    private String gender;
+    private String avatarUrl;
 
     public Customers() {
     }
     
+    public Customers(String name, String phone, int point, int type_id,String gender, String avatarUrl) {
+        this.name = name;
+        this.phone = phone;
+        this.point = point;
+        this.type_id = type_id;
+        this.gender = gender;
+        this.avatarUrl = avatarUrl;
+    }
     public Customers(String name, String phone, int point, int type_id) {
         this.name = name;
         this.phone = phone;
         this.point = point;
         this.type_id = type_id;
     }
-    
+
     public Customers(int id, String name, String phone, int point) {
         this.id = id;
         this.name = name;
@@ -30,12 +40,14 @@ public class Customers {
         this.point = point;
     }
 
-    public Customers(int id, String name, String phone, int point, int type_id) {
+    public Customers(int id, String name, String phone, int point, int type_id, String gender, String avatarUrl) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.point = point;
         this.type_id = type_id;
+        this.gender = gender;
+        this.avatarUrl = avatarUrl;
     }
 
     public int getId() {
@@ -78,6 +90,19 @@ public class Customers {
         this.type_id = type_id;
     }
 
+    public String getGender() {
+        return gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
     @Override
     public String toString() {
         return "Customers{" + "id=" + id + ", name=" + name + ", phone=" + phone + ", point=" + point + ", type_id=" + type_id + '}';

@@ -143,9 +143,6 @@ public class ImportProductServlet extends HttpServlet {
             WeightUnitDAO wud = new WeightUnitDAO();
             ProductCategoriesDAO pcd = new ProductCategoriesDAO();
 
-            int latestBatch = pd.getLatestBatchByName(name);
-            int newBatch = latestBatch + 1;
-
             int cate = Integer.parseInt(cate_raw);
             ProductCategories ci = pcd.getCategoryById(cate);
 

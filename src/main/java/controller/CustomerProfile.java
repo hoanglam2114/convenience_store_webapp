@@ -1,6 +1,7 @@
 package controller;
 
 import dao.CustomerDAO;
+import dao.OrderDAO;
 import jakarta.mail.Session;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -27,11 +28,14 @@ public class CustomerProfile extends HttpServlet {
 
         if (phoneNumber != null) {
             CustomerDAO customerDAO = new CustomerDAO();
-            Customers customer = customerDAO.findByPhone(phoneNumber); // Gọi phương thức với phoneNumber
-            req.setAttribute("customer", customer); // Truyền customer đến JSP
+            Customers customer = customerDAO.findByPhone(phoneNumber);
+
+            OrderDAO orderDAO = new OrderDAO();
+            int totalOrders = orderDAO.countOrdersByCustomerId(customer.getId());
+            req.setAttribute("customer", customer);
+            req.setAttribute("totalOrders", totalOrders);
             req.getRequestDispatcher("/view/customer-profile.jsp").forward(req, resp);
         } else {
-            // Xử lý khi không tìm thấy phoneNumber trong session (ví dụ: chuyển hướng về trang login)
             resp.sendRedirect(req.getContextPath() + "/customer-login");
         }
     }

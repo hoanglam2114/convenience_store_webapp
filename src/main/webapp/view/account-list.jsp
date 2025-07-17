@@ -178,6 +178,7 @@
                                                             <i class="bx bx-trash"></i>
                                                         </a>
                                                     </td>
+
                                                 </tr>
                                             </c:forEach>
 

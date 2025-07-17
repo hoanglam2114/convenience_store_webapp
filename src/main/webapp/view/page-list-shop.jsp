@@ -86,7 +86,7 @@
                             <div class="d-flex align-items-center  mb-2">
                                 <form action="FindShop" class="d-flex align-items-center gap-1 w-100">
 
-                                    <input type="text" class="form-control flex-grow-1"" name="nameShop" 
+                                    <input type="text" class="form-control flex-grow-1" name="nameShop"
                                            placeholder="Tìm cửa hàng theo tên" />
                                     <button style="width: 150px" class=" btn btn-outline-primary" >tìm kiếm</button>
                                     <a href='ListShop' style="width: 150px" class=" btn btn-outline-primary" >làm mới </a>

@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import model.ProductCategories;
 
 /**
@@ -31,6 +32,34 @@ public class ProductCategoriesDAO extends DBContext {
             }
         } catch (SQLException e) {
             System.out.println(e);
+        }
+        return list;
+    }
+    public List<ProductCategories> getAllCategoriesWithGroup() {
+        List<ProductCategories> list = new ArrayList<>();
+        String sql = "SELECT category_id, category_name, group_id FROM Product_Categories ORDER BY category_name";
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new ProductCategories(rs.getInt("category_id"), rs.getString("category_name"), rs.getInt("group_id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public List<ProductCategories> getCategoriesByGroup(int groupId) {
+        List<ProductCategories> list = new ArrayList<>();
+        String sql = "SELECT category_id, category_name, group_id FROM Product_Categories WHERE group_id = ? ORDER BY category_name";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, groupId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new ProductCategories(rs.getInt("id"), rs.getString("name"), rs.getInt("group_id")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return list;
     }
@@ -165,15 +194,9 @@ public class ProductCategoriesDAO extends DBContext {
 
     public static void main(String[] args) {
         ProductCategoriesDAO dao = new ProductCategoriesDAO();
-//        List<ProductCategories>list = dao.pagingProductCategories(2);
-//        for(ProductCategories o: list){
-//            System.out.println(o);
-//        }
-//        int count = dao.getTotalUnit();
-//        System.out.println(count);
-        List<ProductCategories> list = dao.findCategoryByName("Thực phẩm");
- for(ProductCategories o: list){
-            System.out.println(o);
+        List<ProductCategories> list = dao.getAllCategoriesWithGroup();
+        for (ProductCategories pc : list) {
+            System.out.println(pc);
         }
     }
 }
