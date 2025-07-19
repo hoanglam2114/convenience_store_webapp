@@ -26,7 +26,7 @@ public class Shop {
     public Shop() {
     }
 
-    public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo) {
+    public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo) {}
 
     public Shop(int shopId, String shopName, String shopAddress, String shopPhone, String shopEmail, String shopOpeningHours, String shopLogo,String locationMap,BigDecimal latitude,BigDecimal longitude) {
         this.shopId = shopId;
