@@ -39,7 +39,7 @@ public class PostSectionDAO extends DBContext{
 
     // Thêm mới 1 section cho bài viết
     public void insertSection(PostSection section) {
-        String sql = "INSERT INTO PostSections (post_id, section_title, section_content, section_html, section_image_url, sort_order) " +
+        String sql = "INSERT INTO PostSection (post_id, section_title, section_content, section_html, section_image_url, sort_order) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, section.getPostId());
@@ -56,7 +56,7 @@ public class PostSectionDAO extends DBContext{
 
     // Xóa toàn bộ section theo postId (ví dụ khi xóa bài viết)
     public void deleteSectionsByPostId(int postId) {
-        String sql = "DELETE FROM PostSections WHERE post_id = ?";
+        String sql = "DELETE FROM PostSection WHERE post_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, postId);
             ps.executeUpdate();

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-
     <servlet>
         <servlet-name>HomeAdmin</servlet-name>
         <servlet-class>controller.HomeAdmin</servlet-class>
@@ -189,13 +188,17 @@
         <servlet-name>GetPostDetailServlet</servlet-name>
         <servlet-class>controller.GetPostDetailServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>ShiftDetailServlet</servlet-name>
-        <url-pattern>/ShiftDetailServlet</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>FindJobApplicationServlet</servlet-name>
         <servlet-class>controller.FindJobApplicationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerManagePostsServlet</servlet-name>
+        <servlet-class>controller.CustomerManagePostServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerEditPostServlet</servlet-name>
+        <servlet-class>controller.CustomerEditPostServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ListAccountServlet</servlet-name>
@@ -352,6 +355,14 @@
     <servlet-mapping>
         <servlet-name>FindJobApplicationServlet</servlet-name>
         <url-pattern>/FindJobApplication</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerManagePostsServlet</servlet-name>
+        <url-pattern>/customer-manage-posts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerEditPostServlet</servlet-name>
+        <url-pattern>/customer-edit-post</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>

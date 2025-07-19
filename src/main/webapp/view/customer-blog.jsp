@@ -193,7 +193,7 @@
                         <i class="fas fa-plus mr-2"></i> Tạo bài viết mới
                     </a>
                     <br/>
-                    <a href="${pageContext.request.contextPath}/my-posts" 
+                    <a href="${pageContext.request.contextPath}/customer-manage-posts" 
                        class="w-full block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-center    ">
                         <i class="fas fa-store mr-2"></i> Quản lý bài viết của bạn
                     </a>

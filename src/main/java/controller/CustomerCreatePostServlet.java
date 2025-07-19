@@ -80,6 +80,16 @@ public class CustomerCreatePostServlet extends HttpServlet {
             return;
         }
         dao.insertPostImage(postId, uniqueFileName);
+        if (tagIdParams != null) {
+            for (String tagIdStr : tagIdParams) {
+                try {
+                    int tagId = Integer.parseInt(tagIdStr);
+                    dao.linkPostWithTag(postId, tagId);
+                } catch (NumberFormatException e) {
+                    System.err.println("Invalid tag ID: " + tagIdStr);
+                }
+            }
+        }
 
         // Gom tất cả section images
         List<Part> sectionImageParts = parts.stream()

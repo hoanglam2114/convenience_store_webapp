@@ -578,4 +578,80 @@ public class PostDAO extends DBContext {
         }
     }
 
+    public List<Post> getPostsByCustomerId(int customerId) {
+        List<Post> list = new ArrayList<>();
+        String sql = "SELECT p.*, c.customer_name AS userName "
+                + "FROM Posts p "
+                + "JOIN Customers c ON p.user_id = c.customer_id "
+                + "WHERE p.user_id = ? "
+                + "ORDER BY p.created_at DESC";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, customerId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post();
+                post.setId(rs.getInt("id"));
+                post.setUserId(rs.getInt("user_id"));
+                post.setUserName(rs.getString("userName")); // từ JOIN Customers
+                post.setShopId(rs.getInt("shop_id"));
+                post.setTitle(rs.getString("title"));
+                post.setContent(rs.getString("content"));
+                post.setStatus(rs.getString("status"));
+                post.setCreatedAt(rs.getTimestamp("created_at"));
+                post.setUpdatedAt(rs.getTimestamp("updated_at"));
+                list.add(post);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public void updatePost(int postId, String title, String status) {
+        String sql = "UPDATE Posts SET title = ?, status = ?, updated_at = GETDATE() WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, title);
+            ps.setString(2, status);
+            ps.setInt(3, postId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearTagsByPostId(int postId) {
+        String sql = "DELETE FROM PostTags WHERE post_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, postId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Integer> getTagIdsByPostId(int postId) {
+        List<Integer> tagIds = new ArrayList<>();
+        String sql = "SELECT tag_id FROM PostTags WHERE post_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, postId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                tagIds.add(rs.getInt("tag_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tagIds;
+    }
+
+    public static void main(String[] args) {
+        PostDAO dao = new PostDAO();
+        List<Post> list = dao.getPostsByCustomerId(1);
+
+        System.out.println("Tổng số bài viết: " + list.size());
+        for (Post post : list) {
+            System.out.println("ID: " + post.getId() + " | Tiêu đề: " + post.getTitle());
+        }
+    }
 }

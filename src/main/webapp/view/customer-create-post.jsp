@@ -3,6 +3,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<%-- Xác định chế độ edit hay create --%>
+<c:set var="isEdit" value="${mode eq 'edit'}" />
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -41,7 +44,9 @@
         <div class="max-w-5xl mx-auto px-4 py-8">
             <!-- Header -->
             <header class="mb-8">
-                <h1 class="text-3xl font-bold text-indigo-700">Tạo Bài Đăng Mới</h1>
+                <h1 class="text-3xl font-bold text-indigo-700">
+                    ${isEdit ? 'Chỉnh Sửa Bài Viết' : 'Tạo Bài Đăng Mới'}
+                </h1>
             </header>
 
             <!-- Post Form -->
@@ -67,7 +72,7 @@
                     <!-- Title Input -->
                     <div class="mb-6">
                         <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Chủ Đề</label>
-                        <input type="text" id="title" name="title" 
+                        <input type="text" id="title" name="title" value="${isEdit ? post.title : ''}"
                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none transition"
                                placeholder="Thêm chủ đề..." required>
                     </div>
@@ -138,6 +143,9 @@
                         <div id="content" contenteditable="true"
                              class="w-full px-4 py-2 border border-gray-300 rounded min-h-[200px] bg-white mb-4 overflow-auto"
                              placeholder="Nhập nội dung chính ở đây...">
+                            <c:if test="${isEdit}">
+                                ${post.content}
+                            </c:if>
                         </div>
 
                         <!-- Section Content Editor -->
@@ -145,12 +153,22 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">Nội Dung Bài Viết</label>
                             <div id="sections-container" class="space-y-6">
                                 <!-- Section Template -->
-                                <div class="section border border-gray-300 rounded-lg p-4 space-y-4">
-                                    <input type="text" name="sectionTitles" class="w-full px-4 py-2 border border-gray-300 rounded" placeholder="Tiêu đề đoạn (tùy chọn)">
-                                    <textarea name="sectionContents" class="w-full px-4 py-2 border border-gray-300 rounded" rows="4" placeholder="Nội dung đoạn..."></textarea>
-                                    <input type="file" name="sectionImages[]" accept="image/*" class="block w-full text-sm text-gray-600">
-                                    <button type="button" class="remove-section text-red-600 hover:text-red-800 text-sm">Xóa đoạn này</button>
-                                </div>
+                                <c:if test="${isEdit}">
+                                    <c:forEach var="section" items="${sections}">
+                                        <div class="section border border-gray-300 rounded-lg p-4 space-y-4">
+                                            <input type="text" name="sectionTitles" 
+                                                   value="${section.sectionTitle}" 
+                                                   class="w-full px-4 py-2 border border-gray-300 rounded" 
+                                                   placeholder="Tiêu đề đoạn (tùy chọn)">
+                                            <textarea name="sectionContents" 
+                                                      class="w-full px-4 py-2 border border-gray-300 rounded" 
+                                                      rows="4" placeholder="Nội dung đoạn...">${section.sectionContent}</textarea>
+                                            <input type="file" name="sectionImages[]" accept="image/*" 
+                                                   class="block w-full text-sm text-gray-600">
+                                            <button type="button" class="remove-section text-red-600 hover:text-red-800 text-sm">Xóa đoạn này</button>
+                                        </div>
+                                    </c:forEach>
+                                </c:if>
                             </div>
                             <button type="button" id="add-section" class="mt-4 px-4 py-2 bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200">
                                 + Thêm đoạn
@@ -164,7 +182,10 @@
                         <select id="tagIds" name="tagIds" multiple
                                 class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
                             <c:forEach var="tag" items="${tagList}">
-                                <option value="${tag.id}">${tag.name}</option>
+                                <option value="${tag.id}"
+                                        <c:if test="${isEdit and fn:contains(selectedTags, tag.id)}">selected</c:if>>
+                                    ${tag.name}
+                                </option>
                             </c:forEach>
                         </select>
                     </div>
@@ -175,6 +196,10 @@
                             Huỷ
                         </button>
                         <input type="hidden" id="contentHidden" name="content">
+                        <c:if test="${isEdit}">
+                            <input type="hidden" name="postId" value="${post.id}" />
+                            <input type="hidden" name="status" value="${post.status}" />
+                        </c:if>
                         <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Đăng
                         </button>   
