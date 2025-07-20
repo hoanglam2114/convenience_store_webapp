@@ -185,6 +185,11 @@
                         <div data-i18n="Product Management">Warehouse Assignment</div>
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a href="PromotionManage" class="menu-link">
+                        <div data-i18n="Basic">Promotion</div>
+                    </a>
+                </li>
             </ul>
         </li>
         <!--Shop-->
