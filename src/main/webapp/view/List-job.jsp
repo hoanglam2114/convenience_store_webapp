@@ -20,8 +20,8 @@
 
         <script type="text/javascript">
             function doDelete(id) {
-                if (confirm("Bạn có muốn xóa sản phẩm có mã là " + id + " không ?")) {
-                    window.location = "DeleteProduct?product_id=" + id;
+                if (confirm("Bạn có muốn xóa việc làm có mã là " + id + " không ?")) {
+                    window.location = "DeleteJob?job_id=" + id;
                 }
             }
         </script>
@@ -114,7 +114,7 @@
                                                         <td>${j.getStatus()}</td>
                                                         <td>
                                                             <a href="UpdateJob?job_id=${j.getId()}" class="btn btn-sm btn-warning">Edit</a>
-                                                            <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                                                            <a href="" onclick="doDelete(${j.getId()})" class="btn btn-sm btn-danger">Delete</a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

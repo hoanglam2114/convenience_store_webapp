@@ -201,8 +201,8 @@
                 </li>
             </ul>
         </li>
-                        
-        <!-- Notification -->
+
+        <!-- Store Section -->
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
@@ -218,6 +218,36 @@
 
             </ul>
 
+        </li>
+
+
+        <!-- Job Section -->
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Management">Job Posting Management</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="ListJob" class="menu-link">
+                        <div data-i18n="Basic">Job Management</div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="ListJobCustomer" class="menu-link">
+                        <div data-i18n="Basic">Job Posting For User</div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="ListJobApplication" class="menu-link">
+                        <div data-i18n="Basic">List Applicant's Information</div>
+                    </a>
+                </li>
+            </ul>
         </li>
 
 

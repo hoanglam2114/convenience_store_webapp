@@ -26,6 +26,7 @@
         <a href="#" class="footer-link">Sản phẩm</a>
         <a href="#" class="footer-link">Khuyến mãi</a>
         <a href="#" class="footer-link">Liên hệ</a>
+        <a href="ListJobCustomer" class="footer-link">Tuyển dụng</a>
       </div>
       <div class="col-lg-2 col-md-3">
         <h5 class="footer-title">Hỗ trợ</h5>

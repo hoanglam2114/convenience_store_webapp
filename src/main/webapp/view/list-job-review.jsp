@@ -4,7 +4,7 @@
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
-        <title>Quản lý tuyển dụng</title>
+        <title>Thông tin tuyển dụng</title>
 
 
         <link rel="stylesheet" href="assets/vendor/css/core.css" />
@@ -54,7 +54,6 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-
                                             <th>STT</th>
                                             <th>Tên đầy đủ</th>
                                             <th>Email</th>

@@ -421,11 +421,9 @@ public class JobDAO extends DBContext {
 
         return jobs;
     }
-    
-    
-    
-      public List <JobDetail> getJobDetailTextById(int job_id) {
-          List<JobDetail> list = new ArrayList<>();
+
+    public List<JobDetail> getJobDetailTextById(int job_id) {
+        List<JobDetail> list = new ArrayList<>();
         String sql = "select * from JobDetails where jobID = ? ORDER BY id ";
 
         try {
@@ -440,19 +438,24 @@ public class JobDAO extends DBContext {
                 p.setTextcontent(rs.getString("content"));
                 p.setSortorder(rs.getInt("sort_order"));
 
-                list.add(p) ;
+                list.add(p);
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
         return list;
     }
-    
-    
-    
-    
-    
-    
+
+    public void deleteJob(int id) {
+        String sql = "delete from [dbo].[JobPostings] where jobID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 
     public static void main(String[] args) {
         JobDAO jd = new JobDAO();

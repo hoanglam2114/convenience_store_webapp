@@ -8,6 +8,17 @@
         <title>Chi tiết công việc | Tuyển dụng</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Bootstrap Icons -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+        <!-- FontAwesome (nếu cần) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
         <style>
             .job-description ul {
                 list-style-type: disc;
@@ -31,9 +42,49 @@
                 }
             }
         </style>
+        <style>
+            .customer-footer .footer-link {
+                display: block;
+                margin-bottom: 6px;
+                color: #ffffff;
+                text-decoration: none;
+            }
+
+            .customer-footer .footer-link:hover {
+                text-decoration: underline;
+            }
+
+            .customer-footer .footer-title {
+                font-weight: 600;
+                margin-bottom: 1rem;
+                display: block;
+            }
+
+            .customer-footer .social-icons a {
+                display: inline-block;
+                margin-right: 10px;
+                font-size: 1.2rem;
+                color: #ffffff;
+            }
+
+            .customer-footer .footer-bottom {
+                margin-top: 2rem;
+                text-align: center;
+                font-size: 0.9rem;
+                border-top: 1px solid rgba(255,255,255,0.1);
+                padding-top: 1rem;
+            }
+        </style>
+
+
+
+
+
+
     </head>
+
     <body class="bg-gray-50 font-sans">
-        <!-- Header -->
+
         <header class="bg-white shadow-sm">
             <div class="container mx-auto px-4 py-4 flex justify-between items-center">
                 <div class="flex items-center">
@@ -41,17 +92,15 @@
                     <h1 class="text-xl font-bold text-gray-800">Convenma</h1>
                 </div>
                 <nav class="hidden md:flex space-x-8">
-                    <a href="#" class="text-gray-600 hover:text-red-600">Trang chủ</a>
-                    <a href="#" class="text-red-600 font-medium">Việc làm</a>
-                    <a href="#" class="text-gray-600 hover:text-red-600">Công ty</a>
-                    <a href="#" class="text-gray-600 hover:text-red-600">Blog</a>
+                    <a href="ListJobCustomer" class="text-gray-600 hover:text-indigo-600">Trang chủ</a>
+                    <a href="#" class="text-indigo-600 font-medium">Việc làm</a>
+                    <a href="#" class="text-gray-600 hover:text-indigo-600">Blog</a>
                 </nav>
                 <div class="flex items-center space-x-4">
                     <button class="md:hidden text-gray-600">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
-                    <button class="hidden md:block px-4 py-2 text-red-600 border border-red-600 rounded-md hover:bg-red-50">Đăng nhập</button>
-                    <button class="hidden md:block px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">Đăng ký</button>
+
                 </div>
             </div>
         </header>
@@ -62,32 +111,11 @@
                 <!-- Job Details Section -->
                 <div class="lg:w-2/3">
                     <!-- Back Button -->
-                    <a href="ListJobCustomer" class="inline-flex items-center text-red-600 mb-6 hover:underline">
+                    <a href="ListJobCustomer" class="inline-flex items-center text-indigo-600 mb-6 hover:underline">
                         <i class="fas fa-arrow-left mr-2"></i> Quay lại danh sách
                     </a>
 
-                    <!-- Job Header -->
-<!--                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                            <div>
-                                <h1 class="text-2xl font-bold text-gray-800 mb-2">Lập Trình Viên Frontend (ReactJS)</h1>
-                                <div class="flex items-center text-gray-600 mb-4">
-                                    <i class="fas fa-building mr-2"></i>
-                                    <span class="mr-4">Công ty ABC Technology</span>
-                                    <i class="fas fa-map-marker-alt mr-2"></i>
-                                    <span>Hà Nội</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                
-                                <button class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-md hover:bg-gray-100">
-                                    <i class="far fa-heart text-gray-500"></i>
-                                </button>
-                            </div>
-                        </div>
 
-                        
-                    </div>-->
 
                     <!-- Job Description -->
                     <div class="bg-white rounded-xl shadow-sm p-6 mb-6 job-description">
@@ -117,29 +145,43 @@
                             <div class="mb-4">
                                 <label for="fullname" class="block text-gray-700 font-medium mb-2">Họ và tên <span class="text-red-500">*</span></label>
                                 <input type="text" id="fullname" name="fullname" required 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
-                                       placeholder="Nhập Họ và Tên">
+                                       class="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#696cff] focus:border-transparent"
+                                       value="${param.fullname != null ? param.fullname : ''}"
+                                       placeholder="Nhập Họ và Tên"
+                                       />                                  
+                                <c:if test="${not empty errorName}">
+                                    <p class="text-red-500 text-sm mt-1">${errorName}</p>
+                                </c:if>
                             </div>
 
                             <div class="mb-4">
                                 <label for="email" class="block text-gray-700 font-medium mb-2">Email <span class="text-red-500">*</span></label>
                                 <input type="email" id="email" name="email" required 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                       placeholder="Nhập email">
+                                       class="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#696cff] focus:border-transparent"
+                                       value="${param.email != null ? param.email : ''}"
+                                       placeholder="Nhập email"
+                                       />
+                                <c:if test="${not empty errorEmail}">
+                                    <p class="text-red-500 text-sm mt-1">${errorEmail}</p>
+                                </c:if>
                             </div>
 
                             <div class="mb-4">
                                 <label for="phone" class="block text-gray-700 font-medium mb-2">Số điện thoại <span class="text-red-500">*</span></label>
                                 <input type="number"  name="phone" required 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                       placeholder="Nhập Số Điện Thoại">
+                                       class="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#696cff] focus:border-transparent"
+                                       value="${param.phone != null ? param.phone : ''}"
+                                       placeholder="Nhập Số Điện Thoại"/>
+                                <c:if test="${not empty errorPhone}">
+                                    <p class="text-red-500 text-sm mt-1">${errorPhone}</p>
+                                </c:if>
                             </div>
 
                             <div class="mb-4">
 
                                 <label for="gender" class="block text-gray-700 font-medium mb-2">Giới tính <span class="text-red-500">*</span></label></label>
                                 <select id="gender" name="gender"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        class="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#696cff] focus:border-transparent">
                                     <c:forEach items="${gender}" var="gd">
                                         <option value="${gd.getId()}">${gd.getName()}</option>
                                     </c:forEach>
@@ -149,22 +191,31 @@
 
                             <div class="mb-4">
                                 <label for="linkedin" class="block text-gray-700 font-medium mb-2">Ngày tháng năm sinh <span class="text-red-500">*</span></label></label>
-                                <input type="date"  name="dateofbirth" 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                                       >
+                                <input type="date"  name="dateofbirth" required
+                                       class="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#696cff] focus:border-transparent"
+                                       value="${param.dateofbirth != null ? param.dateofbirth : ''}"
+                                       />
+                                <c:if test="${not empty errorDOB}">
+                                    <p class="text-red-500 text-sm mt-1">${errorDOB}</p>
+                                </c:if>
                             </div>
 
                             <div class="mb-4">
                                 <label for="portfolio" class="block text-gray-700 font-medium mb-2">Địa chỉ hiện tại <span class="text-red-500">*</span></label></label>
-                                <input type="text"  name="address" 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                                       placeholder="Nhập địa chỉ hiện tại">
+                                <input type="text"  name="address" required
+                                       class="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#696cff] focus:border-transparent" 
+                                       value="${param.address != null ? param.address : ''}"
+                                       placeholder="Nhập địa chỉ hiện tại"
+                                       />
+                                <c:if test="${not empty errorAddress}">
+                                    <p class="text-red-500 text-sm mt-1">${errorAddress}</p>
+                                </c:if>
                             </div>
 
                             <div class="mb-4">
                                 <label for="gender" class="block text-gray-700 font-medium mb-2">Quận/Huyện ứng tuyển <span class="text-red-500">*</span></label></label>
                                 <select id="gender" name="district"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        class="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#696cff] focus:border-transparent">
                                     <c:forEach items="${district}" var="d">
                                         <option value="${d.getId()}">${d.getName()}</option>
                                     </c:forEach>
@@ -174,15 +225,19 @@
 
                             <div class="mb-4">
                                 <label for="linkedin" class="block text-gray-700 font-medium mb-2">Vui lòng chọn ngày tham gia phỏng vấn(Vui lòng không chọn chứ 7, chủ nhật) <span class="text-red-500">*</span></label></label>
-                                <input type="date"  name="interviewdate" 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                                       >
+                                <input type="date"  name="interviewdate" required
+                                       class="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#696cff] focus:border-transparent" 
+                                       value="${param.interviewdate != null ? param.interviewdate : ''}"
+                                       />
+                                <c:if test="${not empty errorInterviewDate}">
+                                    <p class="text-red-500 text-sm mt-1">${errorInterviewDate}</p>
+                                </c:if>
                             </div>
 
                             <div class="mb-4">
                                 <label for="gender" class="block text-gray-700 font-medium mb-2">Bạn biết thông tin tuyển dụng qua đâu?<span class="text-red-500">*</span></label></label>
                                 <select  name="source"
-                                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                         class="w-full border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#696cff] focus:border-transparent">
                                     <c:forEach items="${source}" var="s">
                                         <option value="${s.getId()}">${s.getName()}</option>
                                     </c:forEach>
@@ -190,18 +245,18 @@
                             </div>
 
 
-   
+
 
                             <div class="flex items-center mb-4">
                                 <input id="agree-terms" type="checkbox" required 
                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
                                 <label for="agree-terms" class="ml-2 text-sm text-gray-600">
-                                    Tôi đồng ý với <a href="#" class="text-red-600 hover:underline">Điều khoản & Chính sách</a>
+                                    Tôi đồng ý với <a required href="#" class="text-indigo-600 hover:underline">Điều khoản & Chính sách</a>
                                 </label>
                             </div>
 
                             <button type="submit" 
-                                    class="w-full bg-red-600 text-white py-3 px-4 rounded-md font-medium hover:bg-red-700 transition duration-300 flex items-center justify-center">
+                                    class="w-full bg-indigo-600 text-white py-3 px-4 rounded-md font-medium hover:bg-indigo-700 transition duration-300 flex items-center justify-center">
                                 <i class="fas fa-paper-plane mr-2 animate-bounce-slow"></i> Gửi đơn ứng tuyển
                             </button>
                         </form>
@@ -210,75 +265,17 @@
             </div>
         </main>
 
-       
 
-        <!-- Footer -->
-        <footer class="bg-gray-800 text-white py-12">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <div class="flex items-center mb-4">
-
-                            <h3 class="text-xl font-bold">Convenma</h3>
-                        </div>
-                        <p class="text-gray-400 mb-4">Nền tảng kết nối nhà tuyển dụng và ứng viên hàng đầu Việt Nam.</p>
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h4 class="text-lg font-bold mb-4">Về chúng tôi</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white">Giới thiệu</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Đội ngũ</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Tin tức</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Tuyển dụng</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 class="text-lg font-bold mb-4">Dành cho ứng viên</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white">Tìm việc làm</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Tạo hồ sơ</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Blog nghề nghiệp</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Câu hỏi thường gặp</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 class="text-lg font-bold mb-4">Liên hệ</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li class="flex items-start">
-                                <i class="fas fa-map-marker-alt mt-1 mr-3"></i>
-                                <span>Tầng 5, Tòa nhà FPT, 17 Duy Tân, Cầu Giấy, Hà Nội</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-phone-alt mr-3"></i>
-                                <span>(+84) 24 1234 5678</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-envelope mr-3"></i>
-                                <span>contact@jobdream.vn</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="border-t border-gray-700 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-400 mb-4 md:mb-0">© 2023 Convenma. All rights reserved.</p>
-                    <div class="flex space-x-6">
-                        <a href="#" class="text-gray-400 hover:text-white">Điều khoản</a>
-                        <a href="#" class="text-gray-400 hover:text-white">Bảo mật</a>
-                        <a href="#" class="text-gray-400 hover:text-white">Cookies</a>
+        <footer style="background-color: #2c3e50;" class="text-white py-5 mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 customer-footer">
+                        <jsp:include page="/common/customer-footer.jsp" />
                     </div>
                 </div>
             </div>
         </footer>
+
 
         <script>
             // Form submission handling
