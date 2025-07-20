@@ -126,11 +126,12 @@ public class UpdateSupplierServlet extends  HttpServlet {
         String phone = request.getParameter("phoneSup");
         String person = request.getParameter("personSup");
         String address = request.getParameter("addressSup");
+        String status = "ACTIVE";
 
         int id = Integer.parseInt(id_raw);
         Suppliers s1 = sd.getSupById(id);
         String img = (fileName != null && !fileName.isEmpty()) ? fileName : s1.getImg();
-        Suppliers sNew = new Suppliers(id, name, address, phone, email, person, img);
+        Suppliers sNew = new Suppliers(id, name, address, phone, email, person, img,status);
         sd.updateSupplier(sNew);
         response.sendRedirect("list-supplier");
     }

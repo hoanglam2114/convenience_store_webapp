@@ -239,8 +239,9 @@
                       <c:set var="i" value="${inventory}"/>
                       <form action="import-product" method="post" data-toggle="validator"
                             enctype="multipart/form-data">
-                        <input type="hidden" name="idInven" value="${i.inventoryID}">
-                        <input type="hidden" name="idPro" value="${i.getProduct().getId()}">
+                        <input type="hidden" name="inventory_id" value="${inventory.inventoryID}">
+                        <input type="hidden" name="product_id" value="${inventory.product.id}">
+                        <input type="hidden" name="warehouse_id" value="${inventory.warehouseId}">
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
@@ -319,9 +320,8 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label>Hình ảnh</label>
-                              <input type="file" class="form-control image-file" name="imgPro"
-                                     accept="image/*">
+                              <label for="quantity">Số lượng nhập:</label>
+                              <input type="number" name="quantity" min="1" required><br><br>
                             </div>
                           </div>
                           <c:if test="${not empty errorDate}">

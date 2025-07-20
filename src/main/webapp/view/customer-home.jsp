@@ -183,28 +183,6 @@
     </div>
 </section>
 
-<!-- Special Event Section -->
-<section class="event-section" id="promotions">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <div class="event-banner">
-                    <h2 class="event-title">🎉 Sự kiện đặc biệt tháng 7</h2>
-                    <p class="event-subtitle">Mua 2 tặng 1 - Áp dụng cho tất cả sản phẩm bánh kẹo và đồ uống</p>
-                    <button class="btn btn-event" onclick="scrollToProducts()">
-                        <i class="bi bi-gift me-2"></i>Tham gia ngay
-                    </button>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="text-center">
-                    <div style="font-size: 6rem; animation: bounce 2s infinite;">🎁</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- Footer -->
 <jsp:include page="/common/customer-footer.jsp" />
 <!-- Bootstrap 5 JS Bundle -->

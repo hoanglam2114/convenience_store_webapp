@@ -292,7 +292,6 @@
                                         <table class="table table-enhanced mb-0">
                                             <thead>
                                             <tr>
-                                                <th><i class="bi bi-tag me-1"></i>Lô</th>
                                                 <th><i class="bi bi-image me-1"></i>Sản phẩm</th>
                                                 <th><i class="bi bi-box me-1"></i>Tên sản phẩm</th>
                                                 <th><i class="bi bi-hash me-1"></i>Số lượng</th>
@@ -316,11 +315,6 @@
                                             </c:if>
                                             <c:forEach items="${store}" var="s">
                                                 <tr>
-                                                    <td>
-                                                            <span class="fw-semibold text-primary">
-                                                                    ${s.getInventory().getProduct().getBatch()}
-                                                            </span>
-                                                    </td>
                                                     <td>
                                                         <img src="assets/img/product/${s.getInventory().getProduct().getImage()}"
                                                              class="product-image-enhanced"

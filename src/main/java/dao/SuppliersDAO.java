@@ -33,7 +33,8 @@ public class SuppliersDAO extends DBContext {
                         rs.getString("supplier_phone"),
                         rs.getString("supplier_email"),
                         rs.getString("supplier_contact_person"),
-                        rs.getString("image")
+                        rs.getString("image"),
+                        rs.getString("status")
                 );
                 list.add(pc);
             }
@@ -57,7 +58,8 @@ public class SuppliersDAO extends DBContext {
                         rs.getString("supplier_phone"),
                         rs.getString("supplier_email"),
                         rs.getString("supplier_contact_person"),
-                        rs.getString("image")
+                        rs.getString("image"),
+                        rs.getString("status")
                 );
                 return s;
             }
@@ -81,8 +83,8 @@ public class SuppliersDAO extends DBContext {
                         rs.getString("supplier_phone"),
                         rs.getString("supplier_email"),
                         rs.getString("supplier_contact_person"),
-                        rs.getString("image")
-
+                        rs.getString("image"),
+                        rs.getString("status")
                 );
                 return s;
             }
@@ -107,7 +109,8 @@ public class SuppliersDAO extends DBContext {
                         rs.getString("supplier_phone"),
                         rs.getString("supplier_email"),
                         rs.getString("supplier_contact_person"),
-                        rs.getString("image")
+                        rs.getString("image"),
+                        rs.getString("status")
                 );
                 list.add(s);
             }
@@ -117,8 +120,8 @@ public class SuppliersDAO extends DBContext {
         return list;
     }
 
-    public void deleteSup(int id) {
-        String sql = "delete from Suppliers where supplier_id = ?";
+    public void changeStatusSup(int id) {
+        String sql = "UPDATE Suppliers SET status = CASE WHEN status = 'ACTIVE' THEN 'INACTIVE' ELSE 'ACTIVE' END WHERE supplier_id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -170,11 +173,9 @@ public class SuppliersDAO extends DBContext {
 
     public static void main(String[] args) {
         SuppliersDAO dao = new SuppliersDAO();
-//        List<Suppliers> list = dao.getAll();
-//        for (Suppliers o : list) {
-//            System.out.println(o);
-//        }
-        Suppliers s = dao.getSupById(1);
-        System.out.println(s);
+        List<Suppliers> list = dao.getAll();
+        for (Suppliers o : list) {
+            System.out.println(o);
+        }
     }
 }

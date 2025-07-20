@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Inventory;
+import model.InventorySummary;
 import model.Products;
 
 import java.io.IOException;
@@ -37,16 +38,24 @@ public class ListInventoryServlet extends HttpServlet {
                 return;
             }
 
-            int warehouseID = Integer.parseInt(idParam);
+            int warehouseId = Integer.parseInt(idParam);
 
-            List<Inventory> list = inventoryDAO.getInventoryByWarehouse(warehouseID);
+            int page = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
+            int pageSize = 10;
+            int offset = (page - 1) * pageSize;
 
-            request.setAttribute("inven", list);
-            request.setAttribute("warehouseID", warehouseID);
+            List<InventorySummary> inven = inventoryDAO.getPagedInventoryByWarehouse(warehouseId, offset, pageSize);
+            int total = inventoryDAO.countInventoryByWarehouse(warehouseId);
+            int totalPages = (int) Math.ceil((double) total / pageSize);
+
+            request.setAttribute("inven", inven);
+            request.setAttribute("page", page);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("warehouseID", warehouseId);
             request.getRequestDispatcher("/view/inventory-dashboard.jsp").forward(request, response);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
             response.sendRedirect("error.jsp");
         }
     }

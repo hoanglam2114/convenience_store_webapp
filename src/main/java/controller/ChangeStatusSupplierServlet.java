@@ -13,8 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author hoang on 6/8/2025-7:42 PM
  * IntelliJ IDEA
  */
-@WebServlet(name = "DeleteSupplierServlet", urlPatterns = {"/delete-supplier"})
-public class DeleteSupplierServlet extends HttpServlet {
+@WebServlet(name = "ChangeStatusSupplierServlet", urlPatterns = {"/change-status-supplier"})
+public class ChangeStatusSupplierServlet extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -52,10 +52,11 @@ public class DeleteSupplierServlet extends HttpServlet {
             throws ServletException, IOException {
         String id_raw = request.getParameter("supplier_id");
         int id;
+        String status = request.getParameter("status");
         try{
             id=Integer.parseInt(id_raw);
             SuppliersDAO s= new SuppliersDAO();
-            s.deleteSup(id);
+            s.changeStatusSup(id);
             response.sendRedirect("list-supplier");
         }catch(NumberFormatException e){
             System.out.println(e);

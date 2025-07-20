@@ -215,19 +215,18 @@
                         <div data-i18n="Basic">Store Management</div>
                     </a>
                 </li>
-
             </ul>
-
         </li>
-
-
-
-
 
         <!-- Notification -->
         <li class="menu-item">
             <a href="notificationServlet" class="menu-link">
                 <div data-i18n="Basic">Notification</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="admin/qna" class="menu-link">
+                <div data-i18n="Basic">QnA Manage</div>
             </a>
         </li>
         <li class="menu-item">

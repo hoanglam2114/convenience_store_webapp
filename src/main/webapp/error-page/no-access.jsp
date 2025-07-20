@@ -1,4 +1,4 @@
-<%--
+<%@ page import="model.Accounts" %><%--
   Created by IntelliJ IDEA.
   User: hoang
   Date: 7/19/2025
@@ -110,8 +110,9 @@
     <!-- Site Bar (Only show if user is logged in) -->
     <%
       // Check if user is logged in (adjust this condition based on your session management)
-      String userRole = (String) session.getAttribute("userRole");
-      boolean isLoggedIn = (userRole != null && !userRole.isEmpty());
+      Accounts account = (Accounts) session.getAttribute("account");
+      int role = account.getRole_id();
+      boolean isLoggedIn = (role == 1 || role == 2 || role == 3 || role == 4);
     %>
 
     <% if (isLoggedIn) { %>
@@ -159,17 +160,17 @@
               <!-- Action Buttons -->
               <div class="d-flex flex-column flex-sm-row justify-content-center btn-group-custom">
                 <% if (isLoggedIn) { %>
-                <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-primary mb-2 mb-sm-0">
+                <a href="HomeAdmin" class="btn btn-primary mb-2 mb-sm-0">
                   <i class='bx bx-home-circle'></i> Back to Dashboard
                 </a>
                 <a href="javascript:history.back()" class="btn btn-outline-secondary">
                   <i class='bx bx-arrow-back'></i> Go Back
                 </a>
                 <% } else { %>
-                <a href="${pageContext.request.contextPath}/login" class="btn btn-primary mb-2 mb-sm-0">
-                  <i class='bx bx-log-in'></i> Login
+                <a href="LoginServlet" class="btn btn-primary mb-2 mb-sm-0">
+                  <i class='bx bx-log-in'></i>Login
                 </a>
-                <a href="${pageContext.request.contextPath}/" class="btn btn-outline-secondary">
+                <a href="HomeAdmin" class="btn btn-outline-secondary">
                   <i class='bx bx-home'></i> Home Page
                 </a>
                 <% } %>

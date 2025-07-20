@@ -1,9 +1,9 @@
 package dao;
 
-import model.Inventory;
-import model.InventoryDetails;
+import model.*;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Products;
 
 /**
  * @author hoang on 5/26/2025-8:53 AM IntelliJ IDEA
@@ -37,19 +36,103 @@ public class InventoryDAO extends DBContext {
         return null;
     }
 
-    public List<Inventory> getAllInventory() {
-        List<Inventory> inventory = new ArrayList<>();
-        String query = "SELECT * FROM dbo.Inventory ORDER BY last_restock_date DESC";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                inventory.add(buildInventory(rs));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InventoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+    public void addBatch(int inventoryId, int productId, int warehouseId, int quantity,
+                         LocalDate mfgDate, LocalDate expDate) {
+        String sql = "INSERT INTO inventory_batch " +
+                "(inventory_id, product_id, warehouse_id, quantity, import_date, manufacture_date, expiry_date) " +
+                "VALUES (?, ?, ?, ?, GETDATE(), ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, inventoryId);
+            ps.setInt(2, productId);
+            ps.setInt(3, warehouseId);
+            ps.setInt(4, quantity);
+            ps.setDate(5, Date.valueOf(mfgDate));
+            ps.setDate(6, Date.valueOf(expDate));
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return inventory;
     }
+
+
+    public boolean insertBatch(InventoryBatch batch) {
+        String sql = "INSERT INTO inventory_batch (inventory_id, product_id, warehouse_id, quantity, import_date, expiry_date, note) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, batch.getInventoryId());
+            ps.setInt(2, batch.getProductId());
+            ps.setInt(3, batch.getWarehouseId());
+            ps.setInt(4, batch.getQuantity());
+            ps.setTimestamp(5, new Timestamp(batch.getImportDate().getTime()));
+            if (batch.getExpiryDate() != null) {
+                ps.setTimestamp(6, new Timestamp(batch.getExpiryDate().getTime()));
+            } else {
+                ps.setNull(6, Types.TIMESTAMP);
+            }
+            ps.setString(7, batch.getNote());
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<InventoryBatch> getBatchesByProductAndWarehouse(int productId, int warehouseId) {
+        List<InventoryBatch> list = new ArrayList<>();
+        String sql = "SELECT * FROM inventory_batch WHERE product_id=? AND warehouse_id=? ORDER BY import_date ASC";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, productId);
+            ps.setInt(2, warehouseId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    InventoryBatch batch = new InventoryBatch(
+                            rs.getInt("batch_id"),
+                            rs.getInt("inventory_id"),
+                            rs.getInt("product_id"),
+                            rs.getInt("warehouse_id"),
+                            rs.getInt("quantity"),
+                            rs.getTimestamp("import_date"),
+                            rs.getDate("expiry_date"),
+                            rs.getString("note")
+                    );
+                    list.add(batch);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public boolean updateBatchQuantity(int batchId, int newQuantity) {
+        String sql = "UPDATE inventory_batch SET quantity=? WHERE batch_id=?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, newQuantity);
+            ps.setInt(2, batchId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public int getTotalStockByProductAndWarehouse(int productId, int warehouseId) {
+        String sql = "SELECT SUM(quantity) as total FROM inventory_batch WHERE product_id=? AND warehouse_id=?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, productId);
+            ps.setInt(2, warehouseId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 
     /**
      * Search products in inventory by name
@@ -398,12 +481,14 @@ public class InventoryDAO extends DBContext {
     public Inventory getInventoryById(int inventoryId) {
         Inventory inventory = null;
         String sql = """
-        SELECT i.inventory_id, i.current_stock, i.inventory_status, i.last_restock_date, i.alert,
-               p.product_id, p.product_name, p.product_image, p.product_price, p.barcode 
-        FROM Inventory i
-        JOIN Products p ON i.product_id = p.product_id
-        WHERE i.inventory_id = ?
-    """;
+                    SELECT i.inventory_id, i.current_stock, i.inventory_status, i.last_restock_date, 
+                           i.alert, i.warehouse_id,
+                           p.product_id, p.product_name AS product_name, p.product_image AS product_image, 
+                           p.product_price AS product_price, p.barcode 
+                    FROM Inventory i
+                    JOIN Products p ON i.product_id = p.product_id
+                    WHERE i.inventory_id = ?
+                """;
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, inventoryId);
@@ -413,11 +498,12 @@ public class InventoryDAO extends DBContext {
                 inventory.setInventoryID(rs.getInt("inventory_id"));
                 inventory.setCurrentStock(rs.getInt("current_stock"));
                 inventory.setInventoryStatus(rs.getString("inventory_status"));
-                Date restockDate = rs.getDate("last_restock_date");
+                Timestamp restockDate = rs.getTimestamp("last_restock_date");
                 if (restockDate != null) {
-                    inventory.setLastRestockDate(restockDate.toLocalDate().atStartOfDay());
+                    inventory.setLastRestockDate(restockDate.toLocalDateTime());
                 }
                 inventory.setAlert(rs.getString("alert"));
+                inventory.setWarehouseId(rs.getInt("warehouse_id"));
 
                 // Gán sản phẩm
                 Products product = new Products();
@@ -428,12 +514,14 @@ public class InventoryDAO extends DBContext {
                 product.setBarcode(rs.getString("barcode"));
 
                 inventory.setProduct(product);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return inventory;
     }
+
 
     /**
      * Update inventory details
@@ -668,37 +756,195 @@ public class InventoryDAO extends DBContext {
         return 0;
     }
 
-    public List<Inventory> getInventoryByWarehouse(int warehouseId) throws SQLException {
-        String query = "SELECT * FROM Inventory WHERE warehouse_id = ?";
-        List<Inventory> inventoryList = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, warehouseId);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                inventoryList.add(buildInventory(rs));
+    public List<InventorySummary> getPagedInventoryByWarehouse(int warehouseId, int offset, int pageSize) {
+        List<InventorySummary> list = new ArrayList<>();
+        String sql = "SELECT i.inventory_id, i.product_id, p.product_name AS product_name, p.product_image, " +
+                "i.current_stock, i.inventory_status, i.last_restock_date, i.alert " +
+                "FROM inventory i " +
+                "JOIN Products p ON i.product_id = p.product_id " +
+                "WHERE i.warehouse_id = ? " +
+                "ORDER BY p.product_name " +
+                "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, warehouseId);
+            ps.setInt(2, offset);
+            ps.setInt(3, pageSize);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    InventorySummary item = new InventorySummary(
+                            rs.getInt("inventory_id"),
+                            rs.getInt("product_id"),
+                            rs.getString("product_name"),
+                            rs.getString("product_image"),
+                            rs.getInt("current_stock"),
+                            rs.getTimestamp("last_restock_date"),
+                            rs.getString("inventory_status"),
+                            rs.getString("alert")
+                    );
+                    list.add(item);
+                }
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(InventoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return inventoryList;
+        return list;
     }
+
+    public List<InventoryBatch> getBatchesByInventoryId(int inventoryId) {
+        List<InventoryBatch> list = new ArrayList<>();
+        String sql = "SELECT batch_id, quantity, import_date, manufacture_date, expiry_date " +
+                "FROM inventory_batch WHERE inventory_id = ? ORDER BY import_date DESC";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, inventoryId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    InventoryBatch b = new InventoryBatch();
+                    b.setBatchId(rs.getInt("batch_id"));
+                    b.setQuantity(rs.getInt("quantity"));
+                    b.setImportDate(rs.getTimestamp("import_date"));
+                    b.setManufactureDate(rs.getDate("manufacture_date"));
+                    b.setExpiryDate(rs.getDate("expiry_date"));
+                    list.add(b);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
+    public int countInventoryByWarehouse(int warehouseId) {
+        String sql = "SELECT COUNT(DISTINCT b.product_id) AS total " +
+                "FROM inventory_batch b WHERE b.warehouse_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, warehouseId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int addNewInventory(int productId, int quantity, int warehouseId) {
+        String sql = "INSERT INTO inventory (product_id, current_stock, inventory_status, last_restock_date, alert, warehouse_id) "
+                + "VALUES (?, ?, ?, GETDATE(), NULL, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, productId);
+            ps.setInt(2, quantity);
+            ps.setString(3, "Còn hàng");
+            ps.setInt(4, warehouseId);
+
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) return rs.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public boolean importExistingProduct(int inventoryId, int productId, int warehouseId, int quantity) {
+        try {
+            connection.setAutoCommit(false);
+
+            // 1. Insert batch
+            String sqlBatch = "INSERT INTO inventory_batch (inventory_id, product_id, warehouse_id, quantity, import_date) VALUES (?, ?, ?, ?, GETDATE())";
+            try (PreparedStatement ps = connection.prepareStatement(sqlBatch)) {
+                ps.setInt(1, inventoryId);
+                ps.setInt(2, productId);
+                ps.setInt(3, warehouseId);
+                ps.setInt(4, quantity);
+                ps.executeUpdate();
+            }
+
+            // 2. Update stock tổng
+            String sqlInventory = "UPDATE inventory SET current_stock = current_stock + ?, last_restock_date = GETDATE() WHERE inventory_id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(sqlInventory)) {
+                ps.setInt(1, quantity);
+                ps.setInt(2, inventoryId);
+                ps.executeUpdate();
+            }
+
+            connection.commit();
+            return true;
+        } catch (Exception e) {
+            if (connection != null) try {
+                connection.rollback();
+            } catch (SQLException ignored) {
+            }
+            e.printStackTrace();
+        } finally {
+            if (connection != null) try {
+                connection.setAutoCommit(true);
+                connection.close();
+            } catch (SQLException ignored) {
+            }
+        }
+        return false;
+    }
+
+    public int getInventoryIdByProductAndWarehouse(int productId, int warehouseId) {
+        String sql = "SELECT inventory_id FROM inventory WHERE product_id = ? AND warehouse_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, productId);
+            ps.setInt(2, warehouseId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("inventory_id");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1; // Không tìm thấy
+    }
+
+    public List<Products> getProductsNotInInventory(int warehouseId) {
+        List<Products> list = new ArrayList<>();
+        String sql = "SELECT p.product_id, p.product_name, p.product_image, p.product_price, p.barcode " +
+                "FROM Products p " +
+                "WHERE p.product_id NOT IN (SELECT product_id FROM inventory WHERE warehouse_id = ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, warehouseId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Products p = new Products();
+                    p.setId(rs.getInt("product_id"));
+                    p.setName(rs.getString("name"));
+                    p.setImage(rs.getString("image"));
+                    p.setPrice(rs.getFloat("price"));
+                    p.setBarcode(rs.getString("barcode"));
+                    list.add(p);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public void updateStockAfterImport(int inventoryId, int quantity) {
+        String sql = "UPDATE inventory SET current_stock = current_stock + ?, last_restock_date = GETDATE() WHERE inventory_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, quantity);
+            ps.setInt(2, inventoryId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void main(String[] args) {
         InventoryDAO inventoryDAO = new InventoryDAO();
+        List<InventoryDetails> inventory = inventoryDAO.getAllLogInventory();
+        System.out.println(inventory);
 
-        List<Inventory> inventoryList = null;
-        try {
-            inventoryList = inventoryDAO.getInventoryByWarehouse(1);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (inventoryList.isEmpty()) {
-            System.out.println("No DATA");
-        } else {
-            for (Inventory item : inventoryList) {
-                System.out.println(item);
-            }
-        }
     }
 }

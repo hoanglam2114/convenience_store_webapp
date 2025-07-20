@@ -262,7 +262,7 @@
                                     <p class="text-muted mb-0">Theo dõi và quản lý tồn kho một cách hiệu quả</p>
                                 </div>
                                 <div class="quick-actions d-flex">
-                                    <a href="add-inventory-product" class="btn btn-success">
+                                    <a href="add-inventory-product?warehouse_id=${warehouseID}" class="btn btn-success">
                                         <i class="bx bx-import me-1"></i>Thêm sản phẩm
                                     </a>
                                     <a href="log-inventory" class="btn btn-info">
@@ -351,7 +351,7 @@
                                             <table class="table table-hover mb-0">
                                                 <thead class="table-light">
                                                 <tr>
-                                                    <th>Lô hàng</th>
+<%--                                                    <th>Lô hàng</th>--%>
                                                     <th>Sản phẩm</th>
                                                     <th>Tên sản phẩm</th>
                                                     <th>Số lượng</th>
@@ -379,29 +379,26 @@
                                                 <c:forEach items="${inven}" var="i">
                                                     <tr>
                                                         <td>
-                                                            <span class="badge bg-light text-dark">${i.product.batch}</span>
-                                                        </td>
-                                                        <td>
-                                                            <img src="assets/img/product/${i.product.image}"
+                                                            <img src="assets/img/product/${i.image}"
                                                                  class="product-image" width="60" height="60"
-                                                                 alt="${i.product.name}"/>
+                                                                 alt="${i.productName}"/>
                                                         </td>
 
                                                         <td>
                                                             <div>
-                                                                <strong>${i.product.name}</strong>
+                                                                <strong>${i.productName}</strong>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <c:choose>
-                                                                <c:when test="${i.currentStock < 10}">
-                                                                    <span class="stock-level-low">${i.currentStock}</span>
+                                                                <c:when test="${i.totalStock < 10}">
+                                                                    <span class="stock-level-low">${i.totalStock}</span>
                                                                 </c:when>
-                                                                <c:when test="${i.currentStock < 50}">
-                                                                    <span class="stock-level-medium">${i.currentStock}</span>
+                                                                <c:when test="${i.totalStock < 50}">
+                                                                    <span class="stock-level-medium">${i.totalStock}</span>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <span class="stock-level-high">${i.currentStock}</span>
+                                                                    <span class="stock-level-high">${i.totalStock}</span>
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
@@ -419,7 +416,7 @@
                                                             </c:choose>
                                                         </td>
                                                         <td>
-                                                            <small class="text-muted">${i.lastRestockDate}</small>
+                                                            <small class="text-muted">${i.lastRestock}</small>
                                                         </td>
                                                         <td>
                                                             <c:if test="${not empty i.alert}">
@@ -440,15 +437,14 @@
                                                         </td>
                                                         <td>
                                                             <div class="action-buttons">
-                                                                <a href="import-product?inventory_id=${i.inventoryID}"
+                                                                <a href="import-product?inventory_id=${i.inventoryId}"
                                                                    class="btn btn-success btn-sm btn-action"
                                                                    title="Nhập kho">
                                                                     <i class="bx bx-import"></i>
                                                                 </a>
-                                                                <a href="#" onclick="confirmDelete(${i.inventoryID})"
-                                                                   class="btn btn-danger btn-sm btn-action"
-                                                                   title="Xóa">
-                                                                    <i class="bx bx-trash"></i>
+                                                                <a href="inventory-batch?inventory_id=${i.inventoryId}&warehouse_id=${warehouseID}"
+                                                                   class="btn btn-info btn-sm">
+                                                                    <i class="bx bx-detail"></i> Xem lô
                                                                 </a>
                                                             </div>
                                                         </td>

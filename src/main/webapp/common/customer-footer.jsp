@@ -32,7 +32,7 @@
         <a href="#" class="footer-link">Chính sách đổi trả</a>
         <a href="#" class="footer-link">Hướng dẫn mua hàng</a>
         <a href="#" class="footer-link">Câu hỏi thường gặp</a>
-        <a href="#" class="footer-link">Bảo hành</a>
+        <a href="qna" class="footer-link">Hỏi đáp</a>
       </div>
       <div class="col-lg-4 col-md-6">
         <h5 class="footer-title">Thông tin liên hệ</h5>

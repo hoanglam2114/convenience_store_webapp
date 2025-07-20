@@ -57,11 +57,11 @@ public class AddInventoryProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        ProductsDAO pc = new ProductsDAO();
+        InventoryDAO inventoryDAO = new InventoryDAO();
+        int warehouseId = Integer.parseInt(request.getParameter("warehouse_id"));
+        List<Products> products = inventoryDAO.getProductsNotInInventory(warehouseId);
+        request.setAttribute("products", products);
 
-        List<Products> p = pc.getProductNotInInventory();
-        session.setAttribute("product", p);
         request.getRequestDispatcher("/view/add-product-inventory.jsp").forward(request, response);
 
     }
@@ -76,19 +76,20 @@ public class AddInventoryProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int warehouseId = Integer.parseInt(request.getParameter("warehouse_id"));
+        int productId = Integer.parseInt(request.getParameter("product_id"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+
         InventoryDAO id = new InventoryDAO();
         ProductsDAO pd = new ProductsDAO();
-        String idPro_raw = request.getParameter("idPro");
-        String quantity = request.getParameter("quantity");
-        int idPro = Integer.parseInt(idPro_raw);
-        Products pNew = pd.getProductById(idPro);
-        int q = Integer.parseInt(quantity);
+
+        Products pNew = pd.getProductById(productId);
         String status;
         String alert;
-        if (q <= 0) {
+        if (quantity <= 0) {
             status = "Hết hàng";
             alert = "Khẩn cấp";
-        } else if (0 < q && q <= 50) {
+        } else if (0 < quantity && quantity <= 50) {
             status = "Sắp hết";
             alert = "Cảnh báo";
         } else {
@@ -96,7 +97,7 @@ public class AddInventoryProductServlet extends HttpServlet {
             alert = "Không";
         }
         LocalDateTime lastUpdate = LocalDateTime.now();
-        Inventory iNew = new Inventory(pNew, q, status, lastUpdate, alert);
+        Inventory iNew = new Inventory(pNew, quantity, status, lastUpdate, alert);
         id.addInventoryProduct(iNew);
         response.sendRedirect("import-inventory");
     }

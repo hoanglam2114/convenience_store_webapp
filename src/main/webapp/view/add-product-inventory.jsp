@@ -243,7 +243,7 @@
                               <c:set var="product" value="${sessionScope.product}"/>
                               <label>Tên sản phẩm</label>
                               <select name="idPro" class="selectpicker form-control" data-style="py-0">
-                                <c:forEach items="${product}" var="p">
+                                <c:forEach items="${products}" var="p">
                                   <option value="${p.getId()}">${p.getName()}</option>
                                 </c:forEach>
                               </select>

@@ -10,12 +10,12 @@ package model;
  */
 public class Suppliers {
      private int id;
-    private String name, address, phone, email, contact,img;
+    private String name, address, phone, email, contact,img,status;
 
     public Suppliers() {
     }
 
-    public Suppliers(int id, String name, String address, String phone, String email, String contact, String img) {
+    public Suppliers(int id, String name, String address, String phone, String email, String contact, String img, String status) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -23,6 +23,7 @@ public class Suppliers {
         this.email = email;
         this.contact = contact;
         this.img = img;
+        this.status = status;
     }
     public Suppliers(String name, String address, String phone, String email, String contact, String img) {
         this.name = name;
@@ -89,9 +90,16 @@ public class Suppliers {
         this.img = img;
     }
 
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        return "Suppliers{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email + ", contact=" + contact + ", img=" + img + '}';
+        return "Suppliers{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email + ", contact=" + contact + ", img=" + img +  ", status=" + status + '}';
     }
 
     

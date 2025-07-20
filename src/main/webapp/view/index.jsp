@@ -82,7 +82,8 @@
                                         <div class="card-body">
                                             <h5 class="card-title text-primary">Welcome to Convema! </h5>
                                             <p class="mb-4">
-                                                Here's your business overview for today. Check out your key metrics and recent activities.
+                                                Here's your business overview for today. Check out your key metrics and
+                                                recent activities.
                                             </p>
                                         </div>
                                     </div>
@@ -115,7 +116,8 @@
                                     </div>
                                     <span class="fw-semibold d-block mb-1">Products in Stock</span>
                                     <h3 class="card-title mb-2">245</h3>
-                                    <small class="text-success fw-semibold"><i class='bx bx-up-arrow-alt'></i> Total Items</small>
+                                    <small class="text-success fw-semibold"><i class='bx bx-up-arrow-alt'></i> Total
+                                        Items</small>
                                 </div>
                             </div>
                         </div>
@@ -131,7 +133,8 @@
                                     </div>
                                     <span class="fw-semibold d-block mb-1">Total Orders</span>
                                     <h3 class="card-title mb-2">0</h3>
-                                    <small class="text-warning fw-semibold"><i class='bx bx-receipt'></i> All Time</small>
+                                    <small class="text-warning fw-semibold"><i class='bx bx-receipt'></i> All
+                                        Time</small>
                                 </div>
                             </div>
                         </div>
@@ -147,7 +150,8 @@
                                     </div>
                                     <span class="fw-semibold d-block mb-1">Total Customers</span>
                                     <h3 class="card-title mb-2">156</h3>
-                                    <small class="text-info fw-semibold"><i class='bx bx-user-plus'></i> Registered</small>
+                                    <small class="text-info fw-semibold"><i class='bx bx-user-plus'></i>
+                                        Registered</small>
                                 </div>
                             </div>
                         </div>
@@ -176,7 +180,8 @@
                             <div class="card">
                                 <div class="card-header d-flex align-items-center justify-content-between">
                                     <h5 class="card-title m-0 me-2">Recent Products</h5>
-                                    <a href="${pageContext.request.contextPath}/products" class="btn btn-sm btn-outline-primary">View All</a>
+                                    <a href="${pageContext.request.contextPath}/products"
+                                       class="btn btn-sm btn-outline-primary">View All</a>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -299,15 +304,18 @@
                                         <i class='bx bx-gift'></i>
                                         <span class="fw-semibold">Summer Promotion 2025!</span><br>
                                         <small>Get 20% off on all products. Limited time offer!</small>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
                                     </div>
 
                                     <!-- Low Stock Alert -->
                                     <div class="alert alert-warning alert-dismissible" role="alert">
                                         <i class='bx bx-error'></i>
                                         <span class="fw-semibold">Low Stock Alert!</span><br>
-                                        <small>Inventory under 10 products: Hao Hao noodles, Oreo cookies, Pepsi 330ml...</small>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <small>Inventory under 10 products: Hao Hao noodles, Oreo cookies, Pepsi
+                                            330ml...</small>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
                                     </div>
 
                                     <!-- No Orders Alert -->
@@ -315,7 +323,8 @@
                                         <i class='bx bx-shopping-bag'></i>
                                         <span class="fw-semibold">No orders yet!</span><br>
                                         <small class="d-block mb-2">Ready to get your first order?</small>
-                                        <a href="${pageContext.request.contextPath}/orders/create" class="btn btn-sm btn-primary">Create Order</a>
+                                        <a href="${pageContext.request.contextPath}/orders/create"
+                                           class="btn btn-sm btn-primary">Create Order</a>
                                     </div>
 
                                     <!-- System Update Notice -->
@@ -323,7 +332,8 @@
                                         <i class='bx bx-check-circle'></i>
                                         <span class="fw-semibold">System Updated!</span><br>
                                         <small>Dashboard has been updated with new features and improvements.</small>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
                                     </div>
                                 </div>
                             </div>
@@ -335,13 +345,15 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="d-grid gap-2">
-                                        <a href="${pageContext.request.contextPath}/products/add" class="btn btn-primary">
+                                        <a href="${pageContext.request.contextPath}/products/add"
+                                           class="btn btn-primary">
                                             <i class='bx bx-plus'></i> Add Product
                                         </a>
                                         <a href="${pageContext.request.contextPath}/customers/add" class="btn btn-info">
                                             <i class='bx bx-user-plus'></i> Add Customer
                                         </a>
-                                        <a href="${pageContext.request.contextPath}/orders/create" class="btn btn-warning">
+                                        <a href="${pageContext.request.contextPath}/orders/create"
+                                           class="btn btn-warning">
                                             <i class='bx bx-shopping-bag'></i> Create Order
                                         </a>
                                         <a href="${pageContext.request.contextPath}/reports" class="btn btn-success">

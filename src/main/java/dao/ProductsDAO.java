@@ -89,7 +89,8 @@ public class ProductsDAO extends DBContext {
                         rs.getString("supplier_phone"),
                         rs.getString("supplier_email"),
                         rs.getString("supplier_contact_person"),
-                        rs.getString("image")
+                        rs.getString("image"),
+                        rs.getString("status")
                 );
                 return sup;
             }

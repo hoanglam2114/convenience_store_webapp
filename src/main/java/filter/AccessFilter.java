@@ -4,15 +4,6 @@ package filter;
  * @author hoang on 7/19/2025-9:47 PM
  * IntelliJ IDEA
  */
-
-import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-
-
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,84 +16,103 @@ import model.Accounts;
 
 @WebFilter("/*")
 public class AccessFilter implements Filter {
-
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
-
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         HttpSession session = request.getSession(false);
-        String context = request.getContextPath();
+
         String uri = request.getRequestURI();
+        String context = request.getContextPath();
 
-        // Debug (xem request nào bị chặn)
-        // System.out.println("AccessFilter - URI: " + uri);
+        System.out.println("AccessFilter - URI: " + uri);
 
-        // Public paths (bỏ qua login, logout, assets)
-        if (uri.equals(context + "/LoginServlet") ||
-                uri.equals(context + "/LogoutServlet") ||
-                uri.equals(context + "/ForgotPassword") ||
-                uri.contains("/view/auth-sign-in.jsp") ||
-                uri.contains("/error-page/") ||
-                uri.contains("/assets/")) {
+        // Bỏ qua luồng customer (không check login admin/staff)
+            if (uri.contains("/customer-") || uri.contains("/home") || uri.contains("/qna") || uri.contains("/product") || uri.contains("/retail-chain")) {
             chain.doFilter(req, res);
             return;
         }
 
+        // Public
+        if (uri.endsWith("/LoginServlet")
+                || uri.endsWith("/LogoutServlet")
+                || uri.contains("/HomeServlet")
+                || uri.contains("/assets/")
+                || uri.endsWith("/no-access")
+                || uri.contains("/error-page/")
+        ) {
+            chain.doFilter(req, res);
+            return;
+        }
 
-        // Check login
+        // Check login quản lý
         if (session == null || session.getAttribute("account") == null) {
             response.sendRedirect(context + "/LoginServlet");
             return;
         }
 
-        // Lấy thông tin account
+        // Check role
         Accounts acc = (Accounts) session.getAttribute("account");
-        int roleId = acc.getRole_id();
-        String roleName = getRoleName(roleId);
+        String roleName = getRoleName(acc.getRole_id());
 
-        // Phân quyền theo role
         if (!isAllowed(uri, roleName)) {
-            request.getRequestDispatcher("/error-page/no-access.jsp").forward(request, response);
+            response.sendRedirect(context + "/no-access");
             return;
         }
 
-        // Pass tiếp
         chain.doFilter(req, res);
+    }
+
+    private boolean isAllowed(String uri, String role) {
+        // Các path chung ai cũng vào được
+        List<String> commonPaths = Arrays.asList(
+                "/verifycode", "/ResetPassword", "/ForgotPassword", "/HomeAdmin"
+        );
+        if (commonPaths.stream().anyMatch(uri::contains)) return true;
+
+        // Admin full quyền
+        if ("Admin".equals(role)) return true;
+
+        // Staff
+        if ("Staff".equals(role)) {
+            List<String> staffPaths = Arrays.asList(
+                    "/addCustomerPos", "/addToCart", "/barcode-image", "/checkout",
+                    "/update-cart", "/createVNPayQR", "/customerLookup", "/loadProduct",
+                    "/qrPayment", "/resetOrder", "/scan-barcode", "/searchProduct",
+                    "/vnPayReturn"
+            );
+            return staffPaths.stream().anyMatch(uri::contains);
+        }
+
+        // Shop Manager
+        if ("Shop Manager".equals(role)) {
+            List<String> shopManagerPaths = Arrays.asList(
+                    "/list-store-stock", "/import-product", "/export-old-batch",
+                    "/find-product-store", "/delete-store-stock"
+            );
+            return shopManagerPaths.stream().anyMatch(uri::contains);
+        }
+
+        // Warehouse Manager
+        if ("Warehouse Manager".equals(role)) {
+            List<String> warehousePaths = Arrays.asList(
+                    "/inventory", "/add-inventory-product", "/log-inventory"
+            );
+            return warehousePaths.stream().anyMatch(uri::contains);
+        }
+
+        // Default: Không cho truy cập
+        return false;
     }
 
     private String getRoleName(int roleId) {
         switch (roleId) {
             case 1: return "Admin";
             case 2: return "Staff";
-            case 3: return "Warehouse Manager";
-            case 4: return "Shop Manager";
-            default: return "Unknown";
+            case 3: return "Shop Manager";
+            case 4: return "Warehouse Manager";
+            default: return "";
         }
-    }
-
-    // Check quyền truy cập theo URL + role
-    private boolean isAllowed(String uri, String role) {
-        // Admin -> vào tất cả
-        if ("Admin".equals(role)) return true;
-
-        // Staff
-        if ("Staff".equals(role)) {
-            List<String> staffPages = Arrays.asList("HomeAdmin", "OrderServlet", "CustomerServlet");
-            return staffPages.stream().anyMatch(uri::contains);
-        }
-
-        // Warehouse Manager
-        if ("Warehouse Manager".equals(role)) {
-            return uri.contains("Warehouse") || uri.contains("HomeAdmin");
-        }
-
-        // Shop Manager
-        if ("Shop Manager".equals(role)) {
-            return uri.contains("Shop") || uri.contains("HomeAdmin");
-        }
-
-        return false;
     }
 }

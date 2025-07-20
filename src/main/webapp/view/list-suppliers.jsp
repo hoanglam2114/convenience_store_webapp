@@ -167,9 +167,9 @@
     <script src="${pageContext.request.contextPath}/assets/vendor/js/helpers.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/config.js"></script>
     <script type="text/javascript">
-        function doDelete(id) {
-            if (confirm("Bạn có muốn xóa nhà cung cấp có mã là " + id + " không ?")) {
-                window.location = "delete-supplier?supplier_id=" + id;
+        function doStatusChange(id) {
+            if (confirm("Bạn có muốn đổi trạng thái nhà cung cấp có mã là " + id + " không ?")) {
+                window.location = "change-status-supplier?supplier_id=" + id;
             }
         }
     </script>
@@ -256,12 +256,20 @@
                                                                 <i class="bi bi-pencil-square"></i>
                                                             </a>
 
-                                                            <a class="btn btn-sm btn-danger rounded-circle d-flex align-items-center justify-content-center"
+                                                            <a class="btn btn-sm
+   <c:if test='${sup.status eq "ACTIVE"}'>btn-outline-success</c:if>
+   <c:if test='${sup.status eq "INACTIVE"}'>btn-outline-danger</c:if>
+   d-flex align-items-center justify-content-center"
                                                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                                               title="Xóa nhà cung cấp"
-                                                               href="#" onclick="doDelete(${sup.getId()})">
-                                                                <i class="bi bi-trash"></i>
+                                                               title="Đổi trạng thái nhà cung cấp"
+                                                               href="javascript:void(0);"
+                                                               onclick="doStatusChange(${sup.getId()})">
+                                                                <c:choose>
+                                                                    <c:when test='${sup.status eq "ACTIVE"}'>ACTIVE</c:when>
+                                                                    <c:otherwise>INACTIVE</c:otherwise>
+                                                                </c:choose>
                                                             </a>
+
                                                         </div>
 
                                                     </td>
