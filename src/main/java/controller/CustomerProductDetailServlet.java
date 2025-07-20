@@ -30,7 +30,7 @@ public class CustomerProductDetailServlet extends HttpServlet {
         if (idStr != null) {
             try {
                 int id = Integer.parseInt(idStr);
-                Products product = productDAO.getProductById(id);
+                Products product = productDAO.getProductByIdHasDes(id);
                 if (product != null) {
                     request.setAttribute("product", product);
                     request.getRequestDispatcher("/view/customer-product-detail.jsp").forward(request, response);

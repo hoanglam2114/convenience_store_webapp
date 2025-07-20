@@ -20,6 +20,7 @@ public class Products {
     private Suppliers suppliers;
     private WeightUnit weightUnit;
     private float weight;
+    private String description;
     
 
     public Products() {
@@ -34,7 +35,17 @@ public class Products {
         this.productCategories = productCategories;
         this.suppliers = suppliers;
         this.weightUnit = weightUnit;
-
+    }
+    public Products(int id, String name, float price, String image, String barcode, ProductCategories productCategories, Suppliers suppliers, WeightUnit weightUnit,String description) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.image = image;
+        this.barcode = barcode;
+        this.productCategories = productCategories;
+        this.suppliers = suppliers;
+        this.weightUnit = weightUnit;
+        this.description = description;
     }
 
     public Products(String name, float price, String image, String barcode, ProductCategories productCategories, Suppliers suppliers, WeightUnit weightUnit) {
@@ -120,8 +131,15 @@ public class Products {
         this.weight = weight;
     }
 
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        return "Products{" + "id=" + id + ", name=" + name + ", price=" + price + ", image=" + image + ", barcode=" + barcode + ", productCategories=" + productCategories + ", suppliers=" + suppliers + ", weightUnit=" + weightUnit +  '}';
+        return "Products{" + "id=" + id + ", name=" + name + ", price=" + price + ", image=" + image + ", barcode=" + barcode + ", productCategories=" + productCategories + ", suppliers=" + suppliers + ", weightUnit=" + weightUnit + ", weight=" + weight + ", description=" + description + '}';
     }
 }

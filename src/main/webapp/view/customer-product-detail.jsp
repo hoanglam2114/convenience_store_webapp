@@ -26,21 +26,45 @@
 <!-- Add padding to account for fixed navbar -->
 <body>
 <div style="padding-top: 80px;"></div>
-<div class="container mt-4">
-    <div class="row">
+<div class="container my-5">
+    <div class="row g-4">
         <div class="col-md-6">
-            <img src="assets/img/product/${product.getImage()}" class="img-fluid rounded" alt="${product.name}">
+            <div class="card shadow-sm border-0">
+                <img src="assets/img/product/${product.getImage()}"
+                     class="img-fluid rounded"
+                     style="max-height: 400px; object-fit: contain;"
+                     alt="${product.name}">
+            </div>
         </div>
         <div class="col-md-6">
-            <h2>${product.name}</h2>
-            <p class="text-muted">Giá: <strong>${product.price} VND</strong></p>
-            <p>description</p>
-            <label for="btn-branch-link">Mua ngay tại</label>
-            <a class="btn btn-outline-primary" href="retail-chain" id="btn-branch-link">
-                <i class="bi bi-geo-alt me-1"></i>
-            </a>
+            <div class="card h-100 shadow-sm border-0 p-4">
+                <h2 class="card-title mb-3">${product.name}</h2>
+                <p class="text-muted mb-3">Giá:
+                    <strong class="text-primary">
+                        <c:choose>
+                            <c:when test="${product.price != null}">
+                                ${product.price} VND
+                            </c:when>
+                            <c:otherwise>
+                                Liên hệ
+                            </c:otherwise>
+                        </c:choose>
+                    </strong>
+                </p>
+                <p class="card-text">${product.description}</p>
+                <div class="mt-auto">
+                    <label for="btn-branch-link" class="form-label">Mua ngay tại</label>
+                    <a class="btn btn-outline-primary" href="retail-chain" id="btn-branch-link">
+                        <i class="bi bi-geo-alt me-1"></i> Cửa hàng
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<!-- Footer -->
+<jsp:include page="/common/customer-footer.jsp"/>
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

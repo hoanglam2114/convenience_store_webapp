@@ -160,6 +160,36 @@ public class ProductsDAO extends DBContext {
         return null;
     }
 
+    public Products getProductByIdHasDes(int product_id) {
+        String sql = "select * from Products where product_id = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, product_id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Products p = new Products();
+                p.setId(rs.getInt("product_id"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setName(rs.getString("product_name"));
+                p.setPrice(rs.getFloat("product_price"));
+                p.setImage(rs.getString("product_image"));
+                p.setDescription(rs.getString("description"));
+                ProductCategories pc = getCategoryById(rs.getInt("category_id"));
+                p.setProductCategories(pc);
+                WeightUnit wu = getWUById(rs.getInt("weight_unit_id"));
+                p.setWeightUnit(wu);
+                Suppliers sup = getSupById(rs.getInt("supplier_id"));
+                p.setSuppliers(sup);
+
+                return p;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
     public List<Products> pagingProducts(int index) {
         List<Products> list = new ArrayList<>();
         String sql = "select [product_id],\n"
@@ -515,11 +545,8 @@ public class ProductsDAO extends DBContext {
 
     public static void main(String[] args) {
         ProductsDAO dao = new ProductsDAO();
-        List<Products> list = dao.getAllProduct();
-        for (Products o : list) {
-            System.out.println(o);
-        }
-
+        Products p = dao.getProductById(1);
+        System.out.println(p.toString());
     }
 
 }

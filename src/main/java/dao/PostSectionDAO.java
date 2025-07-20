@@ -15,14 +15,14 @@ public class PostSectionDAO extends DBContext{
 
     public List<PostSection> getSectionsByPostId(int postId) {
         List<PostSection> list = new ArrayList<>();
-        String sql = "SELECT section_id, post_id, section_title, section_content, section_html, section_image_url, sort_order " +
+        String sql = "SELECT id, post_id, section_title, section_content, section_html, section_image_url, sort_order " +
                      "FROM PostSection WHERE post_id = ? ORDER BY sort_order ASC";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, postId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 PostSection section = new PostSection();
-                section.setSectionId(rs.getInt("section_id"));
+                section.setSectionId(rs.getInt("id"));
                 section.setPostId(rs.getInt("post_id"));
                 section.setSectionTitle(rs.getString("section_title"));
                 section.setSectionContent(rs.getString("section_content"));

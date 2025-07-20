@@ -29,7 +29,15 @@ public class AccessFilter implements Filter {
         System.out.println("AccessFilter - URI: " + uri);
 
         // Bỏ qua luồng customer (không check login admin/staff)
-            if (uri.contains("/customer-") || uri.contains("/home") || uri.contains("/qna") || uri.contains("/product") || uri.contains("/retail-chain")) {
+            if (uri.contains("/customer-") ||
+                    uri.contains("/home") ||
+                    uri.contains("/qna") ||
+                    uri.contains("/product") ||
+                    uri.contains("/ListJobCustomer") ||
+                    uri.contains("/AddJobCustomer") ||
+                    uri.contains("/blog") ||
+                    uri.contains("/post-detail") ||
+                    uri.contains("/retail-chain")) {
             chain.doFilter(req, res);
             return;
         }
