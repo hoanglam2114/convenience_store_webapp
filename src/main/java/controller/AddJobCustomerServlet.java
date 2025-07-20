@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.EmailTemplateDAO;
 import dao.JobApplicationDAO;
 import dao.JobDAO;
 import java.io.IOException;
@@ -13,13 +14,19 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.DistrictApply;
+import model.EmailTemplate;
 import model.Gender;
 import model.JobApplications;
 import model.JobDetail;
 import model.SourceAds;
+import verify.SendEmail;
 
 /**
  *
@@ -68,7 +75,7 @@ public class AddJobCustomerServlet extends HttpServlet {
             String[] contentList = jobDetail.getTextcontent().split("\\.");
             jobDetail.setContentList(contentList);
         }
-        session.setAttribute("jobtext", jobtext_detail); 
+        session.setAttribute("jobtext", jobtext_detail);
 
         List<Gender> gender = jd.getAllGenders();
         session.setAttribute("gender", gender);
@@ -109,10 +116,93 @@ public class AddJobCustomerServlet extends HttpServlet {
         LocalDate dateofbirth = LocalDate.parse(dateofbirth_raw);
         LocalDate interviewdate = LocalDate.parse(interviewdate_raw);
 
+        boolean hasError = false;
+
+// Validate Họ và tên
+        if (name == null || name.trim().isEmpty() || name.length() > 50) {
+            request.setAttribute("errorName", "Họ và tên không được để trống và không vượt quá 50 ký tự.");
+            hasError = true;
+        }
+
+// Validate Email
+        if (email == null || email.trim().isEmpty() || !email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
+            request.setAttribute("errorEmail", "Email không hợp lệ.");
+            hasError = true;
+        }
+
+// Validate Số điện thoại
+        if (phone == null || phone.trim().isEmpty() || !phone.matches("^0\\d{8,10}$")) {
+            request.setAttribute("errorPhone", "Số điện thoại không hợp lệ (phải từ 9–11 chữ số và bắt đầu bằng số 0).");
+            hasError = true;
+        }
+
+
+
+// Validate Ngày sinh     
+        try {
+            dateofbirth = LocalDate.parse(dateofbirth_raw); // yyyy-MM-dd
+            if (dateofbirth.isAfter(LocalDate.now().minusYears(18))) {
+                request.setAttribute("errorDOB", "Ngày sinh không hợp lệ (phải lớn hơn 18 tuổi).");
+                hasError = true;
+            }
+        } catch (Exception e) {
+            request.setAttribute("errorDOB", "Định dạng ngày sinh không hợp lệ.");
+            hasError = true;
+        }
+
+// Validate Địa chỉ hiện tại
+        if (address == null || address.trim().isEmpty()) {
+            request.setAttribute("errorAddress", "Vui lòng nhập địa chỉ hiện tại.");
+            hasError = true;
+        }
+
+
+// Validate Ngày phỏng vấn
+ 
+        try {
+            interviewdate = LocalDate.parse(interviewdate_raw);
+            DayOfWeek day = interviewdate.getDayOfWeek();
+            if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+                request.setAttribute("errorInterviewDate", "Vui lòng chọn ngày trong tuần (không phải thứ 7, CN).");
+                hasError = true;
+            } else if (interviewdate.isBefore(LocalDate.now())) {
+                request.setAttribute("errorInterviewDate", "Ngày phỏng vấn phải lớn hơn hoặc bằng hôm nay.");
+                hasError = true;
+            }
+        } catch (Exception e) {
+            request.setAttribute("errorInterviewDate", "Định dạng ngày phỏng vấn không hợp lệ.");
+            hasError = true;
+        }
+
+
+
+// Nếu có lỗi -> quay lại form
+        if (hasError) {
+            request.getRequestDispatcher("/view/job-detail.jsp").forward(request, response);
+            return;
+        }
+
+
         JobApplications ja = new JobApplications(name, email, phone, dateofbirth,
                 gd, address, da, interviewdate, sa);
 
         jad.insertJobApplication(ja);
+
+        EmailTemplateDAO templateDAO = new EmailTemplateDAO();
+
+        EmailTemplate template = null;
+        try {
+            template = templateDAO.getTemplateByName("Recruitment Thank You Template");
+        } catch (SQLException ex) {
+            Logger.getLogger(AddJobCustomerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (template != null) {
+            String content = template.getContent()
+                    .replace("{{email}}", email);
+            SendEmail se = new SendEmail();
+            se.send(email, template.getSubject(), content);
+        }
 
         response.sendRedirect("ListJobCustomer");
 

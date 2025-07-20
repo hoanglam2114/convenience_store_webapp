@@ -245,9 +245,39 @@ public class JobApplicationDAO extends DBContext {
         }
 
         return list;
+
     }
 
-    
+    public List<JobApplications> searchApplicantsByName(String name) {
+        String sql = "select * from [dbo].[JobApplications] where fullname like ?";
+        List<JobApplications> list = new ArrayList<>();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + name + "%");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                JobApplications p = new JobApplications();
+                p.setId(rs.getInt("id"));
+                p.setName(rs.getString("fullname"));
+                p.setEmail(rs.getString("email"));
+                p.setPhone(rs.getString("phone"));
+                p.setDateofbirth(rs.getDate("dateOfBirth").toLocalDate());
+                Gender jt = getGenderById(rs.getInt("gender_ID"));
+                p.setGender(jt);
+                p.setCurrent_address(rs.getString("currentAddress"));
+                DistrictApply wu = getDistrictById(rs.getInt("districtApply_ID"));
+                p.setDistrict_apply(wu);
+                p.setInterview_date(rs.getDate("InterviewDate").toLocalDate());
+                SourceAds sa = getSourcesById(rs.getInt("source_ID"));
+                p.setSource(sa);
+                list.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         JobApplicationDAO jd = new JobApplicationDAO();
         List<JobApplications> list = jd.pagingJobsApplications(1);
