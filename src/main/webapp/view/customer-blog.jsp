@@ -7,58 +7,148 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>BLOG</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">  
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+        <link href="https://fonts.googleapis.com/css?family=Public+Sans:300,400,500,600,700" rel="stylesheet">
         <style>
-            /* Custom CSS nếu cần */
+            body {
+                font-family: 'Public Sans', sans-serif;
+            }
+
             .gradient-bg {
                 background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
             }
+
             .post-card:hover {
                 transform: translateY(-5px);
                 box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             }
+
             .read-more {
                 transition: all 0.3s ease;
             }
+
             .read-more:hover {
                 padding-right: 15px;
             }
+
+            .footer-title {
+                font-size: 1.125rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+
+            .footer-link {
+                display: block;
+                font-size: 0.875rem;
+                color: #374151;
+                margin-bottom: 0.25rem;
+                text-decoration: none;
+            }
+
+            .footer-link:hover {
+                color: #2563EB;
+            }
+
+            .footer-bottom {
+                text-align: center;
+                margin-top: 1.5rem;
+                padding-top: 1rem;
+                border-top: 1px solid #e5e7eb;
+                color: #6b7280;
+                font-size: 0.875rem;
+            }
+
+            .social-icons {
+                display: flex;
+                gap: 1rem;
+                margin-top: 0.75rem;
+            }
+
+            .social-icon {
+                color: #2563EB;
+                transition: color 0.3s ease;
+            }
+
+            .social-icon:hover {
+                color: #1e40af;
+            }
+
+            /* === BOOTSTRAP FOOTER OVERRIDES === */
+            .bootstrap-footer-wrapper {
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .bootstrap-footer-wrapper a {
+                color: #ffffff !important;
+                display: block;
+                margin-bottom: 0.4rem !important;
+                text-decoration: none;
+                font-size: 0.95rem;
+            }
+
+            .bootstrap-footer-wrapper a:hover {
+                color: #ffc107 !important;
+                text-decoration: underline;
+            }
+
+            .bootstrap-footer-wrapper a:visited {
+                color: #ffffff !important;
+            }
+
+            .bootstrap-footer-wrapper .col-lg-2,
+            .bootstrap-footer-wrapper .col-lg-3,
+            .bootstrap-footer-wrapper .col-lg-5 {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .bootstrap-footer-wrapper,
+            .bootstrap-footer-wrapper p,
+            .bootstrap-footer-wrapper span,
+            .bootstrap-footer-wrapper li {
+                color: #ffffff !important;
+            }
+
+            .bootstrap-footer-wrapper h4,
+            .bootstrap-footer-wrapper h5,
+            .bootstrap-footer-wrapper .footer-title {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-bottom: 0.75rem;
+                color: #ffffff;
+            }
+
+            /* Khoảng cách giữa các cột */
+            .bootstrap-footer-wrapper .row > div {
+                margin-bottom: 1rem;
+            }
         </style>
+
     </head>
     <body class="font-sans gradient-bg">
         <!-- Header -->
         <header class="bg-white shadow-sm sticky top-0 z-10">
-            <div class="container mx-auto px-4 max-w-screen-lg py-4 flex justify-between items-center">
+            <div class="container mx-auto px-4 max-w-screen-xl py-4 flex justify-between items-center">
                 <div class="flex items-center">
                     <div class="bg-blue-600 text-white p-2 rounded-lg mr-3">
                         <i class="fas fa-store text-xl"></i>
                     </div>
-                    <h1 class="text-2xl font-bold text-gray-800">CONVENMA <span class="text-green-600">BLOG</span></h1>
-                </div>
-                <nav class="hidden md:block">
-                    <ul class="flex space-x-8">
-                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Trang chủ</a></li>
-                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Khuyến mãi</a></li>
-                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Sản phẩm mới</a></li>
-                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Tin tức</a></li>
-                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Liên hệ</a></li>
-                    </ul>
-                </nav>
-                <div class="flex items-center space-x-4">
-                    <a href="#" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                        <i class="fas fa-plus mr-1"></i> Đăng bài
+                    <a href="${pageContext.request.contextPath}/customer-home">
+                        <h1 class="text-2xl font-bold text-gray-800 cursor-pointer hover:opacity-80 transition">
+                            <span class="text-blue-600">Convema</span>
+                        </h1>
                     </a>
-                    <button class="md:hidden text-gray-800">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
                 </div>
             </div>
         </header>
 
         <!-- Hero Section -->
-        <section class="bg-blue-600 text-white py-12">
-            <div class="container mx-auto px-4 max-w-screen-lg text-center">
+        <section class="bg-blue-600 text-white py-12" style="background: linear-gradient(45deg, #667eea, #764ba2); height: 100%;">
+            <div class="blog-container mx-auto px-4 max-w-screen-xl text-center">
                 <h2 class="text-3xl md:text 4xl font-bold mb-4">CHÀO MỪNG ĐẾN VỚI BLOG TIỆN LỢI CONVENMA</h2>
                 <p class="text-lg md:text-xl max-w-2xl mx-auto">Nơi trò chuyện, chia sẻ các vấn đề thường gặp. Các trải nghiệm khi bạn mua sắm ở chuỗi cửa hàng tiện lợi CONVENMA của chúng tôi</p>
                 <div class="mt-6">
@@ -72,7 +162,7 @@
 
         <!-- Featured Post -->
         <c:if test="${not empty featuredPost}">
-            <section class="container mx-auto px-4 max-w-screen-lg py-10">
+            <section class="blog-container mx-auto px-4 max-w-screen-xl py-10">
                 <h2 class="text-3xl md:text 4xl font-bold mb-4">Bài viết nổi bật</h2>
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <div class="md:flex">
@@ -117,7 +207,7 @@
 
 
         <!-- Main Content -->
-        <div class="container mx-auto px-4 max-w-screen-lg py-4 flex flex-col md:flex-row">
+        <div class="blog-container mx-auto px-4 max-w-screen-xl py-4 flex flex-col md:flex-row">
             <!-- Blog Posts -->
             <main class="w-full md:w-2/3 md:pr-8">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Bài viết mới nhất</h2>
@@ -163,21 +253,53 @@
                     </article>
                 </c:forEach>
 
-
                 <!-- Pagination -->
-                <div class="flex justify-center mb-8">
-                    <nav class="inline-flex rounded-md shadow">
-                        <a href="#" class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
-                            <i class="fas fa-chevron-left"></i>
-                        </a>
-                        <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-green-600 font-medium hover:bg-gray-50">1</a>
-                        <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">2</a>
-                        <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">3</a>
-                        <a href="#" class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </nav>
-                </div>
+                <c:if test="${totalPages > 1}">
+                    <div class="flex justify-center mt-8">
+                        <nav class="inline-flex rounded-md shadow">
+                            <!-- Previous button -->
+                            <c:choose>
+                                <c:when test="${currentPage > 1}">
+                                    <a href="?page=${currentPage - 1}" class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="px-3 py-2 rounded-l-md border border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <!-- Page numbers -->
+                            <c:forEach var="i" begin="1" end="${totalPages}">
+                                <c:choose>
+                                    <c:when test="${i == currentPage}">
+                                        <span class="px-4 py-2 border-t border-b border-gray-300 bg-blue-600 text-white font-medium">${i}</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="?page=${i}" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">${i}</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+
+                            <!-- Next button -->
+                            <c:choose>
+                                <c:when test="${currentPage < totalPages}">
+                                    <a href="?page=${currentPage + 1}" class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="px-3 py-2 rounded-r-md border border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </c:otherwise>
+                            </c:choose>
+                        </nav>
+                    </div>
+                </c:if>
+                
             </main>
 
             <!-- Sidebar -->
@@ -189,7 +311,7 @@
                         <i class="fas fa-plus mr-2"></i> Tạo bài viết mới
                     </a>
                     <br/>
-                    <a href="${pageContext.request.contextPath}/my-posts" 
+                    <a href="${pageContext.request.contextPath}/customer-manage-posts" 
                        class="w-full block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-center    ">
                         <i class="fas fa-store mr-2"></i> Quản lý bài viết của bạn
                     </a>
@@ -208,85 +330,13 @@
                             </li>
                         </c:forEach>
                     </ul>
-                </div>
-
-                <!-- Popular Posts -->
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Bài viết phổ biến</h3>
-                    <ul class="space-y-4">
-                        <li>
-                            <a href="#" class="flex group">
-                                <img class="h-14 w-14 rounded object-cover" src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-1.2.1&auto=format&fit=crop&w=64&h=64&q=80" alt="Popular post">
-                                <div class="ml-3">
-                                    <h4 class="text-sm font-medium text-gray-900 group-hover:text-green-600">Siêu khuyến mãi cuối năm</h4>
-                                    <time class="text-xs text-gray-500">Dec 15, 2023</time>
-                                    <div class="flex items-center text-xs text-yellow-500 mt-1">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex group">
-                                <img class="h-14 w-14 rounded object-cover" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-1.2.1&auto=format&fit=crop&w=64&h=64&q=80" alt="Popular post">
-                                <div class="ml-3">
-                                    <h4 class="text-sm font-medium text-gray-900 group-hover:text-green-600">Lịch mở cửa dịp Tết Dương lịch</h4>
-                                    <time class="text-xs text-gray-500">Nov 28, 2023</time>
-                                    <div class="flex items-center text-xs text-yellow-500 mt-1">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex group">
-                                <img class="h-14 w-14 rounded object-cover" src="https://images.unsplash.com/photo-1516594798947-e65505dbb29d?ixlib=rb-1.2.1&auto=format&fit=crop&w=64&h=64&q=80" alt="Popular post">
-                                <div class="ml-3">
-                                    <h4 class="text-sm font-medium text-gray-900 group-hover:text-green-600">Chương trình tích điểm đổi quà</h4>
-                                    <time class="text-xs text-gray-500">Dec 10, 2023</time>
-                                    <div class="flex items-center text-xs text-yellow-500 mt-1">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div
-
-                <!-- Store Locations -->
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Cửa hàng gần bạn</h3>
-                    <div class="relative">
-                        <input type="text" class="w-full p-2 border border-gray-300 rounded-lg mb-3" placeholder="Nhập địa chỉ của bạn">
-                        <button class="absolute right-3 top-2 text-gray-500">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                    <div class="h-48 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <p class="text-gray-500">Nhập địa chỉ để tìm cửa hàng gần nhất</p>
-                    </div>
-                    <button class="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg">
-                        <i class="fas fa-map-marker-alt mr-2"></i> Xem tất cả cửa hàng
-                    </button>
-                </div>
+                </div>          
             </aside>
         </div>
 
         <!-- Newsletter -->
-        <section class="bg-blue-700 text-white py-12">
-            <div class="container mx-auto px-4 text-center">
+        <section class="bg-blue-700 text-white py-12 " style="background: linear-gradient(45deg, #667eea, #764ba2); height: 100%;">
+            <div class="container mx-auto px-4 text-center max-w-screen-xl">
                 <div class="max-w-2xl mx-auto">
                     <h2 class="text-2xl md:text-3xl font-bold mb-4">Đăng ký nhận tin khuyến mãi</h2>
                     <p class="mb-6">Nhận thông báo về các chương trình khuyến mãi mới nhất từ hệ thống cửa hàng tiện lợi của chúng tôi</p>
@@ -301,54 +351,17 @@
         </section>
 
         <!-- Footer -->
-        <footer class="bg-gray-800 text-white py-8">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="text-xl font-bold mb-4">TIỆN LỢI <span class="text-blue-500">SHOP</span></h3>
-                        <p class="text-gray-400">Hệ thống cửa hàng tiện lợi phục vụ khách hàng 24/7 với chất lượng phục vụ tốt nhất.</p>
-                        <div class="mt-4 flex space-x-4">
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
+        <div class="bg-[#253746] text-white pt-5 mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="bootstrap-footer-wrapper">
+                            <jsp:include page="/common/customer-footer.jsp" />
                         </div>
                     </div>
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Liên kết nhanh</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white">Trang chủ</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Bài viết</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Khuyến mãi</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Cửa hàng</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Thông tin</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white">Về chúng tôi</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Hỏi đáp</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Chính sách bảo mật</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Điều khoản sử dụng</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Tuyển dụng</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Liên hệ</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li class="flex items-center"><i class="fas fa-map-marker-alt mr-3 text-green-500"></i> Số 123, Đường ABC, Quận XYZ, TP.HCM</li>
-                            <li class="flex items-center"><i class="fas fa-phone-alt mr-3 text-green-500"></i> 1900 1234</li>
-                            <li class="flex items-center"><i class="fas fa-envelope mr-3 text-green-500"></i> info@tienloishop.com</li>
-                            <li class="flex items-center"><i class="fas fa-clock mr-3 text-green-500"></i> Mở cửa 24/7</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
-                    <p>© 2023 Tiện Lợi Shop. Tất cả quyền được bảo lưu.</p>
                 </div>
             </div>
-        </footer>
+        </div>
 
         <!-- JavaScript -->
         <script>

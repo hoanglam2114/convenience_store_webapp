@@ -177,8 +177,28 @@
         <servlet-class>controller.ListJobApplicationServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AdminPostManagementServlet</servlet-name>
+        <servlet-class>controller.AdminPostManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminPostActionServlet</servlet-name>
+        <servlet-class>controller.AdminPostActionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetPostDetailServlet</servlet-name>
+        <servlet-class>controller.GetPostDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>FindJobApplicationServlet</servlet-name>
         <servlet-class>controller.FindJobApplicationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerManagePostsServlet</servlet-name>
+        <servlet-class>controller.CustomerManagePostServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerEditPostServlet</servlet-name>
+        <servlet-class>controller.CustomerEditPostServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteJobServlet</servlet-name>
@@ -325,12 +345,32 @@
         <url-pattern>/ListJobApplication</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>AdminPostManagementServlet</servlet-name>
+        <url-pattern>/admin-post-manage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminPostActionServlet</servlet-name>
+        <url-pattern>/admin-post-action</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetPostDetailServlet</servlet-name>
+        <url-pattern>/get-post-detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>FindJobApplicationServlet</servlet-name>
         <url-pattern>/FindJobApplication</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteJobServlet</servlet-name>
         <url-pattern>/DeleteJob</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerManagePostsServlet</servlet-name>
+        <url-pattern>/customer-manage-posts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerEditPostServlet</servlet-name>
+        <url-pattern>/customer-edit-post</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>

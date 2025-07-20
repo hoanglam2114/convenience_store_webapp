@@ -11,12 +11,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
+import model.Customers;
+import model.Post;
 
-public class PostByTagServlet extends HttpServlet {
-
-    private PostDAO postDAO = new PostDAO();
+public class CustomerManagePostServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -26,10 +26,10 @@ public class PostByTagServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PostByTagServlet</title>");
+            out.println("<title>Servlet CustomerManagePostServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PostByTagServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CustomerManagePostServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -38,38 +38,22 @@ public class PostByTagServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            String idParam = request.getParameter("id");
-            String sortParam = request.getParameter("sort");
-            if (sortParam == null) {
-                sortParam = "newest"; 
-            }
+        HttpSession session = request.getSession();
+        Customers customer = (Customers) session.getAttribute("account");
 
-            List<Map<String, Object>> posts;
-            String tagName;
-
-            if (idParam == null || idParam.isEmpty()) {
-                posts = postDAO.getLatestPostsAsMap(sortParam); 
-                tagName = "Tất cả";
-            } else {
-                int tagId = Integer.parseInt(idParam);
-                tagName = postDAO.getTagNameById(tagId);
-                posts = postDAO.getPostsByTagId(tagId, sortParam); 
-            }
-
-            List<Map<String, Object>> tags = postDAO.getPopularTags();
-
-            request.setAttribute("tagName", tagName);
-            request.setAttribute("posts", posts);
-            request.setAttribute("tags", tags);
-            request.setAttribute("sort", sortParam);
-
-            request.getRequestDispatcher("view/customer-posts-by-tag.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Lỗi xử lý tag.");
+        // Tạm gán giả nếu chưa có login (để test)
+        if (customer == null) {
+            customer = new Customers();
+            customer.setId(1); // Thay bằng ID tồn tại trong DB
+            customer.setName("Test Customer");
+            session.setAttribute("account", customer);
         }
+
+        PostDAO dao = new PostDAO();
+        List<Post> posts = dao.getPostsByCustomerId(customer.getId());
+
+        request.setAttribute("posts", posts);
+        request.getRequestDispatcher("view/customer-manage-post.jsp").forward(request, response);
     }
 
     @Override

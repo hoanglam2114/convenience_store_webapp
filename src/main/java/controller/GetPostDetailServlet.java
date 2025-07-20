@@ -5,6 +5,7 @@
 package controller;
 
 import dao.PostDAO;
+import dao.PostSectionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,11 +13,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Map;
+import model.Post;
+import model.PostSection;
 
-public class PostByTagServlet extends HttpServlet {
-
-    private PostDAO postDAO = new PostDAO();
+/**
+ *
+ * @author Admin
+ */
+public class GetPostDetailServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -26,10 +30,10 @@ public class PostByTagServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PostByTagServlet</title>");
+            out.println("<title>Servlet GetPostDetailServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PostByTagServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet GetPostDetailServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -39,36 +43,18 @@ public class PostByTagServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String idParam = request.getParameter("id");
-            String sortParam = request.getParameter("sort");
-            if (sortParam == null) {
-                sortParam = "newest"; 
-            }
+            PostSectionDAO dao = new PostSectionDAO();
+            PostDAO postDao = new PostDAO();
+            int id = Integer.parseInt(request.getParameter("id"));
+            Post post = postDao.getPostById(id);
+            List<PostSection> sections = dao.getSectionsByPostId(id);
 
-            List<Map<String, Object>> posts;
-            String tagName;
-
-            if (idParam == null || idParam.isEmpty()) {
-                posts = postDAO.getLatestPostsAsMap(sortParam); 
-                tagName = "Tất cả";
-            } else {
-                int tagId = Integer.parseInt(idParam);
-                tagName = postDAO.getTagNameById(tagId);
-                posts = postDAO.getPostsByTagId(tagId, sortParam); 
-            }
-
-            List<Map<String, Object>> tags = postDAO.getPopularTags();
-
-            request.setAttribute("tagName", tagName);
-            request.setAttribute("posts", posts);
-            request.setAttribute("tags", tags);
-            request.setAttribute("sort", sortParam);
-
-            request.getRequestDispatcher("view/customer-posts-by-tag.jsp").forward(request, response);
-
+            request.setAttribute("post", post);
+            request.setAttribute("sections", sections);
+            request.getRequestDispatcher("view/admin-post-preview.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Lỗi xử lý tag.");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Đã có lỗi xảy ra");
         }
     }
 

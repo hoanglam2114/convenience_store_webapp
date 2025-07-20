@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%-- Xác định chế độ edit hay create --%>
+<c:set var="isEdit" value="${mode eq 'edit'}" />
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -10,6 +14,8 @@
         <title>Create New Blog Post</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
         <style>
             .editor-toolbar {
                 scrollbar-width: thin;
@@ -38,7 +44,9 @@
         <div class="max-w-5xl mx-auto px-4 py-8">
             <!-- Header -->
             <header class="mb-8">
-                <h1 class="text-3xl font-bold text-indigo-700">Tạo Bài Đăng Mới</h1>
+                <h1 class="text-3xl font-bold text-indigo-700">
+                    ${isEdit ? 'Chỉnh Sửa Bài Viết' : 'Tạo Bài Đăng Mới'}
+                </h1>
             </header>
 
             <!-- Post Form -->
@@ -60,11 +68,11 @@
 
                 <!-- Main Form Content -->
                 <form id="postForm" class="p-6" action="${pageContext.request.contextPath}/customer-create-post" method="post" enctype="multipart/form-data">
-                    
+
                     <!-- Title Input -->
                     <div class="mb-6">
                         <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Chủ Đề</label>
-                        <input type="text" id="title" name="title" 
+                        <input type="text" id="title" name="title" value="${isEdit ? post.title : ''}"
                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none transition"
                                placeholder="Thêm chủ đề..." required>
                     </div>
@@ -132,56 +140,54 @@
                             </button>
                         </div>
 
-                        <!-- Editor Content -->
-                        <div id="content" class="w-full px-4 py-3 rounded-lg border border-gray-300 min-h-[300px] focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none transition" 
-                             contenteditable="true" placeholder="Write your post content here..."></div>
+                        <div id="content" contenteditable="true"
+                             class="w-full px-4 py-2 border border-gray-300 rounded min-h-[200px] bg-white mb-4 overflow-auto"
+                             placeholder="Nhập nội dung chính ở đây...">
+                            <c:if test="${isEdit}">
+                                ${post.content}
+                            </c:if>
+                        </div>
+
+                        <!-- Section Content Editor -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nội Dung Bài Viết</label>
+                            <div id="sections-container" class="space-y-6">
+                                <!-- Section Template -->
+                                <c:if test="${isEdit}">
+                                    <c:forEach var="section" items="${sections}">
+                                        <div class="section border border-gray-300 rounded-lg p-4 space-y-4">
+                                            <input type="text" name="sectionTitles" 
+                                                   value="${section.sectionTitle}" 
+                                                   class="w-full px-4 py-2 border border-gray-300 rounded" 
+                                                   placeholder="Tiêu đề đoạn (tùy chọn)">
+                                            <textarea name="sectionContents" 
+                                                      class="w-full px-4 py-2 border border-gray-300 rounded" 
+                                                      rows="4" placeholder="Nội dung đoạn...">${section.sectionContent}</textarea>
+                                            <input type="file" name="sectionImages[]" accept="image/*" 
+                                                   class="block w-full text-sm text-gray-600">
+                                            <button type="button" class="remove-section text-red-600 hover:text-red-800 text-sm">Xóa đoạn này</button>
+                                        </div>
+                                    </c:forEach>
+                                </c:if>
+                            </div>
+                            <button type="button" id="add-section" class="mt-4 px-4 py-2 bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200">
+                                + Thêm đoạn
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Tags Input -->
                     <div class="mb-6">
-                        <label for="tags" class="block text-sm font-medium text-gray-700 mb-1">Danh Mục</label>
-                        <div class="flex flex-wrap items-center gap-2 px-3 py-2 border border-gray-300 rounded-lg focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200">
-                            <div id="tagContainer" class="flex flex-wrap gap-2"></div>
-                            <input type="text" id="tagInput" class="tag-input flex-1 min-w-[100px] border-none focus:ring-0 px-1 py-1" placeholder="Thêm danh mục...">
-                        </div>
-                    </div>
-
-                    <!-- SEO Section -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">SEO Settings</label>
-                        <div class="mt-1 space-y-4">
-                            <div>
-                                <label for="metaTitle" class="block text-xs font-medium text-gray-500 mb-1">Meta Title</label>
-                                <input type="text" id="metaTitle" name="metaTitle" 
-                                       class="w-full px-3 py-2 rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm outline-none transition"
-                                       placeholder="Title for search engines">
-                            </div>
-                            <div>
-                                <label for="metaDescription" class="block text-xs font-medium text-gray-500 mb-1">Meta Description</label>
-                                <textarea id="metaDescription" name="metaDescription" rows="2"
-                                          class="w-full px-3 py-2 rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm outline-none transition"
-                                          placeholder="Brief description for search results"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Publish Options -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-3">Publish Options</label>
-                        <div class="space-y-3">
-                            <div class="flex items-center">
-                                <input id="publishNow" name="publishOption" type="radio" checked 
-                                       class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
-                                <label for="publishNow" class="ml-2 block text-sm text-gray-700">Publish immediately</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input id="schedulePublish" name="publishOption" type="radio" 
-                                       class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
-                                <label for="schedulePublish" class="ml-2 block text-sm text-gray-700">Schedule for later</label>
-                                <input type="datetime-local" id="publishDate" name="publishDate" 
-                                       class="ml-3 px-2 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:bg-gray-100" disabled>
-                            </div>
-                        </div>
+                        <label for="tagIds" class="block text-sm font-medium text-gray-700 mb-1">Danh mục</label>
+                        <select id="tagIds" name="tagIds" multiple
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                            <c:forEach var="tag" items="${tagList}">
+                                <option value="${tag.id}"
+                                        <c:if test="${isEdit and fn:contains(selectedTags, tag.id)}">selected</c:if>>
+                                    ${tag.name}
+                                </option>
+                            </c:forEach>
+                        </select>
                     </div>
 
                     <!-- Form Actions -->
@@ -189,10 +195,14 @@
                         <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Huỷ
                         </button>
-                        <input type="hidden" name="tags[]" id="tagsHiddenInput">
+                        <input type="hidden" id="contentHidden" name="content">
+                        <c:if test="${isEdit}">
+                            <input type="hidden" name="postId" value="${post.id}" />
+                            <input type="hidden" name="status" value="${post.status}" />
+                        </c:if>
                         <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Đăng
-                        </button>
+                        </button>   
                     </div>
                 </form>
             </div>
@@ -226,6 +236,30 @@
         </div>
 
         <script>
+            //Them, xoa Section
+            document.addEventListener('DOMContentLoaded', function () {
+                const container = document.getElementById('sections-container');
+                const addBtn = document.getElementById('add-section');
+
+                addBtn.addEventListener('click', function () {
+                    const section = document.createElement('div');
+                    section.className = 'section border border-gray-300 rounded-lg p-4 space-y-4';
+                    section.innerHTML = `
+                <input type="text" name="sectionTitles" class="w-full px-4 py-2 border border-gray-300 rounded" placeholder="Tiêu đề đoạn (tùy chọn)">
+                <textarea name="sectionContents" class="w-full px-4 py-2 border border-gray-300 rounded" rows="4" placeholder="Nội dung đoạn..."></textarea>
+                <input type="file" name="sectionImages" accept="image/*" class="block w-full text-sm text-gray-600">
+                <button type="button" class="remove-section text-red-600 hover:text-red-800 text-sm">Xóa đoạn này</button>
+            `;
+                    container.appendChild(section);
+                });
+
+                container.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('remove-section')) {
+                        e.target.closest('.section').remove();
+                    }
+                });
+            });
+
             document.addEventListener('DOMContentLoaded', function () {
                 // Tags functionality
                 const tagInput = document.getElementById('tagInput');
@@ -338,9 +372,9 @@
                     const content = document.getElementById('content').innerHTML;
                     const publishOption = document.querySelector('input[name="publishOption"]:checked').value;
                     const publishDateValue = publishOption === 'schedulePublish' ? document.getElementById('publishDate').value : null;
-                    
+
                     document.getElementById('tagsHiddenInput').value = tags.join(',');
-                    
+
                     // In a real app, you would send this data to your server
                     console.log('Post submitted:', {
                         title,
@@ -364,6 +398,25 @@
                         document.exitFullscreen();
                     }
                 }
+            });
+
+            //Show tag
+            new TomSelect('#tagIds', {
+                plugins: ['remove_button'],
+                persist: false,
+                create: false,
+                placeholder: 'Chọn danh mục...',
+                maxItems: null,
+                render: {
+                    option_create: function (data, escape) {
+                        return '';
+                    }
+                }
+            });
+
+            document.getElementById('postForm').addEventListener('submit', function () {
+                const contentHTML = document.getElementById('content').innerHTML;
+                document.getElementById('contentHidden').value = contentHTML;
             });
         </script>
     </body>
