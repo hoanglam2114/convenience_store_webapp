@@ -60,7 +60,7 @@
                                         onclick="toggleCategory(${group.id})"
                                         onmouseover="showCategory(${group.id})"
                                         onmouseout="hideCategory(${group.id})">
-                                            ${group.name}
+                                        ${group.name}
                                     </h6>
                                 </li>
 
@@ -71,7 +71,7 @@
                                         <c:if test="${cat.groupId == group.id}">
                                             <a class="dropdown-item"
                                                href="${pageContext.request.contextPath}/customer-product-search?categoryId=${cat.id}">
-                                                    ${cat.name}
+                                                ${cat.name}
                                             </a>
                                         </c:if>
                                     </c:forEach>
@@ -90,7 +90,7 @@
                                             <li>
                                                 <a class="dropdown-item"
                                                    href="${pageContext.request.contextPath}/customer-product-search?categoryId=${cat.id}">
-                                                        ${cat.name}
+                                                    ${cat.name}
                                                 </a>
                                             </li>
                                         </c:if>
@@ -99,12 +99,12 @@
                             </div>
 
                             <li><hr class="dropdown-divider"></li>
-                        </c:forEach>
+                            </c:forEach>
 
                         <li><a class="dropdown-item fw-bold text-center"
                                href="${pageContext.request.contextPath}/customer-product-search">
-                            <i class="bi bi-grid-3x3-gap me-2"></i>Xem tất cả
-                        </a></li>
+                                <i class="bi bi-grid-3x3-gap me-2"></i>Xem tất cả
+                            </a></li>
                     </ul>
                 </li>
 

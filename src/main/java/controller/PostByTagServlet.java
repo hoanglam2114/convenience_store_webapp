@@ -40,17 +40,21 @@ public class PostByTagServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             String idParam = request.getParameter("id");
+            String sortParam = request.getParameter("sort");
+            if (sortParam == null) {
+                sortParam = "newest"; 
+            }
+
             List<Map<String, Object>> posts;
             String tagName;
 
             if (idParam == null || idParam.isEmpty()) {
-                // Không có ID → xem tất cả bài viết mới nhất
-                posts = postDAO.getLatestPostsAsMap(); // bạn cần viết hàm này như đã nói ở trên
+                posts = postDAO.getLatestPostsAsMap(sortParam); 
                 tagName = "Tất cả";
             } else {
                 int tagId = Integer.parseInt(idParam);
                 tagName = postDAO.getTagNameById(tagId);
-                posts = postDAO.getPostsByTagId(tagId);
+                posts = postDAO.getPostsByTagId(tagId, sortParam); 
             }
 
             List<Map<String, Object>> tags = postDAO.getPopularTags();
@@ -58,6 +62,8 @@ public class PostByTagServlet extends HttpServlet {
             request.setAttribute("tagName", tagName);
             request.setAttribute("posts", posts);
             request.setAttribute("tags", tags);
+            request.setAttribute("sort", sortParam);
+
             request.getRequestDispatcher("view/customer-posts-by-tag.jsp").forward(request, response);
 
         } catch (Exception e) {

@@ -47,17 +47,17 @@ public class AdminPostActionServlet extends HttpServlet {
         String action = request.getParameter("action");
         int postId = Integer.parseInt(request.getParameter("postId"));
 
-        String newStatus = "PENDING";
+        String newStatus = "pending";
         if ("approve".equalsIgnoreCase(action)) {
-            newStatus = "APPROVED";
+            newStatus = "approved";
         } else if ("reject".equalsIgnoreCase(action)) {
-            newStatus = "REJECTED";
+            newStatus = "rejected";
         }
 
         PostDAO dao = new PostDAO();
         dao.updatePostStatus(postId, newStatus);
 
-        response.sendRedirect("admin-manage-posts"); // redirect về danh sách bài viết
+        response.sendRedirect("admin-post-manage"); // redirect về danh sách bài viết
     }
 
     @Override

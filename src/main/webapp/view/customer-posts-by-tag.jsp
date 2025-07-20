@@ -8,8 +8,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Blog Categories</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">  
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+        <link href="https://fonts.googleapis.com/css?family=Public+Sans:300,400,500,600,700" rel="stylesheet">
         <style>
             .category-card:hover .category-icon {
                 transform: translateY(-5px);
@@ -24,6 +27,156 @@
                 background-color: #3b82f6;
                 color: white;
             }
+            .post-content p {
+                margin-bottom: 1.5rem;
+                line-height: 1.8;
+            }
+
+            .post-content h2 {
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin: 2rem 0 1rem;
+            }
+
+            .post-content img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 0.5rem;
+                margin: 1.5rem 0;
+            }
+
+            .tag:hover {
+                transform: translateY(-2px);
+            }
+
+            .like-btn:hover {
+                transform: scale(1.1);
+            }
+
+            .fade-in {
+                animation: fadeIn 0.5s ease-in;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+            body {
+                font-family: 'Public Sans', sans-serif;
+            }
+
+            .gradient-bg {
+                background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+            }
+
+            .post-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+
+            .read-more {
+                transition: all 0.3s ease;
+            }
+
+            .read-more:hover {
+                padding-right: 15px;
+            }
+
+            .footer-title {
+                font-size: 1.125rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+
+            .footer-link {
+                display: block;
+                font-size: 0.875rem;
+                color: #374151;
+                margin-bottom: 0.25rem;
+                text-decoration: none;
+            }
+
+            .footer-link:hover {
+                color: #2563EB;
+            }
+
+            .footer-bottom {
+                text-align: center;
+                margin-top: 1.5rem;
+                padding-top: 1rem;
+                border-top: 1px solid #e5e7eb;
+                color: #6b7280;
+                font-size: 0.875rem;
+            }
+
+            .social-icons {
+                display: flex;
+                gap: 1rem;
+                margin-top: 0.75rem;
+            }
+
+            .social-icon {
+                color: #2563EB;
+                transition: color 0.3s ease;
+            }
+
+            .social-icon:hover {
+                color: #1e40af;
+            }
+
+            /* === BOOTSTRAP FOOTER OVERRIDES === */
+            .bootstrap-footer-wrapper {
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .bootstrap-footer-wrapper a {
+                color: #ffffff !important;
+                display: block;
+                margin-bottom: 0.4rem !important;
+                text-decoration: none;
+                font-size: 0.95rem;
+            }
+
+            .bootstrap-footer-wrapper a:hover {
+                color: #ffc107 !important;
+                text-decoration: underline;
+            }
+
+            .bootstrap-footer-wrapper a:visited {
+                color: #ffffff !important;
+            }
+
+            .bootstrap-footer-wrapper .col-lg-2,
+            .bootstrap-footer-wrapper .col-lg-3,
+            .bootstrap-footer-wrapper .col-lg-5 {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .bootstrap-footer-wrapper,
+            .bootstrap-footer-wrapper p,
+            .bootstrap-footer-wrapper span,
+            .bootstrap-footer-wrapper li {
+                color: #ffffff !important;
+            }
+
+            .bootstrap-footer-wrapper h4,
+            .bootstrap-footer-wrapper h5,
+            .bootstrap-footer-wrapper .footer-title {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-bottom: 0.75rem;
+                color: #ffffff;
+            }
+
+            .bootstrap-footer-wrapper .row > div {
+                margin-bottom: 1rem;
+            }
         </style>
     </head>
     <body class="bg-gray-50 font-sans">
@@ -33,29 +186,17 @@
                     <div class="bg-blue-600 text-white p-2 rounded-lg mr-3">
                         <i class="fas fa-store text-xl"></i>
                     </div>
-                    <a href="${pageContext.request.contextPath}/blog">
+                    <a href="${pageContext.request.contextPath}/customer-home">
                         <h1 class="text-2xl font-bold text-gray-800 cursor-pointer hover:opacity-80 transition">
-                            CONVENMA <span class="text-green-600">BLOG</span>
+                            Convema <span class="text-green-600"></span>
                         </h1>
                     </a>
                 </div>
                 <nav class="hidden md:block">
                     <ul class="flex space-x-8">
-                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Trang chủ</a></li>
-                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Khuyến mãi</a></li>
-                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Sản phẩm mới</a></li>
-                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Tin tức</a></li>
-                        <li><a href="#" class="text-gray-800 hover:text-green-600 font-medium">Liên hệ</a></li>
+                        <li><a href="blog" class="text-gray-800 hover:text-green-600 font-medium">Trang chủ Blog</a></li>
                     </ul>
                 </nav>
-                <div class="flex items-center space-x-4">
-                    <a href="#" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                        <i class="fas fa-plus mr-1"></i> Đăng bài
-                    </a>
-                    <button class="md:hidden text-gray-800">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
             </div>
         </header>
 
@@ -114,16 +255,20 @@
                 <!-- Blog Posts -->
                 <div class="md:w-3/4">
                     <div class="flex justify-between items-center mb-8">
-                        <h2 class="text-2xl font-bold">Bài viết mới nhất</h2>
+                        <h2 class="text-2xl font-bold">Bài viết <c:out value="${tagName}" /></h2>
                         <div class="hidden md:block">
                             <span class="text-gray-600 mr-2">Sắp xếp:</span>
-                            <select class="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option>Mới nhất</option>
-                                <option>Cũ nhất</option>
-                                <option>Nhiều lượt thích nhất</option>
-                            </select>
+                            <form method="get" id="sortForm" class="inline-block">
+                                <input type="hidden" name="id" value="${param.id}" />
+                                <select name="sort" onchange="document.getElementById('sortForm').submit();"
+                                        class="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="newest" ${sort == 'newest' ? 'selected' : ''}>Mới nhất</option>
+                                    <option value="oldest" ${sort == 'oldest' ? 'selected' : ''}>Cũ nhất</option>
+                                </select>
+                            </form>
                         </div>
                     </div>
+
 
                     <!-- Category Tag (Shows when filtered) -->
                     <div id="category-tag" class="hidden mb-6">
@@ -162,21 +307,21 @@
                         </c:forEach>
                     </div>
 
-                    <!-- Pagination -->
-                    <div class="mt-12 flex justify-center">
-                        <nav class="inline-flex rounded-md shadow">
-                            <a href="#" class="px-4 py-2 rounded-l-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
-                                <i class="fas fa-chevron-left"></i>
-                            </a>
-                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">1</a>
-                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-blue-600 font-medium hover:bg-gray-50">2</a>
-                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</a>
-                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">4</a>
-                            <a href="#" class="px-4 py-2 rounded-r-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
-                                <i class="fas fa-chevron-right"></i>
-                            </a>
-                        </nav>
-                    </div>
+                    <!--                     Pagination 
+                                        <div class="mt-12 flex justify-center">
+                                            <nav class="inline-flex rounded-md shadow">
+                                                <a href="#" class="px-4 py-2 rounded-l-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+                                                    <i class="fas fa-chevron-left"></i>
+                                                </a>
+                                                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">1</a>
+                                                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-blue-600 font-medium hover:bg-gray-50">2</a>
+                                                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</a>
+                                                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">4</a>
+                                                <a href="#" class="px-4 py-2 rounded-r-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+                                                    <i class="fas fa-chevron-right"></i>
+                                                </a>
+                                            </nav>
+                                        </div>-->
                 </div>
             </div>
         </main>
@@ -194,61 +339,17 @@
         </section>
 
         <!-- Footer -->
-        <footer class="bg-gray-800 text-white py-12">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="text-xl font-bold mb-4">My Blog</h3>
-                        <p class="text-gray-400">Chia sẻ kiến thức và trải nghiệm về nhiều lĩnh vực trong cuộc sống.</p>
-                        <div class="flex space-x-4 mt-4">
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
+        <div class="bg-[#253746] text-white pt-5 mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="bootstrap-footer-wrapper">
+                            <jsp:include page="/common/customer-footer.jsp" />
                         </div>
                     </div>
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Danh mục</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white">Công nghệ</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Du lịch</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Ẩm thực</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Sức khỏe</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Giáo dục</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Liên kết</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white">Về chúng tôi</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Liên hệ</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Điều khoản</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Chính sách bảo mật</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Liên hệ</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li class="flex items-start">
-                                <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
-                                <span>123 Đường ABC, Quận 1, TP.HCM</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-phone-alt mr-2"></i>
-                                <span>0123 456 789</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-envelope mr-2"></i>
-                                <span>contact@myblog.com</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                    <p>&copy; 2023 My Blog. All rights reserved.</p>
                 </div>
             </div>
-        </footer>
+        </div>
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {

@@ -212,12 +212,13 @@ public class PostDAO extends DBContext {
         SELECT t.id, t.name, COUNT(pt.post_id) AS post_count
         FROM Tags t
         JOIN PostTags pt ON t.id = pt.tag_id
+        JOIN Posts p ON pt.post_id = p.id
+        WHERE p.status = 'approved'
         GROUP BY t.id, t.name
         ORDER BY post_count DESC
     """;
 
         try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-
             while (rs.next()) {
                 Map<String, Object> tag = new HashMap<>();
                 tag.put("id", rs.getInt("id"));
@@ -232,8 +233,14 @@ public class PostDAO extends DBContext {
         return tags;
     }
 
-    public List<Map<String, Object>> getPostsByTagId(int tagId) {
+    public List<Map<String, Object>> getPostsByTagId(int tagId, String sortOrder) {
         List<Map<String, Object>> posts = new ArrayList<>();
+        String orderBy = "DESC";
+
+        if ("oldest".equalsIgnoreCase(sortOrder)) {
+            orderBy = "ASC";
+        }
+
         String sql = """
         SELECT p.id, p.title, p.content, p.created_at, pi.image_url
         FROM Posts p
@@ -241,8 +248,7 @@ public class PostDAO extends DBContext {
         LEFT JOIN PostImages pi ON p.id = pi.post_id
         WHERE pt.tag_id = ? AND p.status = 'approved'
         GROUP BY p.id, p.title, p.content, p.created_at, pi.image_url
-        ORDER BY p.created_at DESC
-    """;
+        ORDER BY p.created_at """ + orderBy;
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, tagId);
@@ -250,7 +256,7 @@ public class PostDAO extends DBContext {
                 while (rs.next()) {
                     Map<String, Object> post = new HashMap<>();
                     int postId = rs.getInt("id");
-                    post.put("id", rs.getInt("id"));
+                    post.put("id", postId);
                     post.put("title", rs.getString("title"));
                     post.put("content", rs.getString("content"));
                     post.put("createdAt", rs.getTimestamp("created_at"));
@@ -262,6 +268,7 @@ public class PostDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return posts;
     }
 
@@ -318,19 +325,37 @@ public class PostDAO extends DBContext {
         return 0;
     }
 
-    public List<Map<String, Object>> getLatestPostsAsMap() {
-        List<Post> posts = getLatestPosts(10); // hoặc bao nhiêu tùy bạn
+    public List<Map<String, Object>> getLatestPostsAsMap(String sort) {
         List<Map<String, Object>> list = new ArrayList<>();
+        String sql = "SELECT TOP 20 * FROM Posts WHERE status = 'approved' ";
 
-        for (Post post : posts) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", post.getId());
-            map.put("title", post.getTitle());
-            map.put("content", post.getContent());
-            map.put("createdAt", post.getCreatedAt());
-            map.put("image", getFirstImageByPostId(post.getId()));
-            map.put("tag", getPrimaryTagNameByPostId(post.getId()));
-            list.add(map);
+        if ("oldest".equals(sort)) {
+            sql += "ORDER BY created_at ASC";
+        } else {
+            sql += "ORDER BY created_at DESC";
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post();
+                post.setId(rs.getInt("id"));
+                post.setTitle(rs.getString("title"));
+                post.setContent(rs.getString("content"));
+                post.setCreatedAt(rs.getTimestamp("created_at"));
+                post.setUserId(rs.getInt("user_id"));
+
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", post.getId());
+                map.put("title", post.getTitle());
+                map.put("content", post.getContent());
+                map.put("createdAt", post.getCreatedAt());
+                map.put("image", getFirstImageByPostId(post.getId()));
+                map.put("tag", getPrimaryTagNameByPostId(post.getId()));
+                list.add(map);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return list;
@@ -643,6 +668,52 @@ public class PostDAO extends DBContext {
             e.printStackTrace();
         }
         return tagIds;
+    }
+
+    public List<Post> getApprovedPostsPaginated(int offset, int limit) {
+        List<Post> posts = new ArrayList<>();
+        String sql = """
+        SELECT * FROM Posts
+        WHERE status = 'approved'
+        ORDER BY created_at DESC
+        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+    """;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, offset);
+            ps.setInt(2, limit);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post();
+                post.setId(rs.getInt("id"));
+                post.setUserId(rs.getInt("user_id"));
+                post.setShopId(rs.getInt("shop_id"));
+                post.setTitle(rs.getString("title"));
+                post.setContent(rs.getString("content"));
+                post.setStatus(rs.getString("status"));
+                post.setCreatedAt(rs.getTimestamp("created_at"));
+                post.setUpdatedAt(rs.getTimestamp("updated_at"));
+                posts.add(post);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return posts;
+    }
+
+    public int countApprovedPosts() {
+        String sql = "SELECT COUNT(*) FROM Posts WHERE status = 'approved'";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public static void main(String[] args) {

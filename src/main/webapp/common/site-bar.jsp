@@ -245,11 +245,6 @@
                 <div data-i18n="Basic">Blog Management </div>
             </a>
         </li>
-        <li class="menu-item">
-            <a href="blog" class="menu-link">
-                <div data-i18n="Basic">Customer Blog </div>
-            </a>
-        </li>
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">convema</span>
         </li>

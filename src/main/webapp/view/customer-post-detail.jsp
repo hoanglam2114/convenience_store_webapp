@@ -7,8 +7,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Post Details | Blog</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">  
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+        <link href="https://fonts.googleapis.com/css?family=Public+Sans:300,400,500,600,700" rel="stylesheet">
+
         <style>
             .post-content p {
                 margin-bottom: 1.5rem;
@@ -48,6 +52,118 @@
                     opacity: 1;
                 }
             }
+            body {
+                font-family: 'Public Sans', sans-serif;
+            }
+
+            .gradient-bg {
+                background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+            }
+
+            .post-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+
+            .read-more {
+                transition: all 0.3s ease;
+            }
+
+            .read-more:hover {
+                padding-right: 15px;
+            }
+
+            .footer-title {
+                font-size: 1.125rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+
+            .footer-link {
+                display: block;
+                font-size: 0.875rem;
+                color: #374151;
+                margin-bottom: 0.25rem;
+                text-decoration: none;
+            }
+
+            .footer-link:hover {
+                color: #2563EB;
+            }
+
+            .footer-bottom {
+                text-align: center;
+                margin-top: 1.5rem;
+                padding-top: 1rem;
+                border-top: 1px solid #e5e7eb;
+                color: #6b7280;
+                font-size: 0.875rem;
+            }
+
+            .social-icons {
+                display: flex;
+                gap: 1rem;
+                margin-top: 0.75rem;
+            }
+
+            .social-icon {
+                color: #2563EB;
+                transition: color 0.3s ease;
+            }
+
+            .social-icon:hover {
+                color: #1e40af;
+            }
+
+            /* === BOOTSTRAP FOOTER OVERRIDES === */
+            .bootstrap-footer-wrapper {
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .bootstrap-footer-wrapper a {
+                color: #ffffff !important;
+                display: block;
+                margin-bottom: 0.4rem !important;
+                text-decoration: none;
+                font-size: 0.95rem;
+            }
+
+            .bootstrap-footer-wrapper a:hover {
+                color: #ffc107 !important;
+                text-decoration: underline;
+            }
+
+            .bootstrap-footer-wrapper a:visited {
+                color: #ffffff !important;
+            }
+
+            .bootstrap-footer-wrapper .col-lg-2,
+            .bootstrap-footer-wrapper .col-lg-3,
+            .bootstrap-footer-wrapper .col-lg-5 {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .bootstrap-footer-wrapper,
+            .bootstrap-footer-wrapper p,
+            .bootstrap-footer-wrapper span,
+            .bootstrap-footer-wrapper li {
+                color: #ffffff !important;
+            }
+
+            .bootstrap-footer-wrapper h4,
+            .bootstrap-footer-wrapper h5,
+            .bootstrap-footer-wrapper .footer-title {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-bottom: 0.75rem;
+                color: #ffffff;
+            }
+
+            .bootstrap-footer-wrapper .row > div {
+                margin-bottom: 1rem;
+            }
         </style>
     </head>
     <body class="bg-gray-50">
@@ -56,16 +172,10 @@
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex items-center">
-                        <a href="blog" class="text-xl font-bold text-indigo-600">BlogHub</a>
+                        <a href="customer-home" class="text-xl font-bold text-indigo-600">Convema</a>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <a href="#" class="text-gray-600 hover:text-indigo-600">Home</a>
-                        <a href="#" class="text-gray-600 hover:text-indigo-600">Blog</a>
-                        <a href="#" class="text-gray-600 hover:text-indigo-600">About</a>
-                        <a href="#" class="text-gray-600 hover:text-indigo-600">Contact</a>
-                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">
-                            Subscribe
-                        </button>
+                        <a href="blog" class="text-gray-600 hover:text-indigo-600">Trang chủ Blog</a>
                     </div>
                 </div>
             </div>
@@ -161,46 +271,17 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-white py-8">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="text-lg font-bold mb-4">BlogHub</h3>
-                        <p class="text-gray-600">Sharing knowledge and insights about web development, design, and technology.</p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4">Categories</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-600 hover:text-indigo-600">Web Development</a></li>
-                            <li><a href="#" class="text-gray-600 hover:text-indigo-600">JavaScript</a></li>
-                            <li><a href="#" class="text-gray-600 hover:text-indigo-600">CSS</a></li>
-                            <li><a href="#" class="text-gray-600 hover:text-indigo-600">Design</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4">Company</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-600 hover:text-indigo-600">About</a></li>
-                            <li><a href="#" class="text-gray-600 hover:text-indigo-600">Team</a></li>
-                            <li><a href="#" class="text-gray-600 hover:text-indigo-600">Careers</a></li>
-                            <li><a href="#" class="text-gray-600 hover:text-indigo-600">Contact</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4">Connect</h4>
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-gray-600 hover:text-indigo-600"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-600 hover:text-indigo-600"><i class="fab fa-github"></i></a>
-                            <a href="#" class="text-gray-600 hover:text-indigo-600"><i class="fab fa-linkedin"></i></a>
-                            <a href="#" class="text-gray-600 hover:text-indigo-600"><i class="fab fa-youtube"></i></a>
+        <div class="bg-[#253746] text-white pt-5 mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="bootstrap-footer-wrapper">
+                            <jsp:include page="/common/customer-footer.jsp" />
                         </div>
                     </div>
                 </div>
-                <div class="border-t border-gray-200 mt-8 pt-8 text-center text-gray-500">
-                    <p>© 2023 BlogHub. All rights reserved.</p>
-                </div>
             </div>
-        </footer>
+        </div>
 
         <script>
             // Smooth scroll for anchor links
