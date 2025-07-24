@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 
 <!-- =========================================================
@@ -131,25 +132,25 @@
                       </g>
                     </svg>
                   </span>
-                  <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
+                  <span class="app-brand-text demo text-body fw-bolder">Convema</span>
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-2">Forgot Password? </h4>
-              <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
+              <h4 class="mb-2">Bạn quên mật khẩu ? </h4>
+              <p class="mb-4">Hãy nhập địa chỉ email của bạn và đội ngũ chúng tôi sẽ gửi cho bạn hướng dẫn tạo lại mật khẩu.</p>
               <form id="formAuthentication" class="mb-3" action="ForgotPassword" method="POST">
                 <div class="mb-3">
                   <label for="email" class="form-label">Email</label>
-                  <input type="text" class="form-control" id="email" name="emailRegister" placeholder="Enter email for register" />
+                  <input type="text" class="form-control" id="email" name="emailRegister" placeholder="Nhập email của bạn để reset mật khẩu" />
                 </div>
               
-                <input class="btn btn-primary d-grid w-100" type="submit" value="Enter Password">
+                <input class="btn btn-primary d-grid w-100" type="submit" value="Quên mật khẩu">
                 <div class="mb-3" style="color: red">${error}</div>
               </form>
               <div class="text-center">
                 <a href="LoginServlet" class="d-flex align-items-center justify-content-center">
                   <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
-                  Back to login
+                  Trở về trang đăng nhập
                 </a>
               </div>
             </div>

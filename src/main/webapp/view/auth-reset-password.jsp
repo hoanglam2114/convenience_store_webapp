@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html
     lang="en"
@@ -54,26 +55,26 @@
                             <span class="app-brand-logo demo">
                                 <!-- You can add your logo here -->
                             </span>
-                            <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
+                            <span class="app-brand-text demo text-body fw-bolder">Convema</span>
                         </a>
                     </div>
                     <!-- /Logo -->
 
-                    <h4 class="mb-2">Change Password</h4>
-                    <p class="mb-4">Enter your new password below.</p>
+                    <h4 class="mb-2">Tạo lại mật khẩu</h4>
+                    <p class="mb-4">Hãy nhập mật khẩu vào ô dưới đây.</p>
 
                     <!-- Form Start -->
                     <form id="formAuthentication" class="mb-3" action="ResetPassword" method="POST">
                         <div class="mb-3">
-                            <label for="password" class="form-label">New Password</label>
+                            <label for="password" class="form-label">Mật khẩu mới</label>
                             <input type="password" class="form-control" id="password" name="passwordRegister"
-                                   placeholder="Enter your new password" required />
+                                   placeholder="Nhập mật khẩu mới" required />
                         </div>
 
                         <div class="mb-3">
-                            <label for="repassword" class="form-label">Re-enter Password</label>
+                            <label for="repassword" class="form-label">Nhập lại mật khẩu mới</label>
                             <input type="password" class="form-control" id="repassword" name="repassword"
-                                   placeholder="Re-enter your new password" required />
+                                   placeholder="Nhập lại mật khẩu mới" required />
                         </div>
 
                         <input class="btn btn-primary d-grid w-100" type="submit" value="Change Password" />

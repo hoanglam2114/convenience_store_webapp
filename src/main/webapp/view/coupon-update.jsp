@@ -8,7 +8,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Update Coupon | POS Admin</title>
+        <title>Cập nhật mã khuyến mãi | CSMS Admin</title>
         <link rel="stylesheet" href="assets/vendor/css/core.css"/>
         <link rel="stylesheet" href="assets/vendor/css/theme-default.css"/>
         <link rel="stylesheet" href="assets/css/demo.css"/>
@@ -129,14 +129,14 @@
                         <div class="container-xxl flex-grow-1 container-p-y">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div class="page-title">
-                                    Update Coupon
+                                    Cập nhật mã khuyến mãi
                                 </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-12 update-coupon-col">
                                     <div class="card p-lg-4 p-3 mb-4">
                                         <div class="card-header">
-                                            <h5 class="card-title mb-0">Coupon Detail</h5>
+                                            <h5 class="card-title mb-0">Chi tiết mã khuyến mãi</h5>
                                         </div>
                                         <div class="card-body">
                                             <!-- HIỂN THỊ LỖI -->
@@ -150,7 +150,7 @@
                                                 <input type="hidden" name="couponId" value="${input_id != null ? input_id : coupon.coupon_id}" />
                                                 <div class="row g-4">
                                                     <div class="col-md-6">
-                                                        <label class="form-label">Code</label>
+                                                        <label class="form-label">Mã</label>
                                                         <input type="text" class="form-control" name="code"
                                                                required
                                                                pattern="[A-Za-z0-9_-]+"
@@ -159,26 +159,26 @@
                                                         <div id="codeError" style="color:red; font-size:0.98rem; margin-top:4px;"></div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <label class="form-label">Discount Percentage (%)</label>
+                                                        <label class="form-label">Phần trăm giảm (%)</label>
                                                         <input type="number" class="form-control" name="discountPercentage"
                                                                required min="1" max="100"
                                                                title="Discount phải từ 1 đến 100"
                                                                value="${input_discount != null ? input_discount : coupon.discount_amount}">
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <label class="form-label">Start Date</label>
+                                                        <label class="form-label">Ngày bắt đầu</label>
                                                         <input type="date" class="form-control" name="startDate" required
                                                                value="${input_startDate != null ? input_startDate : coupon.coupon_start_date}">
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <label class="form-label">End Date</label>
+                                                        <label class="form-label">Ngày kết thúc</label>
                                                         <input type="date" class="form-control" name="endDate" required
                                                                value="${input_endDate != null ? input_endDate : coupon.coupon_end_date}">
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <label class="form-label">Status</label>
+                                                        <label class="form-label">Trạng thái</label>
                                                         <select name="status" class="form-select" required>
-                                                            <option value="">-- Select Status --</option>
+                                                            <option value="">-- Chọn trạng thái --</option>
                                                             <c:forEach items="${statuses}" var="status">
                                                                 <option value="${status}"
                                                                         <c:if test="${input_status != null ? input_status == status : coupon.coupon_status == status}">selected</c:if>>
@@ -189,8 +189,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="mt-4 d-flex flex-wrap">
-                                                    <button type="submit" class="btn btn-primary me-2 mb-2"><i class="bx bx-save"></i> Confirm Change</button>
-                                                    <a href="couponManage" class="btn btn-outline-secondary mb-2">Cancel</a>
+                                                    <button type="submit" class="btn btn-primary me-2 mb-2"><i class="bx bx-save"></i> Xác nhận thay đổi</button>
+                                                    <a href="couponManage" class="btn btn-outline-secondary mb-2">Hủy bỏ</a>
                                                 </div>
                                             </form>
                                         </div>
@@ -201,7 +201,7 @@
                         <footer class="content-footer footer bg-footer-theme mt-4">
                             <div class="container-xxl d-flex justify-content-between py-2 flex-md-row flex-column">
                                 <div class="text-muted">
-                                    © <script>document.write(new Date().getFullYear())</script> POS Admin
+                                    © <script>document.write(new Date().getFullYear())</script> CSMS Admin
                                 </div>
                                 <div>
                                     <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a>

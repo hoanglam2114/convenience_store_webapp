@@ -60,35 +60,48 @@ public class ListShift extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        ShiftDAO sDAO = new ShiftDAO();
-//        List<Shift> shiftList = sDAO.getAllShifts();
-//        request.setAttribute("shiftList", shiftList);
-//        request.getRequestDispatcher("view/shift-list.jsp").forward(request, response);
+// 1. Lấy filter từ request
+        String keyword = request.getParameter("keyword");
+        String fromTime = request.getParameter("fromTime");
+        String toTime = request.getParameter("toTime");
+        String weekday = request.getParameter("weekday");
 
-    String indexPage = request.getParameter("index");
+        // 2. Phân trang
+        String indexPage = request.getParameter("index");
         int currentPage = 1;
-
         if (indexPage != null) {
             try {
                 currentPage = Integer.parseInt(indexPage);
             } catch (NumberFormatException e) {
+                currentPage = 1;
             }
-        }else{
-            indexPage = "1";
         }
+        int pageSize = 3; // Số bản ghi trên mỗi trang
 
-        int index = Integer.parseInt(indexPage);
+        // 3. Lấy dữ liệu filter và phân trang từ DAO
         ShiftDAO dao = new ShiftDAO();
-        int count = dao.getTotalShift();
-        int endPage = count / 3;
-        if (count % 3 != 0) {
+
+        int totalShift = dao.getTotalShiftWithFilter(keyword, fromTime, toTime, weekday);
+        int endPage = totalShift / pageSize;
+        if (totalShift % pageSize != 0) {
             endPage++;
         }
-        List<Shift> customerList = dao.pagingShift(index);
 
-        request.setAttribute("shiftList", customerList);
+        List<Shift> shiftList = dao.pagingShiftWithFilter(
+                keyword, fromTime, toTime, weekday, currentPage, pageSize
+        );
+
+        // 4. Truyền dữ liệu cho JSP
+        request.setAttribute("shiftList", shiftList);
         request.setAttribute("currentPage", currentPage);
         request.setAttribute("endPage", endPage);
+
+        // Giữ lại trạng thái filter
+        request.setAttribute("param.keyword", keyword);
+        request.setAttribute("param.fromTime", fromTime);
+        request.setAttribute("param.toTime", toTime);
+        request.setAttribute("param.weekday", weekday);
+
         request.getRequestDispatcher("view/shift-list.jsp").forward(request, response);
     }
 

@@ -54,13 +54,13 @@ public class EmployeeScheduleServlet extends HttpServlet {
         Accounts account = (Accounts) session.getAttribute("account");
         int accountId = account.getAccount_id();
         
-        // Kiểm tra quyền truy cập - chỉ employee mới được xem lịch của mình
-        if (account.getRole_id() == 2){
-        } else {
-            request.setAttribute("error", "Bạn không có quyền truy cập chức năng này");
-            request.getRequestDispatcher("view/error.jsp").forward(request, response);
-            return;
-        }
+//        // Kiểm tra quyền truy cập - chỉ employee mới được xem lịch của mình
+//        if (account.getRole_id() == 2){
+//        } else {
+//            request.setAttribute("error", "Bạn không có quyền truy cập chức năng này");
+//            request.getRequestDispatcher("view/error.jsp").forward(request, response);
+//            return;
+//        }
         
         
         

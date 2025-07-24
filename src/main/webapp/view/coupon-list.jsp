@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Coupon Management</title>
+    <title>Quản lý mã khuyến mãi</title>
 
     <link rel="stylesheet" href="assets/vendor/css/core.css" />
     <link rel="stylesheet" href="assets/vendor/css/theme-default.css" />
@@ -180,10 +180,10 @@
 
                     <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
                         <h4 class="fw-bold py-3 mb-0" style="color:#5b4ebd;">
-                            <span class="text-muted fw-light">Management /</span> Coupon List
+                            <span class="text-muted fw-light">Quản lý /</span> Danh sách mã khuyến mãi
                         </h4>
                         <a href="couponAdd" class="btn btn-primary add-coupon-btn">
-                            <i class="bx bx-plus"></i> Add new coupon
+                            <i class="bx bx-plus"></i> Thêm mới mã khuyến mãi
                         </a>
                     </div>
 
@@ -193,29 +193,29 @@
                                 <div class="col-auto">
                                     <div class="input-group">
                                         <span class="input-group-text" style="background:#ece7ff;"><i class="bx bx-search"></i></span>
-                                        <input type="text" class="form-control" name="couponCode" value="${couponCode}" placeholder="Coupon code...">
+                                        <input type="text" class="form-control" name="couponCode" value="${couponCode}" placeholder="Mã khuyến mãi...">
                                     </div>
                                 </div>
                                 <div class="col-auto">
                                     <select class="form-select" name="couponStatus">
-                                        <option value="All Status" ${"All Status".equals(couponStatuss) ? "selected" : ""}>All Status</option>
+                                        <option value="All Status" ${"All Status".equals(couponStatuss) ? "selected" : ""}>Tất cả trạng thái</option>
                                         <c:forEach items="${statuses}" var="status">
                                             <option value="${status}" ${status.equals(couponStatuss) ? "selected" : ""}>${status}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="date" class="form-control" name="startDate" value="${startDate}" placeholder="Start Date">
+                                    <input type="date" class="form-control" name="startDate" value="${startDate}" placeholder="Ngày bắt đầu">
                                 </div>
                                 <div class="col-auto">
-                                    <input type="date" class="form-control" name="endDate" value="${endDate}" placeholder="End Date">
+                                    <input type="date" class="form-control" name="endDate" value="${endDate}" placeholder="Ngày kết thúc">
                                 </div>
                                 <div class="col-auto">
-                                    <input type="number" class="form-control" step="0.1" name="discountAmount" value="${discountAmount}" placeholder="Discount (%)">
+                                    <input type="number" class="form-control" step="0.1" name="discountAmount" value="${discountAmount}" placeholder="Giảm (%)">
                                 </div>
                                 <div class="col-auto d-flex gap-2">
-                                    <button type="submit" class="btn btn-primary"><i class="bx bx-filter-alt"></i> Search</button>
-                                    <a href="couponManage" class="btn btn-outline-secondary">Clear</a>
+                                    <button type="submit" class="btn btn-primary"><i class="bx bx-filter-alt"></i> Tìm kiếm</button>
+                                    <a href="couponManage" class="btn btn-outline-secondary">Xóa</a>
                                 </div>
                             </form>
                         </div>
@@ -226,12 +226,12 @@
                             <table class="table align-middle mb-0">
                                 <thead class="table-light">
                                 <tr>
-                                    <th>Code</th>
-                                    <th>Discount Amount (%)</th>
-                                    <th>Coupon Start Date</th>
-                                    <th>Coupon End Date</th>
-                                    <th>Status</th>
-                                    <th class="text-center">Action</th>
+                                    <th>Mã</th>
+                                    <th>Phần trăm giảm (%)</th>
+                                    <th>Ngày bắt đầu khuyến mãi</th>
+                                    <th>Ngày kết thúc khuyến mãi</th>
+                                    <th>Trạng thái</th>
+                                    <th class="text-center">Hành động</th>
                                 </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
@@ -273,7 +273,7 @@
                 <footer class="content-footer footer bg-footer-theme mt-4" style="background:rgba(255,255,255,0.85);">
                     <div class="container-xxl d-flex justify-content-between py-2 flex-md-row flex-column">
                         <div class="text-muted">
-                            © <script>document.write(new Date().getFullYear())</script> POS Admin
+                            © <script>document.write(new Date().getFullYear())</script> CSMS Admin
                         </div>
                         <div>
                             <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a>

@@ -44,17 +44,17 @@
                                 <!-- You can insert your SVG or logo image here -->
                                 <img src="../assets/img/favicon/favicon.ico" alt="logo" width="30">
                             </span>
-                            <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
+                            <span class="app-brand-text demo text-body fw-bolder">Convema</span>
                         </a>
                     </div>
                     <!-- /Logo -->
 
-                    <h4 class="mb-2">New Password ?</h4>
-                    <p class="mb-4">Enter your new password to register a new account</p>
+                    <h4 class="mb-2">Khởi tạo mật khẩu mới ?</h4>
+                    <p class="mb-4">Hãy nhập mật khẩu mới để khởi tạo đăng kí tài khoản mới</p>
 
                     <form id="formAuthentication" class="mb-3" action="changePassword" method="POST">
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label">Mật khẩu</label>
                             <input
                                 type="password"
                                 class="form-control"
@@ -66,7 +66,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="reenterPassword" class="form-label">Re-enter Password</label>
+                            <label for="reenterPassword" class="form-label">Nhập lại mật khẩu</label>
                             <input
                                 type="password"
                                 class="form-control"

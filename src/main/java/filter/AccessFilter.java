@@ -49,6 +49,9 @@ public class AccessFilter implements Filter {
                 || uri.contains("/assets/")
                 || uri.endsWith("/no-access")
                 || uri.contains("/error-page/")
+                || uri.contains("/ForgotPassword")
+                || uri.contains("/ResetPassword")
+                || uri.contains("/verifycode")
         ) {
             chain.doFilter(req, res);
             return;
@@ -88,7 +91,7 @@ public class AccessFilter implements Filter {
                     "/addCustomerPos", "/addToCart", "/barcode-image", "/checkout",
                     "/update-cart", "/createVNPayQR", "/customerLookup", "/loadProduct",
                     "/qrPayment", "/resetOrder", "/scan-barcode", "/searchProduct",
-                    "/vnPayReturn"
+                    "/vnPayReturn","/employee-schedule"
             );
             return staffPaths.stream().anyMatch(uri::contains);
         }
