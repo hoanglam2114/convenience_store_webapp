@@ -132,6 +132,7 @@
         <!-- Header -->
         <header class="bg-white shadow-sm sticky top-0 z-10">
             <div class="container mx-auto px-4 max-w-screen-xl py-4 flex justify-between items-center">
+                <!-- Logo & Brand -->
                 <div class="flex items-center">
                     <div class="bg-blue-600 text-white p-2 rounded-lg mr-3">
                         <i class="fas fa-store text-xl"></i>
@@ -142,8 +143,27 @@
                         </h1>
                     </a>
                 </div>
+
+                <!-- Khách hàng đã đăng nhập -->
+                <c:if test="${not empty loggedInCustomer}">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
+                            <img src="<c:choose>
+                                     <c:when test='${not empty loggedInCustomer.avatarUrl}'>
+                                         ${pageContext.request.contextPath}/assets/img/customers/${loggedInCustomer.avatarUrl}
+                                     </c:when>
+                                     <c:otherwise>
+                                         ${pageContext.request.contextPath}/assets/img/avatar-default.png
+                                     </c:otherwise>
+                                 </c:choose>" 
+                                 alt="Avatar" class="object-cover w-full h-full" />
+                        </div>
+                        <span class="text-gray-800 font-medium">${loggedInCustomer.name}</span>
+                    </div>
+                </c:if>
             </div>
         </header>
+
 
         <!-- Hero Section -->
         <section class="bg-blue-600 text-white py-12" style="background: linear-gradient(45deg, #667eea, #764ba2); height: 100%;">
@@ -298,7 +318,7 @@
                         </nav>
                     </div>
                 </c:if>
-                
+
             </main>
 
             <!-- Sidebar -->

@@ -214,15 +214,12 @@
                 <div data-i18n="Management">Store Management</div>
             </a>
             <ul class="menu-sub">
-
                 <li class="menu-item">
                     <a href="ListShop" class="menu-link">
                         <div data-i18n="Basic">Store Management</div>
                     </a>
                 </li>
-
             </ul>
-
         </li>
 
 

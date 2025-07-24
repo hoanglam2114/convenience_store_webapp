@@ -49,6 +49,8 @@ public class AccessFilter implements Filter {
                 || uri.contains("/assets/")
                 || uri.endsWith("/no-access")
                 || uri.contains("/error-page/")
+                || uri.endsWith("/ForgotPassword")
+                || uri.endsWith("/ResetPassword")
         ) {
             chain.doFilter(req, res);
             return;

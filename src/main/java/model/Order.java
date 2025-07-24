@@ -14,6 +14,7 @@ public class Order {
     private String employeeName;
     private String couponCode;
     private int employeeId;
+    private double discountAmount;
 
     public Order() {
     }
@@ -76,6 +77,10 @@ public class Order {
         return orderDate;
     }
 
+    public double getDiscountAmount() {
+        return discountAmount;
+    }
+
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
@@ -128,4 +133,7 @@ public class Order {
         this.customerId = customerId;
     }
 
+    public void setDiscountAmount(double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
 }

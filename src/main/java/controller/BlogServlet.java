@@ -1,5 +1,6 @@
 package controller;
 
+import dao.CustomerDAO;
 import dao.PostDAO;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -35,6 +36,7 @@ public class BlogServlet extends HttpServlet {
             throws ServletException, IOException {
         // Bài viết nổi bật
         PostDAO postDAO = new PostDAO();
+        CustomerDAO customerDAO = new CustomerDAO();
 
         // ===== Lấy bài viết nổi bật =====
         Post featuredPost = postDAO.getFeaturedPost();
@@ -70,6 +72,13 @@ public class BlogServlet extends HttpServlet {
 
         // ===== Các tag phổ biến =====
         List<Map<String, Object>> tags = postDAO.getPopularTags();
+
+        // ===== Truyền thông tin khách hàng từ session (nếu đã đăng nhập) =====
+        // Giả sử session có object tên "customer" kiểu model.Customer
+        Object customer = request.getSession().getAttribute("customer");
+        if (customer != null) {
+            request.setAttribute("loggedInCustomer", customer);
+        }
 
         // ===== Truyền dữ liệu sang view =====
         request.setAttribute("latestPosts", postData);
