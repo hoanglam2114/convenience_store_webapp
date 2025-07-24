@@ -76,7 +76,6 @@
                 color: #1e40af;
             }
 
-            /* === BOOTSTRAP FOOTER OVERRIDES === */
             .bootstrap-footer-wrapper {
                 font-size: 0.95rem;
                 line-height: 1.7;
@@ -149,8 +148,8 @@
         <!-- Hero Section -->
         <section class="bg-blue-600 text-white py-12" style="background: linear-gradient(45deg, #667eea, #764ba2); height: 100%;">
             <div class="blog-container mx-auto px-4 max-w-screen-xl text-center">
-                <h2 class="text-3xl md:text 4xl font-bold mb-4">CHÀO MỪNG ĐẾN VỚI BLOG TIỆN LỢI CONVENMA</h2>
-                <p class="text-lg md:text-xl max-w-2xl mx-auto">Nơi trò chuyện, chia sẻ các vấn đề thường gặp. Các trải nghiệm khi bạn mua sắm ở chuỗi cửa hàng tiện lợi CONVENMA của chúng tôi</p>
+                <h2 class="text-3xl md:text 4xl font-bold mb-4">CHÀO MỪNG ĐẾN VỚI BLOG TIỆN LỢI CONVEMA</h2>
+                <p class="text-lg md:text-xl max-w-2xl mx-auto">Nơi trò chuyện, chia sẻ các vấn đề thường gặp. Các trải nghiệm khi bạn mua sắm ở chuỗi cửa hàng tiện lợi CONVEMA của chúng tôi</p>
                 <div class="mt-6">
                     <input type="text" placeholder="Tìm kiếm bài viết..." class="px-4 py-2 rounded-l-lg w-64 text-gray-800 focus:outline-none">
                     <button class="bg-yellow-400 text-gray-800 px-4 py-2 rounded-r-lg font-medium hover:bg-yellow-500 transition">
