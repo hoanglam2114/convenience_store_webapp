@@ -117,7 +117,7 @@
                                     <table class="table shift-table">
                                         <thead>
                                             <tr>
-                                                <th>Account ID</th>
+                                                
                                                 <th>Họ tên</th>
                                                 <th>Email</th>
                                                 <th>Vai trò</th>
@@ -128,7 +128,7 @@
                                         <tbody>
                                             <c:forEach var="account" items="${requestScope.account}">
                                                 <tr>
-                                                    <td>${account.account_id}</td>
+                                                    
                                                     <td>
                                                         <c:forEach var="employee" items="${requestScope.employee}">
                                                             <c:if test="${employee.accountId == account.account_id}">

@@ -37,6 +37,7 @@ public class AccessFilter implements Filter {
                     uri.contains("/AddJobCustomer") ||
                     uri.contains("/blog") ||
                     uri.contains("/post-detail") ||
+                    uri.contains("/coupon-subscribe") ||
                     uri.contains("/retail-chain")) {
             chain.doFilter(req, res);
             return;

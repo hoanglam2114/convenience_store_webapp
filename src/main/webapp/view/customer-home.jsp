@@ -22,7 +22,7 @@
     %>
     <jsp:include page="/common/header.jsp" />
     <jsp:include page="/common/customer-nav-bar.jsp" />
-    <body>
+
         <!-- Add padding to account for fixed navbar -->
         <div style="padding-top: 80px;"></div>
 
@@ -183,42 +183,42 @@
             </div>
         </section>
 
-<!-- Footer -->
-<jsp:include page="/common/customer-footer.jsp" />
-<!-- Bootstrap 5 JS Bundle -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Footer -->
+        <jsp:include page="/common/customer-footer.jsp" />
+        <!-- Bootstrap 5 JS Bundle -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
         <script>
-                                // Add some interactive features
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    // Add to cart button animation
-                                    const addToCartButtons = document.querySelectorAll('.btn-add-cart');
-                                    addToCartButtons.forEach(button => {
-                                        button.addEventListener('click', function (e) {
-                                            e.preventDefault();
+                        // Add some interactive features
+                        document.addEventListener('DOMContentLoaded', function () {
+                            // Add to cart button animation
+                            const addToCartButtons = document.querySelectorAll('.btn-add-cart');
+                            addToCartButtons.forEach(button => {
+                                button.addEventListener('click', function (e) {
+                                    e.preventDefault();
 
-                                            // Add temporary success state
-                                            const originalText = this.innerHTML;
-                                            this.innerHTML = '<i class="bi bi-check-circle me-2"></i>Đã thêm!';
-                                            this.style.background = '#28a745';
+                                    // Add temporary success state
+                                    const originalText = this.innerHTML;
+                                    this.innerHTML = '<i class="bi bi-check-circle me-2"></i>Đã thêm!';
+                                    this.style.background = '#28a745';
 
-                                            setTimeout(() => {
-                                                this.innerHTML = originalText;
-                                                this.style.background = '';
-                                            }, 1500);
-                                        });
-                                    });
-
-                                    // Search form enhancement
-                                    const searchForm = document.querySelector('form[action="customer-home"]');
-                                    const searchInput = searchForm.querySelector('input[name="keyword"]');
-
-                                    searchInput.addEventListener('keypress', function (e) {
-                                        if (e.key === 'Enter') {
-                                            searchForm.submit();
-                                        }
-                                    });
+                                    setTimeout(() => {
+                                        this.innerHTML = originalText;
+                                        this.style.background = '';
+                                    }, 1500);
                                 });
+                            });
+
+                            // Search form enhancement
+                            const searchForm = document.querySelector('form[action="customer-home"]');
+                            const searchInput = searchForm.querySelector('input[name="keyword"]');
+
+                            searchInput.addEventListener('keypress', function (e) {
+                                if (e.key === 'Enter') {
+                                    searchForm.submit();
+                                }
+                            });
+                        });
         </script>
     </body>
 </html>
