@@ -216,6 +216,7 @@ public class CustomerDAO extends DBContext {
 }
 
 
+
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
         Customers c = dao.findByPhone("0886801877");

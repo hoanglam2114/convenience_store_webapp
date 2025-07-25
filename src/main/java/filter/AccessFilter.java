@@ -37,6 +37,8 @@ public class AccessFilter implements Filter {
                     uri.contains("/AddJobCustomer") ||
                     uri.contains("/blog") ||
                     uri.contains("/post-detail") ||
+                    uri.contains("/customer-manage-posts") ||
+                    uri.contains("/posts-by-tag") ||
                     uri.contains("/retail-chain")) {
             chain.doFilter(req, res);
             return;
@@ -87,7 +89,7 @@ public class AccessFilter implements Filter {
             List<String> staffPaths = Arrays.asList(
                     "/addCustomerPos", "/addToCart", "/barcode-image", "/checkout",
                     "/update-cart", "/createVNPayQR", "/customerLookup", "/loadProduct",
-                    "/qrPayment", "/resetOrder", "/scan-barcode", "/searchProduct",
+                    "/qrPayment", "/resetOrder", "/scan-barcode", "/searchProduct","/employee-schedule",
                     "/vnPayReturn"
             );
             return staffPaths.stream().anyMatch(uri::contains);

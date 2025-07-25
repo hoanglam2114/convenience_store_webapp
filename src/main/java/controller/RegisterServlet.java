@@ -83,11 +83,11 @@ public class RegisterServlet extends HttpServlet {
         String path = "register";
 
         // Kiểm tra định dạng email
-        if (!EmailValidator.isValidEmail(email)) {
-            request.setAttribute("error", "Email không hợp lệ!");
-            request.getRequestDispatcher("view/auth-register.jsp").forward(request, response);
-            return;
-        }
+//        if (!EmailValidator.isValidEmail(email)) {
+//            request.setAttribute("error", "Email không hợp lệ!");
+//            request.getRequestDispatcher("view/auth-register.jsp").forward(request, response);
+//            return;
+//        }
 
         if (!checkDuplicate(email)) {
             RandomCode rd = new RandomCode();

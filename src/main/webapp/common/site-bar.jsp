@@ -225,6 +225,27 @@
 
         </li>
 
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Management">Others Management</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="couponManage" class="menu-link">
+                        <div data-i18n="Basic">Coupon Management</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="emailTemplates" class="menu-link">
+                        <div data-i18n="Employee Management">EmailTemplate Management</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+
 
         <!-- Job Section -->
         <li class="menu-item">

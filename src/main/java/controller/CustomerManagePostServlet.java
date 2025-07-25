@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Customers;
 import model.Post;
+import model.Accounts;
+import dao.CustomerDAO;
 
 public class CustomerManagePostServlet extends HttpServlet {
 
@@ -38,22 +40,17 @@ public class CustomerManagePostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Customers customer = (Customers) session.getAttribute("account");
-
-        // Tạm gán giả nếu chưa có login (để test)
-        if (customer == null) {
-            customer = new Customers();
-            customer.setId(1); // Thay bằng ID tồn tại trong DB
-            customer.setName("Test Customer");
-            session.setAttribute("account", customer);
-        }
+        // Bỏ session account, fix cứng 1 customer
+        Customers customer = new Customers();
+        customer.setId(1); // ID tồn tại trong DB
+        customer.setName("Test Customer");
 
         PostDAO dao = new PostDAO();
         List<Post> posts = dao.getPostsByCustomerId(customer.getId());
 
         request.setAttribute("posts", posts);
         request.getRequestDispatcher("view/customer-manage-post.jsp").forward(request, response);
+
     }
 
     @Override
