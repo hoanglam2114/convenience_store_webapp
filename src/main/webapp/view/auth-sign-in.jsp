@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html
     lang="en"
@@ -57,10 +58,10 @@
                                 </a>
                             </div>
                             <!-- /Logo -->
-                            <h4 class="mb-2">Welcome to Convema! </h4>
-                            <p class="mb-4">Please sign-in to your account and start the adventure</p>
+                            <h4 class="mb-2">Chào mừng tới Convema! </h4>
+                            <p class="mb-4">Vui lòng hãy đăng nhập tài khoản của bạn và bắt đầu khám phá dự án này</p>
 
-                            <!-- HI?N TH? TH�NG B�O L?I -->
+                            <!-- HI?N TH? THÔNG BÁO L?I -->
                             <c:if test="${not empty mess}">
                                 <div class="mb-3" style="color: red">${mess}</div>
                             </c:if>
@@ -76,16 +77,16 @@
                                         class="form-control"
                                         id="email"
                                         name="emailLogin"
-                                        placeholder="Enter your email"
+                                        placeholder="Nhập địa chỉ email của bạn"
                                         value="${enteredEmail != null ? enteredEmail : ''}"
                                         autofocus
                                         />
                                 </div>
                                 <div class="mb-3 form-password-toggle">
                                     <div class="d-flex justify-content-between">
-                                        <label class="form-label" for="password">Password</label>
+                                        <label class="form-label" for="password">Mật khẩu</label>
                                         <a href="ForgotPassword">
-                                            <small>Forgot Password?</small>
+                                            <small>Quên mật khẩu?</small>
                                         </a>
                                     </div>
                                     <div class="input-group input-group-merge">
@@ -103,7 +104,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                                    <button class="btn btn-primary d-grid w-100" type="submit">Đăng nhập</button>
                                 </div>
                             </form>
                             <!--

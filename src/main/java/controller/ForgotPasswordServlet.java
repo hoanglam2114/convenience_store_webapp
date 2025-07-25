@@ -89,10 +89,6 @@ public class ForgotPasswordServlet extends HttpServlet {
             RandomCode rd = new RandomCode();
             String code = rd.activateCode();
             
-
-            
-                    
-
             try {
                 EmailTemplateDAO templateDAO = new EmailTemplateDAO();
                 EmailTemplate template = templateDAO.getTemplateByName("Password Reset Template");

@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="model.Shift" %>
 <!DOCTYPE html>
-<html lang="en" class="light-style layout-menu-fixed" dir="ltr"
+<html lang="vi" class="light-style layout-menu-fixed" dir="ltr"
       data-theme="theme-default"
       data-assets-path="assets/"
       data-template="vertical-menu-template-free">
@@ -60,12 +60,14 @@
                                     <label class="form-label d-block">Các ngày làm việc:</label>
                                     <c:set var="selectedList"
                                            value="${selectedDays != null ? selectedDays : (shift != null ? shift.workingDays : [])}" />
-                                    <c:forEach var="day" items="${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']}">
+                                    <c:set var="dayLabels" value="${['Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy','Chủ Nhật']}" />
+                                    <c:set var="dayValues" value="${['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']}" />
+                                    <c:forEach var="i" begin="0" end="6">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox"
-                                                   name="workingDays" value="${day}" id="${day}"
-                                                   <c:if test="${fn:contains(selectedList, day)}">checked</c:if> />
-                                            <label class="form-check-label" for="${day}">${day}</label>
+                                                   name="workingDays" value="${dayValues[i]}" id="${dayValues[i]}"
+                                                   <c:if test="${fn:contains(selectedList, dayValues[i])}">checked</c:if> />
+                                            <label class="form-check-label" for="${dayValues[i]}">${dayLabels[i]}</label>
                                         </div>
                                     </c:forEach>
                                 </div>
@@ -85,7 +87,7 @@
             </div>
         </div>
 
-        <!-- JavaScript Validation -->
+        <!-- JavaScript kiểm tra dữ liệu -->
         <script>
             document.getElementById("editShiftForm").addEventListener("submit", function (e) {
                 const shiftName = document.getElementById("shiftName").value.trim();

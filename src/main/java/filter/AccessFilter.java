@@ -37,6 +37,7 @@ public class AccessFilter implements Filter {
                     uri.contains("/AddJobCustomer") ||
                     uri.contains("/blog") ||
                     uri.contains("/post-detail") ||
+                    uri.contains("/coupon-subscribe") ||
                     uri.contains("/customer-manage-posts") ||
                     uri.contains("/posts-by-tag") ||
                     uri.contains("/retail-chain")) {
@@ -51,6 +52,9 @@ public class AccessFilter implements Filter {
                 || uri.contains("/assets/")
                 || uri.endsWith("/no-access")
                 || uri.contains("/error-page/")
+                || uri.contains("/ForgotPassword")
+                || uri.contains("/ResetPassword")
+                || uri.contains("/verifycode")
         ) {
             chain.doFilter(req, res);
             return;
@@ -90,7 +94,9 @@ public class AccessFilter implements Filter {
                     "/addCustomerPos", "/addToCart", "/barcode-image", "/checkout",
                     "/update-cart", "/createVNPayQR", "/customerLookup", "/loadProduct",
                     "/qrPayment", "/resetOrder", "/scan-barcode", "/searchProduct","/employee-schedule",
-                    "/vnPayReturn"
+                    "/vnPayReturn",
+                    "/qrPayment", "/resetOrder", "/scan-barcode", "/searchProduct",
+                    "/vnPayReturn","/employee-schedule","/shop-assignment","/warehouse-assignment"
             );
             return staffPaths.stream().anyMatch(uri::contains);
         }

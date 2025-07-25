@@ -79,7 +79,7 @@
                             <form method="get" action="AccountFilterServlet" class="mb-3">
                                 <div class="row g-2 align-items-center">
                                     <!-- Filter by Role -->
-                                    <div class="col-md-4">
+<!--                                    <div class="col-md-4">
                                         <label for="roleFilter" class="form-label mb-1">Lọc theo vai trò</label>
                                         <select id="roleFilter" name="role" class="form-select">
                                             <option value="">Tất cả</option>
@@ -89,7 +89,7 @@
                                         </select>
                                     </div>
 
-                                    <!-- Filter by Status -->
+                                     Filter by Status 
                                     <div class="col-md-4">
                                         <label for="statusFilter" class="form-label mb-1">Lọc theo trạng thái</label>
                                         <select id="statusFilter" name="status" class="form-select">
@@ -101,13 +101,13 @@
                                                 </option>
                                             </c:forEach>
                                         </select>
-                                    </div>
+                                    </div>-->
 
-                                    <!-- Submit Button -->
+<!--                                     Submit Button 
                                     <div class="col-md-4 mt-4 pt-1">
                                         <button type="submit" class="btn btn-primary">Lọc</button>
                                         <a href="AccountManagementServlet" class="btn btn-secondary">Reset</a>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </form>
 
@@ -117,7 +117,7 @@
                                     <table class="table shift-table">
                                         <thead>
                                             <tr>
-                                                <th>Account ID</th>
+                                                
                                                 <th>Họ tên</th>
                                                 <th>Email</th>
                                                 <th>Vai trò</th>
@@ -128,7 +128,7 @@
                                         <tbody>
                                             <c:forEach var="account" items="${requestScope.account}">
                                                 <tr>
-                                                    <td>${account.account_id}</td>
+                                                    
                                                     <td>
                                                         <c:forEach var="employee" items="${requestScope.employee}">
                                                             <c:if test="${employee.accountId == account.account_id}">
@@ -198,8 +198,7 @@
                         <!-- Footer -->
                         <footer class="content-footer footer bg-footer-theme mt-4">
                             <div class="container-xxl d-flex justify-content-between py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">© 2025, Shift Admin Panel</div>
-                                <div>🎨 Giao diện bởi bạn</div>
+                                <div class="mb-2 mb-md-0">© 2025, Shift Admin Panel</div>                               
                             </div>
                         </footer>
                     </div>

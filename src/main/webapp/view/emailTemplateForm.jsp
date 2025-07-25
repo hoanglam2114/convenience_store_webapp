@@ -120,7 +120,7 @@
                                                 <textarea class="form-control" rows="6" placeholder="Nhập nội dung" required name="content">${input_content != null ? input_content : (template != null ? template.content : '')}</textarea>
                                             </div>
                                             <div class="mb-4">
-                                                <label class="form-label">Variables</label>
+                                                <label class="form-label">Các biến</label>
                                                 <input type="text" class="form-control" placeholder="Ví dụ: username, code (phân cách bằng dấu phẩy)" name="variables"
                                                        value="${input_variables != null ? input_variables : (template != null ? template.variables : '')}">
                                             </div>

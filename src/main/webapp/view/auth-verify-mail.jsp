@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 
 <!-- =========================================================
@@ -131,16 +132,16 @@
                                         </g>
                                         </svg>
                                     </span>
-                                    <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
+                                    <span class="app-brand-text demo text-body fw-bolder">Convema</span>
                                 </a>
                             </div>
                             <!-- /Logo -->
-                            <h4 class="mb-2">Verify Email</h4>
-                            <p class="mb-4">Enter your activate code and we'll send you instructions to set new password</p>
+                            <h4 class="mb-2">Xác thực email</h4>
+                            <p class="mb-4">Hãy nhập mã xác thực gửi qua mail và đội ngũ chúng tôi sẽ xử lí cho bạn</p>
                             <form  class="mb-3" action="verifycode" method="post">
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Activate Code</label>
-                                    <input type="text" class="form-control"  name="activatecode" placeholder="Enter activate code for set new password" />
+                                    <label for="email" class="form-label">Mã xác thực :</label>
+                                    <input type="text" class="form-control"  name="activatecode" placeholder="Hãy nhập mã xác thực" />
                                 </div>
                                 <input class="btn btn-primary d-grid w-100" type="submit" value="Activate">
                                 <div class="mb-3" style="color: red">
