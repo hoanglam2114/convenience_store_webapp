@@ -92,7 +92,7 @@ public class AccessFilter implements Filter {
                     "/addCustomerPos", "/addToCart", "/barcode-image", "/checkout",
                     "/update-cart", "/createVNPayQR", "/customerLookup", "/loadProduct",
                     "/qrPayment", "/resetOrder", "/scan-barcode", "/searchProduct",
-                    "/vnPayReturn","/employee-schedule"
+                    "/vnPayReturn","/employee-schedule","/shop-assignment","/warehouse-assignment"
             );
             return staffPaths.stream().anyMatch(uri::contains);
         }
