@@ -40,6 +40,9 @@ public class AccessFilter implements Filter {
                     uri.contains("/coupon-subscribe") ||
                     uri.contains("/customer-manage-posts") ||
                     uri.contains("/posts-by-tag") ||
+                    uri.contains("/send-otp") ||
+                    uri.contains("/verify-otp") ||
+                    uri.contains("/purchase-history") ||
                     uri.contains("/retail-chain")) {
             chain.doFilter(req, res);
             return;
