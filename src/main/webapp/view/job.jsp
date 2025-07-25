@@ -108,7 +108,7 @@
                 <div class="container mx-auto px-4 py-4 flex justify-between items-center">
                     <div class="flex items-center">
 
-                        <a href="customer-home" class="text-xl font-bold text-gray-800"><span class="text-[#696cff]">Convenma</span></a>
+                        <a href="customer-home" class="text-xl font-bold text-gray-800"><span class="text-[#696cff]">Convema</span></a>
                     </div>
                     <!--                            <nav class="hidden md:flex space-x-8">
                                                     <a href="#" class="text-gray-600 hover:text-indigo-600">Trang chủ</a>
@@ -127,7 +127,7 @@
                 height: 60%;" class=" text-white py-20 md:py-32">
                     <div class="container mx-auto px-4 text-center">
                         <h1 class="text-4xl md:text-6xl font-bold mb-6">CƠ HỘI NGHỀ NGHIỆP</h1>
-                        <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-8">Gia nhập đội ngũ năng động của Convenma - Nơi bạn có thể phát triển bản thân và xây dựng sự nghiệp trong môi trường chuyên nghiệp</p>
+                        <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-8">Gia nhập đội ngũ năng động của Convema - Nơi bạn có thể phát triển bản thân và xây dựng sự nghiệp trong môi trường chuyên nghiệp</p>
                         <button onclick="scrollToJobs()" class="bg-white hover:bg-gray-100 text-[#696cff] font-bold py-3 px-8 rounded-full text-lg transition duration-300">Xem vị trí tuyển dụng</button>
                     </div>
                 </section>
@@ -137,7 +137,7 @@
                     <div class="container mx-auto px-4">
                         <div class="text-center mb-12">
 
-                            <h2 class="text-3xl font-bold text-gray-800 mt-2">Tại sao nên làm việc tại Convenma?</h2>
+                            <h2 class="text-3xl font-bold text-gray-800 mt-2">Tại sao nên làm việc tại Convema?</h2>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <div class="text-center p-6 rounded-lg border border-gray-100 hover:border-[#696cff] transition duration-300 hover:shadow-lg">

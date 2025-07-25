@@ -122,17 +122,17 @@
                                             <div class="info-value">${Shop.shopName}</div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="info-label">Số điện thoại:</div>
+                                            <div class="info-label">Địa chỉ:</div>
                                             <div class="info-value">${Shop.shopAddress}</div>
                                         </div>
                                     </div>
                                     <div class="row mb-4">
                                         <div class="col-md-6">
-                                            <div class="info-label">Email:</div>
+                                            <div class="info-label">Số điện thoại:</div>
                                             <div class="info-value">${Shop.shopPhone}</div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="info-label">Địa chỉ:</div>
+                                            <div class="info-label">Email:</div>
                                             <div class="info-value">${Shop.shopEmail}</div>
                                         </div>
                                     </div>
