@@ -240,7 +240,7 @@
                         <c:choose>
                             <c:when test="${not empty image}">
                                 <img class="w-full h-48 object-cover"
-                                     src="${pageContext.request.contextPath}/assets/img/blog/${image}"
+                                     src="${pageContext.request.contextPath}/uploads/${image}"
                                      alt="Ảnh nổi bật">
                             </c:when>
                             <c:otherwise>
