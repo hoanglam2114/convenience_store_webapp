@@ -49,9 +49,9 @@
                             <div class="card p-4">
 
                                 <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h4 class="mb-4">Job Postings Management</h4>
+                                    <h4 class="mb-4">Quản lý tuyển dụng</h4>
                                     <!-- Add New Button -->
-                                    <a href="AddJob" class="btn btn-success">Add New Job</a>
+                                    <a href="AddJob" class="btn btn-success">Thêm công việc mới</a>
 
                                 </div>
 
@@ -59,7 +59,7 @@
                                 <!-- Filter Form -->
                                 <form method="post" action="FindJob" class="row g-3 mb-4">
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" name="title" placeholder="Job Title">
+                                        <input type="text" class="form-control" name="title" placeholder="Tìm theo tên">
                                     </div>
 
 
@@ -70,7 +70,7 @@
 
                                     <div class="col-md-2">
                                         <select class="form-select" name="jobstatus">
-                                            <option value="All Status" ${"All Status".equals(jobstatus) ? "selected" : ""}>All Status</option>
+                                            <option value="All Status" ${"All Status".equals(jobstatus) ? "selected" : ""}>Trạng thái</option>
                                             <c:forEach items="${statuses}" var="status">
                                                 <option value="${status}" ${status.equals(jobstatus) ? "selected" : ""}>${status}</option>
                                             </c:forEach>
@@ -91,14 +91,14 @@
                                         <table class="table table-bordered align-middle">
                                             <tr>
 
-                                                <th>Job Title</th>
-                                                <th>Type</th>
-                                                <th>Location</th>
-                                                <th>Deadline</th>
-                                                <th>Category</th>
-                                                <th>Description</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
+                                                <th>Tên</th>
+                                                <th>Hình Thức</th>
+                                                <th>Địa Điểm</th>
+                                                <th>Ngày Hết Hạn</th>
+                                                <th>Loại</th>
+                                                <th>Miêu tả</th>
+                                                <th>Trạng Thái</th>
+                                                <th>Chức Năng Khác</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -113,8 +113,8 @@
                                                         <td>${j.getDescription()}</td>
                                                         <td>${j.getStatus()}</td>
                                                         <td>
-                                                            <a href="UpdateJob?job_id=${j.getId()}" class="btn btn-sm btn-warning">Edit</a>
-                                                            <a href="" onclick="doDelete(${j.getId()})" class="btn btn-sm btn-danger">Delete</a>
+                                                            <a href="UpdateJob?job_id=${j.getId()}" class="btn btn-sm btn-warning">Sửa</a>
+                                                            <a href="" onclick="doDelete(${j.getId()})" class="btn btn-sm btn-danger">Xóa</a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

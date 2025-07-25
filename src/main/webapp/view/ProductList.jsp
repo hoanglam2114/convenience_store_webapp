@@ -60,7 +60,7 @@
                                 <div class="d-flex  align-items-center gap-2 mb-2">
                                     <input type="text" class="form-control" name="namePro" placeholder="Tìm kiếm sản phẩm theo tên" />
                                     <button style="width: 180px"  type="submit" class="btn btn-primary me-2"><i ></i> Tìm kiếm</button>
-                                    <a style="width: 150px" href="ListProduct" class="btn btn-primary ">
+                                    <a style="width: 180px" href="ListProduct" class="btn btn-primary ">
                                         <i ></i> Làm mới
                                     </a>
                                 </div>
