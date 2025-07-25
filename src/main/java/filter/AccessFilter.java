@@ -31,7 +31,7 @@ public class AccessFilter implements Filter {
         // Bỏ qua luồng customer (không check login admin/staff)
             if (uri.contains("/customer-") ||
                     uri.contains("/home") ||
-                    uri.contains("/qna") ||
+                    uri.endsWith("/qna") ||
                     uri.contains("/product") ||
                     uri.contains("/ListJobCustomer") ||
                     uri.contains("/AddJobCustomer") ||

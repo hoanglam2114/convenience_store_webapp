@@ -224,14 +224,12 @@
                                     </p>
                                 </div>
                                 <div class="d-flex gap-2">
-                                    <button class="btn btn-light btn-sm">
-                                        <i class="bx bx-export me-1"></i>
-                                        Xuất báo cáo
-                                    </button>
-                                    <button class="btn btn-outline-light btn-sm">
+
+                                    <a href="admin-qna"
+                                       class="btn btn-outline-light btn-sm">
                                         <i class="bx bx-refresh me-1"></i>
                                         Làm mới
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -361,7 +359,7 @@
                                                         </c:choose>
 
                                                         <!-- Delete Button -->
-                                                        <form action="qna" method="POST" class="delete-form">
+                                                        <form action="admin-qna" method="POST" class="delete-form">
                                                             <input type="hidden" name="action" value="delete"/>
                                                             <input type="hidden" name="id" value="${q.id}"/>
                                                             <button type="submit"
@@ -398,7 +396,7 @@
                                                                     <i class="bx bx-edit me-1"></i>
                                                                     Nhập câu trả lời
                                                                 </h6>
-                                                                <form action="qna" method="POST">
+                                                                <form action="admin-qna" method="POST">
                                                                     <input type="hidden" name="action" value="answer"/>
                                                                     <input type="hidden" name="id" value="${q.id}"/>
                                                                     <div class="mb-3">
@@ -408,7 +406,8 @@
                                                                                   placeholder="Nhập câu trả lời cho câu hỏi này..."
                                                                                   required></textarea>
                                                                     </div>
-                                                                    <button type="submit" class="btn btn-success btn-action">
+                                                                    <button type="submit"
+                                                                            class="btn btn-success btn-action">
                                                                         <i class="bx bx-send me-1"></i>
                                                                         Gửi trả lời
                                                                     </button>
@@ -465,7 +464,8 @@
                                                                                   rows="4"
                                                                                   required>${q.answer}</textarea>
                                                                     </div>
-                                                                    <button type="submit" class="btn btn-info btn-action">
+                                                                    <button type="submit"
+                                                                            class="btn btn-info btn-action">
                                                                         <i class="bx bx-save me-1"></i>
                                                                         Cập nhật
                                                                     </button>
@@ -546,15 +546,15 @@
 <script>
     // Auto-resize textareas
     document.querySelectorAll('textarea').forEach(textarea => {
-        textarea.addEventListener('input', function() {
+        textarea.addEventListener('input', function () {
             this.style.height = 'auto';
             this.style.height = this.scrollHeight + 'px';
         });
     });
 
     // Enhanced delete confirmation
-    document.querySelectorAll('form[action="qna"] button[onclick*="confirm"]').forEach(button => {
-        button.addEventListener('click', function(e) {
+    document.querySelectorAll('form[action="admin-qna"] button[onclick*="confirm"]').forEach(button => {
+        button.addEventListener('click', function (e) {
             e.preventDefault();
             const result = confirm('⚠️ Bạn có chắc chắn muốn xóa câu hỏi này?\n\nHành động này không thể hoàn tác!');
             if (result) {
@@ -565,7 +565,7 @@
 
     // Add loading state for form submissions
     document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function() {
+        form.addEventListener('submit', function () {
             const submitBtn = this.querySelector('button[type="submit"]');
             if (submitBtn) {
                 const originalText = submitBtn.innerHTML;

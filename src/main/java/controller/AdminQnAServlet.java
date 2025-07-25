@@ -18,7 +18,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "AdminQnAServlet", urlPatterns = {"/admin/qna"})
+@WebServlet(name = "AdminQnAServlet", urlPatterns = {"/admin-qna"})
 public class AdminQnAServlet extends HttpServlet {
 
     @Override
@@ -47,12 +47,12 @@ public class AdminQnAServlet extends HttpServlet {
             } else if ("edit".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 String answer = request.getParameter("answer");
-                qnaDAO.answerQuestion(id, answer); // dùng lại logic update
+                qnaDAO.answerQuestion(id, answer);
             } else if ("delete".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 qnaDAO.deleteQuestion(id);
             }
-            response.sendRedirect("qna");
+            response.sendRedirect("admin-qna");
         } catch (SQLException e) {
             throw new ServletException("Error processing admin Q&A: " + e.getMessage(), e);
         }

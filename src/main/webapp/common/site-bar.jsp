@@ -76,7 +76,7 @@
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
         <li class="menu-item active">
-            <a href="HomeAdmin" class="menu-link">
+            <a href="${pageContext.request.contextPath}/HomeAdmin" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
@@ -283,7 +283,7 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="admin/qna" class="menu-link">
+            <a href="admin-qna" class="menu-link">
                 <div data-i18n="Basic">QnA Manage</div>
             </a>
         </li>
