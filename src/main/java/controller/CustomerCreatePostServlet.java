@@ -1,29 +1,37 @@
 package controller;
 
 import dao.PostDAO;
-import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.List;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import model.Customers;
 import model.Post;
 import model.PostSection;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@MultipartConfig(maxFileSize = 5 * 1024 * 1024) // max 5MB
+@WebServlet(name = "CustomerCreatePostServlet", urlPatterns = {"/customer-create-post"})
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024) // 5MB
 public class CustomerCreatePostServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Customers customer = (Customers) session.getAttribute("customer");
+        if (customer == null) {
+            response.sendRedirect(request.getContextPath() + "/customer-login");
+            return;
+        }
+
         PostDAO dao = new PostDAO();
-        request.setAttribute("tagList", dao.getAllTags()); // Gửi danh sách tag sang JSP
+        request.setAttribute("tagList", dao.getAllTags());
+        request.setAttribute("loggedInCustomer", customer);
         request.getRequestDispatcher("view/customer-create-post.jsp").forward(request, response);
     }
 
@@ -34,11 +42,9 @@ public class CustomerCreatePostServlet extends HttpServlet {
 
         String title = request.getParameter("title");
         String content = request.getParameter("content");
-        System.out.println("===> Tạo bài viết mới: " + title);
         String[] tagIdParams = request.getParameterValues("tagIds");
         String[] sectionTitles = request.getParameterValues("sectionTitles");
         String[] sectionContents = request.getParameterValues("sectionContents");
-
         Part imagePart = request.getPart("featuredImage");
         Collection<Part> parts = request.getParts();
 
@@ -48,38 +54,46 @@ public class CustomerCreatePostServlet extends HttpServlet {
             return;
         }
 
-        // Tạo tên file duy nhất cho ảnh đại diện
+        // Tạo tên file duy nhất
         String originalFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
         String uniqueFileName = System.currentTimeMillis() + extension;
 
         // Đường dẫn lưu ảnh
-        String uploadPath = System.getProperty("user.home") + File.separator + "xinxo-blog-uploads";
+        String uploadPath = getServletContext().getRealPath("/") + "uploads";
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
 
-        File imageFile = new File(uploadPath + File.separator + uniqueFileName);
+        File imageFile = new File(uploadPath, uniqueFileName);
         imagePart.write(imageFile.getAbsolutePath());
 
         // Tạo bài viết
-        int userId = 1; // Lấy từ session nếu có
+        HttpSession session = request.getSession();
+        Customers customer = (Customers) session.getAttribute("customer");
+        if (customer == null) {
+            response.sendRedirect("customer-login");
+            return;
+        }
+
         PostDAO dao = new PostDAO();
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
-        post.setUserId(userId);
+        post.setUserId(customer.getId()); // đảm bảo lấy đúng customer ID
         post.setStatus("pending");
 
         int postId = dao.insertPost(post);
-        System.out.println("Post ID returned = " + postId);
         if (postId <= 0) {
-            request.setAttribute("error", "Không thể tạo bài viết. Hãy kiểm tra dữ liệu đầu vào hoặc kết nối database.");
+            request.setAttribute("error", "Không thể tạo bài viết.");
             request.getRequestDispatcher("view/customer-create-post.jsp").forward(request, response);
             return;
         }
-        dao.insertPostImage(postId, uniqueFileName);
+
+        dao.insertPostImage(postId, uniqueFileName); // chỉ lưu tên ảnh
+
+        // Gắn tag
         if (tagIdParams != null) {
             for (String tagIdStr : tagIdParams) {
                 try {
@@ -91,7 +105,7 @@ public class CustomerCreatePostServlet extends HttpServlet {
             }
         }
 
-        // Gom tất cả section images
+        // Xử lý ảnh cho section
         List<Part> sectionImageParts = parts.stream()
                 .filter(p -> "sectionImages".equals(p.getName()) && p.getSize() > 0)
                 .collect(Collectors.toList());
@@ -108,10 +122,10 @@ public class CustomerCreatePostServlet extends HttpServlet {
                     String secExt = secFileName.substring(secFileName.lastIndexOf("."));
                     String secUniqueName = "section_" + System.currentTimeMillis() + "_" + i + secExt;
 
-                    File secFile = new File(uploadPath + File.separator + secUniqueName);
+                    File secFile = new File(uploadPath, secUniqueName);
                     imagePartSec.write(secFile.getAbsolutePath());
 
-                    sectionImageUrl = "image/" + secUniqueName;
+                    sectionImageUrl = "uploads/" + secUniqueName;
                 }
 
                 PostSection section = new PostSection();
@@ -120,12 +134,11 @@ public class CustomerCreatePostServlet extends HttpServlet {
                 section.setSectionContent(secContent);
                 section.setSectionImageUrl(sectionImageUrl.isEmpty() ? null : sectionImageUrl);
                 section.setSortOrder(i + 1);
-                System.out.println("PostID mới là: " + postId);
-                System.out.println("Đang lưu image chính: " + uniqueFileName);
-                System.out.println("Section " + i + ": title=" + sectionTitles + ", img=" + sectionImageUrl);
+
                 dao.insertPostSection(section);
             }
         }
+
         response.sendRedirect("blog?success=1");
     }
 
