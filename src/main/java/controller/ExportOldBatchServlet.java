@@ -66,6 +66,8 @@ public class ExportOldBatchServlet extends HttpServlet {
         session.setAttribute("store", ss);
         Inventory in = ssd.getInventoryById(ss.getInventory().getInventoryID());
         session.setAttribute("inventory", in);
+        int totalStock = ssd.getTotalStockByProductId(ss.getInventory().getProduct().getId());
+        request.setAttribute("totalStock", totalStock);
         request.getRequestDispatcher("/view/export-old-batch-to-store.jsp").forward(request, response);
     }
 
@@ -83,6 +85,10 @@ public class ExportOldBatchServlet extends HttpServlet {
         InventoryDAO inD = new InventoryDAO();
         String idInven = request.getParameter("idInven");
         String quantity = request.getParameter("quantity");
+        String deliveredBy = request.getParameter("deliveredBy");
+        String receivedBy = request.getParameter("receivedBy");
+        String note = request.getParameter("note");
+        int warehouseId = 1;
         int id = Integer.parseInt(idInven);
         int q = Integer.parseInt(quantity);
 
@@ -113,7 +119,7 @@ public class ExportOldBatchServlet extends HttpServlet {
 
             String statusDetails = "Xuất hàng";
             LocalDate updateAt = LocalDate.now();
-            InventoryDetails detail = new InventoryDetails(in, q, updateAt, statusDetails);
+            InventoryDetails detail = new InventoryDetails(in, q, updateAt, statusDetails, deliveredBy, receivedBy, note, warehouseId);
             inD.insertInventoryDetails(detail);
 
             String idStore = request.getParameter("idStore");

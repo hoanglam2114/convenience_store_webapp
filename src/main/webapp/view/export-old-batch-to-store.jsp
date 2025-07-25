@@ -249,11 +249,11 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label>Lô</label>
-                                                            <input type="number" readonly name="productBatch"
-                                                                   class="form-control"
-                                                                   value="${i.getProduct().getBatch()}">
-                                                            <div class="help-block with-errors"></div>
+<%--                                                            <label>Lô</label>--%>
+<%--                                                            <input type="number" readonly name="productBatch"--%>
+<%--                                                                   class="form-control"--%>
+<%--                                                                   value="${i.getProduct().getBatch()}">--%>
+<%--                                                            <div class="help-block with-errors"></div>--%>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -261,7 +261,7 @@
                                                             <label>Số lượng còn trong kho</label>
                                                             <input type="number" readonly name="currentstock"
                                                                    class="form-control"
-                                                                   value="${i.getCurrentStock()}">
+                                                                   value="${totalStock}">
                                                             <div class="help-block with-errors"></div>
                                                         </div>
                                                     </div>

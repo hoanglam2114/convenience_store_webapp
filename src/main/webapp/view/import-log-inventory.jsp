@@ -235,9 +235,9 @@
                     </div>
                     <div class="card-body">
                       <c:set var="i" value="${inventory}"/>
-                      <form action="import-inventory" method="post" data-toggle="validator">
+                      <form action="import-log-inventory" method="post" data-toggle="validator">
                         <input type="hidden" name="idInven" value="${i.inventoryID}">
-                        <div class="col-md-6">
+                        <div class="md-3">
                           <div class="form-group">
                             <label>Tên sản phẩm</label>
                             <input type="text" readonly name="nameInven" class="form-control"
@@ -245,7 +245,7 @@
                             <div class="help-block with-errors"></div>
                           </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="md-3">
                           <div class="form-group">
                             <label>Số lượng:</label>
                             <input type="text" readonly name="quantityInven" class="form-control"
@@ -253,7 +253,23 @@
                             <div class="help-block with-errors"></div>
                           </div>
                         </div>
-                        <button type="submit" class="btn btn-primary mr-2">Thêm vào lịch sử xuất/nhập kho
+                        <div class="mb-3">
+                          <label for="deliveredBy">Người giao hàng:</label>
+                          <input type="text" class="form-control" name="deliveredBy" id="deliveredBy" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="receivedBy">Người nhận hàng:</label>
+                          <input type="text" class="form-control" name="receivedBy" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="note">Ghi chú:</label>
+                          <textarea class="form-control" name="note" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label for="warehouseId">Nhập vào kho số #${warehouseID}:</label>
+                          <input type="hidden" name="warehouse_id" value="${warehouseID}">
+                        </div>
+                        <button type="submit" class="btn btn-primary mr-2">Xác nhận xuất/nhập kho
                         </button>
                       </form>
 

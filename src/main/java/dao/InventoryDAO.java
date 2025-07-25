@@ -410,7 +410,7 @@ public class InventoryDAO extends DBContext {
      * @param i Inventory object to insert
      */
     public void addInventoryProduct(Inventory i) {
-        String sql = "INSERT INTO Inventory VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Inventory (product_id, current_stock, inventory_status, last_restock_date, alert, warehouse_id) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, i.getProduct().getId());
@@ -418,11 +418,13 @@ public class InventoryDAO extends DBContext {
             st.setString(3, i.getInventoryStatus());
             st.setTimestamp(4, Timestamp.valueOf(i.getLastRestockDate()));
             st.setString(5, i.getAlert());
+            st.setInt(6, i.getWarehouseId()); // 👈 bổ sung dòng này
             st.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
+            e.printStackTrace(); // in rõ lỗi cho dễ debug
         }
     }
+
 
     /**
      * Delete product from inventory
@@ -556,20 +558,23 @@ public class InventoryDAO extends DBContext {
      * @param d InventoryDetails object containing details to insert
      */
     public void insertInventoryDetails(InventoryDetails d) {
-        String sql = "INSERT INTO InventoryDetails  VALUES (?, ?, ?, ?) ";
+        String sql = "INSERT INTO InventoryDetails (inventory_id, quantity, status, delivered_by, received_by, note, warehouse_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, d.getInventory().getInventoryID());
             st.setInt(2, d.getQuantity());
-            st.setDate(3, Date.valueOf(d.getDate()));
-            st.setString(4, d.getStatus());
+            st.setString(3, d.getStatus());
+            st.setString(4, d.getDeliveredBy());
+            st.setString(5, d.getReceivedBy());
+            st.setString(6, d.getNote());
+            st.setInt(7, d.getWarehouseId());
             st.executeUpdate();
-
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
     }
+
 
     /**
      * Update inventory status and alerts
@@ -626,24 +631,24 @@ public class InventoryDAO extends DBContext {
         List<InventoryDetails> list = new ArrayList<>();
         InventoryDAO invenD = new InventoryDAO();
 
-        String sql = "SELECT [inventory_detail_id]\n"
-                + "      ,[inventory_id]\n"
-                + "      ,[quantity]\n"
-                + "      ,[date]\n"
-                + "      ,[status]\n"
-                + "  FROM [dbo].[InventoryDetails]"
-                + "  where 1=1\n";
+        String sql = "SELECT inventory_detail_id, inventory_id, quantity, status, "
+                + "received_by, delivered_by, warehouse_id "
+                + "FROM InventoryDetails";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 InventoryDetails in = new InventoryDetails();
                 in.setId(rs.getInt("inventory_detail_id"));
+
                 Inventory inven = invenD.getInventoryById(rs.getInt("inventory_id"));
                 in.setInventory(inven);
                 in.setQuantity(rs.getInt("quantity"));
-                in.setDate(rs.getDate("date").toLocalDate());
                 in.setStatus(rs.getString("status"));
+                in.setReceivedBy(rs.getString("received_by"));
+                in.setDeliveredBy(rs.getString("delivered_by"));
+                in.setWarehouseId(rs.getInt("warehouse_id"));
+
                 list.add(in);
             }
         } catch (SQLException e) {
@@ -651,6 +656,7 @@ public class InventoryDAO extends DBContext {
         }
         return list;
     }
+
 
     /**
      * Get paginated inventory results
@@ -916,9 +922,9 @@ public class InventoryDAO extends DBContext {
                 while (rs.next()) {
                     Products p = new Products();
                     p.setId(rs.getInt("product_id"));
-                    p.setName(rs.getString("name"));
-                    p.setImage(rs.getString("image"));
-                    p.setPrice(rs.getFloat("price"));
+                    p.setName(rs.getString("product_name"));
+                    p.setImage(rs.getString("product_image"));
+                    p.setPrice(rs.getFloat("product_price"));
                     p.setBarcode(rs.getString("barcode"));
                     list.add(p);
                 }

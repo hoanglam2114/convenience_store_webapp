@@ -238,7 +238,6 @@
                                                                 <c:forEach items="${inventory}" var="i">
                                                                     <option value="${i.inventoryID}">
                                                                             ${i.product.name} -
-                                                                        Lô: ${i.product.batch}
                                                                         - Số lượng trong kho: ${i.currentStock}
                                                                     </option>
                                                                 </c:forEach>

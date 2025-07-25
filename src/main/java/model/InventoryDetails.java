@@ -19,6 +19,11 @@ public class InventoryDetails {
     private int quantity;
     private LocalDate date;
     private String status;
+    private String deliveredBy;
+    private String receivedBy;
+    private String note;
+    private int warehouseId;
+
 
     public InventoryDetails() {
     }
@@ -31,10 +36,14 @@ public class InventoryDetails {
         this.status = status;
     }
 
-    public InventoryDetails(Inventory inventory, int quantity, LocalDate date, String status) {
+    public InventoryDetails(Inventory inventory, int quantity, LocalDate date, String status, String deliveredBy, String receivedBy, String note, int warehouseId) {
         this.inventory = inventory;
         this.quantity = quantity;
         this.date = date;
         this.status = status;
+        this.deliveredBy = deliveredBy;
+        this.receivedBy = receivedBy;
+        this.note = note;
+        this.warehouseId = warehouseId;
     }
 }

@@ -59,6 +59,21 @@ public class StoreStockDAO extends DBContext {
         return inventory;
     }
 
+    public int getTotalStockByProductId(int productId) {
+        String sql = "SELECT SUM(current_stock) AS total FROM Inventory WHERE product_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, productId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
     public DiscountProduct getDiscountProductById(int discountProductId) {
         String sql = "SELECT * FROM DiscountProduct WHERE discount_product_id = ?";
         try {
@@ -186,18 +201,20 @@ public class StoreStockDAO extends DBContext {
         }
     }
 
-    public List<Inventory> getInventoryNotInStore() {
+    public List<Inventory> getProductNotInStore() {
         List<Inventory> list = new ArrayList<>();
         ProductsDAO pd = new ProductsDAO();
-        String sql = "SELECT i.*\n"
-                + "FROM Inventory i\n"
-                + "WHERE NOT EXISTS (\n"
-                + "    SELECT 1\n"
-                + "    FROM StoreStock s\n"
-                + "    WHERE s.inventory_id = i.inventory_id\n"
-                + ");";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
+        String sql = """
+        SELECT i.*
+        FROM Inventory i
+        WHERE i.product_id NOT IN (
+            SELECT DISTINCT i2.product_id
+            FROM Inventory i2
+            JOIN StoreStock s ON s.inventory_id = i2.inventory_id
+        )
+    """;
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Inventory in = new Inventory();

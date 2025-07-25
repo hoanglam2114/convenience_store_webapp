@@ -64,7 +64,7 @@ public class ExportNewToStoreServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         StoreStockDAO ssd = new StoreStockDAO();
-        List<Inventory> in = ssd.getInventoryNotInStore();
+        List<Inventory> in = ssd.getProductNotInStore();
         session.setAttribute("inventory", in);
         request.getRequestDispatcher("/view/export-to-store.jsp").forward(request, response);
     }
@@ -84,6 +84,10 @@ public class ExportNewToStoreServlet extends HttpServlet {
         InventoryDAO inD = new InventoryDAO();
         String idInven = request.getParameter("idInven");
         String quantity = request.getParameter("quantity");
+        String deliveredBy = request.getParameter("deliveredBy");
+        String receivedBy = request.getParameter("receivedBy");
+        String note = request.getParameter("note");
+        int warehouseId = 1;
         int id = Integer.parseInt(idInven);
         int q = Integer.parseInt(quantity);
 
@@ -114,7 +118,7 @@ public class ExportNewToStoreServlet extends HttpServlet {
 
             String statusDetails = "Xuất hàng";
             LocalDate updateAt = LocalDate.now();
-            InventoryDetails detail = new InventoryDetails(in, q, updateAt, statusDetails);
+            InventoryDetails detail = new InventoryDetails(in, q, updateAt, statusDetails, deliveredBy, receivedBy, note, warehouseId);
             inD.insertInventoryDetails(detail);
 
             StoreStock ss = new StoreStock();

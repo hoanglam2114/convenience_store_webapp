@@ -13,6 +13,8 @@ import model.Products;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -60,8 +62,9 @@ public class AddInventoryProductServlet extends HttpServlet {
         InventoryDAO inventoryDAO = new InventoryDAO();
         int warehouseId = Integer.parseInt(request.getParameter("warehouse_id"));
         List<Products> products = inventoryDAO.getProductsNotInInventory(warehouseId);
-        request.setAttribute("products", products);
 
+        request.setAttribute("products", products);
+        request.setAttribute("warehouseID", warehouseId);
         request.getRequestDispatcher("/view/add-product-inventory.jsp").forward(request, response);
 
     }
@@ -97,8 +100,10 @@ public class AddInventoryProductServlet extends HttpServlet {
             alert = "Không";
         }
         LocalDateTime lastUpdate = LocalDateTime.now();
-        Inventory iNew = new Inventory(pNew, quantity, status, lastUpdate, alert);
+        System.out.println(pNew + " " + quantity + " " + lastUpdate + " " + status + " " + alert + " " + warehouseId);
+        Inventory iNew = new Inventory(pNew, quantity, status, lastUpdate, alert, warehouseId);
+
         id.addInventoryProduct(iNew);
-        response.sendRedirect("import-inventory");
+        response.sendRedirect("import-log-inventory?warehouse_id=" + URLEncoder.encode(String.valueOf(warehouseId), StandardCharsets.UTF_8));
     }
 }

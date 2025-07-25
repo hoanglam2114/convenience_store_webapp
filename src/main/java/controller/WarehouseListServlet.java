@@ -46,7 +46,7 @@ public class WarehouseListServlet extends HttpServlet {
             totalWarehouses = warehouseDAO.countAll();
         } else {
             list = warehouseDAO.searchAndFilterPaging(search, status, offset, pageSize);
-            totalWarehouses = warehouseDAO.countFiltered(search, status); // cần hàm đếm riêng
+            totalWarehouses = warehouseDAO.countFiltered(search, status);
         }
 
         int totalPages = (int) Math.ceil((double) totalWarehouses / pageSize);

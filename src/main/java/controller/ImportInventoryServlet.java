@@ -19,7 +19,7 @@ import java.time.LocalDate;
  * @author hoang on 6/8/2025-2:00 PM
  * IntelliJ IDEA
  */
-@WebServlet(name = "ImportInventoryServlet", urlPatterns = {"/import-inventory"})
+@WebServlet(name = "ImportInventoryServlet", urlPatterns = {"/import-log-inventory"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
@@ -68,7 +68,9 @@ public class ImportInventoryServlet extends HttpServlet {
         InventoryDAO inventoryd = new InventoryDAO();
         Inventory inven = inventoryd.getInventoryLast();
         session.setAttribute("inventory", inven);
-        request.getRequestDispatcher("/view/import-inventory.jsp").forward(request, response);
+        int warehouseId = Integer.parseInt(request.getParameter("warehouse_id"));
+        request.setAttribute("warehouseID", warehouseId);
+        request.getRequestDispatcher("/view/import-log-inventory.jsp").forward(request, response);
     }
 
     /**
@@ -84,13 +86,24 @@ public class ImportInventoryServlet extends HttpServlet {
             throws ServletException, IOException {
         InventoryDAO inventoryd = new InventoryDAO();
 
+        String warehouseIdRaw = request.getParameter("warehouse_id");
+        int warehouseId = Integer.parseInt(warehouseIdRaw);
+
         Inventory inven = inventoryd.getInventoryLast();
         String q_raw = request.getParameter("quantityInven");
         int q = Integer.parseInt(q_raw);
+
+        String deliveredBy = request.getParameter("deliveredBy");
+        String receivedBy = request.getParameter("receivedBy");
+        String note = request.getParameter("note");
+
         String statusDetails = "Nhập hàng";
         LocalDate updateAt = LocalDate.now();
-        InventoryDetails detail = new InventoryDetails(inven, q, updateAt, statusDetails);
+
+        InventoryDetails detail = new InventoryDetails(inven, q, updateAt, statusDetails, deliveredBy, receivedBy, note, warehouseId);
+
         inventoryd.insertInventoryDetails(detail);
         response.sendRedirect("log-inventory");
     }
+
 }

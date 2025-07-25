@@ -37,11 +37,12 @@ public class Inventory {
         this.warehouseId = warehouseId;
     }
 
-    public Inventory(Products pNew, int q, String status, LocalDateTime lastUpdate, String alert) {
+    public Inventory(Products pNew, int q, String status, LocalDateTime lastUpdate, String alert, int warehouseId) {
         this.product = pNew;
         this.currentStock = q;
         this.inventoryStatus = status;
         this.lastRestockDate = lastUpdate;
         this.alert = alert;
+        this.warehouseId = warehouseId;
     }
 }

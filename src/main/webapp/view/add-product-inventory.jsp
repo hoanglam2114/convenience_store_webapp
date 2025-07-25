@@ -240,9 +240,10 @@
                         <div class="row">
                           <div class="col-md-12">
                             <div class="form-group">
+
                               <c:set var="product" value="${sessionScope.product}"/>
-                              <label>Tên sản phẩm</label>
-                              <select name="idPro" class="selectpicker form-control" data-style="py-0">
+                              <label for="product_id">Tên sản phẩm</label>
+                              <select name="product_id" id="product_id" class="selectpicker form-control" data-style="py-0">
                                 <c:forEach items="${products}" var="p">
                                   <option value="${p.getId()}">${p.getName()}</option>
                                 </c:forEach>
@@ -251,11 +252,13 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label>Số lượng</label>
-                              <input type="number" name="quantity" class="form-control"
+                              <label for="quantity">Số lượng</label>
+                              <input type="number" name="quantity" id="quantity" class="form-control"
                                      placeholder="Nhập số lượng." data-errors="Please Enter Quantity."
                                      required>
                               <div class="help-block with-errors"></div>
+                              <h2>Kho đang thêm: #${warehouseID} </h2>
+                              <input type="hidden" name="warehouse_id" value="${warehouseID}">
                             </div>
                           </div>
                         </div>

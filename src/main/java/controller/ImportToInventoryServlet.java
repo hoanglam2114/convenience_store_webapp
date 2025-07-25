@@ -82,6 +82,7 @@ public class ImportToInventoryServlet extends HttpServlet {
 
         InventoryDAO id = new InventoryDAO();
         ProductsDAO pd = new ProductsDAO();
+        int warehouseId = Integer.parseInt(request.getParameter("warehouse_id"));
 
         String idPro_raw = request.getParameter("idPro");
         String quantity = request.getParameter("quantity");
@@ -101,7 +102,7 @@ public class ImportToInventoryServlet extends HttpServlet {
             alert = "Không";
         }
         LocalDateTime lastUpdate = LocalDateTime.now();
-        Inventory iNew = new Inventory(pNew, q, status, lastUpdate, alert);
+        Inventory iNew = new Inventory(pNew, q, status, lastUpdate, alert,warehouseId);
         System.out.println(iNew);
 
         id.addInventoryProduct(iNew);

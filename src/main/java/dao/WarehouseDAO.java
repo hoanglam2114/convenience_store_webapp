@@ -29,8 +29,6 @@ public class WarehouseDAO extends DBContext {
                 .status(WarehouseStatus.valueOf(rs.getString("status").toUpperCase()))
                 .note(rs.getString("note") == null ? "N/A" : rs.getString("note"))
                 .managerID(rs.getObject("manager_id", Integer.class))
-                .storeLinkedID(rs.getObject("store_linked_id", Integer.class))
-                .storeName(rs.getObject("shop_name", String.class))
                 .managerName(rs.getObject("manager_name", String.class))
                 .build();
     }
@@ -59,25 +57,33 @@ public class WarehouseDAO extends DBContext {
 
     public List<Warehouse> getWarehousesPaging(int offset, int limit) {
         List<Warehouse> warehouses = new ArrayList<>();
-        String query = "SELECT w.*,\n" +
-                "       wa.employee_id,\n" +
-                "       u.employee_name AS manager_name,\n" +
-                "       s.shop_name\n" +
+        String query = "SELECT \n" +
+                "    w.warehouse_id,\n" +
+                "    w.name,\n" +
+                "    w.address,\n" +
+                "    w.phone,\n" +
+                "    w.working_hours,\n" +
+                "    w.status,\n" +
+                "    w.note,\n" +
+                "    wa.employee_id AS manager_id,\n" +
+                "    e.employee_name AS manager_name\n" +
                 "FROM Warehouses w\n" +
-                "LEFT JOIN WarehouseAssignments wa ON w.warehouse_id = wa.warehouse_id\n" +
-                "LEFT JOIN Employees u ON wa.employee_id = u.employee_id\n" +
-                "LEFT JOIN ShopDetails s ON w.store_linked_id = s.shop_id\n" +
-                "ORDER BY w.warehouse_id\n" +
-                "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY\n";
+                "LEFT JOIN WarehouseAssignments wa \n" +
+                "    ON w.warehouse_id = wa.warehouse_id \n" +
+                "    AND wa.assignment_role = 'Manager'\n" +
+                "    AND wa.is_active = 1\n" +
+                "LEFT JOIN Employees e \n" +
+                "    ON wa.employee_id = e.employee_id\n" +
+                "ORDER BY w.warehouse_id " +
+                "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-
             ps.setInt(1, offset);
             ps.setInt(2, limit);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    warehouses.add(buildWarehouse(rs)); // hoặc gán thủ công
+                    warehouses.add(buildWarehouse(rs));
                 }
             }
         } catch (Exception e) {
@@ -99,7 +105,6 @@ public class WarehouseDAO extends DBContext {
         return 0;
     }
 
-    // Phân trang có search + filter
     public List<Warehouse> searchAndFilterPaging(String search, String status, int offset, int limit) {
         List<Warehouse> list = new ArrayList<>();
 
@@ -109,7 +114,7 @@ public class WarehouseDAO extends DBContext {
                 "LEFT JOIN WarehouseAssignments wa ON w.warehouse_id = wa.warehouse_id " +
                 "LEFT JOIN Employees u ON wa.employee_id = u.employee_id " +
                 "LEFT JOIN ShopDetails s ON w.store_linked_id = s.shop_id " +
-                "WHERE 1=1 ";
+                "WHERE wa.assignment_role = 'Manager' ";
 
         if (search != null && !search.trim().isEmpty()) {
             query += "AND w.name LIKE ? ";
@@ -121,7 +126,6 @@ public class WarehouseDAO extends DBContext {
         query += "ORDER BY w.warehouse_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-
             int paramIndex = 1;
 
             if (search != null && !search.trim().isEmpty()) {
@@ -136,7 +140,7 @@ public class WarehouseDAO extends DBContext {
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Warehouse w = buildWarehouse(rs); // hoặc gán thủ công từng field
+                Warehouse w = buildWarehouse(rs);
                 list.add(w);
             }
         } catch (Exception e) {
@@ -271,8 +275,6 @@ public class WarehouseDAO extends DBContext {
                         .status(WarehouseStatus.valueOf(rs.getString("status")))
                         .note(rs.getString("note") == null ? "N/A" : rs.getString("note"))
                         .managerID(rs.getObject("employee_id", Integer.class))
-                        .storeLinkedID(rs.getObject("store_linked_id", Integer.class))
-                        .storeName(rs.getObject("shop_name", String.class))
                         .managerName(rs.getObject("manager_name", String.class))
                         .build();
             }
@@ -348,7 +350,7 @@ public class WarehouseDAO extends DBContext {
 
     public static void main(String[] args) {
         WarehouseDAO dao = new WarehouseDAO();
-        List<Warehouse> w = dao.getAllWarehouses();
+        List<Warehouse> w = dao.getWarehousesPaging(0,3);
         System.out.println(w);
     }
 }

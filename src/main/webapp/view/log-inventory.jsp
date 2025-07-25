@@ -242,25 +242,23 @@
                     <table class="data-table table mb-0 tbl-server-info">
                       <thead class="bg-white text-uppercase">
                       <tr class="ligth ligth-data">
-                        <th>Lô</th>
-                        <th>Sản phẩm</th>
                         <th>Tên sản phẩm</th>
                         <th>Số lượng</th>
                         <th>Trạng thái</th>
-                        <th>Lần cuối cập nhật</th>
+                        <th>Người giao</th>
+                        <th>Người nhận</th>
+                        <th>Kho</th>
                       </tr>
                       </thead>
                       <tbody class="ligth-body">
-
                       <c:forEach items="${logInventory}" var="l">
                         <tr>
-                          <td>${l.getInventory().getProduct().getBatch()}</td>
-                          <td><img src="assets/images/product/${l.getInventory().getProduct().getImage()}"
-                                   width="80px" height="80px"/></td>
-                          <td>${l.getInventory().getProduct().getName()}</td>
-                          <td>${l.getQuantity()}</td>
-                          <td>${l.getStatus()}</td>
-                          <td>${l.getDate()}</td>
+                          <td>${l.inventory.product.name}</td>
+                          <td>${l.quantity}</td>
+                          <td>${l.status}</td>
+                          <td>${l.senderName}</td>
+                          <td>${l.receiverName}</td>
+                          <td>${l.warehouseID}</td>
                         </tr>
                       </c:forEach>
                       </tbody>
