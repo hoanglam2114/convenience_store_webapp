@@ -108,13 +108,6 @@
                     </ul>
                 </li>
 
-                <!-- Promotion -->
-                <li class="nav-item">
-                    <a class="nav-link" href="promotion">
-                        <i class="bi bi-gift me-1"></i>Khuyến mãi
-                    </a>
-                </li>
-
                 <!-- Store System -->
                 <li class="nav-item">
                     <a class="nav-link" href="retail-chain">

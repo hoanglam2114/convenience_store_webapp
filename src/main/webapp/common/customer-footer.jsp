@@ -25,15 +25,12 @@
         <a href="customer-home" class="footer-link">Trang chủ</a>
         <a href="#" class="footer-link">Sản phẩm</a>
         <a href="#" class="footer-link">Khuyến mãi</a>
-        <a href="#" class="footer-link">Liên hệ</a>
-        <a href="ListJobCustomer" class="footer-link">Tuyển dụng</a>
-          <a href="blog" class="footer-link">Blog</a>
+        <a href="blog" class="footer-link">Blog</a>
       </div>
       <div class="col-lg-2 col-md-3">
         <h5 class="footer-title">Hỗ trợ</h5>
-        <a href="#" class="footer-link">Chính sách đổi trả</a>
-        <a href="#" class="footer-link">Hướng dẫn mua hàng</a>
-        <a href="#" class="footer-link">Câu hỏi thường gặp</a>
+        <a href="#" class="footer-link">Liên hệ</a>
+        <a href="ListJobCustomer" class="footer-link">Tuyển dụng</a>
         <a href="qna" class="footer-link">Hỏi đáp</a>
       </div>
       <div class="col-lg-4 col-md-6">

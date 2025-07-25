@@ -47,7 +47,7 @@ public class AccessFilter implements Filter {
         // Public
         if (uri.endsWith("/LoginServlet")
                 || uri.endsWith("/LogoutServlet")
-                || uri.contains("/HomeServlet")
+                || uri.contains("/HomeAdmin")
                 || uri.contains("/assets/")
                 || uri.endsWith("/no-access")
                 || uri.contains("/error-page/")
@@ -99,7 +99,7 @@ public class AccessFilter implements Filter {
         if ("Shop Manager".equals(role)) {
             List<String> shopManagerPaths = Arrays.asList(
                     "/list-store-stock", "/import-product", "/export-old-batch",
-                    "/find-product-store", "/delete-store-stock"
+                    "/find-product-store", "/delete-store-stock", "/assignment-management"
             );
             return shopManagerPaths.stream().anyMatch(uri::contains);
         }
@@ -107,7 +107,7 @@ public class AccessFilter implements Filter {
         // Warehouse Manager
         if ("Warehouse Manager".equals(role)) {
             List<String> warehousePaths = Arrays.asList(
-                    "/inventory", "/add-inventory-product", "/log-inventory"
+                    "/inventory", "/add-inventory-product", "/log-inventory", "/assignment-management"
             );
             return warehousePaths.stream().anyMatch(uri::contains);
         }

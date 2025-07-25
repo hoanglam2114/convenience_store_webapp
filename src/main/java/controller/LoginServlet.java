@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
 
 //        Nếu đã đăng nhập rồi (session có tồn tại account) thì chuyển hướng về các trang theo Role, không sẽ bị xung đột
         if (account != null) {
-            response.sendRedirect("view/index.jsp");
+            request.getRequestDispatcher("view/index.jsp").forward(request, response);
             return;
         }
 

@@ -14,8 +14,14 @@ import java.io.IOException;
  */
 @WebServlet(name = "noAccess", urlPatterns = {"/no-access"})
 public class noAccess extends HttpServlet {
-    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Lấy attribute "error" từ request, nếu null thì gán chuỗi rỗng
+        String errorMessage = (String) req.getSession().getAttribute("error");
+        if (errorMessage == null) {
+            errorMessage = "";
+        }
+        req.setAttribute("error", errorMessage);
+        req.getSession().removeAttribute("error"); // Xóa attribute khỏi session sau khi sử dụng
         req.getRequestDispatcher("error-page/no-access.jsp").forward(req, resp);
     }
 }

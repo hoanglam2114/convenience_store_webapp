@@ -33,7 +33,7 @@
                     <i class="fas fa-map-marker-alt me-2"></i>
                     Hệ thống chi nhánh
                 </h1>
-                <p class="lead mb-0">Khám phá mạng lưới cửa hàng Circle K trên toàn quốc</p>
+                <p class="lead mb-0">Khám phá mạng lưới cửa hàng Convema trên toàn quốc</p>
             </div>
         </div>
     </div>
