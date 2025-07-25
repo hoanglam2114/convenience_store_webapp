@@ -27,6 +27,7 @@ public class AssignmentController extends HttpServlet {
     private ShopAssignmentDAO shopAssignmentDAO;
     private WarehouseAssignmentDAO warehouseAssignmentDAO;
     private ShiftDAO shiftDAO;
+
     @Override
     public void init() throws ServletException {
         employeeDAO = new EmployeeDAO();
@@ -110,14 +111,14 @@ public class AssignmentController extends HttpServlet {
 
             // Get all warehouses for dropdown
             List<Warehouse> warehouses = warehouseDAO.getAllWarehouses();
-            
+
             // Get all warehouses for dropdown
             List<Shift> shifts = shiftDAO.getAllShifts();
-            
+
             // Get all assignments
             List<ShopAssignment> shopAssignments = shopAssignmentDAO.getAllShopAssignments();
             List<WarehouseAssignment> warehouseAssignments = warehouseAssignmentDAO.getAllWarehouseAssignments();
-            
+
             // Combine assignments for display
             List<Object> allAssignments = new ArrayList<>();
             allAssignments.addAll(shopAssignments);
@@ -208,6 +209,14 @@ public class AssignmentController extends HttpServlet {
                     return;
                 }
 
+                // Check nếu nhân viên đang làm ở shop khác
+                boolean isAssignedToAnotherShop = shopAssignmentDAO.employeeHasActiveShopElsewhere(employeeId, locationId);
+                if (isAssignedToAnotherShop) {
+                    request.setAttribute("error", "Nhân viên này đã được phân công làm tại một cửa hàng khác!");
+                    listAssignments(request, response);
+                    return;
+                }
+
                 if ("Manager".equalsIgnoreCase(role)) {
                     boolean alreadyManager = shopAssignmentDAO.hasShopManager(employeeId);
                     if (alreadyManager) {
@@ -239,6 +248,11 @@ public class AssignmentController extends HttpServlet {
                 if (existingAssignment != null) {
                     System.out.println("Assignment ID: " + existingAssignment.getAssignmentId());
                     request.setAttribute("error", "Nhân viên đã được phân công tại warehouse này rồi!");
+                    listAssignments(request, response);
+                    return;
+                }
+                if (warehouseAssignmentDAO.employeeHasActiveWarehouseElsewhere(employeeId, locationId)) {
+                    request.setAttribute("error", "Nhân viên này đã được phân công làm tại một kho khác!");
                     listAssignments(request, response);
                     return;
                 }
