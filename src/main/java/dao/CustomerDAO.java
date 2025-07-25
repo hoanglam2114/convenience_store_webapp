@@ -31,7 +31,6 @@ public class CustomerDAO extends DBContext {
         return customerList;
     }
 
-
     public void addCustomer(Customers customer) {
         try {
             String sql = "Insert into Customers (customer_name, customer_phone, point, customer_type_id)"
@@ -148,7 +147,6 @@ public class CustomerDAO extends DBContext {
         return null;
     }
 
-
     public List<Customers> pagingCustomer(int index) {
         List<Customers> list = new ArrayList<>();
         String sql = "SELECT [customer_id],\n"
@@ -193,28 +191,48 @@ public class CustomerDAO extends DBContext {
     }
 
     public Customers findByPhone(String phone) {
-    String sql = "SELECT * FROM Customers WHERE customer_phone = ?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setString(1, phone.trim());
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return new Customers(
-                        rs.getInt("customer_id"),
-                        rs.getString("customer_name"),
-                        rs.getString("customer_phone"),
-                        rs.getInt("point"),
-                        rs.getInt("customer_type_id"),
-                        rs.getString("gender"),
-                        rs.getString("avatar_url")
-                );
+        String sql = "SELECT * FROM Customers WHERE customer_phone = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, phone.trim());
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Customers(
+                            rs.getInt("customer_id"),
+                            rs.getString("customer_name"),
+                            rs.getString("customer_phone"),
+                            rs.getInt("point"),
+                            rs.getInt("customer_type_id"),
+                            rs.getString("gender"),
+                            rs.getString("avatar_url")
+                    );
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
 
+    public Integer getCustomerIdByPhone(String phone) {
+        if (phone == null || phone.trim().isEmpty()) {
+            return null;
+        }
+
+        String sql = "SELECT customer_id FROM Customers WHERE customer_phone = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, phone.trim());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("customer_id");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null; 
+    }
 
 
     public static void main(String[] args) {

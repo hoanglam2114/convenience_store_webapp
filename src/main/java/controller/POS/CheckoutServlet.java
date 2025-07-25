@@ -1,5 +1,6 @@
 package controller.POS;
 
+import dao.CouponDAO;
 import dao.CustomerDAO;
 import dao.OrderDAO;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.sql.Date;
 import java.util.List;
 import model.Cart;
 import model.CartItem;
+import model.Coupons;
 import model.Order;
 
 public class CheckoutServlet extends HttpServlet {
@@ -46,51 +48,83 @@ public class CheckoutServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
 
-        // Trường hợp không có giỏ hàng hoặc giỏ hàng trống
         if (cart == null || cart.getItems().isEmpty()) {
             response.sendRedirect("view/pos-home.jsp");
             return;
         }
 
         try {
-            // Lấy thông tin khách hàng từ session
-            Object customerIdObj = session.getAttribute("customerId");
-            Object customerNameObj = session.getAttribute("customerName");
+            // Lấy thông tin khách hàng
+            Integer customerId = (Integer) session.getAttribute("customerId");
+            String customerName = (String) session.getAttribute("customerName");
+            if ((customerId == null || customerName == null)) {
+                String phone = request.getParameter("customer_phone");
+                String name = request.getParameter("customer_name");
 
-            // Kiểm tra nếu thiếu thông tin khách hàng
-            if (customerIdObj == null || customerNameObj == null) {
-                response.sendRedirect("loadProducts?error=missingCustomer");
-                return;
+                if (phone != null && name != null) {
+                    CustomerDAO dao = new CustomerDAO();
+                    customerId = dao.getCustomerIdByPhone(phone.trim());
+
+                    if (customerId != null) {
+                        session.setAttribute("customerId", customerId);
+                        session.setAttribute("phone", phone);
+                        session.setAttribute("name", name);
+                        session.setAttribute("customerName", name); // để dùng cho hiện tại
+                    } else {
+                        // Không tồn tại khách hàng → lỗi
+                        response.sendRedirect("loadProducts?error=missingCustomer");
+                        return;
+                    }
+                    System.out.println(">>> Phone from request: " + phone);
+                    System.out.println(">>> Name from request: " + name);
+                    System.out.println(">>> customerId from session: " + customerId);
+                    System.out.println(">>> customerName from session: " + customerName);
+                } else {
+                    // Cả session và request đều thiếu → lỗi
+                    response.sendRedirect("loadProducts?error=missingCustomer");
+                    return;
+                }
             }
 
-            int customerId = (Integer) customerIdObj;
-            String customerName = (String) customerNameObj;
+            // Lấy nhân viên từ session
+            Integer employeeId = (Integer) session.getAttribute("employee_id");
+            if (employeeId == null) {
+                employeeId = 1;
+            }
+
+            int paymentMethodId = 1; // tiền mặt
             double totalAmount = cart.getTotalMoney();
 
-            int employeeId = 2; // Tạm thời fix cứng
+            // Lấy coupon áp dụng từ session
+            Coupons appliedCoupon = (Coupons) session.getAttribute("appliedCoupon");
+            if (appliedCoupon != null) {
+                totalAmount -= appliedCoupon.getDiscount_amount();
+                if (totalAmount < 0) {
+                    totalAmount = 0;
+                }
+            }
+
+            // Tạo đơn hàng
             OrderDAO orderDAO = new OrderDAO();
+            int orderId = orderDAO.createOrder(customerId, totalAmount, cart.getItems(), appliedCoupon, employeeId, paymentMethodId);
 
-            // B1: Tạo đơn hàng trạng thái PENDING, có tổng tiền
-            int orderId = orderDAO.createPendingOrder(customerId, employeeId, totalAmount);
+            // 4. Gán giỏ hàng trước khi xóa
+            request.setAttribute("cartItems", cart.getItems());
 
-            // B2: Ghi chi tiết đơn hàng + cập nhật kho
-            orderDAO.processOrderDetails(orderId, cart.getItems());
-
-            // B3: Cập nhật điểm khách hàng
-            orderDAO.updateCustomerPoints(customerId, 1);
-
-            // B4: Reset giỏ hàng sau khi thanh toán
+            // 5. Xóa session
             session.removeAttribute("cart");
+            session.removeAttribute("appliedCoupon");
+            session.removeAttribute("appliedCouponCode");
+            session.removeAttribute("couponError");
 
-            // B5: Load lại đơn hàng để hiển thị
+            // 6. Lấy và hiển thị hoá đơn
             Order order = orderDAO.getOrderById(orderId);
             request.setAttribute("order", order);
-            request.setAttribute("cartItems", cart.getItems());
             request.getRequestDispatcher("view/receipt.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(500, "Lỗi xử lý thanh toán: " + e.getMessage());
+            response.sendError(500, "Lỗi khi xử lý thanh toán: " + e.getMessage());
         }
     }
 

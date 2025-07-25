@@ -1,4 +1,3 @@
-
 package controller.POS;
 
 import java.io.PrintWriter;
@@ -26,7 +25,7 @@ public class CreateVNPayQRServlet extends HttpServlet {
 
     private final String vnp_TmnCode = "5IJF7TIR";
     private final String vnp_HashSecret = "F80NQVO3Q5OIPGQERLQTO5ORV2266CKI";
-    private final String vnp_ReturnUrl = "https://convenient-store.onrender.com/vnPayReturn";
+    private final String vnp_ReturnUrl = "https://convenient-store-render.onrender.com/vnPayReturn";
     private final String vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -101,6 +100,16 @@ public class CreateVNPayQRServlet extends HttpServlet {
 
         String vnp_SecureHash = hmacSHA512(vnp_HashSecret, hashData.toString());
         query.append("&vnp_SecureHash=").append(vnp_SecureHash);
+
+        String customerPhone = request.getParameter("customer_phone");
+        String customerName = request.getParameter("customer_name");
+
+        if (customerPhone != null && !customerPhone.trim().isEmpty()) {
+            session.setAttribute("phone", customerPhone.trim());
+        }
+        if (customerName != null && !customerName.trim().isEmpty()) {
+            session.setAttribute("name", customerName.trim());
+        }
 
         String paymentUrl = vnp_Url + "?" + query.toString();
         response.sendRedirect(paymentUrl);

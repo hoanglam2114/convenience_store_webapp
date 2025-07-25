@@ -41,9 +41,19 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <span id="current-time" class="font-medium"></span>
-                    <button class="bg-white text-blue-600 px-4 py-1 rounded font-medium hover:bg-blue-50">
-                        <i class="fas fa-user mr-2"></i>Nhân Viên
-                    </button>
+                    <c:choose>
+                        <c:when test="${not empty employee}">
+                            <div class="text-sm bg-white text-blue-600 px-4 py-1 rounded font-medium flex items-center">
+                                <i class="fas fa-user mr-2"></i>
+                                ${employee.name}
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <button class="bg-white text-blue-600 px-4 py-1 rounded font-medium hover:bg-blue-50">
+                                <i class="fas fa-user mr-2"></i>Nhân Viên
+                            </button>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </header>
@@ -117,7 +127,6 @@
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-xl font-bold text-gray-800">Hóa Đơn</h2>
                             <div class="flex items-center space-x-2">
-                                <span class="text-sm text-gray-500">#HD12345</span>
                                 <a href="resetOrder" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">Làm Mới</a>
                             </div>
                         </div>
@@ -146,10 +155,9 @@
                         <!-- Gợi ý tạo mới nếu chưa có -->
                         <c:if test="${sessionScope.name == null && not empty sessionScope.phone}">
                             <div class="mt-2 text-sm text-red-500">
-                                Khách hàng chưa tồn tại. Bạn có muốn tạo tài khoản tích điểm không?
+                                Khách hàng chưa tồn tại. Tạo tài khoản.
                                 <div class="mt-2 space-x-2">
-                                    <button onclick="showModal()" type="button" class="bg-blue-500 text-white px-3 py-1 rounded">Có</button>
-                                    <button onclick="allowManualName()" type="button" class="bg-gray-300 px-3 py-1 rounded">Không</button>
+                                    <button onclick="showModal()" type="button" class="bg-blue-500 text-white px-3 py-1 rounded">Tạo</button>
                                 </div>
                             </div>
                         </c:if>
@@ -219,56 +227,87 @@
                             </c:if>
                         </div>
 
+                        <%
+                            model.Cart cart = (model.Cart) session.getAttribute("cart");
+                            model.Coupons appliedCoupon = (model.Coupons) session.getAttribute("appliedCoupon");
+
+                            double subtotal = (cart != null) ? cart.getTotalMoney() : 0;
+                            double discount = (appliedCoupon != null) ? appliedCoupon.getDiscount_amount() : 0;
+                            double total = Math.max(0, subtotal - discount);
+                        %>
+
                         <!-- Tổng tiền -->
                         <div class="space-y-2 mb-4">
                             <div class="flex justify-between">
                                 <span>Tạm tính:</span>
-                                <span><fmt:formatNumber value="${sessionScope.cart.totalMoney}" type="number" groupingUsed="true"/> đ</span>
+                                <span><fmt:formatNumber value="<%= subtotal %>" type="number" groupingUsed="true"/> đ</span>
                             </div>
                             <div class="flex justify-between">
                                 <span>Giảm giá:</span>
-                                <span class="text-green-500">0đ</span>
+                                <span class="text-green-500">
+                                    <fmt:formatNumber value="<%= discount %>" type="number" groupingUsed="true" /> đ
+                                </span>
                             </div>
                             <div class="flex justify-between font-bold text-lg border-t pt-2">
                                 <span>Tổng cộng:</span>
-                                <span><fmt:formatNumber value="${sessionScope.cart.totalMoney}" type="number" groupingUsed="true"/> đ</span>
+                                <span><fmt:formatNumber value="<%= total %>" type="number" groupingUsed="true"/> đ</span>
                             </div>
                         </div>
 
                         <!-- Thanh toán -->
                         <c:if test="${not empty sessionScope.cart}">
-                            <div class="grid grid-cols-2 gap-2">
-                                <!-- Nút tiền mặt gửi đến CheckoutServlet -->
-                                <form action="checkout" method="post" class="col-span-1">
-                                    <button type="submit"
-                                            class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 font-medium">
-                                        <i class="fas fa-money-bill-wave mr-2"></i>Tiền mặt
-                                    </button>
-                                </form>
+                            <!-- Form áp dụng mã giảm giá -->
+                            <form action="applyCoupon" method="post" class="flex mb-2">
+                                <input type="text" name="couponCode" placeholder="Nhập mã giảm giá"
+                                       class="flex-1 border rounded-l px-3 py-2 focus:outline-none"
+                                       value="${sessionScope.appliedCouponCode}" />
 
-                                <!-- QR Payment button mở modal -->
-                                <form action="createVNPayQR" method="post" class="col-span-1">
-                                    <button type="submit"
-                                            class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 font-medium">
-                                        <i class="fas fa-qrcode mr-2"></i>QR Code
-                                    </button>
-                                </form>
-                            </div>
+                                <button type="submit"
+                                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-r">
+                                    Áp dụng mã
+                                </button>
+                            </form>
+
+                            <!-- Hiển thị thông báo lỗi -->
+                            <c:if test="${not empty sessionScope.couponError}">
+                                <div class="text-red-600 font-medium mb-2">${sessionScope.couponError}</div>
+                            </c:if>
+
+                            <!-- Hiển thị mã đã áp dụng -->
+                            <c:if test="${not empty sessionScope.appliedCoupon}">
+                                <div class="text-green-600 font-medium mb-2">
+                                    Mã <strong>${sessionScope.appliedCoupon.coupon_code}</strong> đã được áp dụng. Giảm <strong>${sessionScope.appliedCoupon.discount_amount}</strong> đ.
+                                </div>
+                            </c:if>
+
+                            <!-- Form thanh toán tiền mặt -->
+                            <form action="checkout" method="post" class="mb-2">
+                                <button type="submit"
+                                        class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 font-medium">
+                                    <i class="fas fa-money-bill-wave mr-2"></i>Tiền mặt
+                                </button>
+                            </form>
+
+                            <!-- QR Code thanh toán -->
+                            <form action="createVNPayQR" method="post">
+                                <button type="submit"
+                                        class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 font-medium">
+                                    <i class="fas fa-qrcode mr-2"></i>QR Code
+                                </button>
+                            </form>
                         </c:if>
-
                         <!-- FORM nhận barcode từ điện thoại hoặc máy quét -->
                         <form id="barcodeForm" action="scan-barcode" method="post">
                             <input type="text" id="barcodeInput" name="barcode"
                                    autocomplete="off"
                                    style="position: absolute; left: -9999px;" />
                         </form>
-
                     </div>
                 </div>
             </div>
         </main>
 
-        <script>            
+        <script>
             function allowManualName() {
                 const nameInput = document.getElementById("customerNameInput");
                 nameInput.removeAttribute("readonly");
@@ -378,7 +417,4 @@
 
         </script>
     </body>
-    
-    <jsp:include page="/common/faq_chatbox_iframe.jsp" />
-    
 </html>

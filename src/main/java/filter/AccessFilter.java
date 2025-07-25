@@ -55,13 +55,14 @@ public class AccessFilter implements Filter {
                 || uri.contains("/ForgotPassword")
                 || uri.contains("/ResetPassword")
                 || uri.contains("/verifycode")
+                || uri.endsWith("/vnPayReturn")
         ) {
             chain.doFilter(req, res);
             return;
         }
 
         // Check login quản lý
-        if (session == null || session.getAttribute("account") == null) {
+        if (session == null || (session.getAttribute("account") == null && session.getAttribute("employee_id") == null)) {
             response.sendRedirect(context + "/LoginServlet");
             return;
         }
@@ -96,7 +97,8 @@ public class AccessFilter implements Filter {
                     "/qrPayment", "/resetOrder", "/scan-barcode", "/searchProduct","/employee-schedule",
                     "/vnPayReturn",
                     "/qrPayment", "/resetOrder", "/scan-barcode", "/searchProduct",
-                    "/vnPayReturn","/employee-schedule","/shop-assignment","/warehouse-assignment"
+                    "/vnPayReturn","/employee-schedule","/shop-assignment","/warehouse-assignment",
+                    "/vnPayReturn", "/applyCoupon"
             );
             return staffPaths.stream().anyMatch(uri::contains);
         }

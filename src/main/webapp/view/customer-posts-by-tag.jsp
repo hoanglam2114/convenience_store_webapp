@@ -270,6 +270,7 @@
                     </div>
 
 
+
                     <!-- Category Tag (Shows when filtered) -->
                     <div id="category-tag" class="hidden mb-6">
                         <span class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800">
@@ -306,22 +307,6 @@
                             </article>
                         </c:forEach>
                     </div>
-
-                    <!--                     Pagination 
-                                        <div class="mt-12 flex justify-center">
-                                            <nav class="inline-flex rounded-md shadow">
-                                                <a href="#" class="px-4 py-2 rounded-l-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
-                                                    <i class="fas fa-chevron-left"></i>
-                                                </a>
-                                                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">1</a>
-                                                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-blue-600 font-medium hover:bg-gray-50">2</a>
-                                                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</a>
-                                                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 hover:bg-gray-50">4</a>
-                                                <a href="#" class="px-4 py-2 rounded-r-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
-                                                    <i class="fas fa-chevron-right"></i>
-                                                </a>
-                                            </nav>
-                                        </div>-->
                 </div>
             </div>
         </main>
@@ -352,87 +337,7 @@
         </div>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Get all category links and posts
-                const categoryLinks = document.querySelectorAll('.category-link');
-                const mobileCategoryFilter = document.getElementById('mobile-category-filter');
-                const blogPosts = document.querySelectorAll('.post-card');
-                const categoryTag = document.getElementById('category-tag');
-                const currentCategoryName = document.getElementById('current-category-name');
-                const clearFilterBtn = document.getElementById('clear-filter');
-                const blogPostsContainer = document.getElementById('blog-posts-container');
-
-                // Function to filter posts by category
-                function filterPosts(category) {
-                    let hasPosts = false;
-
-                    blogPosts.forEach(post => {
-                        if (category === 'all' || post.dataset.category === category) {
-                            post.style.display = 'block';
-                            hasPosts = true;
-                        } else {
-                            post.style.display = 'none';
-                        }
-                    });
-
-                    // Update active category in sidebar
-                    categoryLinks.forEach(link => {
-                        if (link.dataset.category === category) {
-                            link.classList.add('active-category');
-                        } else {
-                            link.classList.remove('active-category');
-                        }
-                    });
-
-                    // Update mobile filter
-                    if (mobileCategoryFilter) {
-                        mobileCategoryFilter.value = category;
-                    }
-
-                    // Show/hide category tag
-                    if (category !== 'all') {
-                        categoryTag.classList.remove('hidden');
-
-                        // Set category name in tag
-                        const activeLink = document.querySelector(`.category-link[data-category="${category}"]`);
-                        if (activeLink) {
-                            const categoryText = activeLink.textContent.trim();
-                            currentCategoryName.textContent = categoryText;
-                        }
-                    } else {
-                        categoryTag.classList.add('hidden');
-                    }
-
-                    // Scroll to top of posts container
-                    blogPostsContainer.scrollIntoView({behavior: 'smooth', block: 'start'});
-                }
-
-                // Add click event to category links
-                categoryLinks.forEach(link => {
-                    link.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const category = this.dataset.category;
-                        filterPosts(category);
-                    });
-                });
-
-                // Add change event to mobile category filter
-                if (mobileCategoryFilter) {
-                    mobileCategoryFilter.addEventListener('change', function () {
-                        filterPosts(this.value);
-                    });
-                }
-
-                // Add click event to clear filter button
-                if (clearFilterBtn) {
-                    clearFilterBtn.addEventListener('click', function () {
-                        filterPosts('all');
-                    });
-                }
-
-                // Initialize with 'all' category
-                filterPosts('all');
-            });
+            
         </script>
     </body>
 </html>

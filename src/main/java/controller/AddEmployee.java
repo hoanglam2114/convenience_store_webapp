@@ -76,7 +76,6 @@ public class AddEmployee extends HttpServlet {
         int accountId = dbAccount.getAccountId(email);
         session.removeAttribute("authmail");
         if (!errors.isEmpty()) {
-
             request.setAttribute("errors", errors);
             request.setAttribute("name", name);
             request.setAttribute("phone", phone);

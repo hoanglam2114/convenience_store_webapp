@@ -76,7 +76,6 @@
                 color: #1e40af;
             }
 
-            /* === BOOTSTRAP FOOTER OVERRIDES === */
             .bootstrap-footer-wrapper {
                 font-size: 0.95rem;
                 line-height: 1.7;
@@ -133,6 +132,7 @@
         <!-- Header -->
         <header class="bg-white shadow-sm sticky top-0 z-10">
             <div class="container mx-auto px-4 max-w-screen-xl py-4 flex justify-between items-center">
+                <!-- Logo & Brand -->
                 <div class="flex items-center">
                     <div class="bg-blue-600 text-white p-2 rounded-lg mr-3">
                         <i class="fas fa-store text-xl"></i>
@@ -143,14 +143,33 @@
                         </h1>
                     </a>
                 </div>
+
+                <!-- Khách hàng đã đăng nhập -->
+                <c:if test="${not empty loggedInCustomer}">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
+                            <img src="<c:choose>
+                                     <c:when test='${not empty loggedInCustomer.avatarUrl}'>
+                                         ${pageContext.request.contextPath}/assets/img/customers/${loggedInCustomer.avatarUrl}
+                                     </c:when>
+                                     <c:otherwise>
+                                         ${pageContext.request.contextPath}/assets/img/avatar-default.png
+                                     </c:otherwise>
+                                 </c:choose>" 
+                                 alt="Avatar" class="object-cover w-full h-full" />
+                        </div>
+                        <span class="text-gray-800 font-medium">${loggedInCustomer.name}</span>
+                    </div>
+                </c:if>
             </div>
         </header>
+
 
         <!-- Hero Section -->
         <section class="bg-blue-600 text-white py-12" style="background: linear-gradient(45deg, #667eea, #764ba2); height: 100%;">
             <div class="blog-container mx-auto px-4 max-w-screen-xl text-center">
-                <h2 class="text-3xl md:text 4xl font-bold mb-4">CHÀO MỪNG ĐẾN VỚI BLOG TIỆN LỢI CONVENMA</h2>
-                <p class="text-lg md:text-xl max-w-2xl mx-auto">Nơi trò chuyện, chia sẻ các vấn đề thường gặp. Các trải nghiệm khi bạn mua sắm ở chuỗi cửa hàng tiện lợi CONVENMA của chúng tôi</p>
+                <h2 class="text-3xl md:text 4xl font-bold mb-4">CHÀO MỪNG ĐẾN VỚI BLOG TIỆN LỢI CONVEMA</h2>
+                <p class="text-lg md:text-xl max-w-2xl mx-auto">Nơi trò chuyện, chia sẻ các vấn đề thường gặp. Các trải nghiệm khi bạn mua sắm ở chuỗi cửa hàng tiện lợi CONVEMA của chúng tôi</p>
                 <div class="mt-6">
                     <input type="text" placeholder="Tìm kiếm bài viết..." class="px-4 py-2 rounded-l-lg w-64 text-gray-800 focus:outline-none">
                     <button class="bg-yellow-400 text-gray-800 px-4 py-2 rounded-r-lg font-medium hover:bg-yellow-500 transition">
@@ -299,7 +318,7 @@
                         </nav>
                     </div>
                 </c:if>
-                
+
             </main>
 
             <!-- Sidebar -->
