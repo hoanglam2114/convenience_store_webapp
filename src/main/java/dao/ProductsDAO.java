@@ -289,7 +289,17 @@ public class ProductsDAO extends DBContext {
     }
 
     public void insertPro(Products p) {
-        String sql = "INSERT INTO Products VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO SWP_PROJECT.dbo.Products (\n" +
+                "    category_id,\n" +
+                "    barcode,\n" +
+                "    product_name,\n" +
+                "    product_price,\n" +
+                "    weight_unit_id,\n" +
+                "    supplier_id,\n" +
+                "    product_image\n" +
+                ") VALUES (\n" +
+                "    ?, ?, ?, ?, ?, ?, ?\n" +
+                ");\n";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, p.getProductCategories().getId());
