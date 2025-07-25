@@ -212,6 +212,10 @@
         <servlet-name>ApplyCouponServlet</servlet-name>
         <servlet-class>controller.POS.ApplyCouponServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MarkManualNameServlet</servlet-name>
+        <servlet-class>controller.POS.MarkManualNameServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListAccountServlet</servlet-name>
         <url-pattern>/ListAccountServlet</url-pattern>
@@ -387,6 +391,10 @@
     <servlet-mapping>
         <servlet-name>ApplyCouponServlet</servlet-name>
         <url-pattern>/applyCoupon</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MarkManualNameServlet</servlet-name>
+        <url-pattern>/markManualName</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/index.jsp</welcome-file>

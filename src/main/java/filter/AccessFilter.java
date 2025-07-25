@@ -51,13 +51,14 @@ public class AccessFilter implements Filter {
                 || uri.contains("/error-page/")
                 || uri.endsWith("/ForgotPassword")
                 || uri.endsWith("/ResetPassword")
+                || uri.endsWith("/vnPayReturn")
         ) {
             chain.doFilter(req, res);
             return;
         }
 
         // Check login quản lý
-        if (session == null || session.getAttribute("account") == null) {
+        if (session == null || (session.getAttribute("account") == null && session.getAttribute("employee_id") == null)) {
             response.sendRedirect(context + "/LoginServlet");
             return;
         }
@@ -90,7 +91,7 @@ public class AccessFilter implements Filter {
                     "/addCustomerPos", "/addToCart", "/barcode-image", "/checkout",
                     "/update-cart", "/createVNPayQR", "/customerLookup", "/loadProduct",
                     "/qrPayment", "/resetOrder", "/scan-barcode", "/searchProduct",
-                    "/vnPayReturn"
+                    "/vnPayReturn", "/applyCoupon"
             );
             return staffPaths.stream().anyMatch(uri::contains);
         }

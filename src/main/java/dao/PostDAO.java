@@ -236,19 +236,17 @@ public class PostDAO extends DBContext {
     public List<Map<String, Object>> getPostsByTagId(int tagId, String sortOrder) {
         List<Map<String, Object>> posts = new ArrayList<>();
         String orderBy = "DESC";
-
         if ("oldest".equalsIgnoreCase(sortOrder)) {
             orderBy = "ASC";
         }
 
         String sql = """
-        SELECT p.id, p.title, p.content, p.created_at, pi.image_url
+        SELECT TOP 20 p.id, p.title, p.content, p.created_at, pi.image_url
         FROM Posts p
         JOIN PostTags pt ON p.id = pt.post_id
         LEFT JOIN PostImages pi ON p.id = pi.post_id
         WHERE pt.tag_id = ? AND p.status = 'approved'
-        GROUP BY p.id, p.title, p.content, p.created_at, pi.image_url
-        ORDER BY p.created_at """ + orderBy;
+        """ + " ORDER BY p.created_at " + orderBy;
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, tagId);
@@ -718,11 +716,10 @@ public class PostDAO extends DBContext {
 
     public static void main(String[] args) {
         PostDAO dao = new PostDAO();
-        List<Post> list = dao.getPostsByCustomerId(1);
-
-        System.out.println("Tổng số bài viết: " + list.size());
-        for (Post post : list) {
-            System.out.println("ID: " + post.getId() + " | Tiêu đề: " + post.getTitle());
+        List<Map<String, Object>> list = dao.getPostsByTagId(1, "newest");
+        System.out.println("Số bài viết: " + list.size());
+        for (Map<String, Object> p : list) {
+            System.out.println("Tiêu đề: " + p.get("title"));
         }
     }
 }

@@ -37,6 +37,7 @@ public class ResetOrderServlet extends HttpServlet {
     throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("cart");
+        session.removeAttribute("manualName");
         session.removeAttribute("phone");
         session.removeAttribute("name");
 

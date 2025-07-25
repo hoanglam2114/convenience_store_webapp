@@ -1,5 +1,6 @@
 package controller.POS;
 
+import dao.EmployeeDAO;
 import dao.ProductCategoriesDAO;
 import dao.PromotionDAO;
 import dao.StoreStockDAO;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Accounts;
 import model.Cart;
+import model.Employees;
 import model.ProductCategories;
 import model.Promotion;
 import model.StoreStock;
@@ -46,7 +48,7 @@ public class LoadProducts extends HttpServlet {
         PromotionDAO promoDAO = new PromotionDAO();
         List<Promotion> activePromos = promoDAO.getActivePromotions();
         if (!activePromos.isEmpty()) {
-            Promotion p = activePromos.get(0); // hoặc logic chọn khuyến mãi cao nhất
+            Promotion p = activePromos.get(0); 
             session.setAttribute("autoPromotion", p);
             session.setAttribute("autoPromotionDiscount", p.getDiscount_value());
         }
@@ -72,6 +74,14 @@ public class LoadProducts extends HttpServlet {
         Accounts staff = (Accounts) session.getAttribute("account");
         if (staff != null) {
             request.setAttribute("staff", staff);
+
+            EmployeeDAO employeeDAO = new EmployeeDAO();
+            Employees emp = employeeDAO.getEmployeeByAccountId(staff.getAccount_id());
+
+            if (emp != null) {
+                request.setAttribute("employee", emp);
+                session.setAttribute("employee_id", emp.getId());
+            }
         }
         Cart cart = (Cart) session.getAttribute("cart");
 

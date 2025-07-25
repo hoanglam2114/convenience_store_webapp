@@ -57,15 +57,39 @@ public class CheckoutServlet extends HttpServlet {
             // Lấy thông tin khách hàng
             Integer customerId = (Integer) session.getAttribute("customerId");
             String customerName = (String) session.getAttribute("customerName");
-            if (customerId == null || customerName == null) {
-                response.sendRedirect("loadProducts?error=missingCustomer");
-                return;
+            if ((customerId == null || customerName == null)) {
+                String phone = request.getParameter("customer_phone");
+                String name = request.getParameter("customer_name");
+
+                if (phone != null && name != null) {
+                    CustomerDAO dao = new CustomerDAO();
+                    customerId = dao.getCustomerIdByPhone(phone.trim());
+
+                    if (customerId != null) {
+                        session.setAttribute("customerId", customerId);
+                        session.setAttribute("phone", phone);
+                        session.setAttribute("name", name);
+                        session.setAttribute("customerName", name); // để dùng cho hiện tại
+                    } else {
+                        // Không tồn tại khách hàng → lỗi
+                        response.sendRedirect("loadProducts?error=missingCustomer");
+                        return;
+                    }
+                    System.out.println(">>> Phone from request: " + phone);
+                    System.out.println(">>> Name from request: " + name);
+                    System.out.println(">>> customerId from session: " + customerId);
+                    System.out.println(">>> customerName from session: " + customerName);
+                } else {
+                    // Cả session và request đều thiếu → lỗi
+                    response.sendRedirect("loadProducts?error=missingCustomer");
+                    return;
+                }
             }
 
             // Lấy nhân viên từ session
-            Integer employeeId = (Integer) session.getAttribute("staffId");
+            Integer employeeId = (Integer) session.getAttribute("employee_id");
             if (employeeId == null) {
-                employeeId = 2; // fallback tạm thời
+                employeeId = 1;
             }
 
             int paymentMethodId = 1; // tiền mặt

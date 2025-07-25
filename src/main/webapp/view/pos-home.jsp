@@ -42,10 +42,10 @@
                 <div class="flex items-center space-x-4">
                     <span id="current-time" class="font-medium"></span>
                     <c:choose>
-                        <c:when test="${not empty staff}">
+                        <c:when test="${not empty employee}">
                             <div class="text-sm bg-white text-blue-600 px-4 py-1 rounded font-medium flex items-center">
                                 <i class="fas fa-user mr-2"></i>
-                                Xin chào, ${staff.email}
+                                ${employee.name}
                             </div>
                         </c:when>
                         <c:otherwise>
@@ -127,7 +127,6 @@
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-xl font-bold text-gray-800">Hóa Đơn</h2>
                             <div class="flex items-center space-x-2">
-                                <span class="text-sm text-gray-500">#HD12345</span>
                                 <a href="resetOrder" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">Làm Mới</a>
                             </div>
                         </div>
@@ -156,10 +155,9 @@
                         <!-- Gợi ý tạo mới nếu chưa có -->
                         <c:if test="${sessionScope.name == null && not empty sessionScope.phone}">
                             <div class="mt-2 text-sm text-red-500">
-                                Khách hàng chưa tồn tại. Bạn có muốn tạo tài khoản tích điểm không?
+                                Khách hàng chưa tồn tại. Tạo tài khoản.
                                 <div class="mt-2 space-x-2">
-                                    <button onclick="showModal()" type="button" class="bg-blue-500 text-white px-3 py-1 rounded">Có</button>
-                                    <button onclick="allowManualName()" type="button" class="bg-gray-300 px-3 py-1 rounded">Không</button>
+                                    <button onclick="showModal()" type="button" class="bg-blue-500 text-white px-3 py-1 rounded">Tạo</button>
                                 </div>
                             </div>
                         </c:if>
@@ -298,16 +296,12 @@
                                 </button>
                             </form>
                         </c:if>
-
-
-
                         <!-- FORM nhận barcode từ điện thoại hoặc máy quét -->
                         <form id="barcodeForm" action="scan-barcode" method="post">
                             <input type="text" id="barcodeInput" name="barcode"
                                    autocomplete="off"
                                    style="position: absolute; left: -9999px;" />
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -423,7 +417,4 @@
 
         </script>
     </body>
-
-    <jsp:include page="/common/faq_chatbox_iframe.jsp" />
-
 </html>
