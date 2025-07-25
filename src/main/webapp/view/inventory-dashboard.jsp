@@ -230,31 +230,8 @@
                 <div class="content-page">
                     <div class="container-fluid">
 
-                        <!-- Inventory Statistics -->
-                        <div class="inventory-stats mt-2">
-                            <div class="row">
-                                <div class="col-lg-4 col-md-6 mb-2">
-                                    <div class="stat-card">
-                                        <div class="stat-number">${stats.totalProducts}</div>
-                                        <div class="stat-label">Tổng sản phẩm</div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 mb-2">
-                                    <div class="stat-card">
-                                        <div class="stat-number">${stats.lowStock}</div>
-                                        <div class="stat-label">Sắp hết hàng</div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 mb-2">
-                                    <div class="stat-card">
-                                        <div class="stat-number">${stats.outOfStock}</div>
-                                        <div class="stat-label">Hết hàng</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <!-- Header Section -->
-                        <div class="inventory-header">
+                        <div class="inventory-header mt-2">
                             <div class="d-flex flex-wrap align-items-center justify-content-between">
                                 <div>
                                     <h4 class="mb-1">Quản Lý Kho Hàng</h4>
@@ -279,19 +256,6 @@
                                     <h6 class="mb-1">Xuất báo cáo tồn kho</h6>
                                     <p class="text-muted mb-0">Tải xuống báo cáo chi tiết về tình trạng kho hàng</p>
                                 </div>
-                                <div class="col-md-4 text-end">
-                                    <div class="btn-group" role="group">
-                                        <button class="btn btn-outline-primary btn-sm">
-                                            <i class="bx bx-file me-1"></i>Excel
-                                        </button>
-                                        <button class="btn btn-outline-primary btn-sm">
-                                            <i class="bx bx-file-pdf me-1"></i>PDF
-                                        </button>
-                                        <button class="btn btn-outline-primary btn-sm">
-                                            <i class="bx bx-printer me-1"></i>In
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -311,15 +275,6 @@
                                             <option value="in_stock">Còn hàng</option>
                                             <option value="low_stock">Sắp hết</option>
                                             <option value="out_of_stock">Hết hàng</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2 mb-3">
-                                        <label class="form-label">Danh mục</label>
-                                        <select class="form-control">
-                                            <option value="">Tất cả</option>
-                                            <option value="electronics">Điện tử</option>
-                                            <option value="clothing">Thời trang</option>
-                                            <option value="food">Thực phẩm</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2 mb-3">

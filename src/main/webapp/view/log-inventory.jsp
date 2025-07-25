@@ -256,9 +256,9 @@
                           <td>${l.inventory.product.name}</td>
                           <td>${l.quantity}</td>
                           <td>${l.status}</td>
-                          <td>${l.senderName}</td>
-                          <td>${l.receiverName}</td>
-                          <td>${l.warehouseID}</td>
+                          <td>${l.deliveredBy}</td>
+                          <td>${l.receivedBy}</td>
+                          <td>${l.warehouseId}</td>
                         </tr>
                       </c:forEach>
                       </tbody>
