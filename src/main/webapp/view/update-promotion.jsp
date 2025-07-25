@@ -79,7 +79,7 @@
 
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="title-header">Cập nhật khuyến mãi</h5>
-                                <a href="PromotionManage"  class="btn btn-info"><i class="bx bx-arrow-back me-1"></i>Trở về danh sách sản phẩm</a>
+                                <a href="PromotionManage"  class="btn btn-info"><i class="bx bx-arrow-back me-1"></i>Trở về danh sách khuyến mãi</a>
                             </div>
                             <c:set var="p"   value="${promotion}" />
                             <form action="UpdatePromotion" method="post" class="row g-4">
