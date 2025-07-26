@@ -206,7 +206,7 @@
                                 <button class="btn btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#addWarehouseModal">
                                     <a href="add-warehouse" class="btn btn-warning">
-                                        <i class="bi bi-plus-lg me-1"></i> Thêm Sản Phẩm Vào Kho
+                                        <i class="bi bi-plus-lg me-1"></i> Thêm Kho Mới
                                     </a>
                                 </button>
                             </div>

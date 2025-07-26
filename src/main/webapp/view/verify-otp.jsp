@@ -114,6 +114,10 @@
       color: #e74c3c;
     }
 
+    .timer.expired {
+      color: #dc3545;
+    }
+
     .success-animation {
       animation: bounce 0.6s ease-in-out;
     }
@@ -258,32 +262,45 @@
     let timeLeft = 300;
     let timerInterval;
 
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+      const seconds = (timeLeft % 60).toString().padStart(2, '0');
+      timerElement.textContent = minutes + ':' + seconds;
+    }
+
     // Start countdown timer
     function startTimer() {
+      // Clear any existing timer first
+      if (timerInterval) {
+        clearInterval(timerInterval);
+      }
+
+      updateTimerDisplay(); // Show initial time
+
       timerInterval = setInterval(() => {
         timeLeft--;
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
           timerElement.textContent = 'Hết hạn';
-          timerElement.style.color = '#dc3545';
-          resendBtn.disabled = false;
+          timerElement.classList.add('expired');
+
+          // Disable verify button when timer expires
           verifyBtn.disabled = true;
+
+          // Enable resend button when timer expires
+          resendBtn.disabled = false;
 
           // Disable all OTP inputs
           otpInputs.forEach(input => {
             input.disabled = true;
             input.style.opacity = '0.5';
           });
+
+          return;
         }
 
-        // Enable resend button when 30 seconds left
-        if (timeLeft <= 270 && resendBtn.disabled) {
-          resendBtn.disabled = false;
-        }
+        updateTimerDisplay();
       }, 1000);
     }
 
@@ -366,6 +383,12 @@
         return;
       }
 
+      if (timeLeft <= 0) {
+        e.preventDefault();
+        showError('Mã OTP đã hết hạn');
+        return;
+      }
+
       // Show loading state
       verifyBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang xác minh...';
       verifyBtn.disabled = true;
@@ -376,8 +399,7 @@
       // Reset timer
       clearInterval(timerInterval);
       timeLeft = 300;
-      timerElement.style.color = '#e74c3c';
-      startTimer();
+      timerElement.classList.remove('expired');
 
       // Reset form
       otpInputs.forEach(input => {
@@ -392,13 +414,18 @@
       resendBtn.disabled = true;
 
       // Show loading state for resend button
+      const originalContent = this.innerHTML;
       this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang gửi...';
 
       // Simulate API call
       setTimeout(() => {
         this.innerHTML = '<i class="bi bi-check-circle me-2"></i>Đã gửi mã mới!';
+
+        // Start new timer
+        startTimer();
+
         setTimeout(() => {
-          this.innerHTML = '<i class="bi bi-arrow-clockwise me-2"></i>Gửi lại mã OTP';
+          this.innerHTML = originalContent;
         }, 2000);
       }, 1500);
 
@@ -419,6 +446,7 @@
 
       // You could also show a toast or alert here
       console.log('Error:', message);
+      alert(message); // Simple alert for now
     }
 
     // Auto-focus first input
